@@ -76,6 +76,7 @@ public class Link extends _Properties{
     public boolean isDirected() {
         return directed;
     }
+    @SuppressWarnings("EqualsWhichDoesntCheckParameterClass")
     public boolean equals(Object o){
         Link l=(Link)o;
         return ((this.directed == l.directed) &&
