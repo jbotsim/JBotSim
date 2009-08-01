@@ -80,6 +80,7 @@ public class Algorithms {
     public static double getAngle(Node n1, Node n2){
         return -Math.atan2(n2.getY()-n1.getY(), n2.getX()-n1.getX());
     }
+    // Returns between 0 and 2*PI
     public static double getAngle(Node n1, Node n2, Node n3){
 	    double slope1=getAngle(n2,n1);
 	    double slope2=getAngle(n2,n3);
@@ -87,6 +88,7 @@ public class Algorithms {
 	    if (angle<0) angle+=Math.PI*2.0;
 	    return angle;
 	}
+    // Returns between 0 and PI (abs value of the shortest side)
 	public static double getAngleAbs(Node n1, Node n2, Node n3){
         double slope1=getAngle(n1,n2);
         double slope2=getAngle(n3,n2);
