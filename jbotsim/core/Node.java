@@ -85,7 +85,8 @@ public class Node extends _Properties{
         this.setProperty("wireless", wireless);
     }
     public String getColor(){
-        return (String)this.getProperty("color");
+    	String color=(String)this.getProperty("color");
+    	return (color!=null)?color:"none";
     }
     /**
      * Sets the color of the node to the given color. The color must be given as a string containing
