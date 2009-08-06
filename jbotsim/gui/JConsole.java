@@ -28,7 +28,7 @@ import jbotsim.core.Topology;
 
 @SuppressWarnings("serial")
 public class JConsole extends TextArea implements TextListener{
-	Topology topo;
+	protected Topology topo;
     public JConsole(Topology topo){
         super("",6,10,TextArea.SCROLLBARS_VERTICAL_ONLY);
         this.topo=topo;
@@ -44,7 +44,7 @@ public class JConsole extends TextArea implements TextListener{
             executeCommand(s.substring(from,to).split("\\s"));
         }
     }
-    private void executeCommand(String[] args){
+    protected void executeCommand(String[] args){
     	if (args[0].equals("rename")){
     		Node n=(Node)topo.getProperty("selectedNode");
     		if (n!=null) 
