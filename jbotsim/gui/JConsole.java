@@ -36,15 +36,17 @@ public class JConsole extends TextArea implements TextListener{
         setForeground(Color.white);
         addTextListener(this);
     }
-    public void textValueChanged(TextEvent e){
+    public void textValueChanged(TextEvent event){
         String s=getText();
         int to=s.lastIndexOf("\n");
         if(to == s.length()-1 && to!=-1){
             int from=s.lastIndexOf("\n",to-1)+1;
-            executeCommand(s.substring(from,to).split("\\s"));
+            try{
+            	executeCommand(s.substring(from,to).split("\\s"));
+            }catch(Exception e){e.printStackTrace();}
         }
     }
-    protected void executeCommand(String[] args){
+    protected void executeCommand(String[] args) throws Exception{
     	if (args[0].equals("rename")){
     		Node n=(Node)topo.getProperty("selectedNode");
     		if (n!=null) 

@@ -266,14 +266,15 @@ public class Topology extends _Properties{
 		res.append("sensingRange " + getNodeModel("default").getSensingRange() + "\n");
 		for (Node n : nodes)
 			res.append(n.toString() + " " + n.coords.toString().substring(14) + "\n");
-		// FIXME
+		// FIXME no support for hardlinks yet.
 //		for (Link l : getLinks()){
 //			if (!l.isWireless());
 //				res.append(l.toString()+ "\n");
 //		}
 		return res.toString();
 	}
-    private void fromString(String s){
+    public void fromString(String s){
+    	this.clear();
     	getNodeModel("default").setCommunicationRange(new Double(s.substring(s.indexOf(" ")+1,s.indexOf("\n"))));
     	s=s.substring(s.indexOf("\n")+1);
     	
