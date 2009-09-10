@@ -120,6 +120,24 @@ public class Connectivity {
 	}
 	return (int)Math.round(Math.sqrt(nbNodes/d));
     }
+    public static void addRandomConnectedNodes(Topology tp, int nbNodes){
+    	double Cr=tp.getNodeModel("default").getCommunicationRange();
+    	double Sr=tp.getNodeModel("default").getSensingRange();
+    	int size = getOptimalTopologySize(nbNodes, Cr, 100);
+    	int bordure = new Double(4*Sr).intValue();
+    	Random rand = new Random();
+    	Topology tmp=new Topology(tp);
+    	tmp.getMessageEngine().setRunning(false);
+    	tmp.getAlgorithmEngine().setRunning(false);
+    	do{
+    		tmp.clear();
+    	    for (int i=0; i<nbNodes; i++)
+    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure);
+    	    // should update topology maintener here if not automatic (currently automatic)
+    	} while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
+    	for (Node n:tmp.getNodes())
+    		tp.addNode(n.getX(), n.getY());
+    }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
 	int size = getOptimalTopologySize(nbNodes, cRange, ratio);
 	int bordure = new Double(4*sRange).intValue();

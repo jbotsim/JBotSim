@@ -176,11 +176,14 @@ public class Node extends _Properties{
             neighbors.add(l.getOtherEndpoint(this));
         return new Vector<Node>(neighbors);
     }
-    public Vector<Message> getCopyOfReceivedMessages(){
+    public Vector<Message> getReceivedMessages(){
         return new Vector<Message>((Vector<Message>) this.getProperty("mailBox"));
     }
     public void removeReceivedMessage(Message msg){
         ((Vector<Message>) this.getProperty("mailBox")).remove(msg);
+    }
+    public void removeAllReceivedMessages(){
+        ((Vector<Message>) this.getProperty("mailBox")).clear();
     }
     public void send(Message msg){
         ((Vector<Message>)this.getProperty("sendQueue")).add(msg);

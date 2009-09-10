@@ -19,12 +19,14 @@
  *******************************************************************************/
 package jbotsim.core;
 
+import java.util.Hashtable;
+
 public class Message{
 	public Node from;
 	public Node to;
-	public Object data;
+	public Hashtable<String,Object> data;
 	
-	public Message(Node from, Node to, Object data){
+	public Message(Node from, Node to, Hashtable<String, Object> data){
 		this.from=from;
 		this.to=to; // null=broadcast
 		this.data=data;
