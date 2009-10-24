@@ -100,6 +100,15 @@ public class Connectivity {
         removeConnectedNodes(vertices,vertices.elementAt(0));
         return vertices.isEmpty();
     }
+    public static int getNbConnectedComponents(Topology t){
+    	Vector<Node> vertices=new Vector<Node>(t.getNodes());
+    	int nbComp=0;
+    	while (vertices.size()>0){
+    		removeConnectedNodes(vertices,vertices.elementAt(0));
+    		nbComp++;
+    	}
+        return nbComp;
+    }
     private static void removeConnectedNodes(Vector<Node> Vtmp, Node v){
         Vtmp.remove(v);
         for(Link l : v.getLinks()){
