@@ -28,7 +28,6 @@ import jbotsim.engine.AlgorithmEngine;
 import jbotsim.engine.MessageEngine;
 import jbotsim.engine.event.Clock;
 
-@SuppressWarnings("unchecked")
 public class Topology extends _Properties{
     protected Clock clock=new Clock();
     protected Vector<TopologyListener> directedListeners=new Vector<TopologyListener>();
@@ -39,27 +38,17 @@ public class Topology extends _Properties{
     protected Vector<Link> edges=new Vector<Link>();
     protected AlgorithmEngine ae=new AlgorithmEngine(this,2);
     protected MessageEngine me=new MessageEngine(this,2);
+    protected TopologyMaintainer tm=new TopologyMaintainer(this);
     
     public Topology(){
         this((Topology)null);
     }
-    public Topology(int refreshRate){
-        this((Topology)null, refreshRate);
-    }
     public Topology(String s){
-        this((Topology)null, 0);
-        this.fromString(s);
-    }
-    public Topology(String s, int refreshRate){
-        this((Topology)null, refreshRate);
+        this((Topology)null);
         this.fromString(s);
     }
     public Topology(Topology model){
-    	this(model, 0);
-    }
-    public Topology(Topology model, int refreshRate){
         super(model);
-        new TopologyMaintainer(this,refreshRate);
         if (model!=null){
             for (Node n : model.getNodes())
                 addNode(n.getX(), n.getY(), n);
@@ -73,7 +62,7 @@ public class Topology extends _Properties{
     }
     /**
      * Removes all nodes and links in this topology, but keeps other settings
-     * such as node models and inner properties.
+     * such as Properties and node models. 
      */
     public void clear(){
         Vector<Node> tmp=new Vector<Node>(nodes);
@@ -200,6 +189,23 @@ public class Topology extends _Properties{
             Link l=new Link(from, to, Link.Type.UNDIRECTED);
             return (edges.contains(l))?edges.elementAt(edges.indexOf(l)):null;    		
         }
+    }
+    /**
+     * Enables (true) or disables (false) the automatic update of wireless links
+     * when nodes move. The main reason to disable it to reduce CPU load. The  
+     * links can afterward be updated manually, by calling updateWirelessLinks().
+     */
+    public void setWirelessMaintainer(boolean automatic){
+    	tm.setMode(automatic);
+    }
+    
+    /**
+     * Updates the set of wireless links according to the distance between nodes.
+     * This process being automated by default, the method should be used only if
+     * it has been disabled by calling setWirelessMaintainer(false).
+     */
+   public void updateWirelessLinks(){
+    	tm.manualUpdate();
     }
     public AlgorithmEngine getAlgorithmEngine(){
         return ae;

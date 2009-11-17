@@ -26,6 +26,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Vector;
+import static java.lang.Math.*;
 
 import jbotsim.core.Link;
 import jbotsim.core.Node;
@@ -81,22 +82,22 @@ public class Algorithms {
         return Emst;
     }
     public static double getAngle(Node n1, Node n2){
-        return -Math.atan2(n2.getY()-n1.getY(), n2.getX()-n1.getX());
+        return -atan2(n2.getY()-n1.getY(), n2.getX()-n1.getX());
     }
     // Returns between 0 and 2*PI
     public static double getAngle(Node n1, Node n2, Node n3){
 	    double slope1=getAngle(n2,n1);
 	    double slope2=getAngle(n2,n3);
 	    double angle=(slope2-slope1);
-	    if (angle<0) angle+=Math.PI*2.0;
+	    if (angle<0) angle+=PI*2.0;
 	    return angle;
 	}
     // Returns between 0 and PI (abs value of the shortest side)
 	public static double getAngleAbs(Node n1, Node n2, Node n3){
         double slope1=getAngle(n1,n2);
         double slope2=getAngle(n3,n2);
-        double angle=Math.abs(slope1-slope2);
-        if (angle>Math.PI) angle=(2.0*Math.PI-angle);
+        double angle=abs(slope1-slope2);
+        if (angle>PI) angle=(2.0*PI-angle);
         return angle;
     }
     public static Vector<Node> orderByAngleToReferenceNode(Node refNode, Vector<Node> nodes){
@@ -113,16 +114,16 @@ public class Algorithms {
     public static double getRelativeCoverage(Topology topo){
     	double maximum=0.0;
     	for (Node n : topo.getNodes())
-    		maximum+=Math.PI*Math.pow(n.getSensingRange(), 2);
+    		maximum+=PI*pow(n.getSensingRange(), 2);
     	return getCoverage(topo)/maximum;
     }
     public static double getCoverage(Topology topo){
         int left=0, right=0, top=0, bottom=0, maxSR=0;
         for (Node n : topo.getNodes()){
         	int x=(int)n.getX(); int y=(int)n.getY();
-        	left=Math.min(left,x); top=Math.min(top,y);
-        	right=Math.max(right,x); bottom=Math.max(bottom,y);
-        	maxSR=Math.max(maxSR, (int)n.getSensingRange());
+        	left=min(left,x); top=min(top,y);
+        	right=max(right,x); bottom=max(bottom,y);
+        	maxSR=max(maxSR, (int)n.getSensingRange());
         }
         double coverage = 0;
         for (int i=left-maxSR; i<right+maxSR; i++){
