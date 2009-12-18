@@ -17,14 +17,42 @@
  *     contributors:
  *     Arnaud Casteigts
  *******************************************************************************/
-package jbotsim.core.event;
+package jbotsim.event;
 
-import jbotsim.core.Link;
-import jbotsim.core.Node;
+import jbotsim.Link;
+import jbotsim.Node;
+import jbotsim.Topology;
 
 public interface TopologyListener{
+	/**
+	 * Notifies the underlying listener that a node has been added to the 
+     * topology.
+	 * @param n The added node.
+	 */
     public void nodeAdded(Node n);
+    /**
+     * Notifies the underlying listener that a node has been removed to the 
+     * topology.
+     * @param n The removed node.
+     */
     public void nodeRemoved(Node n);
-    public void linkAdded(Link e);
-    public void linkRemoved(Link e);
+    /**
+     * Notifies the underlying listener that a link has been added to the 
+     * topology.
+     * @param l The added link.
+     */
+    public void linkAdded(Link l);
+    /**
+     * Notifies the underlying listener that a node has been removed to the 
+     * topology. 
+     * @param l The removed link.
+     */
+    public void linkRemoved(Link l);
+    /**
+     * Notifies the underlying listener that a property of the topology has 
+     * been changed. 
+     * @param t The topology.
+     * @param key The name of the changed property.
+     */
+    public void propertyChanged(Topology t, String key);
 }

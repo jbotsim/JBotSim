@@ -17,14 +17,34 @@
  *     contributors:
  *     Arnaud Casteigts
  *******************************************************************************/
-package jbotsim.core.event;
+package jbotsim.event;
 
-import jbotsim.core.Link;
-import jbotsim.core.Node;
+import jbotsim.Link;
+import jbotsim.Node;
 
 public interface NodeListener{
+	/**
+	 * Notifies the underlying listener that the node has moved.
+	 * @param n The node.
+	 */
     public void nodeMoved(Node n);
-    public void nodeChanged(Node n, String property);
+    /**
+     * Notifies the underlying listener that a link adjacent to the node has 
+     * been added. 
+     * @param l The added link.
+     */
     public void linkAdded(Link l);
+    /**
+     * Notifies the underlying listener that a link adjacent to the node has 
+     * been removed.
+     * @param l The removed link.
+     */
     public void linkRemoved(Link l);
+    /**
+     * Notifies the underlying listener that a property of the node has been 
+     * changed.
+     * @param n The node.
+     * @param key The name of the changed property.
+     */
+    public void propertyChanged(Node n, String key);
 }

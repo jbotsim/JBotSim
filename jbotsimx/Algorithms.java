@@ -28,14 +28,15 @@ import java.util.Hashtable;
 import java.util.Vector;
 import static java.lang.Math.*;
 
-import jbotsim.core.Link;
-import jbotsim.core.Node;
-import jbotsim.core.Topology;
+import jbotsim.Link;
+import jbotsim.Node;
+import jbotsim.Topology;
 
 public class Algorithms {
 	public class LinkLengthComparator implements Comparator<Link>{
 		public int compare(Link l1, Link l2){
-			return (new Double(l1.getLength())).compareTo(l2.getLength());
+			return (new Double(l1.source.distance(l1.destination)).compareTo(
+					new Double(l2.source.distance(l2.destination))));
 		}
 	}
     public static Vector<Link> getMST(Topology t){
@@ -67,12 +68,12 @@ public class Algorithms {
             while(!added){
                 if(en.hasMoreElements()){
                     Link l=en.nextElement();
-                    if (Vmst.contains(l.getEndpoint(0)) && !Vmst.contains(l.getEndpoint(1))){
-                        Vmst.add(l.getEndpoint(1));
+                    if (Vmst.contains(l.source) && !Vmst.contains(l.destination)){
+                        Vmst.add(l.destination);
                         Emst.add(l);
                         added=true;
-                    }else if (Vmst.contains(l.getEndpoint(1)) && !Vmst.contains(l.getEndpoint(0))){
-                        Vmst.add(l.getEndpoint(0));
+                    }else if (Vmst.contains(l.destination) && !Vmst.contains(l.destination)){
+                        Vmst.add(l.source);
                         Emst.add(l);
                         added=true;
                     }

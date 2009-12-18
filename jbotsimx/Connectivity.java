@@ -25,9 +25,10 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 
-import jbotsim.core.Link;
-import jbotsim.core.Node;
-import jbotsim.core.Topology;
+import jbotsim.Clock;
+import jbotsim.Link;
+import jbotsim.Node;
+import jbotsim.Topology;
 
 public class Connectivity {
     public static Vector<Node> getKHopNeighbors(Node n, int nbhops){
@@ -130,22 +131,20 @@ public class Connectivity {
 	return (int)Math.round(Math.sqrt(nbNodes/d));
     }
     public static void addRandomConnectedNodes(Topology tp, int nbNodes){
-    	double Cr=tp.getNodeModel("default").getCommunicationRange();
-    	double Sr=tp.getNodeModel("default").getSensingRange();
+    	double Cr=Node.getModel("default").getCommunicationRange();
+    	double Sr=Node.getModel("default").getSensingRange();
     	int size = getOptimalTopologySize(nbNodes, Cr, 100);
     	int bordure = new Double(4*Sr).intValue();
     	Random rand = new Random();
-    	Topology tmp=new Topology(tp);
-    	tmp.getMessageEngine().setRunning(false);
-    	tmp.getAlgorithmEngine().setRunning(false);
+    	Topology tmp=new Topology();
+    	Clock.pause();
     	do{
     		tmp.clear();
     	    for (int i=0; i<nbNodes; i++)
-    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure);
-    	    // should update topology maintener here if not automatic (currently automatic)
+    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, new Node(Node.getModel("default")));
     	} while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
     	for (Node n:tmp.getNodes())
-    		tp.addNode(n.getX(), n.getY());
+    		tp.addNode(n.getX(), n.getY(), Node.newInstanceOfModel("default"));
     }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
 	int size = getOptimalTopologySize(nbNodes, cRange, ratio);
@@ -153,17 +152,15 @@ public class Connectivity {
 	int attempts = 0;
 	Random rand = new Random();
 	Topology topo = new Topology();
-	topo.getNodeModel("default").setSensingRange(sRange);
-	topo.getNodeModel("default").setCommunicationRange(cRange);
-	topo.getAlgorithmEngine().setRunning(false);
-	topo.getMessageEngine().setRunning(false);
+	Node.getModel("default").setSensingRange(sRange);
+	Node.getModel("default").setCommunicationRange(cRange);
+	Clock.pause();
 	do{ attempts++;
 	    topo.clear();
 	    for (int i=0; i<nbNodes; i++)
-		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure);
+		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, new Node(Node.getModel("default")));
 	} while (!Connectivity.isConnected(topo) || Connectivity.isBiconnected(topo));
-	topo.getAlgorithmEngine().setRunning(true);
-	topo.getMessageEngine().setRunning(true);
+	Clock.resume();
 	topo.setProperty("attempts", attempts);
 	return topo;
     }
