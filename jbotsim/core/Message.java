@@ -1,22 +1,14 @@
-/*******************************************************************************
+/*
  * This file is part of JBotSim.
  * 
- *     JBotSim is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Lesser General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     JBotSim is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Lesser General Public License for more details.
- * 
- *     You should have received a copy of the GNU Lesser General Public License
- *     along with JBotSim.  If not, see <http://www.gnu.org/licenses/>.
- * 
- *     contributors:
- *     Arnaud Casteigts
- *******************************************************************************/
+ *    JBotSim is free software: you can redistribute it and/or modify it
+ *    under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *  
+ *    Authors:
+ *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ */
 package jbotsim;
 
 import java.util.HashMap;
@@ -85,13 +77,13 @@ public class Message{
 			if (Message.debuggingMode)
 				System.err.println(Clock.currentTime()+": "+m);
 			for (MessageListener ml : dest.messageListeners)
-				ml.messageReceived(m);
+				ml.onMessage(m);
 		}
 	}
 	/**
 	 * Sets the number of clock steps separating the effective delivery of a 
 	 * message from its sending through the <tt>Node.send</tt> method. The
-	 * minimum is 1 (delivery occurring at the following clock step).
+	 * minimum is 1 (delivery occurring at the next clock step).
 	 * @param delay The message delay.
 	 */
     public static void setMessageDelay(int delay){

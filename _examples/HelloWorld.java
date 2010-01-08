@@ -1,8 +1,8 @@
-import jbotsim.core.Topology;
-import jbotsim.gui.viewer.Viewer;
+import jbotsim.Topology;
+import jbotsim.ui.JViewer;
 
-public class HelloWorld{
-    public static void main(String args[]) throws Exception{
-        new Viewer(new Topology());
-    }
+public class HelloWorld {
+	public static void main(String[] args) {
+		new JViewer(new Topology());
+	}
 }

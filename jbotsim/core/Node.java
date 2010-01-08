@@ -1,24 +1,17 @@
-/*******************************************************************************
+/*
  * This file is part of JBotSim.
  * 
- *     JBotSim is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Lesser General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     JBotSim is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Lesser General Public License for more details.
- * 
- *     You should have received a copy of the GNU Lesser General Public License
- *     along with JBotSim.  If not, see <http://www.gnu.org/licenses/>.
- * 
- *     contributors:
- *     Arnaud Casteigts
- *******************************************************************************/
+ *    JBotSim is free software: you can redistribute it and/or modify it
+ *    under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *  
+ *    Authors:
+ *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ */
 package jbotsim;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -189,15 +182,14 @@ public class Node{
      * Sets the direction angle of this node using the specified reference
      * point. Only the resulting angle matters (not the particular location of
      * the reference point).
-     * @param x The abscissa of the reference point.
-     * @param y The ordinate of the reference point.
+     * @param p The reference point.
      */
-    public void setDirection(double x, double y){
-        this.setDirection(Math.atan2(x-coords.x, -(y-coords.y))-Math.PI/2);
+    public void setDirection(Point p){
+        this.setDirection(Math.atan2(p.x-coords.x, -(p.y-coords.y))-Math.PI/2);
     }
     /**
      * Translates the location of this node of the specified distance towards 
-     * the node's current direction.
+     * the node's current direction. The distance unit is the pixel.
      */
     public void move(double distance){
         this.translate(Math.cos(direction)*distance, Math.sin(direction)*distance);
@@ -264,7 +256,7 @@ public class Node{
     }
     /**
      * Returns a vector containing every node serving as source for an adjacent
-     * <i>directed</i> link. The returned vector can be subsequently modified 
+     * directed link. The returned vector can be subsequently modified 
      * without effect on the topology.
      * @return A vector containing the neighbors, with possible duplicates
      * when several links come from a same neighbor.
@@ -277,7 +269,7 @@ public class Node{
     }
     /**
      * Returns a vector containing every node serving as destination for an 
-     * adjacent <i>directed</i> link. The returned vector can be subsequently
+     * adjacent directed link. The returned vector can be subsequently
      * modified without effect on the topology.
      * @return A vector containing the neighbors, with possible duplicates
      * when several links go towards a same neighbor.
@@ -290,7 +282,7 @@ public class Node{
     }
     /**
      * Returns a vector containing every node located at the opposite endpoint
-     * of adjacent <i>undirected</i> links. The returned vector can be
+     * of an adjacent undirected links. The returned vector can be
      * subsequently modified without effect on the topology.
      * @return A vector containing the neighbors, with possible duplicates
      * when several links are shared with a same neighbor.
@@ -412,6 +404,13 @@ public class Node{
      */
     public double distance(Node n){
         return coords.distance(n.coords);
+    }
+    /**
+     * Returns the distance between this node and the specified location.
+     * @param n The location (as a point).
+     */
+    public double distance(Point p){
+        return coords.distance(p);
     }
     /**
      * Returns the distance between this node and the point of specified 

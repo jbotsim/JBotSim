@@ -1,22 +1,14 @@
-/*******************************************************************************
+/*
  * This file is part of JBotSim.
  * 
- *     JBotSim is free software: you can redistribute it and/or modify
- *     it under the terms of the GNU Lesser General Public License as published by
- *     the Free Software Foundation, either version 3 of the License, or
- *     (at your option) any later version.
- * 
- *     JBotSim is distributed in the hope that it will be useful,
- *     but WITHOUT ANY WARRANTY; without even the implied warranty of
- *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *     GNU Lesser General Public License for more details.
- * 
- *     You should have received a copy of the GNU Lesser General Public License
- *     along with JBotSim.  If not, see <http://www.gnu.org/licenses/>.
- * 
- *     contributors:
- *     Arnaud Casteigts
- *******************************************************************************/
+ *    JBotSim is free software: you can redistribute it and/or modify it
+ *    under the terms of the GNU Lesser General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *  
+ *    Authors:
+ *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ */
 package jbotsim;
 
 import java.util.HashMap;
@@ -107,6 +99,24 @@ public class Link{
         this.mode = mode;
     }
     /**
+     * Returns a vector containing the two endpoint nodes of this link
+     * @return The endpoints.
+     */
+    public Vector<Node> endpoints(){
+    	Vector<Node> tmp = new Vector<Node>();
+    	tmp.add(source); tmp.add(destination);
+    	return tmp;
+    }
+    /**
+     * Returns the node located at the opposite of the specified node 
+     * (reference node) on the underlying link.
+     * @param n The reference node.
+     * @return The opposite node.
+     */
+    public Node getOtherEndpoint(Node n){
+        return (n==source)?destination:source;
+    }
+    /**
      * Registers the specified listener for this link.
      * @param listener The link listener. 
      */
@@ -119,15 +129,6 @@ public class Link{
      */
     public void removeLinkListener(LinkListener listener){
     	listeners.remove(listener);
-    }
-    /**
-     * Returns the node located at the opposite of the specified node 
-     * (reference node) on the underlying link.
-     * @param n The reference node.
-     * @return The opposite node.
-     */
-    public Node getOtherEndpoint(Node n){
-        return (n==source)?destination:source;
     }
     /**
      * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless, 
