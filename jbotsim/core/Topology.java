@@ -256,7 +256,7 @@ public class Topology{
         	undirectedListeners.remove(listener);
     }
     protected void notify(String method, Object param){
-    	if(param.getClass()==Link.class){
+    	if(Link.class.isAssignableFrom(param.getClass())){
             Link l=(Link)param;
             boolean directed=(l.type==Type.DIRECTED)?true:false;
             LinkedHashSet<Object> union=new LinkedHashSet<Object>(directed?directedListeners:undirectedListeners);
@@ -273,7 +273,7 @@ public class Topology{
             	}
             }catch(Exception e){e.printStackTrace();
             }
-        }else{
+        }else if(Node.class.isAssignableFrom(param.getClass())){
             LinkedHashSet<TopologyListener> union=new LinkedHashSet<TopologyListener>(directedListeners);
             union.addAll(undirectedListeners);
             Vector<TopologyListener> listeners=new Vector<TopologyListener>(union);

@@ -320,6 +320,17 @@ public class Node{
         sendQueue.add(new Message(this, dest, content));
     }
     /**
+     * Same method as <tt>send()</tt>, but retries to send the message later
+     * if the link to the destination disappeared during transmission. 
+     * (Does not work for <tt>null</tt> destinations.)
+     * @param dest The non-null destination.
+     * @param content The message.
+     */
+    public void sendRetry(Node dest, Object content){
+    	assert(dest!=null);
+        sendQueue.add(new Message(this, dest, content, true));
+    }
+    /**
      * Registers the specified node listener to this node. The listener
      * will be notified whenever the node changes a property or moves,
      * as well as when an <i>undirected</i> link incident to this node appears

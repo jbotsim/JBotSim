@@ -12,8 +12,8 @@
 package jbotsim;
 
 import java.util.HashMap;
+import java.util.Vector;
 
-import jbotsim.Link.Type;
 import jbotsim.event.ClockListener;
 import jbotsim.event.MessageListener;
 
@@ -33,13 +33,20 @@ public class Message{
 	 * shared between the source and the destination(s). 
 	 */
 	public final Object content;
+	protected final boolean retryMode; 
 	protected static boolean debuggingMode=false;
+	protected static int nbDeliveredMessages=0;
 	protected static int messageDelay=1;
 	
 	Message(Node source, Node destination, Object content){
+		this(source, destination, content, false);
+	}
+	Message(Node source, Node destination, Object content, boolean retryMode){
+		assert(destination!=null || !retryMode);
 		this.source=source;
 		this.destination=destination;
 		this.content=content;
+		this.retryMode=retryMode;
 	}
 	public String toString(){
 		return source + " -> " + destination + ": " + content;
@@ -47,7 +54,6 @@ public class Message{
 	static class MessageEngine implements ClockListener{
 		private HashMap<Message, Integer> currentMessages=new HashMap<Message,Integer>();
 		private Topology topo;
-		int messageDelay=1;
 		
 		MessageEngine(Topology topo){
 			this.topo=topo;
@@ -55,27 +61,50 @@ public class Message{
 		}
 		public void onClock(){
 			for (Node n : topo.nodes){
-				for (Message m : n.sendQueue)
-					currentMessages.put(m, messageDelay);
-				n.sendQueue.clear();
+				Vector<Message> toRemove=new Vector<Message>();
+				for (Message m : n.sendQueue){
+					if (m.destination!=null && m.source.getOutLinkTo(m.destination)==null){
+						if (!m.retryMode)
+							toRemove.add(m);
+					}else{
+						currentMessages.put(m, messageDelay);
+						toRemove.add(m);
+					}
+				}
+				n.sendQueue.removeAll(toRemove);
 			}
 			for (Message m : new HashMap<Message,Integer>(currentMessages).keySet()){
 				int remainingDelay=currentMessages.get(m);
 				if (remainingDelay==1){
 					currentMessages.remove(m);
-					if (m.destination!=null && topo.arcs.contains(new Link(m.source,m.destination,Type.DIRECTED)))
-						deliverMessageTo(m, m.destination);
-					else
+					if (m.destination!=null){
+						if (m.source.getOutLinkTo(m.destination)!=null)
+							deliverMessageTo(m, m.destination);
+						else{
+							if (m.retryMode)
+								m.source.sendQueue.add(m);
+						}
+					}else
 						for(Link l : m.source.getOutLinks())
 							deliverMessageTo(m, l.destination);
-				}else
-					currentMessages.put(m, remainingDelay-1);
+				}else{
+					if (m.source.getOutLinkTo(m.destination)!=null){
+						currentMessages.put(m, remainingDelay-1);
+						if (Message.debuggingMode)
+							System.err.println(Clock.currentTime()+": RT "+(remainingDelay-1)+": "+m);
+					}else{
+						currentMessages.remove(m);
+						if (m.retryMode)
+							m.source.sendQueue.add(m);
+					}
+				}
 			}
 		}
 		protected void deliverMessageTo(Message m, Node dest){
 			dest.mailBox.add(m);
 			if (Message.debuggingMode)
-				System.err.println(Clock.currentTime()+": "+m);
+				System.err.println(Clock.currentTime()+": D: "+m);
+			nbDeliveredMessages++;
 			for (MessageListener ml : dest.messageListeners)
 				ml.onMessage(m);
 		}
@@ -87,14 +116,21 @@ public class Message{
 	 * @param delay The message delay.
 	 */
     public static void setMessageDelay(int delay){
-    	messageDelay=Math.max(delay, 1);
+    	Message.messageDelay=Math.max(delay, 1);
     }
-	/**
+    /**
 	 * Causes all messages to be printed on <tt>System.err</tt> at delivery 
 	 * time.
 	 * @param debugMode <tt>true</tt> to enable, <tt>false</tt> to disable.
 	 */
 	public static void setDebuggingMode(boolean debugMode){
 		Message.debuggingMode=debugMode;
+	}
+    /**
+	 * Returns the number of messages successfully delivered so far.
+	 * @param debugMode <tt>true</tt> to enable, <tt>false</tt> to disable.
+	 */
+	public static int nbDeliveredMessages(){
+		return nbDeliveredMessages;
 	}
 }
