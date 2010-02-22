@@ -75,6 +75,11 @@ public class JViewer{
     public JTopology getJTopology(){
     	return jtp;
     }
+    /**
+     * Sets the size of the window to the specified dimension.
+     * @param width The desired width, in pixels.
+     * @param height The desired height, in pixels.
+     */
     public void setSize(int width, int height){
     	if (window!=null)
     		window.setSize(width, height);
