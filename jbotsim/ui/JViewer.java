@@ -34,6 +34,7 @@ import jbotsim.Topology;
 public class JViewer{
 	protected JTopology jtp;
 	protected JSlider cRTuner, sRTuner;
+	protected JFrame window=null;
 	protected EventHandler handler=new EventHandler();
 	/**
 	 * Creates a windowed viewer for the specified topology. 
@@ -58,11 +59,11 @@ public class JViewer{
    		jtp.addActionCommand("switch clock");
    		jtp.addActionListener(handler);
     	if (selfContained){
-	   		JFrame win=new JFrame();
-	   		win.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	   		win.add(jtp);
-	   		win.setSize(800, 600);
-	   		win.setVisible(true);
+	   		window=new JFrame();
+	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	   		window.add(jtp);
+	   		window.setSize(800, 600);
+	   		window.setVisible(true);
     	}
     }
     /**
@@ -73,6 +74,10 @@ public class JViewer{
      */
     public JTopology getJTopology(){
     	return jtp;
+    }
+    public void setSize(int width, int height){
+    	if (window!=null)
+    		window.setSize(width, height);
     }
     /**
      * Adds a communication range tuner (slider bar) to regulate the
