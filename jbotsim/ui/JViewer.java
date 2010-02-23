@@ -47,13 +47,32 @@ public class JViewer{
 	 * Creates a viewer for the specified topology. If <tt>selfContained</tt>
 	 * is <tt>true</tt>, a new window will be created to contain the viewer
 	 * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>, 
-	 * no window will be created so that the viewer can be subsequently
+	 * no window will be created and the viewer can be subsequently
 	 * integrated to another swing container (e.g. another <tt>JFrame</tt> 
 	 * or a <tt>JApplet</tt>).
 	 * @param topo The topology to be drawn and/or manipulated.
 	 */
     public JViewer(Topology topo, boolean selfContained){
-    	this.jtp=new JTopology(topo);
+    	this(new JTopology(topo), selfContained);
+    }
+	/**
+	 * Creates a windowed viewer encapsulating the specified jtopology. 
+	 * @param jtopo The jtopology to be encapsulated.
+	 */
+    public JViewer(JTopology jtopo){
+    	this(jtopo, true);
+    }
+	/**
+	 * Creates a viewer encapsulating the specified jtopology. If 
+	 * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created 
+	 * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it 
+	 * is <tt>false</tt>, no window will be created and the viewer can be 
+	 * subsequently integrated to another swing container (e.g. another 
+	 * <tt>JFrame</tt> or a <tt>JApplet</tt>).
+	 * @param topo The topology to be drawn and/or manipulated.
+	 */
+    public JViewer(JTopology jtopo, boolean selfContained){
+    	this.jtp=jtopo;
    		jtp.addActionCommand("communication bar");
    		jtp.addActionCommand("sensing bar");
    		jtp.addActionCommand("switch clock");

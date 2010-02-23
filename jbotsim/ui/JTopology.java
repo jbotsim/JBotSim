@@ -40,6 +40,7 @@ public class JTopology extends JPanel{
     protected Topology topo;
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
+	protected boolean showDrawings=true;
     
     /**
      * Creates a new JTopology for the specified topology.
@@ -84,21 +85,29 @@ public class JTopology extends JPanel{
     	actionCommands.remove(command);
     }
     /**
+     * Disables the drawing of links and sensing radius (if any).
+     */
+    public void disableDrawings(){
+    	this.showDrawings=false;
+    }
+    /**
      * Paints this JTopology on the specified graphics (not supposed to be 
      * used explicitly).
      */
     public void paint(Graphics g){
         super.paint(g);
-   		Graphics2D g2d=(Graphics2D)g;
-        for(Link l : topo.getLinks())
-        	paintLink(g2d, l);
-	    for(Node n : topo.getNodes()){
-	       	double sR=n.getSensingRange();
-	       	if(sR>0){
-	       		g2d.setColor(Color.gray);
-	       		g2d.drawOval((int)n.getX()-(int)sR, (int)n.getY()-(int)sR, 2*(int)sR, 2*(int)sR);
-	       	}
-	    }
+        if (showDrawings){
+            Graphics2D g2d=(Graphics2D)g;
+            for(Link l : topo.getLinks())
+            	paintLink(g2d, l);
+            for(Node n : topo.getNodes()){
+            	double sR=n.getSensingRange();
+            	if(sR>0){
+            		g2d.setColor(Color.gray);
+            		g2d.drawOval((int)n.getX()-(int)sR, (int)n.getY()-(int)sR, 2*(int)sR, 2*(int)sR);
+            	}
+            }
+        }
     }
     protected void paintLink(Graphics2D g2d, Link l){
         Integer lineWidth=((Integer)l.getProperty("lineWidth"));
