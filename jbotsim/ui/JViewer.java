@@ -12,6 +12,7 @@
 package jbotsim.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -95,13 +96,14 @@ public class JViewer{
     	return jtp;
     }
     /**
-     * Sets the size of the window to the specified dimension.
+     * Sets the size of the inner jtopology to the specified dimension.
      * @param width The desired width, in pixels.
      * @param height The desired height, in pixels.
      */
     public void setSize(int width, int height){
+		jtp.setPreferredSize(new Dimension(width,height));
     	if (window!=null)
-    		window.setSize(width, height);
+    		window.pack();
     }
     /**
      * Adds a communication range tuner (slider bar) to regulate the
