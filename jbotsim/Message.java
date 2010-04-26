@@ -49,7 +49,8 @@ public class Message{
 		this.retryMode=retryMode;
 	}
 	public String toString(){
-		return source + " -> " + destination + ": " + content;
+		String dest=(destination==null)?"all"+source.getNeighbors():destination.toString();
+		return source + " -> " + dest + ": " + content;
 	}
 	static class MessageEngine implements ClockListener{
 		private HashMap<Message, Integer> currentMessages=new HashMap<Message,Integer>();
@@ -90,8 +91,6 @@ public class Message{
 				}else{
 					if (m.source.getOutLinkTo(m.destination)!=null){
 						currentMessages.put(m, remainingDelay-1);
-						if (Message.debuggingMode)
-							System.err.println(Clock.currentTime()+": RT "+(remainingDelay-1)+": "+m);
 					}else{
 						currentMessages.remove(m);
 						if (m.retryMode)
@@ -103,12 +102,21 @@ public class Message{
 		protected void deliverMessageTo(Message m, Node dest){
 			dest.mailBox.add(m);
 			if (Message.debuggingMode)
-				System.err.println(Clock.currentTime()+": D: "+m);
+				System.err.println((Clock.currentTime()-messageDelay)+"->"+Clock.currentTime()+": "+
+						m.source+ "->" + dest+": "+m.content+" ("+
+						m.content.getClass().getSimpleName()+")");
 			nbDeliveredMessages++;
 			for (MessageListener ml : dest.messageListeners)
 				ml.onMessage(m);
 		}
 	}
+	/**
+	 * Returns the number of clock steps separating the effective delivery of a 
+	 * message from its sending through the <tt>Node.send</tt> method. 
+	 */
+    public static int getMessageDelay(){
+    	return Message.messageDelay;
+    }
 	/**
 	 * Sets the number of clock steps separating the effective delivery of a 
 	 * message from its sending through the <tt>Node.send</tt> method. The
@@ -128,7 +136,7 @@ public class Message{
 	}
     /**
 	 * Returns the number of messages successfully delivered so far.
-	 * @param debugMode <tt>true</tt> to enable, <tt>false</tt> to disable.
+	 * Useful for statistics..
 	 */
 	public static int nbDeliveredMessages(){
 		return nbDeliveredMessages;

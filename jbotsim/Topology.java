@@ -86,27 +86,41 @@ public class Topology{
      * @param l The link to be added.
      */
     public void addLink(Link l){
+        this.addLink(l, false);
+    }
+    /**
+     * Adds the specified link to this topology without notifying the listeners
+     * (if silent is true). Calling this method makes sense only for wired 
+     * links, since wireless links are automatically managed as per the nodes'
+     * communication ranges.
+     * @param l The link to be added.
+     */
+    public void addLink(Link l, boolean silent){
         if (l.type==Type.DIRECTED){
             arcs.add(l);
             if (arcs.contains(new Link(l.destination,l.source,Link.Type.DIRECTED))){
                 Link edge=new Link(l.source,l.destination,Link.Type.UNDIRECTED,l.mode);
                 edges.add(edge);
-                notify("linkAdded", edge);
-            }    		
+                if (!silent)
+                	notify("linkAdded", edge);
+            }
         }else{
             Link arc1=new Link(l.source,l.destination,Link.Type.DIRECTED);
             Link arc2=new Link(l.destination,l.source,Link.Type.DIRECTED);
             if (!arcs.contains(arc1)){
                 arcs.add(arc1);
-                notify("linkAdded", arc1);
+                if (!silent)
+                	notify("linkAdded", arc1);
             }
             if (!arcs.contains(arc2)){
                 arcs.add(arc2);
-                notify("linkAdded", arc2);
+                if (!silent)
+                	notify("linkAdded", arc2);
             }
             edges.add(l);
         }
-        notify("linkAdded",l);
+        if (!silent)
+        	notify("linkAdded",l);
     }
     /**
      * Removes the specified link from this topology. Calling this method makes
@@ -256,7 +270,7 @@ public class Topology{
         	undirectedListeners.remove(listener);
     }
     protected void notify(String method, Object param){
-    	if(Link.class.isAssignableFrom(param.getClass())){
+    	if(param instanceof Link){
             Link l=(Link)param;
             boolean directed=(l.type==Type.DIRECTED)?true:false;
             LinkedHashSet<Object> union=new LinkedHashSet<Object>(directed?directedListeners:undirectedListeners);
@@ -273,7 +287,7 @@ public class Topology{
             	}
             }catch(Exception e){e.printStackTrace();
             }
-        }else if(Node.class.isAssignableFrom(param.getClass())){
+        }else if(param instanceof Node){
             LinkedHashSet<TopologyListener> union=new LinkedHashSet<TopologyListener>(directedListeners);
             union.addAll(undirectedListeners);
             Vector<TopologyListener> listeners=new Vector<TopologyListener>(union);

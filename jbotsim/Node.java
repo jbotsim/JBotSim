@@ -418,7 +418,7 @@ public class Node{
     }
     /**
      * Returns the distance between this node and the specified location.
-     * @param n The location (as a point).
+     * @param p The location (as a point).
      */
     public double distance(Point p){
         return coords.distance(p);

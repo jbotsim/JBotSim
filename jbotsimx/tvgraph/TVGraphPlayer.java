@@ -34,7 +34,9 @@ public class TVGraphPlayer implements ClockListener{
 	public void start(){
 		Clock.reset();
 		Clock.addClockListener(this, 1);
-		updateLinks();
+		for (TVLink l : tvg.tvlinks)
+			if (l.appearanceDates.contains(0))
+				tp.addLink(l, true); // add silently.. (nodes not notified)
 	}
 	public void onClock(){
 		updateLinks();

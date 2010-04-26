@@ -37,10 +37,16 @@ public class Clock{
 	}
 	private class ListenerComparator implements Comparator<ClockListener>{
 		public int compare(ClockListener arg0, ClockListener arg1) {
-			if (arg0.getClass()==Message.MessageEngine.class && arg1.getClass()!=Message.MessageEngine.class)
+			if (arg0 instanceof Message.MessageEngine && !(arg1 instanceof Message.MessageEngine))
 				return -1;
-			if (arg0.getClass()!=Message.MessageEngine.class && arg1.getClass()==Message.MessageEngine.class)
+			if (!(arg0 instanceof Message.MessageEngine) && arg1 instanceof Message.MessageEngine)
 				return 1;
+			if (!(arg0 instanceof Node) && arg1 instanceof Node)
+				return -1;
+			if (arg0 instanceof Node && !(arg1 instanceof Node))
+				return 1;
+			if (arg0 instanceof Node && arg1 instanceof Node)
+				return (arg0.toString().compareTo(arg1.toString()));
 			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
 		}		
 	}

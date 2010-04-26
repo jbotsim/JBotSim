@@ -70,7 +70,7 @@ public class JViewer{
 	 * is <tt>false</tt>, no window will be created and the viewer can be 
 	 * subsequently integrated to another swing container (e.g. another 
 	 * <tt>JFrame</tt> or a <tt>JApplet</tt>).
-	 * @param topo The topology to be drawn and/or manipulated.
+	 * @param jtopo The JTopology to be encapsulated.
 	 */
     public JViewer(JTopology jtopo, boolean selfContained){
     	this.jtp=jtopo;
