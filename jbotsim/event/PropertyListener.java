@@ -11,17 +11,11 @@
  */
 package jbotsim.event;
 
-import jbotsim.Link;
-
-public interface ConnectivityListener {
+public interface PropertyListener {
     /**
-     * Notifies the underlying listener that a link has been added.
-     * @param l The added link.
+     * Notifies that a property of this object has changed.
+     * @param o The object.
+     * @param key The name of the changed property.
      */
-    public void linkAdded(Link l);
-    /**
-     * Notifies the underlying listener that a link has been removed.
-     * @param l The removed link.
-     */
-    public void linkRemoved(Link l);
+    public void propertyChanged(Object o, String key);
 }
