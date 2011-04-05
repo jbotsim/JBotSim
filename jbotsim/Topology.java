@@ -287,7 +287,7 @@ public class Topology{
             		if ((Arrays.asList(o.getClass().getInterfaces()).contains(TopologyListener.class)))
             			m=TopologyListener.class.getMethod(method, Link.class);
             		else
-            			m=jbotsim.event.NodeListener.class.getMethod(method, Link.class);
+            			m=jbotsim.event.ConnectivityListener.class.getMethod(method, Link.class);
                     m.invoke(o, param);
             	}
             }catch(Exception e){e.printStackTrace();

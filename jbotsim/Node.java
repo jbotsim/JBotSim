@@ -18,12 +18,16 @@ import java.util.LinkedHashSet;
 import java.util.Vector;
 
 import jbotsim.event.MessageListener;
-import jbotsim.event.NodeListener;
+import jbotsim.event.MovementListener;
+import jbotsim.event.ConnectivityListener;
+import jbotsim.event.PropertyListener;
 
 public class Node{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
-    Vector<NodeListener> cxDirectedListeners=new Vector<NodeListener>();
-    Vector<NodeListener> cxUndirectedListeners=new Vector<NodeListener>();
+    Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
+    Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
+    Vector<MovementListener> movementListeners=new Vector<MovementListener>();
+    Vector<PropertyListener> propertyListeners=new Vector<PropertyListener>();
     Vector<MessageListener> messageListeners=new Vector<MessageListener>();
     Vector<Message> mailBox=new Vector<Message>();
     Vector<Message> sendQueue=new Vector<Message>();
@@ -332,50 +336,78 @@ public class Node{
     }
     /**
      * Registers the specified node listener to this node. The listener
-     * will be notified whenever the node changes a property or moves,
-     * as well as when an <i>undirected</i> link incident to this node appears
-     * or disappears. 
-     * @param listener The node listener.
+     * will be notified whenever an undirected link incident to this node 
+     * appears or disappears.
+     * @param listener The connectivity listener.
      */
-    public void addNodeListener(NodeListener listener){
-        addNodeListener(listener, false);
+    public void addConnectivityListener(ConnectivityListener listener){
+        addConnectivityListener(listener, false);
     }
     /**
-     * Registers the specified node listener to this node. The listener
-     * will be notified whenever the node changes a property or moves,
-     * as well as when a link incident to this node appears or disappears. 
-     * Depending on the <tt>directed</tt> parameter, the listener will be
-     * notified only for directed or undirected links. Listening both types
-     * of links thus implies two different registrations by this method. 
-     * @param listener The node listener.
+     * Registers the specified connectivity listener to this node. The listener
+     * will be notified whenever a link incident to this node appears or 
+     * disappears. Depending on the <tt>directed</tt> parameter, the listener
+     * will be notified only for directed or undirected links. Listening both
+     * types of links thus implies two different registrations by this method. 
+     * @param listener The connectivity listener.
      * @param directed The type of link to be listened to.
      */
-    public void addNodeListener(NodeListener listener, boolean directed){
+    public void addConnectivityListener(ConnectivityListener listener, boolean directed){
         if (directed)
             cxDirectedListeners.add(listener);
         else
             cxUndirectedListeners.add(listener);
     }
     /**
-     * Unregisters the specified node listener from this node's listeners.
+     * Unregisters the specified node listener for this node.
      * The listener will be removed from the list of 'undirected' listener. 
-     * @param listener The node listener. 
+     * @param listener The connectivity listener. 
      */
-    public void removeNodeListener(NodeListener listener){
-        removeNodeListener(listener, false);
+    public void removeConnectivityListener(ConnectivityListener listener){
+        removeConnectivityListener(listener, false);
     }
     /**
-     * Unregisters the specified node listener from this node's listeners.
+     * Unregisters the specified connectivity listener for this node.
      * Depending on the parameter <tt>directed</tt>, the listener will be
      * removed from the list of 'directed' or 'undirected' listeners.
-     * @param listener The node listener. 
+     * @param listener The connectivity listener. 
      * @param directed The type of link that was listened to.
      */
-    public void removeNodeListener(NodeListener listener, boolean directed){
+    public void removeConnectivityListener(ConnectivityListener listener, boolean directed){
         if (directed)
             cxDirectedListeners.remove(listener);
         else
             cxUndirectedListeners.remove(listener);
+    }
+    /**
+     * Registers the specified movement listener to this node. The listener
+     * will be notified every time the location of this node changes. 
+     * @param listener The movement listener.
+     */
+    public void addMovementListener(MovementListener listener){
+        movementListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified movement listener for this node.
+     * @param listener The movement listener. 
+     */
+    public void removeMovementListener(MovementListener listener){
+        movementListeners.remove(listener);
+    }
+    /**
+     * Registers the specified property listener to this node. The listener
+     * will be notified every time a property of this node changes. 
+     * @param listener The movement listener.
+     */
+    public void addPropertyListener(PropertyListener listener){
+        propertyListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified property listener for this node.
+     * @param listener The property listener. 
+     */
+    public void removePropertyListener(PropertyListener listener){
+        propertyListeners.remove(listener);
     }
     /**
      * Registers the specified message listener to this node. The listener
@@ -386,7 +418,7 @@ public class Node{
     	messageListeners.add(listener);
     }
     /**
-     * Unregisters the specified message listener from this node's listeners.
+     * Unregisters the specified message listener for this node.
      * @param listener The message listener. 
      */
     public void removeMessageListener(MessageListener listener){
@@ -407,7 +439,7 @@ public class Node{
      */
     public void setProperty(String key, Object value){
     	properties.put(key, value);
-        notifyNodeChanged(key);
+        notifyPropertyChanged(key);
     }
     /**
      * Returns the distance between this node and the specified node.
@@ -433,16 +465,12 @@ public class Node{
         return coords.distance(x, y);
     }
     protected void notifyNodeMoved(){
-        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(cxDirectedListeners);
-        union.addAll(cxUndirectedListeners);
-        for (NodeListener nl : new Vector<NodeListener>(union))
+        for (MovementListener nl : new Vector<MovementListener>(movementListeners))
             nl.nodeMoved(this);
     }
-    protected void notifyNodeChanged(String key){
-        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(cxDirectedListeners);
-        union.addAll(cxUndirectedListeners);
-        for (NodeListener nl : new Vector<NodeListener>(union))
-            nl.propertyChanged(this, key);
+    protected void notifyPropertyChanged(String key){
+        for (PropertyListener pl : new Vector<PropertyListener>(propertyListeners))
+            pl.propertyChanged(this, key);
     }
     /**
      * Returns a string representation of this node.

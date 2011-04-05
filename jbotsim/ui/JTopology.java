@@ -29,7 +29,7 @@ import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.LinkListener;
-import jbotsim.event.NodeListener;
+import jbotsim.event.MovementListener;
 import jbotsim.event.TopologyListener;
 
 
@@ -118,18 +118,18 @@ public class JTopology extends JPanel{
         g2d.drawLine((int)l.source.getX(), (int)l.source.getY(), 
         			(int)l.destination.getX(), (int)l.destination.getY());
     }
-	class EventHandler implements TopologyListener, NodeListener, 
+	class EventHandler implements TopologyListener, MovementListener, 
 			LinkListener, MouseListener, ActionListener{
 	    public void nodeAdded(Node n){
 	    	JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
-	        n.addNodeListener(this);
+	        n.addMovementListener(this);
 	        add(jv);
 	        updateUI();
 	    }
 	    public void nodeRemoved(Node n){
 	    	JNode jn=(JNode)n.getProperty("jnode");
-	        n.removeNodeListener(this);
+	        n.removeMovementListener(this);
 	        remove(jn);
 	        updateUI();
 	    }
