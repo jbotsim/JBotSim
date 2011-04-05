@@ -77,6 +77,7 @@ public class JViewer{
    		jtp.addActionCommand("communication bar");
    		jtp.addActionCommand("sensing bar");
    		jtp.addActionCommand("switch clock");
+   		jtp.addActionCommand("toString()");
    		jtp.addActionListener(handler);
     	if (selfContained){
 	   		window=new JFrame();
@@ -172,6 +173,8 @@ public class JViewer{
 					Clock.pause();
 				else
 					Clock.resume();
+			}else if (cmd.equals("toString()")){
+				System.out.println(jtp.topo);
 			}
 		}
 	}

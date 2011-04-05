@@ -22,8 +22,8 @@ import jbotsim.event.NodeListener;
 
 public class Node{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
-    Vector<NodeListener> directedListeners=new Vector<NodeListener>();
-    Vector<NodeListener> undirectedListeners=new Vector<NodeListener>();
+    Vector<NodeListener> cxDirectedListeners=new Vector<NodeListener>();
+    Vector<NodeListener> cxUndirectedListeners=new Vector<NodeListener>();
     Vector<MessageListener> messageListeners=new Vector<MessageListener>();
     Vector<Message> mailBox=new Vector<Message>();
     Vector<Message> sendQueue=new Vector<Message>();
@@ -52,20 +52,20 @@ public class Node{
         }
     }
     /**
-     * Returns the topology this node is member of, if any.
-     * @return The parent topology, or <tt>null</tt> if the node has none.
+     * Returns the parent topology of this node, if any.
+     * @return The parent topology, or <tt>null</tt> if the node is orphan.
      */
     public Topology getTopology(){
         return topo;
     }
     /**
-     * Returns the abscissa of this node's location.
+     * Returns the abscissa of this node.
      */
     public double getX(){
         return coords.x;
     }
     /**
-     * Returns the ordinate of this node's location.
+     * Returns the ordinate of this node.
      */
     public double getY(){
         return coords.y;
@@ -99,7 +99,7 @@ public class Node{
         this.sensingRange = range;
     }
     /**
-     * Returns the virtual node corresponding to the model whose name is given in argument,
+     * Returns the model node corresponding to that name,
      * all properties assigned to this virtual node will be given to further nodes created 
      * using this model name. If the requested model does not exist, it is created. FIXME
      */
@@ -352,9 +352,9 @@ public class Node{
      */
     public void addNodeListener(NodeListener listener, boolean directed){
         if (directed)
-            directedListeners.add(listener);
+            cxDirectedListeners.add(listener);
         else
-            undirectedListeners.add(listener);
+            cxUndirectedListeners.add(listener);
     }
     /**
      * Unregisters the specified node listener from this node's listeners.
@@ -373,9 +373,9 @@ public class Node{
      */
     public void removeNodeListener(NodeListener listener, boolean directed){
         if (directed)
-            directedListeners.remove(listener);
+            cxDirectedListeners.remove(listener);
         else
-            undirectedListeners.remove(listener);
+            cxUndirectedListeners.remove(listener);
     }
     /**
      * Registers the specified message listener to this node. The listener
@@ -433,14 +433,14 @@ public class Node{
         return coords.distance(x, y);
     }
     protected void notifyNodeMoved(){
-        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(directedListeners);
-        union.addAll(undirectedListeners);
+        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(cxDirectedListeners);
+        union.addAll(cxUndirectedListeners);
         for (NodeListener nl : new Vector<NodeListener>(union))
             nl.nodeMoved(this);
     }
     protected void notifyNodeChanged(String key){
-        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(directedListeners);
-        union.addAll(undirectedListeners);
+        LinkedHashSet<NodeListener> union=new LinkedHashSet<NodeListener>(cxDirectedListeners);
+        union.addAll(cxUndirectedListeners);
         for (NodeListener nl : new Vector<NodeListener>(union))
             nl.propertyChanged(this, key);
     }

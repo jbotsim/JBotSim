@@ -14,6 +14,7 @@ package jbotsim;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.Vector;
 
 import jbotsim.Link.Mode;
@@ -61,6 +62,10 @@ public class Topology{
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
+        if (x == -1)
+        	x = (new Random()).nextDouble() * 600;
+        if (y == -1)
+        	y = (new Random()).nextDouble() * 400;
         n.setLocation(x, y);
         this.nodes.add(n);
         n.topo=this;
@@ -274,8 +279,8 @@ public class Topology{
             Link l=(Link)param;
             boolean directed=(l.type==Type.DIRECTED)?true:false;
             LinkedHashSet<Object> union=new LinkedHashSet<Object>(directed?directedListeners:undirectedListeners);
-            union.addAll(directed?l.source.directedListeners:l.source.undirectedListeners);
-            union.addAll(directed?l.destination.directedListeners:l.destination.undirectedListeners);
+            union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
+            union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
             try{
             	for (Object o : new Vector<Object>(union)){
             		java.lang.reflect.Method m;
