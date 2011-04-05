@@ -1,4 +1,4 @@
-package jbotsimx.tvg;
+package jbotsimx.tvgraph;
 
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -13,12 +13,6 @@ public class TVLink extends Link{
 	 * Creates an undirected wired edge between n1 and n2.
 	 */
 	public TVLink(Node n1, Node n2) {
-		super(n1, n2);
-	}
-	/*
-	 * Creates an undirected wired edge between n1 and n2.
-	 */
-	public TVLink(Node n1, Node n2, boolean markovian) {
 		super(n1, n2);
 	}
 	public void addAppearanceDate(int date){

@@ -1,4 +1,4 @@
-package jbotsimx.tvgraph;
+package jbotsimx.tvg;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -8,16 +8,18 @@ import java.util.Vector;
 
 import jbotsim.Node;
 
-public class TVGraph{
+@SuppressWarnings("unchecked")
+public class TVG{
 	Vector<Node> nodes=new Vector<Node>();
 	Vector<TVLink> tvlinks=new Vector<TVLink>();
-	public TVGraph(){
+	Class nodeClass;
+	public TVG(){
+		this(Node.class);
 	}
-	public TVGraph(String filename){
-		this(filename, Node.class);
+	public TVG(Class nodeClass){
+		this.nodeClass=nodeClass;
 	}
-	@SuppressWarnings("unchecked")
-	public TVGraph(String filename, Class nodeClass){
+	public void buildFromFile(String filename){
         try{
             BufferedReader in=new BufferedReader(new FileReader(filename));
             StringTokenizer st;
@@ -27,14 +29,14 @@ public class TVGraph{
             while ((sin=in.readLine()).compareTo("")!=0){
                 st = new StringTokenizer(sin," ");
                 String id=st.nextToken();
-                Node n=(Node)nodeClass.newInstance(); 
+                Node n=(Node)nodeClass.newInstance();
                 n.setProperty("id", id);
                 if (st.hasMoreTokens()){
-                    int x=Integer.parseInt(st.nextToken());
-                    int y=Integer.parseInt(st.nextToken());
+                    double x=Double.parseDouble(st.nextToken());
+                    double y=Double.parseDouble(st.nextToken());
             		n.setLocation(x, y);
                 }
-                nodes.add(n);
+                addNode(n);
             }
 
             do sin=in.readLine(); while (sin.compareTo("edges")!=0);
@@ -60,7 +62,25 @@ public class TVGraph{
 				return n;
 		return null;
 	}
+	public void buildCompleteGraph(Integer N){
+		try{
+			for (int i=0; i<N; i++){
+				Node node = (Node)nodeClass.newInstance();
+				node.setProperty("id", "v"+(new Integer(i)).toString());
+				double angle=(2.0*Math.PI/N)*i;
+				node.setLocation(250+Math.cos(angle)*150, 250+Math.sin(angle)*150);
+	            addNode(node);
+			}
+		}catch (Exception e) {e.printStackTrace();}
+		for (int i=0; i<nodes.size(); i++){
+			for (int j=i+1; j<nodes.size(); j++){
+				TVLink l=new TVLink(nodes.elementAt(i), nodes.elementAt(j));
+				addTVLink(l);
+			}
+		}		
+	}
 	public void addNode(Node n){
+        n.setCommunicationRange(0);
 		nodes.add(n);
 	}
 	public void addTVLink(TVLink l){
@@ -79,6 +99,9 @@ public class TVGraph{
 			allDates.addAll(l.disappearanceDates);
 		}
 		return allDates.size();
+	}
+	public void addRandomSchedule(int totalBound, int presenceBound, int timeLimit){
+		
 	}
 	public String toString(){
 		String s="";
