@@ -1,20 +1,20 @@
-package jbotsimx.tvgraph;
+package jbotsimx.tvg;
 
 import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
 
-public class TVGraphPlayer implements ClockListener{
-	private TVGraph tvg;
-	private Topology tp;
-	private Integer period=null;
+public class TVGPlayer implements ClockListener{
+	protected TVG tvg;
+	protected Topology tp;
+	protected Integer period=null;
 	/**
 	 * Plays the specified time-varying graph on the specified topology.
 	 * @param tvg the time-varying graph
 	 * @param t the target topology
 	 */
-	public TVGraphPlayer (TVGraph tvg, Topology tp){
+	public TVGPlayer (TVG tvg, Topology tp){
 		this(tvg, tp, null);
 	}
 	/**
@@ -23,7 +23,7 @@ public class TVGraphPlayer implements ClockListener{
 	 * @param tvg the time-varying graph
 	 * @param t the target topology
 	 */
-	public TVGraphPlayer (TVGraph tvg, Topology tp, Integer period){
+	public TVGPlayer (TVG tvg, Topology tp, Integer period){
 		this.tvg=tvg;
 		this.tp=tp;
 		this.period=period;
@@ -36,7 +36,8 @@ public class TVGraphPlayer implements ClockListener{
 		Clock.addClockListener(this, 1);
 		for (TVLink l : tvg.tvlinks)
 			if (l.appearanceDates.contains(0))
-				tp.addLink(l, true); // add silently.. (nodes not notified)
+				//tp.addLink(l, true); // add silently.. (nodes not notified)
+				tp.addLink(l);
 	}
 	public void onClock(){
 		updateLinks();
