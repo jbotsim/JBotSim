@@ -20,18 +20,15 @@ import java.util.Vector;
 import jbotsim.event.MessageListener;
 import jbotsim.event.MovementListener;
 import jbotsim.event.ConnectivityListener;
-import jbotsim.event.PropertyListener;
 
-public class Node{
+public class Node extends _Properties{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
     Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
     Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
     Vector<MovementListener> movementListeners=new Vector<MovementListener>();
-    Vector<PropertyListener> propertyListeners=new Vector<PropertyListener>();
     Vector<MessageListener> messageListeners=new Vector<MessageListener>();
     Vector<Message> mailBox=new Vector<Message>();
     Vector<Message> sendQueue=new Vector<Message>();
-    HashMap<String,Object> properties;
     Point2D.Double coords=new Point2D.Double();
     double direction=Math.PI/2;
     double communicationRange=100;
@@ -49,8 +46,8 @@ public class Node{
      * @param model
      */
     public Node(Node model){
-    	this.properties=(model!=null)?new HashMap<String,Object>(model.properties):new HashMap<String,Object>();
         if (model!=null){
+        	this.properties=new HashMap<String,Object>(model.properties);
             this.communicationRange=model.communicationRange;
             this.sensingRange=model.sensingRange;
         }
@@ -127,14 +124,22 @@ public class Node{
         return new Vector<String>(nodeModels.keySet());
     }
     /**
-     * FIXME
+     * Create a new Node based on the specified model.
      * @param modelName
      * @return pouet
      */
-    public static Node newInstanceOfModel(String modelName){
+    @SuppressWarnings("unchecked")
+	public static Node newInstanceOfModel(String modelName){
+		Class modelClass=nodeModels.get(modelName).getClass();
     	try {
-			return nodeModels.get(modelName).getClass().newInstance();
-		} catch (Exception e) {return new Node();}
+    		return (Node) modelClass.getConstructor(modelClass).newInstance(nodeModels.get(modelName));
+		} catch (Exception e1) {
+			try {
+				return (Node) modelClass.getConstructor().newInstance();
+			} catch (Exception e2) {
+				System.err.println("Problem of model instantiation.."); return new Node();
+			}
+		}
     }
     /**
      * Returns the location of this node (as a 2D point).
@@ -395,21 +400,6 @@ public class Node{
         movementListeners.remove(listener);
     }
     /**
-     * Registers the specified property listener to this node. The listener
-     * will be notified every time a property of this node changes. 
-     * @param listener The movement listener.
-     */
-    public void addPropertyListener(PropertyListener listener){
-        propertyListeners.add(listener);
-    }
-    /**
-     * Unregisters the specified property listener for this node.
-     * @param listener The property listener. 
-     */
-    public void removePropertyListener(PropertyListener listener){
-        propertyListeners.remove(listener);
-    }
-    /**
      * Registers the specified message listener to this node. The listener
      * will be notified every time a message is received at this node. 
      * @param listener The message listener.
@@ -423,23 +413,6 @@ public class Node{
      */
     public void removeMessageListener(MessageListener listener){
     	messageListeners.remove(listener);
-    }
-    /**
-     * Returns the property stored under the specified name.
-     * @param key The property name.
-     */
-    public Object getProperty(String key){
-    	return properties.get(key);
-    }
-    /**
-     * Stores the specified property (<tt>value</tt>) under the specified name
-     * (<tt>key</tt>). 
-     * @param key The property name.
-     * @param value The property value.
-     */
-    public void setProperty(String key, Object value){
-    	properties.put(key, value);
-        notifyPropertyChanged(key);
     }
     /**
      * Returns the distance between this node and the specified node.
@@ -468,15 +441,11 @@ public class Node{
         for (MovementListener nl : new Vector<MovementListener>(movementListeners))
             nl.nodeMoved(this);
     }
-    protected void notifyPropertyChanged(String key){
-        for (PropertyListener pl : new Vector<PropertyListener>(propertyListeners))
-            pl.propertyChanged(this, key);
-    }
     /**
      * Returns a string representation of this node.
      */
 	public String toString(){
-        String s=(String)this.getProperty("id");
+        String s=(String)super.getProperty("id");
         return (s==null)?super.toString().substring(13):s;
     }
 }

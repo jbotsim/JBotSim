@@ -11,12 +11,9 @@
  */
 package jbotsim;
 
-import java.util.HashMap;
 import java.util.Vector;
 
-import jbotsim.event.LinkListener;
-
-public class Link{
+public class Link extends _Properties{
 	/**
 	 * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
 	 * <tt>Type.UNDIRECTED</tt>.
@@ -27,8 +24,6 @@ public class Link{
 	 * <tt>Mode.WIRELESS</tt>.
 	 */
     public static enum Mode{WIRED, WIRELESS};
-    private HashMap<String,Object> properties=new HashMap<String,Object>();
-    private Vector<LinkListener> listeners=new Vector<LinkListener>();
     /**
      * The source node of this link (if directed), 
      * the first endpoint otherwise.
@@ -117,20 +112,6 @@ public class Link{
         return (n==source)?destination:source;
     }
     /**
-     * Registers the specified listener for this link.
-     * @param listener The link listener. 
-     */
-    public void addLinkListener(LinkListener listener){
-    	listeners.add(listener);
-    }
-    /**
-     * Unregisters the specified listener for this link.
-     * @param listener The link listener. 
-     */
-    public void removeLinkListener(LinkListener listener){
-    	listeners.remove(listener);
-    }
-    /**
      * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless, 
      * <tt>false</tt> otherwise.
      */
@@ -143,27 +124,6 @@ public class Link{
      */
     public boolean isDirected() {
         return type==Type.DIRECTED;
-    }
-    /**
-     * Returns the property stored under the specified name.
-     * @param key The property name.
-     */
-    public Object getProperty(String key){
-    	return properties.get(key);
-    }
-    /**
-     * Stores the specified property (<tt>value</tt>) under the specified name
-     * (<tt>key</tt>). 
-     * @param key The property name.
-     * @param value The property value.
-     */
-    public void setProperty(String key, Object value){
-    	properties.put(key, value);
-    	notifyLinkChanged(key);
-    }
-    protected void notifyLinkChanged(String key){
-        for (LinkListener ll : listeners)
-            ll.propertyChanged(this, key);
     }
     /**
      * Compares the specified object with this link for equality. Returns

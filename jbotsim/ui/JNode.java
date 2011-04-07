@@ -15,13 +15,14 @@ import javax.swing.*;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 
 import jbotsim.*;
 
 @SuppressWarnings("serial")
-class JNode extends JButton implements MouseListener, MouseMotionListener{
-	final static Image icon=Toolkit.getDefaultToolkit().getImage(JNode.class.getResource("circle.png"));
-    final static int size=8;
+public class JNode extends JButton implements MouseListener, MouseMotionListener{
+	protected Image icon=Toolkit.getDefaultToolkit().getImage(JNode.class.getResource("circle.png"));
+    protected Integer size;
     protected Node node;
 
     public JNode(Node node){
@@ -31,17 +32,29 @@ class JNode extends JButton implements MouseListener, MouseMotionListener{
         addMouseMotionListener(this);
         setContentAreaFilled(false);
         setBorderPainted(false);
+        size=(Integer)node.getProperty("size"); if (size==null) size = 8;
+        String desiredIconPath=(String)node.getProperty("icon");
+        if (desiredIconPath!=null)
+        	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath).getScaledInstance(size*2, size*2, Image.SCALE_FAST);
         setIcon(new ImageIcon(icon));
+        
+        
         update();
     }
     public void update(){
     	setBounds((int)node.getX()-size, (int)node.getY()-size, size*2, size*2);
     }
     public void paint(Graphics g){
-    	Graphics2D g2d=(Graphics2D)g;
-        g2d.drawImage(icon, 0, 0, null);
+    	Graphics2D g2d = (Graphics2D) g;
+    	double direction=this.node.getDirection();
+    	if(direction!=Math.PI/2){
+    		AffineTransform newXform = g2d.getTransform();
+    		newXform.rotate(direction+Math.PI/2, size, size);
+    		g2d.setTransform(newXform);
+    	}
+        g2d.drawImage(this.icon, 0, 0, null);
         String sc=(String)node.getProperty("color");
-    	try{
+    	if (sc != null) try{
     		g2d.setColor((Color)Color.class.getField(sc).get(sc));
     		g2d.fillOval(size/2, size/2, size, size);
     	}catch(Exception e){}

@@ -11,7 +11,6 @@
  */
 package jbotsim;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Random;
@@ -19,13 +18,14 @@ import java.util.Vector;
 
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
+import jbotsim.event.ConnectivityListener;
 import jbotsim.event.TopologyListener;
 
-public class Topology{
-    Vector<TopologyListener> undirectedListeners=new Vector<TopologyListener>();
-    Vector<TopologyListener> directedListeners=new Vector<TopologyListener>();
+public class Topology extends _Properties{
+    Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
+    Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
+    Vector<TopologyListener> topologyListeners=new Vector<TopologyListener>();
     Message.MessageEngine messageEngine=new Message.MessageEngine(this);
-    HashMap<String,Object> properties=new HashMap<String,Object>();
     Vector<Node> nodes=new Vector<Node>();
     Vector<Link> arcs=new Vector<Link>();
     Vector<Link> edges=new Vector<Link>();
@@ -70,7 +70,7 @@ public class Topology{
         this.nodes.add(n);
         n.topo=this;
         this.updateWirelessLinksFor(n);
-        this.notify("nodeAdded",n);
+        this.notifyNodeAdded(n);
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -82,7 +82,7 @@ public class Topology{
             this.removeLink(l);
         this.nodes.remove(n);
         n.topo=null;
-        this.notify("nodeRemoved",n);
+        this.notifyNodeRemoved(n);
     }
     /**
      * Adds the specified link to this topology. Calling this method makes
@@ -107,7 +107,7 @@ public class Topology{
                 Link edge=new Link(l.source,l.destination,Link.Type.UNDIRECTED,l.mode);
                 edges.add(edge);
                 if (!silent)
-                	notify("linkAdded", edge);
+                	notifyLinkAdded(edge);
             }
         }else{
             Link arc1=new Link(l.source,l.destination,Link.Type.DIRECTED);
@@ -115,17 +115,17 @@ public class Topology{
             if (!arcs.contains(arc1)){
                 arcs.add(arc1);
                 if (!silent)
-                	notify("linkAdded", arc1);
+                	notifyLinkAdded(arc1);
             }
             if (!arcs.contains(arc2)){
                 arcs.add(arc2);
                 if (!silent)
-                	notify("linkAdded", arc2);
+                	notifyLinkAdded(arc2);
             }
             edges.add(l);
         }
         if (!silent)
-        	notify("linkAdded",l);
+        	notifyLinkAdded(l);
     }
     /**
      * Removes the specified link from this topology. Calling this method makes
@@ -139,18 +139,18 @@ public class Topology{
             Link edge=getLink(l.source, l.destination, false);
             if (edge!=null){
                 edges.remove(edge);
-                notify("linkRemoved",edge);
+                notifyLinkRemoved(edge);
             }
         }else{
             Link arc1=getLink(l.source, l.destination, true);
             Link arc2=getLink(l.destination, l.source, true);
             arcs.remove(arc1);
-            notify("linkRemoved", arc1);
+            notifyLinkRemoved(arc1);
             arcs.remove(arc2);
-            notify("linkRemoved", arc2);
+            notifyLinkRemoved(arc2);
             edges.remove(l);
         }
-        notify("linkRemoved",l);
+        notifyLinkRemoved(l);
     }
     /**
      * Returns a vector containing all the nodes in this topology. The returned
@@ -215,94 +215,88 @@ public class Topology{
         }
     }
     /**
-     * Returns the property stored under the specified name.
-     * @param key The property name.
-     */
-    public Object getProperty(String key){
-    	return properties.get(key);
-    }
-    /**
-     * Stores the specified property (<tt>value</tt>) under the specified name
-     * (<tt>key</tt>). 
-     * @param key The property name.
-     * @param value The property value.
-     */
-    public void setProperty(String key, Object value){
-    	properties.put(key, value);
-    }    
-    /**
      * Registers the specified topology listener to this topology. The listener
-     * will be notified whenever the a node or an undirected link is added or 
-     * removed, as well as when a property is changed.
+     * will be notified whenever an undirected link is added or removed.
      * @param listener The listener to add.
      */
-    public void addTopologyListener(TopologyListener listener){
-        undirectedListeners.add(listener);
+    public void addConnectivityListener(ConnectivityListener listener){
+        cxUndirectedListeners.add(listener);
     }
     /**
-     * Registers the specified topology listener to this topology. The listener
-     * will be notified whenever the a node or a link of the specified type is
-     * added or removed, as well as when a property is changed.
-     * @param listener The listener to add.
+     * Registers the specified connectivity listener to this topology. The 
+     * listener will be notified whenever a link of the specified type is 
+     * added or removed.
+     * @param listener The listener to register.
      * @param directed The type of links to be listened (<tt>true</tt> for 
      * directed, <tt>false</tt> for undirected).
      */
-    public void addTopologyListener(TopologyListener listener, boolean directed){
-        if (directed) 
-        	directedListeners.add(listener); 
+    public void addConnectivityListener(ConnectivityListener listener, boolean directed){
+        if (directed)
+        	cxDirectedListeners.add(listener); 
         else 
-        	undirectedListeners.add(listener);
+        	cxUndirectedListeners.add(listener);
     }
     /**
-     * Unregisters the specified topology listener from the 'undirected' 
-     * listeners of this topology.
-     * @param listener The listener to remove.
+     * Unregisters the specified connectivity listener from the 'undirected' 
+     * listeners.
+     * @param listener The listener to unregister.
      */
-    public void removeTopologyListener(TopologyListener listener){
-    	undirectedListeners.remove(listener);
+    public void removeConnectivityListener(ConnectivityListener listener){
+    	cxUndirectedListeners.remove(listener);
     }
     /**
-     * Unregisters the specified topology listener from the listeners of this 
-     * topology of the specified type.
-     * @param listener The listener to remove.
+     * Unregisters the specified connectivity listener from the listeners 
+     * of the specified type.
+     * @param listener The listener to unregister.
      * @param directed The type of links that this listener was listening 
      * (<tt>true</tt> for directed, <tt>false</tt> for undirected).
      */
-    public void removeTopologyListener(TopologyListener listener, boolean directed){
+    public void removeConnectivityListener(ConnectivityListener listener, boolean directed){
         if (directed) 
-        	directedListeners.remove(listener); 
+        	cxDirectedListeners.remove(listener); 
         else 
-        	undirectedListeners.remove(listener);
+        	cxUndirectedListeners.remove(listener);
     }
-    protected void notify(String method, Object param){
-    	if(param instanceof Link){
-            Link l=(Link)param;
-            boolean directed=(l.type==Type.DIRECTED)?true:false;
-            LinkedHashSet<Object> union=new LinkedHashSet<Object>(directed?directedListeners:undirectedListeners);
-            union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
-            union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
-            try{
-            	for (Object o : new Vector<Object>(union)){
-            		java.lang.reflect.Method m;
-            		if ((Arrays.asList(o.getClass().getInterfaces()).contains(TopologyListener.class)))
-            			m=TopologyListener.class.getMethod(method, Link.class);
-            		else
-            			m=jbotsim.event.ConnectivityListener.class.getMethod(method, Link.class);
-                    m.invoke(o, param);
-            	}
-            }catch(Exception e){e.printStackTrace();
-            }
-        }else if(param instanceof Node){
-            LinkedHashSet<TopologyListener> union=new LinkedHashSet<TopologyListener>(directedListeners);
-            union.addAll(undirectedListeners);
-            Vector<TopologyListener> listeners=new Vector<TopologyListener>(union);
-            try{
-                java.lang.reflect.Method m=TopologyListener.class.getMethod(method, Node.class);
-                for (TopologyListener tl : listeners){
-                    m.invoke(tl,param);
-                }
-            }catch(Exception e){e.printStackTrace();}
-        }
+    /**
+     * Registers the specified topology listener to this topology. The listener
+     * will be notified whenever the a node is added or removed.
+     * @param listener The listener to register.
+     */
+    public void addTopologyListener(TopologyListener listener){
+        topologyListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified topology listener.
+     * @param listener The listener to unregister.
+     */
+    public void removeTopologyListener(TopologyListener listener){
+    	topologyListeners.remove(listener);
+    }
+    protected void notifyLinkAdded(Link l){
+    	boolean directed=(l.type==Type.DIRECTED)?true:false;
+    	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
+    	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
+    	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
+    	for (ConnectivityListener cl : new Vector<ConnectivityListener>(union))
+    		cl.linkAdded(l);
+    }
+    protected void notifyLinkRemoved(Link l){
+    	boolean directed=(l.type==Type.DIRECTED)?true:false;
+    	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
+    	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
+    	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
+    	for (ConnectivityListener cl : new Vector<ConnectivityListener>(union))
+    		cl.linkRemoved(l);
+    }
+    protected void notifyNodeAdded(Node node){
+        Vector<TopologyListener> listeners=new Vector<TopologyListener>(topologyListeners);
+        for (TopologyListener tl : listeners)
+        	tl.nodeAdded(node);
+    }
+    protected void notifyNodeRemoved(Node node){
+        Vector<TopologyListener> listeners=new Vector<TopologyListener>(topologyListeners);
+        for (TopologyListener tl : listeners)
+        	tl.nodeRemoved(node);
     }
     void updateWirelessLinksFor(Node n){
         for (Node n2 : nodes)

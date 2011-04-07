@@ -28,8 +28,9 @@ import java.util.Vector;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
-import jbotsim.event.LinkListener;
+import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MovementListener;
+import jbotsim.event.PropertyListener;
 import jbotsim.event.TopologyListener;
 
 
@@ -44,11 +45,12 @@ public class JTopology extends JPanel{
     
     /**
      * Creates a new JTopology for the specified topology.
-     * @param topo The topology that will be handled (that is, drawn & 
-     * manipulated).
+     * @param topo The topology to encapsulate.
      */
     public JTopology(Topology topo){
-    	(this.topo=topo).addTopologyListener(handler);
+    	this.topo=topo;
+    	topo.addConnectivityListener(handler);
+    	topo.addTopologyListener(handler);
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
@@ -118,12 +120,13 @@ public class JTopology extends JPanel{
         g2d.drawLine((int)l.source.getX(), (int)l.source.getY(), 
         			(int)l.destination.getX(), (int)l.destination.getY());
     }
-	class EventHandler implements TopologyListener, MovementListener, 
-			LinkListener, MouseListener, ActionListener{
+	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
+			PropertyListener, MouseListener, ActionListener{
 	    public void nodeAdded(Node n){
 	    	JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
 	        n.addMovementListener(this);
+	        n.addPropertyListener(this);
 	        add(jv);
 	        updateUI();
 	    }
@@ -134,7 +137,7 @@ public class JTopology extends JPanel{
 	        updateUI();
 	    }
 	    public void linkAdded(Link l){
-	    	l.addLinkListener(this);
+	    	l.addPropertyListener(this);
 	    	updateUI();
 	    }
 	    public void linkRemoved(Link l){
@@ -144,17 +147,14 @@ public class JTopology extends JPanel{
 	    	updateUI();
 	    	((JNode)n.getProperty("jnode")).update();
 	    }
-		public void propertyChanged(Node n, String property){
-			JNode jn=(JNode)n.getProperty("jnode");
+		public void propertyChanged(Object o, String property){
 	    	if (property.equals("color"))
-	    		jn.updateUI();
+	    		((JNode)((Node)o).getProperty("jnode")).updateUI();
 	    	if (property.equals("id"))
-	    		jn.setToolTipText(n.toString());
-		}		
-		public void propertyChanged(Link n, String property) {
+	    		((JNode)((Node)o).getProperty("jnode")).setToolTipText(o.toString());
 			if (property.equals("lineWidth"))
 				updateUI();
-		}
+		}		
 	    public void mousePressed(MouseEvent e) {
 	    	if ((Boolean)topo.getProperty("popupRunning")==true){
 	    		topo.setProperty("popupRunning", false);
@@ -197,7 +197,6 @@ public class JTopology extends JPanel{
 				topo.addNode(x, y, Node.newInstanceOfModel(args[1]));
 			}
 		}
-		public void propertyChanged(Topology t, String property) {}
 	    public void mouseClicked(MouseEvent e){}
 	    public void mouseEntered(MouseEvent e){}
 	    public void mouseExited(MouseEvent e){}
