@@ -72,6 +72,21 @@ public class Node extends _Properties{
         return coords.y;
     }
     /**
+     * Returns the color of this node as a string.
+     */
+    public String getColor(){
+    	String color = (String) this.getProperty("color");
+    	if (color==null)
+    		return "none";
+    	return color;
+    }
+    /**
+     * Sets the color of this node as a string.
+     */
+    public void setColor(String color){
+    	this.setProperty("color", color);
+    }
+    /**
      * Returns the communication range of this node (as a radius).
      */
     public double getCommunicationRange() {
@@ -130,9 +145,9 @@ public class Node extends _Properties{
      */
     @SuppressWarnings("unchecked")
 	public static Node newInstanceOfModel(String modelName){
-		Class modelClass=nodeModels.get(modelName).getClass();
+		Class modelClass=getModel(modelName).getClass();
     	try {
-    		return (Node) modelClass.getConstructor(modelClass).newInstance(nodeModels.get(modelName));
+    		return (Node) modelClass.getConstructor(modelClass).newInstance(getModel(modelName));
 		} catch (Exception e1) {
 			try {
 				return (Node) modelClass.getConstructor().newInstance();
@@ -438,8 +453,11 @@ public class Node extends _Properties{
         return coords.distance(x, y);
     }
     protected void notifyNodeMoved(){
-        for (MovementListener nl : new Vector<MovementListener>(movementListeners))
-            nl.nodeMoved(this);
+    	LinkedHashSet<MovementListener> union=new LinkedHashSet<MovementListener>(movementListeners);
+    	if (topo!=null)
+    		union.addAll(topo.movementListeners);
+        for (MovementListener ml : union)
+            ml.nodeMoved(this);
     }
     /**
      * Returns a string representation of this node.

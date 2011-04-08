@@ -51,6 +51,7 @@ public class JTopology extends JPanel{
     	this.topo=topo;
     	topo.addConnectivityListener(handler);
     	topo.addTopologyListener(handler);
+    	topo.addMovementListener(handler);
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
@@ -125,14 +126,12 @@ public class JTopology extends JPanel{
 	    public void nodeAdded(Node n){
 	    	JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
-	        n.addMovementListener(this);
 	        n.addPropertyListener(this);
 	        add(jv);
 	        updateUI();
 	    }
 	    public void nodeRemoved(Node n){
 	    	JNode jn=(JNode)n.getProperty("jnode");
-	        n.removeMovementListener(this);
 	        remove(jn);
 	        updateUI();
 	    }

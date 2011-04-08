@@ -19,12 +19,14 @@ import java.util.Vector;
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.ConnectivityListener;
+import jbotsim.event.MovementListener;
 import jbotsim.event.TopologyListener;
 
 public class Topology extends _Properties{
     Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
     Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
     Vector<TopologyListener> topologyListeners=new Vector<TopologyListener>();
+    Vector<MovementListener> movementListeners=new Vector<MovementListener>();
     Message.MessageEngine messageEngine=new Message.MessageEngine(this);
     Vector<Node> nodes=new Vector<Node>();
     Vector<Link> arcs=new Vector<Link>();
@@ -256,6 +258,21 @@ public class Topology extends _Properties{
         	cxDirectedListeners.remove(listener); 
         else 
         	cxUndirectedListeners.remove(listener);
+    }
+    /**
+     * Registers the specified movement listener to this topology. The
+     * listener will be notified every time the location of a node changes. 
+     * @param listener The movement listener.
+     */
+    public void addMovementListener(MovementListener listener){
+        movementListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified movement listener for this topology.
+     * @param listener The movement listener. 
+     */
+    public void removeMovementListener(MovementListener listener){
+        movementListeners.remove(listener);
     }
     /**
      * Registers the specified topology listener to this topology. The listener

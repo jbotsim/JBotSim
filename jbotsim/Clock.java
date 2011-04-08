@@ -45,8 +45,6 @@ public class Clock{
 				return -1;
 			if (arg0 instanceof Node && !(arg1 instanceof Node))
 				return 1;
-			if (arg0 instanceof Node && arg1 instanceof Node)
-				return (arg0.toString().compareTo(arg1.toString()));
 			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
 		}		
 	}

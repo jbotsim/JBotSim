@@ -84,7 +84,7 @@ public class JViewer{
 	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   		window.add(jtp);
 	   		Dimension dim = (Dimension)jtp.topo.getProperty("dimension");
-	   		if (dim==null) dim = new Dimension(800,400);
+	   		if (dim==null) dim = new Dimension(800,600);
 	   		window.setSize(dim);
 	   		window.setVisible(true);
     	}
