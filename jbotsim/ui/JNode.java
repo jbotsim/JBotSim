@@ -54,10 +54,11 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     	}
         g2d.drawImage(this.icon, 0, 0, null);
         String sc=(String)node.getProperty("color");
-    	if (sc != null) try{
+        //System.out.println("   "+node+": "+sc);
+    	if (sc != null && sc != "none") try{
     		g2d.setColor((Color)Color.class.getField(sc).get(sc));
     		g2d.fillOval(size/2, size/2, size, size);
-    	}catch(Exception e){}
+    	}catch(Exception e){System.err.println("Color "+sc+" is not supported.");}
     }
     // EVENTS
     public void mousePressed(MouseEvent e) {

@@ -118,8 +118,9 @@ public class JTopology extends JPanel{
         	lineWidth=1;
         g2d.setColor(Color.darkGray);
         g2d.setStroke(new BasicStroke(lineWidth));
-        g2d.drawLine((int)l.source.getX(), (int)l.source.getY(), 
-        			(int)l.destination.getX(), (int)l.destination.getY());
+        int srcX=(int)l.source.getX(), srcY=(int)l.source.getY();
+        int destX=(int)l.destination.getX(), destY=(int)l.destination.getY();
+        g2d.drawLine(srcX, srcY, (int)(srcX+(destX-srcX)), (int)(srcY+(destY-srcY)));
     }
 	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{

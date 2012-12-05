@@ -11,6 +11,7 @@
  */
 package jbotsim;
 
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
@@ -45,6 +46,10 @@ public class Clock{
 				return -1;
 			if (arg0 instanceof Node && !(arg1 instanceof Node))
 				return 1;
+			if (arg0 instanceof Node && arg1 instanceof Node)
+				return (new Integer(arg0.hashCode())).compareTo(arg1.hashCode());
+				//return (arg0.toString()+((Integer)arg0.hashCode()).toString())
+				//.compareTo(arg1.toString()+((Integer)arg1.hashCode()).toString());
 			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
 		}		
 	}

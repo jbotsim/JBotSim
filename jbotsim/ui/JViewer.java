@@ -25,6 +25,7 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsimx.RandomWayPoint;
 
 /**
  * The viewer includes a central jtopology which will draw the attached 
@@ -77,6 +78,7 @@ public class JViewer{
    		jtp.addActionCommand("communication bar");
    		jtp.addActionCommand("sensing bar");
    		jtp.addActionCommand("switch clock");
+   		jtp.addActionCommand("random way point");
    		jtp.addActionCommand("toString()");
    		jtp.addActionListener(handler);
     	if (selfContained){
@@ -84,8 +86,10 @@ public class JViewer{
 	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   		window.add(jtp);
 	   		Dimension dim = (Dimension)jtp.topo.getProperty("dimension");
+	   		Dimension pos = (Dimension)jtp.topo.getProperty("position");
 	   		if (dim==null) dim = new Dimension(800,600);
-	   		window.setSize(dim);
+	   		if (pos==null) pos = new Dimension(0,0);
+	   		window.setBounds(pos.width, pos.height, dim.width, dim.height);
 	   		window.setVisible(true);
     	}
     }
@@ -175,6 +179,9 @@ public class JViewer{
 					Clock.pause();
 				else
 					Clock.resume();
+			}else if (cmd.equals("random way point")){
+				RandomWayPoint rwp=(RandomWayPoint)jtp.topo.getProperty("rwp");
+				rwp.switchState();
 			}else if (cmd.equals("toString()")){
 				System.out.println(jtp.topo);
 			}
