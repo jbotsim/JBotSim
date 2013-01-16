@@ -172,7 +172,7 @@ public class JViewer{
 				else
 					removeSensingRangeTuner();
 				jtp.updateUI();
-			}else if (cmd.equals("switch clock")){
+			}else if (cmd.equals("clock on/off")){
 				if (Clock.isRunning())
 					Clock.pause();
 				else

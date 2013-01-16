@@ -305,6 +305,18 @@ public class Node extends _Properties{
         return neighbors;
     }
     /**
+     * Returns a vector containing every node located within the sensing range
+     * The returned vector can be modified without side effect.
+     * @return A vector containing all nodes within sensing range
+     */
+    public Vector<Node> getSensedNodes(){
+        Vector<Node> sensedNodes=new Vector<Node>();
+        for (Node n : this.topo.getNodes())
+        	if (distance(n) < sensingRange && n!=this)
+        		sensedNodes.add(n);
+        return sensedNodes;
+    }
+    /**
      * Returns a vector containing every node located at the opposite endpoint
      * of an adjacent undirected links. The returned vector can be
      * subsequently modified without effect on the topology.

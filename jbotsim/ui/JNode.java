@@ -11,13 +11,21 @@
  */
 package jbotsim.ui;
 
-import javax.swing.*;
-
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.net.URL;
 
-import jbotsim.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
+import jbotsim.Node;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener{
@@ -33,9 +41,11 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         setContentAreaFilled(false);
         setBorderPainted(false);
         size=(Integer)node.getProperty("size"); if (size==null) size = 8;
+        System.out.println(size);
         String desiredIconPath=(String)node.getProperty("icon");
         if (desiredIconPath!=null)
-        	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath).getScaledInstance(size*2, size*2, Image.SCALE_FAST);
+        	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath);
+        icon=icon.getScaledInstance(size*2, size*2, Image.SCALE_FAST);
         setIcon(new ImageIcon(icon));
         
         
@@ -54,10 +64,9 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     	}
         g2d.drawImage(this.icon, 0, 0, null);
         String sc=(String)node.getProperty("color");
-        //System.out.println("   "+node+": "+sc);
     	if (sc != null && sc != "none") try{
     		g2d.setColor((Color)Color.class.getField(sc).get(sc));
-    		g2d.fillOval(size/2, size/2, size, size);
+    		g2d.fillOval(size/2+1, size/2+1, size-2, size-2);
     	}catch(Exception e){System.err.println("Color "+sc+" is not supported.");}
     }
     // EVENTS
