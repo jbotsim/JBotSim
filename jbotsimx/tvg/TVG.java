@@ -8,7 +8,6 @@ import java.util.Vector;
 
 import jbotsim.Node;
 
-@SuppressWarnings("unchecked")
 public class TVG{
 	Vector<Node> nodes=new Vector<Node>();
 	Vector<TVLink> tvlinks=new Vector<TVLink>();
