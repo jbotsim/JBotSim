@@ -1,11 +1,15 @@
+package _examples;
+
 import jbotsim.Link;
 import jbotsim.Node;
-import jbotsim.event.NodeListener;
+import jbotsim.event.ConnectivityListener;
+import jbotsim.event.MovementListener;
 
-public class RedGreenNodeV2 extends Node implements NodeListener{
+public class RedGreenNodeV2 extends Node implements ConnectivityListener,MovementListener{
 	public RedGreenNodeV2(){
 		super.setProperty("color", "red");
-		super.addNodeListener(this);
+		super.addConnectivityListener(this);
+		super.addMovementListener(this);
 	}
 	public void linkAdded(Link l) {
 		super.setProperty("color", "green");

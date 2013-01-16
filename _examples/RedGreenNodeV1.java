@@ -1,3 +1,5 @@
+package _examples;
+
 import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.event.ClockListener;

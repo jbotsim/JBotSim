@@ -1,3 +1,5 @@
+package _examples;
+
 import jbotsim.Topology;
 import jbotsim.ui.JViewer;
 

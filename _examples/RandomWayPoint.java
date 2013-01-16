@@ -1,3 +1,5 @@
+package _examples;
+
 import java.awt.Point;
 import java.util.Random;
 

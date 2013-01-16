@@ -1,3 +1,5 @@
+package _examples;
+
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
