@@ -145,15 +145,16 @@ public class Node extends _Properties{
      */
     @SuppressWarnings("unchecked")
 	public static Node newInstanceOfModel(String modelName){
-		Class modelClass=getModel(modelName).getClass();
+    	Node model=getModel(modelName);
+		Class modelClass=model.getClass();
     	try {
-    		return (Node) modelClass.getConstructor(modelClass).newInstance(getModel(modelName));
-		} catch (Exception e1) {
-			try {
-				return (Node) modelClass.getConstructor().newInstance();
-			} catch (Exception e2) {
-				System.err.println("Problem of model instantiation.."); return new Node();
-			}
+    		Node node = (Node) modelClass.getConstructor().newInstance();
+    		node.properties=new HashMap<String,Object>(model.properties);
+    		node.communicationRange=model.communicationRange;
+    		node.sensingRange=model.sensingRange;
+    		return node;		
+		} catch (Exception e) {
+			System.err.println("Problem of model instantiation.."); return new Node();
 		}
     }
     /**
@@ -208,7 +209,7 @@ public class Node extends _Properties{
      * the reference point).
      * @param p The reference point.
      */
-    public void setDirection(Point p){
+    public void setDirection(Point2D.Double p){
         this.setDirection(Math.atan2(p.x-coords.x, -(p.y-coords.y))-Math.PI/2);
     }
     /**
@@ -309,7 +310,7 @@ public class Node extends _Properties{
      * The returned vector can be modified without side effect.
      * @return A vector containing all nodes within sensing range
      */
-    public Vector<Node> getSensedNodes(){
+    public Vector<Node> getSensedObjects(){
         Vector<Node> sensedNodes=new Vector<Node>();
         for (Node n : this.topo.getNodes())
         	if (distance(n) < sensingRange && n!=this)
@@ -452,7 +453,7 @@ public class Node extends _Properties{
      * Returns the distance between this node and the specified location.
      * @param p The location (as a point).
      */
-    public double distance(Point p){
+    public double distance(Point2D.Double p){
         return coords.distance(p);
     }
     /**
