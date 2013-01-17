@@ -41,7 +41,6 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         setContentAreaFilled(false);
         setBorderPainted(false);
         size=(Integer)node.getProperty("size"); if (size==null) size = 8;
-        System.out.println(size);
         String desiredIconPath=(String)node.getProperty("icon");
         if (desiredIconPath!=null)
         	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath);

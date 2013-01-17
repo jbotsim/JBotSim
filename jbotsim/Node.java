@@ -11,7 +11,6 @@
  */
 package jbotsim;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
