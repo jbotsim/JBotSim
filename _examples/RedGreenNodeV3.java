@@ -13,7 +13,7 @@ public class RedGreenNodeV3 extends Node implements ClockListener, MessageListen
 		super.addMessageListener(this);
 	}
 	public void onClock() {
-		super.send(null, "HELLO");
+		this.send(null, "HELLO");
 		if (lastReceptionDate < Clock.currentTime() - 30)
 			super.setProperty("color", "red");
 	}

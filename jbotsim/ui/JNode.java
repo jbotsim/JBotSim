@@ -45,8 +45,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         if (desiredIconPath!=null)
         	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath);
         icon=icon.getScaledInstance(size*2, size*2, Image.SCALE_FAST);
-        setIcon(new ImageIcon(icon));
-        
+        setIcon(new ImageIcon(icon));      
         
         update();
     }
