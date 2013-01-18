@@ -476,6 +476,6 @@ public class Node extends _Properties{
      */
 	public String toString(){
         String s=(String)super.getProperty("id");
-        return (s==null)?super.toString().substring(13):s;
+        return (s==null)?super.toString():s;
     }
 }
