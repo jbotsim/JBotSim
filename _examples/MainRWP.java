@@ -4,9 +4,9 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.ui.JViewer;
 
-public class MainV4 {
+public class MainRWP {
 	public static void main(String[] args) {
-		Node.setModel("default", new RedGreenNodeV4());
+		Node.setModel("default", new RedGreenRWPNode());
 		new JViewer(new Topology());
 	}
 }

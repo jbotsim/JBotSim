@@ -149,6 +149,8 @@ public class Node extends _Properties{
     	try {
     		Node node = (Node) modelClass.getConstructor().newInstance();
     		node.properties=new HashMap<String,Object>(model.properties);
+    		if (model.getColor()!="none")
+    			node.setColor(model.getColor());
     		node.communicationRange=model.communicationRange;
     		node.sensingRange=model.sensingRange;
     		return node;		
