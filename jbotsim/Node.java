@@ -161,7 +161,7 @@ public class Node extends _Properties{
     /**
      * Returns the location of this node (as a 2D point).
      */
-    public Point2D.Double getLocation(){
+    public Point2D getLocation(){
     	return new Point2D.Double(coords.x, coords.y);
     }
     /**
@@ -179,8 +179,8 @@ public class Node extends _Properties{
      * Changes this node's location to the specified 2D point.
      * @param loc The new location point.
      */
-    public void setLocation(Point2D.Double loc){
-    	setLocation(loc.x, loc.y);
+    public void setLocation(Point2D loc){
+    	setLocation(loc.getX(), loc.getY());
     }
     /**
      * Translates the location of this node by the specified coordinates.
@@ -210,8 +210,8 @@ public class Node extends _Properties{
      * the reference point).
      * @param p The reference point.
      */
-    public void setDirection(Point2D.Double p){
-        this.setDirection(Math.atan2(p.x-coords.x, -(p.y-coords.y))-Math.PI/2);
+    public void setDirection(Point2D p){
+        this.setDirection(Math.atan2(p.getX()-coords.x, -(p.getY()-coords.y))-Math.PI/2);
     }
     /**
      * Translates the location of this node of the specified distance towards 
@@ -454,7 +454,7 @@ public class Node extends _Properties{
      * Returns the distance between this node and the specified location.
      * @param p The location (as a point).
      */
-    public double distance(Point2D.Double p){
+    public double distance(Point2D p){
         return coords.distance(p);
     }
     /**
