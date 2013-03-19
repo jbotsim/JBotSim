@@ -112,6 +112,12 @@ public class Link extends _Properties{
         return (n==source)?destination:source;
     }
     /**
+     * Returns the euclidean distance between this link endpoints.
+     */
+    public double length(){
+    	return this.source.distance(this.destination);
+    }
+    /**
      * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless, 
      * <tt>false</tt> otherwise.
      */
