@@ -14,6 +14,9 @@ package jbotsim;
 import java.util.Vector;
 
 public class Link extends _Properties{
+	Integer width=1;
+	String color="darkGray";
+	
 	/**
 	 * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
 	 * <tt>Type.UNDIRECTED</tt>.
@@ -112,9 +115,35 @@ public class Link extends _Properties{
         return (n==source)?destination:source;
     }
     /**
+     * Returns the color of this link as a string.
+     */
+    public String getColor(){
+    	return color;
+    }
+    /**
+     * Sets the color of this link as a string.
+     */
+    public void setColor(String color){
+    	this.color=(color==null||color=="none")?"darkGray":color;
+    	this.setProperty("color", color); // Used for property notification
+    }
+    /**
+     * Returns the width of this link.
+     */
+    public Integer getWidth(){
+    	return width;
+    }
+    /**
+     * Sets the width of this link.
+     */
+    public void setWidth(Integer width){
+    	this.width=width;
+    	this.setProperty("width", width); // Used for property notification
+    }
+    /**
      * Returns the euclidean distance between this link endpoints.
      */
-    public double length(){
+    public double getLength(){
     	return this.source.distance(this.destination);
     }
     /**

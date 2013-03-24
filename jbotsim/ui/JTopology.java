@@ -113,11 +113,12 @@ public class JTopology extends JPanel{
         }
     }
     protected void paintLink(Graphics2D g2d, Link l){
-        Integer lineWidth=((Integer)l.getProperty("lineWidth"));
-        if (lineWidth==null)
-        	lineWidth=1;
-        g2d.setColor(Color.darkGray);
-        g2d.setStroke(new BasicStroke(lineWidth));
+        Integer width=l.getWidth();
+        String color=l.getColor();
+    	try{
+    		g2d.setColor((Color)Color.class.getField(color).get(color));
+    	}catch(Exception e){System.err.println("Color "+color+" is not supported.");}
+    	g2d.setStroke(new BasicStroke(width));
         int srcX=(int)l.source.getX(), srcY=(int)l.source.getY();
         int destX=(int)l.destination.getX(), destY=(int)l.destination.getY();
         g2d.drawLine(srcX, srcY, (int)(srcX+(destX-srcX)), (int)(srcY+(destY-srcY)));
@@ -152,7 +153,7 @@ public class JTopology extends JPanel{
 	    		((JNode)((Node)o).getProperty("jnode")).updateUI();
 	    	if (property.equals("id"))
 	    		((JNode)((Node)o).getProperty("jnode")).setToolTipText(o.toString());
-			if (property.equals("lineWidth"))
+			if (property.equals("width"))
 				updateUI();
 		}		
 	    public void mousePressed(MouseEvent e) {

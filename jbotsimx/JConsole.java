@@ -80,15 +80,15 @@ public class JConsole extends TextArea implements TextListener{
 	   			n.setProperty("id", args[1]);
         }
     }
-	public static void main(String args[]) throws Exception{
-		jbotsim.Topology tp=new jbotsim.Topology();
-		Node.getModel("default").setSensingRange(25);
-		JFrame win=new JFrame();
-		jbotsim.ui.JViewer v=new jbotsim.ui.JViewer(tp, false); 
-		win.add(v.getJTopology(), BorderLayout.CENTER);
-		win.add(new JConsole(tp),BorderLayout.SOUTH);
-		win.setSize(800, 650);
-		win.setVisible(true);
-		Node.getModel("default").setCommunicationRange(50);
-	}    
+//	public static void main(String args[]) throws Exception{
+//		jbotsim.Topology tp=new jbotsim.Topology();
+//		Node.getModel("default").setSensingRange(25);
+//		JFrame win=new JFrame();
+//		jbotsim.ui.JViewer v=new jbotsim.ui.JViewer(tp, false); 
+//		win.add(v.getJTopology(), BorderLayout.CENTER);
+//		win.add(new JConsole(tp),BorderLayout.SOUTH);
+//		win.setSize(800, 650);
+//		win.setVisible(true);
+//		Node.getModel("default").setCommunicationRange(50);
+//	}    
 }
