@@ -13,7 +13,7 @@ package jbotsim;
 
 import java.util.Vector;
 
-public class Link extends _Properties{
+public class Link extends _Properties implements Comparable<Link>{
 	Integer width=1;
 	String color="darkGray";
 	
@@ -143,7 +143,7 @@ public class Link extends _Properties{
     /**
      * Returns the euclidean distance between this link endpoints.
      */
-    public double getLength(){
+    public Double getLength(){
     	return this.source.distance(this.destination);
     }
     /**
@@ -172,6 +172,12 @@ public class Link extends _Properties{
                 (l.source==this.source && l.destination==this.destination) ||
                 (this.type==Type.UNDIRECTED && (l.source==this.destination && l.destination==this.source)));
     }
+    /**
+     * Compares the specified link to this link in terms of length.
+     */
+	public int compareTo(Link l) {
+		return this.getLength().compareTo(l.getLength());
+	}
     /**
      * Returns a string representation of this link.
      */
