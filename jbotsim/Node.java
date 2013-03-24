@@ -33,6 +33,7 @@ public class Node extends _Properties{
     double communicationRange=100;
     double sensingRange=0;
     Topology topo;
+    String color="none";
 	
     /**
      * Creates a new node using the settings of a default model. FIXME
@@ -49,6 +50,7 @@ public class Node extends _Properties{
         	this.properties=new HashMap<String,Object>(model.properties);
             this.communicationRange=model.communicationRange;
             this.sensingRange=model.sensingRange;
+            this.color=model.color;
         }
     }
     /**
@@ -74,16 +76,14 @@ public class Node extends _Properties{
      * Returns the color of this node as a string.
      */
     public String getColor(){
-    	String color = (String) this.getProperty("color");
-    	if (color==null)
-    		return "none";
     	return color;
     }
     /**
      * Sets the color of this node as a string.
      */
     public void setColor(String color){
-    	this.setProperty("color", color);
+    	this.color=(color==null)?"none":color;
+    	this.setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -148,12 +148,11 @@ public class Node extends _Properties{
 		Class modelClass=model.getClass();
     	try {
     		Node node = (Node) modelClass.getConstructor().newInstance();
-    		String color=node.getColor();
     		node.properties=new HashMap<String,Object>(model.properties);
-    		if (color!="none")
-    			node.setColor(color);
     		node.communicationRange=model.communicationRange;
     		node.sensingRange=model.sensingRange;
+    		if (node.color=="none")
+    			node.color=model.color;
     		return node;		
 		} catch (Exception e) {
 			System.err.println("Problem of model instantiation.."); return new Node();
