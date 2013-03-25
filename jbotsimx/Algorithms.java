@@ -21,7 +21,6 @@
 package jbotsimx;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -33,12 +32,6 @@ import jbotsim.Node;
 import jbotsim.Topology;
 
 public class Algorithms {
-	public class LinkLengthComparator implements Comparator<Link>{
-		public int compare(Link l1, Link l2){
-			return (new Double(l1.source.distance(l1.destination)).compareTo(
-					new Double(l2.source.distance(l2.destination))));
-		}
-	}
     public static Vector<Link> getMST(Topology t){
         return getMST(t.getNodes(), t.getLinks());
     }
@@ -55,7 +48,7 @@ public class Algorithms {
     private static Vector<Link> getMST(Vector<Node> Vset, Vector<Link> Eset){
         if (!Connectivity.isConnected(Vset))
             return null;
-        Collections.sort(Eset, new Algorithms().new LinkLengthComparator());
+        Collections.sort(Eset);
 		
         Vector<Node> Vmst=new Vector<Node>();
         Vector<Link> Emst=new Vector<Link>();
