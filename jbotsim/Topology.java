@@ -11,10 +11,12 @@
  */
 package jbotsim;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
@@ -23,20 +25,44 @@ import jbotsim.event.MovementListener;
 import jbotsim.event.TopologyListener;
 
 public class Topology extends _Properties{
-    Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
-    Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
-    Vector<TopologyListener> topologyListeners=new Vector<TopologyListener>();
-    Vector<MovementListener> movementListeners=new Vector<MovementListener>();
+    List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
+    List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
+    List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
+    List<MovementListener> movementListeners=new ArrayList<MovementListener>();
     Message.MessageEngine messageEngine=new Message.MessageEngine(this);
-    Vector<Node> nodes=new Vector<Node>();
-    Vector<Link> arcs=new Vector<Link>();
-    Vector<Link> edges=new Vector<Link>();
+    List<Node> nodes=new ArrayList<Node>();
+    List<Link> arcs=new ArrayList<Link>();
+    List<Link> edges=new ArrayList<Link>();
+    Dimension dimensions = new Dimension(800,600);
     
+    /**
+     * Creates a topology.
+     */
+    public Topology(){
+    }
+    /**
+     * Creates a topology of given dimensions.
+     */
+    public Topology(int width, int height){
+    	this.setDimensions(width, height);
+    }
+    /**
+     * Sets the topology dimensions as indicated.
+     */
+    public void setDimensions(int width, int height){
+    	dimensions = new Dimension(width,height);
+    }
+    /**
+     * Returns the topology dimensions.
+     */
+    public Dimension getDimensions(){
+    	return new Dimension(dimensions);
+    }
     /**
      * Removes all the nodes (and links) of this topology.
      */
     public void clear(){
-        for (Node n : new Vector<Node>(nodes))
+        for (Node n : new ArrayList<Node>(nodes))
             removeNode(n);
     }
     /**
@@ -55,7 +81,7 @@ public class Topology extends _Properties{
      * @param y The ordinate of the location.
      */
     public void addNode(double x, double y){
-        this.addNode(x, y, Node.newInstanceOfModel("default"));
+    	this.addNode(x, y, Node.newInstanceOfModel("default"));
     }
     /**
      * Adds the specified node to this topology at the specified location.
@@ -65,12 +91,15 @@ public class Topology extends _Properties{
      */
     public void addNode(double x, double y, Node n){
         if (x == -1)
-        	x = (new Random()).nextDouble() * 600;
+        	x = (new Random()).nextDouble() * dimensions.width;
         if (y == -1)
-        	y = (new Random()).nextDouble() * 400;
-        n.setLocation(x, y);
+        	y = (new Random()).nextDouble() * dimensions.height;
+    	if (n.getX()==0 && n.getY()==0)
+    		n.setLocation(x, y);
+
         this.nodes.add(n);
         n.topo=this;
+        n.onTopologyAttachment(this);
         this.updateWirelessLinksFor(n);
         this.notifyNodeAdded(n);
     }
@@ -83,8 +112,9 @@ public class Topology extends _Properties{
     	for (Link l : n.getLinks(true))
             this.removeLink(l);
         this.nodes.remove(n);
-        n.topo=null;
         this.notifyNodeRemoved(n);
+        n.onTopologyDetachment(this);
+        n.topo=null;
     }
     /**
      * Adds the specified link to this topology. Calling this method makes
@@ -105,24 +135,33 @@ public class Topology extends _Properties{
     public void addLink(Link l, boolean silent){
         if (l.type==Type.DIRECTED){
             arcs.add(l);
-            if (arcs.contains(new Link(l.destination,l.source,Link.Type.DIRECTED))){
+            l.source.outLinks.put(l.destination, l);
+            if (l.destination.outLinks.containsKey(l.source)){
                 Link edge=new Link(l.source,l.destination,Link.Type.UNDIRECTED,l.mode);
                 edges.add(edge);
                 if (!silent)
                 	notifyLinkAdded(edge);
             }
-        }else{
-            Link arc1=new Link(l.source,l.destination,Link.Type.DIRECTED);
-            Link arc2=new Link(l.destination,l.source,Link.Type.DIRECTED);
-            if (!arcs.contains(arc1)){
+        }else{ // UNDIRECTED
+        	Link arc1 = l.source.outLinks.get(l.destination);
+        	Link arc2 = l.destination.outLinks.get(l.source);
+            if (arc1 == null){
+                arc1 = new Link(l.source,l.destination,Link.Type.DIRECTED);
                 arcs.add(arc1);
+                arc1.source.outLinks.put(arc1.destination, arc1);
                 if (!silent)
                 	notifyLinkAdded(arc1);
+            }else{
+            	arc1.mode = l.mode;
             }
-            if (!arcs.contains(arc2)){
+            if (arc2 == null){
+                arc2 = new Link(l.destination,l.source,Link.Type.DIRECTED);
                 arcs.add(arc2);
+                arc2.source.outLinks.put(arc2.destination, arc2);
                 if (!silent)
                 	notifyLinkAdded(arc2);
+            }else{
+            	arc2.mode = l.mode;
             }
             edges.add(l);
         }
@@ -138,6 +177,7 @@ public class Topology extends _Properties{
     public void removeLink(Link l){
         if (l.type==Type.DIRECTED){
             arcs.remove(l);
+            l.source.outLinks.remove(l.destination);
             Link edge=getLink(l.source, l.destination, false);
             if (edge!=null){
                 edges.remove(edge);
@@ -147,41 +187,43 @@ public class Topology extends _Properties{
             Link arc1=getLink(l.source, l.destination, true);
             Link arc2=getLink(l.destination, l.source, true);
             arcs.remove(arc1);
+            arc1.source.outLinks.remove(arc1.destination);
             notifyLinkRemoved(arc1);
             arcs.remove(arc2);
+            arc2.source.outLinks.remove(arc2.destination);
             notifyLinkRemoved(arc2);
             edges.remove(l);
         }
         notifyLinkRemoved(l);
     }
     /**
-     * Returns a vector containing all the nodes in this topology. The returned
-     * vector can be subsequently modified without effect on the topology.
+     * Returns a list containing all the nodes in this topology. The returned
+     * ArrayList can be subsequently modified without effect on the topology.
      */
-    public Vector<Node> getNodes(){
-        return new Vector<Node>(nodes);
+    public List<Node> getNodes(){
+        return new ArrayList<Node>(nodes);
     }
     /** 
-     * Returns a vector containing all undirected links in this topology. The 
-     * returned vector can be subsequently modified without effect on the
+     * Returns a list containing all undirected links in this topology. The 
+     * returned ArrayList can be subsequently modified without effect on the
      * topology.
      */
-    public Vector<Link> getLinks(){
+    public List<Link> getLinks(){
         return getLinks(false);
     }
     /** 
-     * Returns a vector containing all links of the specified type in this
-     * topology. The returned vector can be subsequently modified without
+     * Returns a list containing all links of the specified type in this
+     * topology. The returned ArrayList can be subsequently modified without
      * effect on the topology.
      * @param directed <tt>true</tt> for directed links, <tt>false</tt> for
      * undirected links.
      */
-    public Vector<Link> getLinks(boolean directed){
-        return (directed)?new Vector<Link>(arcs):new Vector<Link>(edges);
+    public List<Link> getLinks(boolean directed){
+        return (directed)?new ArrayList<Link>(arcs):new ArrayList<Link>(edges);
     }
-    Vector<Link> getLinks(boolean directed, Node n, int pos){
-        Vector<Link> result=new Vector<Link>();
-        Vector<Link> allLinks=(directed)?arcs:edges;
+    List<Link> getLinks(boolean directed, Node n, int pos){
+        List<Link> result=new ArrayList<Link>();
+        List<Link> allLinks=(directed)?arcs:edges;
         for(Link l : allLinks)
             switch(pos){
                 case 0:	if(l.source==n || l.destination==n) 
@@ -209,11 +251,14 @@ public class Topology extends _Properties{
      */
     public Link getLink(Node from, Node to, boolean directed){
         if (directed){
-            Link l=new Link(from, to,Link.Type.DIRECTED);
-            return (arcs.contains(l))?arcs.elementAt(arcs.indexOf(l)):null;
+        	return from.outLinks.get(to);
+        	//Link l=new Link(from, to,Link.Type.DIRECTED);
+            //int pos=arcs.indexOf(l);
+            //return (pos != -1)?arcs.get(pos):null;
         }else{
             Link l=new Link(from, to, Link.Type.UNDIRECTED);
-            return (edges.contains(l))?edges.elementAt(edges.indexOf(l)):null;    		
+            int pos=edges.indexOf(l);
+            return (pos != -1)?edges.get(pos):null;
         }
     }
     /**
@@ -294,7 +339,7 @@ public class Topology extends _Properties{
     	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
     	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
     	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
-    	for (ConnectivityListener cl : new Vector<ConnectivityListener>(union))
+    	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
     		cl.linkAdded(l);
     }
     protected void notifyLinkRemoved(Link l){
@@ -302,16 +347,16 @@ public class Topology extends _Properties{
     	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
     	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
     	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
-    	for (ConnectivityListener cl : new Vector<ConnectivityListener>(union))
+    	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
     		cl.linkRemoved(l);
     }
     protected void notifyNodeAdded(Node node){
-        Vector<TopologyListener> listeners=new Vector<TopologyListener>(topologyListeners);
+        ArrayList<TopologyListener> listeners=new ArrayList<TopologyListener>(topologyListeners);
         for (TopologyListener tl : listeners)
         	tl.nodeAdded(node);
     }
     protected void notifyNodeRemoved(Node node){
-        Vector<TopologyListener> listeners=new Vector<TopologyListener>(topologyListeners);
+        ArrayList<TopologyListener> listeners=new ArrayList<TopologyListener>(topologyListeners);
         for (TopologyListener tl : listeners)
         	tl.nodeRemoved(node);
     }

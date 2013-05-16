@@ -12,9 +12,10 @@
 package jbotsim.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
@@ -34,8 +35,10 @@ import jbotsim.Topology;
  */
 public class JViewer{
 	protected JTopology jtp;
-	protected JSlider cRTuner, sRTuner;
-	protected JFrame window=null;
+	protected JSlider slideBar = new JSlider(0,800);
+	protected enum BarType {COMMUNICATION, SENSING, SPEED};
+	protected BarType slideBarType = null;
+	protected JFrame window = null;
 	protected EventHandler handler=new EventHandler();
 	/**
 	 * Creates a windowed viewer for the specified topology. 
@@ -72,24 +75,26 @@ public class JViewer{
 	 * <tt>JFrame</tt> or a <tt>JApplet</tt>).
 	 * @param jtopo The JTopology to be encapsulated.
 	 */
-    public JViewer(JTopology jtopo, boolean selfContained){
+    public JViewer(JTopology jtopo, boolean windowed){
     	this.jtp=jtopo;
-   		jtp.addActionCommand("communication bar");
-   		jtp.addActionCommand("sensing bar");
-   		jtp.addActionCommand("clock on/off");
-   		jtp.addActionCommand("toString()");
+   		jtp.addActionCommand("Set communication range");
+   		jtp.addActionCommand("Set sensing range");
+   		jtp.addActionCommand("Set clock speed");
+   		jtp.addActionCommand("Pause / Resume");
    		jtp.addActionListener(handler);
-    	if (selfContained){
+    	if (windowed){ // This JViewer creates its own window
 	   		window=new JFrame();
 	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	   		window.add(jtp);
-	   		Dimension dim = (Dimension)jtp.topo.getProperty("dimension");
-	   		Dimension pos = (Dimension)jtp.topo.getProperty("position");
-	   		if (dim==null) dim = new Dimension(800,600);
-	   		if (pos==null) pos = new Dimension(0,0);
-	   		window.setBounds(pos.width, pos.height, dim.width, dim.height);
+    		window.pack();
 	   		window.setVisible(true);
+	        window.addComponentListener(new ComponentAdapter() {
+	            public void componentResized(ComponentEvent e) {
+	            	jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
+	            }
+	        });        
     	}
+    	slideBar.addChangeListener(handler);
     }
     /**
      * Returns the jtopology attached to this viewer. Obtaining the reference 
@@ -106,79 +111,71 @@ public class JViewer{
      * @param height The desired height, in pixels.
      */
     public void setSize(int width, int height){
-		jtp.setPreferredSize(new Dimension(width,height));
+    	jtp.topo.setDimensions(width, height);
+		jtp.setPreferredSize(jtp.topo.getDimensions());
     	if (window!=null)
     		window.pack();
     }
     /**
-     * Adds a communication range tuner (slider bar) to regulate the
-     * communication range of the topology's nodes. The tuner is anchored at
-     * the north of the jtopology.
+     * Adds a slide bar at the top of the topology.
      */
-    public void addCommunicationRangeTuner(){
-    	cRTuner=new JSlider(0,800,(int)Node.getModel("default").getCommunicationRange());
-		cRTuner.addChangeListener(handler);
-		jtp.getParent().add(cRTuner,BorderLayout.NORTH);
-	}
-    /**
-     * Removes the communication range tuner (slider bar), if any.
-     */
-    public void removeCommunicationRangeTuner(){
- 		jtp.getParent().remove(cRTuner);
- 		cRTuner=null;
+    public void addSlideBar(BarType type, int value){
+    	this.removeSlideBar();
+    	slideBarType = type;
+    	slideBar.setValue(value);
+		jtp.getParent().add(slideBar,BorderLayout.NORTH);
     }
     /**
-     * Adds a sensing range tuner (slider bar) to regulate the sensing range of
-     * the topology's nodes. The tuner is anchored at the south of the 
-     * jtopology.
+     * Removes the slide bar, if any.
      */
-    public void addSensingRangeTuner(){
-    	sRTuner=new JSlider(0,800,(int)Node.getModel("default").getSensingRange());
-		sRTuner.addChangeListener(handler);
-		jtp.getParent().add(sRTuner,BorderLayout.SOUTH);
-	}
-    /**
-     * Removes the sensing range tuner (slider bar), if any.
-     */
-    public void removeSensingRangeTuner(){
- 		jtp.getParent().remove(sRTuner);
- 		sRTuner=null;
+    public void removeSlideBar(){
+ 		if (slideBarType!=null){
+ 			jtp.getParent().remove(slideBar);
+ 			slideBarType=null;
+ 		}
     }
 	class EventHandler implements ChangeListener, ActionListener{		
 		public void stateChanged(ChangeEvent arg0) {
-			JSlider src=((JSlider)arg0.getSource());
-			if (src==cRTuner){
+			if (slideBarType==BarType.COMMUNICATION){
 				for (Node n : jtp.topo.getNodes())
-					n.setCommunicationRange(src.getValue());
-				Node.getModel("default").setCommunicationRange(src.getValue());			
-			}else{
+					n.setCommunicationRange(slideBar.getValue());
+				Node.getModel("default").setCommunicationRange(slideBar.getValue());			
+			}else if (slideBarType==BarType.SENSING){
 				for (Node n : jtp.topo.getNodes())
-					n.setSensingRange(src.getValue());
-				Node.getModel("default").setSensingRange(src.getValue());			
+					n.setSensingRange(slideBar.getValue());
+				Node.getModel("default").setSensingRange(slideBar.getValue());			
+			}else if (slideBarType==BarType.SPEED){
+				Clock.setTimeUnit((800-slideBar.getValue())/40+1);
 			}
 			jtp.updateUI();
 		}
 		public void actionPerformed(ActionEvent arg0) {
 			String cmd=((JMenuItem)arg0.getSource()).getText();
-			if (cmd.equals("communication bar")){
-				if (cRTuner==null) 
-					addCommunicationRangeTuner();
+			if (cmd.equals("Set communication range")){
+				if (slideBarType != BarType.COMMUNICATION) 
+					addSlideBar(BarType.COMMUNICATION, 
+							(int)Node.getModel("default").getCommunicationRange());
 				else 
-					removeCommunicationRangeTuner();
+					removeSlideBar();
 				jtp.updateUI();
-			}else if (cmd.equals("sensing bar")){
-				if (sRTuner==null)
-					addSensingRangeTuner();
+			}else if (cmd.equals("Set sensing range")){
+				if (slideBarType != BarType.SENSING) 
+					addSlideBar(BarType.SENSING, 
+							(int)Node.getModel("default").getSensingRange());
 				else
-					removeSensingRangeTuner();
+					removeSlideBar();
 				jtp.updateUI();
-			}else if (cmd.equals("clock on/off")){
+			}else if (cmd.equals("Set clock speed")){
+				if (slideBarType != BarType.SPEED) 
+					addSlideBar(BarType.SPEED, (800-Clock.getTimeUnit()*40));
+				else
+					removeSlideBar();
+				jtp.updateUI();
+			}else if (cmd.equals("Pause / Resume")){
 				if (Clock.isRunning())
 					Clock.pause();
 				else
 					Clock.resume();
-			}else if (cmd.equals("toString()")){
-				System.out.println(jtp.topo);
 			}
 		}
 	}

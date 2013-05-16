@@ -11,7 +11,8 @@
  */
 package jbotsim;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Link extends _Properties implements Comparable<Link>{
 	Integer width=1;
@@ -31,20 +32,20 @@ public class Link extends _Properties implements Comparable<Link>{
      * The source node of this link (if directed), 
      * the first endpoint otherwise.
      */
-    public final Node source; 
+    public Node source; 
     /**
      * The destination node of this link (if directed),
      * the second endpoint otherwise.
      */
-    public final Node destination;
+    public Node destination;
     /**
      * The <tt>Type</tt> of this link (directed/undirected)
      */
-    public final Type type;
+    public Type type;
     /**
      * The <tt>Mode</tt> of this link (wired/wireless)
      */
-    public final Mode mode;
+    public Mode mode;
     /**
      * Creates an undirected wired link between the two specified nodes.
      * @param n1 The source node.
@@ -97,11 +98,11 @@ public class Link extends _Properties implements Comparable<Link>{
         this.mode = mode;
     }
     /**
-     * Returns a vector containing the two endpoint nodes of this link
+     * Returns an list containing the two endpoint nodes of this link
      * @return The endpoints.
      */
-    public Vector<Node> endpoints(){
-    	Vector<Node> tmp = new Vector<Node>();
+    public List<Node> endpoints(){
+    	List<Node> tmp = new ArrayList<Node>();
     	tmp.add(source); tmp.add(destination);
     	return tmp;
     }

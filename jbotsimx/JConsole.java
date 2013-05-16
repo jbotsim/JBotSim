@@ -22,8 +22,6 @@ package jbotsimx;
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.JFrame;
-
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;

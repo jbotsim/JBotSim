@@ -28,7 +28,8 @@ import jbotsim.Node;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener{
-	protected Image icon=Toolkit.getDefaultToolkit().getImage(JNode.class.getResource("circle.png"));
+	protected Toolkit tk = Toolkit.getDefaultToolkit();
+	protected Image icon=tk.getImage(JNode.class.getResource("circle.png"));
     protected Integer size;
     protected Node node;
 
@@ -42,7 +43,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         size=(Integer)node.getProperty("size"); if (size==null) size = 8;
         String desiredIconPath=(String)node.getProperty("icon");
         if (desiredIconPath!=null)
-        	icon=Toolkit.getDefaultToolkit().getImage(desiredIconPath);
+        	icon=tk.getImage(JNode.class.getResource(desiredIconPath));
         icon=icon.getScaledInstance(size*2, size*2, Image.SCALE_FAST);
         setIcon(new ImageIcon(icon));      
         

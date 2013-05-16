@@ -12,7 +12,7 @@
 package jbotsim;
 
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import jbotsim.event.ClockListener;
 import jbotsim.event.MessageListener;
@@ -62,7 +62,7 @@ public class Message{
 		}
 		public void onClock(){
 			for (Node n : topo.nodes){
-				Vector<Message> toRemove=new Vector<Message>();
+				ArrayList<Message> toRemove=new ArrayList<Message>();
 				for (Message m : n.sendQueue){
 					if (m.destination!=null && m.source.getOutLinkTo(m.destination)==null){
 						if (!m.retryMode)

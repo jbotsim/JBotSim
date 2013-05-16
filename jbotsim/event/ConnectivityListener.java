@@ -16,12 +16,12 @@ import jbotsim.Link;
 public interface ConnectivityListener {
     /**
      * Notifies the underlying listener that a link has been added.
-     * @param l The added link.
+     * @param link The added link.
      */
-    public void linkAdded(Link l);
+    public void linkAdded(Link link);
     /**
      * Notifies the underlying listener that a link has been removed.
-     * @param l The removed link.
+     * @param link The removed link.
      */
-    public void linkRemoved(Link l);
+    public void linkRemoved(Link link);
 }

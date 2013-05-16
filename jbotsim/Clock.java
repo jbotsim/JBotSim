@@ -14,7 +14,7 @@ package jbotsim;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 import java.awt.event.ActionListener;
@@ -55,7 +55,7 @@ public class Clock{
 	private class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evt) {
 			time++;
-			for(ClockListener cl : new Vector<ClockListener>(listeners.keySet())){
+			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())){
 				Integer I=countdown.get(cl);
 				if(I==1){
 					try{
@@ -89,6 +89,12 @@ public class Clock{
 	public static void removeClockListener(ClockListener listener){
 		listeners.remove(listener);
 		countdown.remove(listener);
+	}
+	/**
+	 * Returns the time unit of the clock, in milliseconds.
+	 */
+	public static int getTimeUnit(){
+		return clock.timer.getDelay();
 	}
 	/**
 	 * Sets the time unit of the clock to the specified value in millisecond.

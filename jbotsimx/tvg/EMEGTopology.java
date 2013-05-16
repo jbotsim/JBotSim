@@ -1,7 +1,8 @@
 package jbotsimx.tvg;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -19,7 +20,7 @@ public class EMEGTopology extends Topology{
 		for (Link l : super.getLinks())
 			super.removeLink(l);
 		Random random=new Random();
-		Vector<Node> nodes = super.getNodes();
+		List<Node> nodes = super.getNodes();
 		for (int i=0; i<nodes.size(); i++){
 			for (int j=i+1; j<nodes.size(); j++){
 				Link l=new Link(nodes.get(i), nodes.get(j));
@@ -30,7 +31,7 @@ public class EMEGTopology extends Topology{
 	}
 	public void updateLinks() {
 		Random random=new Random();
-		Vector<Node> nodes = super.getNodes();
+		List<Node> nodes = super.getNodes();
 		for (int i=0; i<nodes.size(); i++){
 			for (int j=i+1; j<nodes.size(); j++){
 				Link l=new Link(nodes.get(i), nodes.get(j));

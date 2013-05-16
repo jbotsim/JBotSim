@@ -20,22 +20,31 @@
  *******************************************************************************/
 package jbotsimx;
 
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.atan2;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+import static java.lang.Math.pow;
+
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
+import java.util.List;
+import java.util.Random;
 import java.util.Vector;
-import static java.lang.Math.*;
 
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 
 public class Algorithms {
-    public static Vector<Link> getMST(Topology t){
+    public static ArrayList<Link> getMST(Topology t){
         return getMST(t.getNodes(), t.getLinks());
     }
-    public static Vector<Link> getMST(Vector<Node> Vset){
+    public static ArrayList<Link> getMST(List<Node> Vset){
         HashSet<Link> Eset=new HashSet<Link>();
         for (Node ntmp : Vset){
             for (Link ltmp : ntmp.getLinks()){
@@ -43,21 +52,21 @@ public class Algorithms {
                     Eset.add(ltmp);
             }
         }
-        return getMST(Vset, new Vector<Link>(Eset));
+        return getMST(Vset, new ArrayList<Link>(Eset));
     }
-    private static Vector<Link> getMST(Vector<Node> Vset, Vector<Link> Eset){
+    private static ArrayList<Link> getMST(List<Node> Vset, List<Link> Eset){
         if (!Connectivity.isConnected(Vset))
             return null;
         Collections.sort(Eset);
 		
-        Vector<Node> Vmst=new Vector<Node>();
-        Vector<Link> Emst=new Vector<Link>();
+        ArrayList<Node> Vmst=new ArrayList<Node>();
+        ArrayList<Link> Emst=new ArrayList<Link>();
 		
-        Vmst.add(Vset.elementAt(0));
+        Vmst.add(Vset.get(0));
 		
         while(Vmst.size()!=Vset.size()){
             boolean added=false;
-            Enumeration<Link> en=Eset.elements();
+            Enumeration<Link> en=new Vector<Link>(Eset).elements();
             while(!added){
                 if(en.hasMoreElements()){
                     Link l=en.nextElement();
@@ -94,13 +103,13 @@ public class Algorithms {
         if (angle>PI) angle=(2.0*PI-angle);
         return angle;
     }
-    public static Vector<Node> orderByAngleToReferenceNode(Node refNode, Vector<Node> nodes){
+    public static ArrayList<Node> orderByAngleToReferenceNode(Node refNode, ArrayList<Node> nodes){
         Hashtable<Double, Node> tmp=new Hashtable<Double, Node>();
         for (Node ng : nodes)
             tmp.put(getAngle(refNode,ng), ng);
-        Vector<Double> angles=new Vector<Double>(tmp.keySet());
+        ArrayList<Double> angles=new ArrayList<Double>(tmp.keySet());
         Collections.sort(angles);
-        Vector<Node> result=new Vector<Node>();
+        ArrayList<Node> result=new ArrayList<Node>();
         for (Double angle : angles)
             result.add(tmp.get(angle));
         return result;
@@ -158,17 +167,17 @@ public class Algorithms {
         distance.put(node, new Integer(0));
         int depth = 1;
         int cnt = 1;
-        Vector<Node> distList = new Vector<Node>();
-        distList.addElement(node);
+        List<Node> distList = new ArrayList<Node>();
+        distList.add(node);
         while (distList.size() > 0) {
-            Vector<Node> nextList = new Vector<Node>();
-            for (Enumeration<Node> e = distList.elements(); e.hasMoreElements();){
-                Vector<Node> nbrs = e.nextElement().getNeighbors();
+            List<Node> nextList = new ArrayList<Node>();
+            for (Node n : distList){
+                List<Node> nbrs = n.getNeighbors();
                 for (Node n2 : nbrs){
                     if (distance.get(n2).equals(new Integer(t.getNodes().size()))){
                         cnt++;
                         distance.put(n2, new Integer(depth));
-                        nextList.addElement(n2);
+                        nextList.add(n2);
                     }
                 }
             }

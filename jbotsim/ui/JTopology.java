@@ -23,7 +23,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -36,8 +36,8 @@ import jbotsim.event.TopologyListener;
 
 @SuppressWarnings("serial")
 public class JTopology extends JPanel{
-    protected Vector<ActionListener> actionListeners=new Vector<ActionListener>();
-    protected Vector<String> actionCommands=new Vector<String>();
+    protected ArrayList<ActionListener> actionListeners=new ArrayList<ActionListener>();
+    protected ArrayList<String> actionCommands=new ArrayList<String>();
     protected Topology topo;
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
@@ -55,6 +55,7 @@ public class JTopology extends JPanel{
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
+        super.setPreferredSize(topo.getDimensions());
         for (Node n : topo.getNodes())
         	handler.nodeAdded(n);
         topo.setProperty("popupRunning",false);

@@ -17,13 +17,13 @@ public interface TopologyListener{
 	/**
 	 * Notifies the underlying listener that a node has been added to the 
      * topology.
-	 * @param n The added node.
+	 * @param node The added node.
 	 */
-    public void nodeAdded(Node n);
+    public void nodeAdded(Node node);
     /**
      * Notifies the underlying listener that a node has been removed to the 
      * topology.
-     * @param n The removed node.
+     * @param node The removed node.
      */
-    public void nodeRemoved(Node n);
+    public void nodeRemoved(Node node);
 }

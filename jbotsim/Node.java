@@ -11,23 +11,27 @@
  */
 package jbotsim;
 
+import java.awt.Dimension;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Vector;
+import java.util.List;
+import java.util.Random;
 
+import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MessageListener;
 import jbotsim.event.MovementListener;
-import jbotsim.event.ConnectivityListener;
 
 public class Node extends _Properties{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
-    Vector<ConnectivityListener> cxDirectedListeners=new Vector<ConnectivityListener>();
-    Vector<ConnectivityListener> cxUndirectedListeners=new Vector<ConnectivityListener>();
-    Vector<MovementListener> movementListeners=new Vector<MovementListener>();
-    Vector<MessageListener> messageListeners=new Vector<MessageListener>();
-    Vector<Message> mailBox=new Vector<Message>();
-    Vector<Message> sendQueue=new Vector<Message>();
+    List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
+    List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
+    List<MovementListener> movementListeners=new ArrayList<MovementListener>();
+    List<MessageListener> messageListeners=new ArrayList<MessageListener>();
+    List<Message> mailBox=new ArrayList<Message>();
+    List<Message> sendQueue=new ArrayList<Message>();
+    HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
     Point2D.Double coords=new Point2D.Double();
     double direction=Math.PI/2;
     double communicationRange=100;
@@ -61,6 +65,20 @@ public class Node extends _Properties{
         return topo;
     }
     /**
+     * Called once this node has been added to a topology, but before this
+     * topology listeners are notified. This method is to be overwritten in the 
+     * node class to perform topology related initialization. 
+     */
+    public void onTopologyAttachment(Topology tp){
+    }
+    /**
+     * Called once this node has been removed from a topology, right after this
+     * topology listeners are notified. This method is to be overwritten in the 
+     * node class to perform topology related clean up. 
+     */
+    public void onTopologyDetachment(Topology tp){
+    }
+   /**
      * Returns the abscissa of this node.
      */
     public double getX(){
@@ -82,8 +100,14 @@ public class Node extends _Properties{
      * Sets the color of this node as a string.
      */
     public void setColor(String color){
-    	this.color=(color==null)?"none":color;
-    	this.setProperty("color", color); // Used for property notification
+    	String[] colors={"black","blue","cyan","darkGray","gray","green",
+    			"lightGray","magenta","orange","pink","red","white","yellow"};
+    	if (color.equals("random"))
+    		this.color=colors[(new Random()).nextInt(colors.length)];
+    	else{
+    		this.color=(color==null)?"none":color;
+    	}
+		this.setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -134,8 +158,8 @@ public class Node extends _Properties{
     /**
      * Returns the list of all available model names. FIXME
      */
-    public static Vector<String> getModelsNames(){
-        return new Vector<String>(nodeModels.keySet());
+    public static List<String> getModelsNames(){
+        return new ArrayList<String>(nodeModels.keySet());
     }
     /**
      * Create a new Node based on the specified model.
@@ -181,6 +205,13 @@ public class Node extends _Properties{
      */
     public void setLocation(Point2D loc){
     	setLocation(loc.getX(), loc.getY());
+    }
+    /**
+     * Changes this node's location modulo the size of topology.
+     */
+    public void wrapLocation(){
+    	Dimension dim = this.topo.dimensions;
+    	setLocation((coords.x + dim.width) % dim.width, (coords.y + dim.height) % dim.height);
     }
     /**
      * Translates the location of this node by the specified coordinates.
@@ -236,7 +267,7 @@ public class Node extends _Properties{
      * @return The requested link, or <tt>null</tt> if no such link is found.
      */
     public Link getOutLinkTo(Node n){
-        return topo.getLink(this, n, true);
+    	return outLinks.get(n);
     }
     /**
      * Returns the undirected link whose endpoints are this node and the
@@ -248,98 +279,105 @@ public class Node extends _Properties{
         return topo.getLink(this, n);
     }
     /**
-     * Returns a vector containing all links for which this node is the
-     * destination. The returned vector can be subsequently modified without
+     * Returns a list containing all links for which this node is the
+     * destination. The returned list can be subsequently modified without
      * effect on the topology.
      */
-    public Vector<Link> getInLinks(){
+    public List<Link> getInLinks(){
         return topo.getLinks(true,this,2);
     }
     /**
-     * Returns a vector containing all links for which this node is the
-     * source. The returned vector can be subsequently modified without effect
+     * Returns a list containing all links for which this node is the
+     * source. The returned list can be subsequently modified without effect
      * on the topology.
      */
-    public Vector<Link> getOutLinks(){
-        return topo.getLinks(true,this,1);	
+    public List<Link> getOutLinks(){
+        return new ArrayList<Link>(outLinks.values()); 	
     }
     /**
-     * Returns a vector containing all undirected links adjacent to this node.
-     * The returned vector can be subsequently modified without effect on the
+     * Returns a list containing all undirected links adjacent to this node.
+     * The returned list can be subsequently modified without effect on the
      * topology.
      */
-    public Vector<Link> getLinks(){
+    public List<Link> getLinks(){
         return getLinks(false);
     }
     /**
-     * Returns a vector containing all adjacent links of the specified type.
+     * Returns a list containing all adjacent links of the specified type.
      * @param directed <tt>true</tt> for directed, <tt>false</tt> for 
-     * undirected. The returned vector can be subsequently modified without 
+     * undirected. The returned list can be subsequently modified without 
      * effect on the topology.
      */
-    public Vector<Link> getLinks(boolean directed){
+    public List<Link> getLinks(boolean directed){
         return topo.getLinks(directed,this,0);
     }
     /**
-     * Returns a vector containing every node serving as source for an adjacent
-     * directed link. The returned vector can be subsequently modified 
+     * Returns a list containing every node serving as source for an adjacent
+     * directed link. The returned list can be subsequently modified 
      * without effect on the topology.
-     * @return A vector containing the neighbors, with possible duplicates
+     * @return A list containing the neighbors, with possible duplicates
      * when several links come from a same neighbor.
      */
-    public Vector<Node> getInNeighbors(){
-        Vector<Node> neighbors=new Vector<Node>();
+    public List<Node> getInNeighbors(){
+        ArrayList<Node> neighbors=new ArrayList<Node>();
         for (Link l : getInLinks())
             neighbors.add(l.source);
         return neighbors;
     }
     /**
-     * Returns a vector containing every node serving as destination for an 
-     * adjacent directed link. The returned vector can be subsequently
+     * Returns a list containing every node serving as destination for an 
+     * adjacent directed link. The returned list can be subsequently
      * modified without effect on the topology.
-     * @return A vector containing the neighbors, with possible duplicates
+     * @return A list containing the neighbors, with possible duplicates
      * when several links go towards a same neighbor.
      */
-    public Vector<Node> getOutNeighbors(){
-        Vector<Node> neighbors=new Vector<Node>();
+    public List<Node> getOutNeighbors(){
+        ArrayList<Node> neighbors=new ArrayList<Node>();
         for (Link l : getOutLinks())
             neighbors.add(l.destination);
         return neighbors;
     }
     /**
-     * Returns a vector containing every node located within the sensing range
-     * The returned vector can be modified without side effect.
-     * @return A vector containing all nodes within sensing range
+     * Returns a list containing every node located within the sensing range
+     * The returned list can be modified without side effect.
+     * @return A list containing all nodes within sensing range
      */
-    public Vector<Node> getSensedObjects(){
-        Vector<Node> sensedNodes=new Vector<Node>();
+    public List<Node> getSensedObjects(){
+        ArrayList<Node> sensedNodes=new ArrayList<Node>();
         for (Node n : this.topo.getNodes())
         	if (distance(n) < sensingRange && n!=this)
         		sensedNodes.add(n);
         return sensedNodes;
     }
     /**
-     * Returns a vector containing every node located at the opposite endpoint
-     * of an adjacent undirected links. The returned vector can be
-     * subsequently modified without effect on the topology.
-     * @return A vector containing the neighbors, with possible duplicates
-     * when several links are shared with a same neighbor.
+     * Indicates whether this node has at least one neighbor (undirected)
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
      */
-    public Vector<Node> getNeighbors(){
-        LinkedHashSet<Node> neighbors=new LinkedHashSet<Node>();
-        for (Link l : getLinks())
-            neighbors.add(l.getOtherEndpoint(this));
-        return new Vector<Node>(neighbors);
+    public boolean hasNeighbors(){
+    	return this.getLinks().size()>0;
     }
     /**
-     * Returns a vector of messages representing the mailbox of this node.
+     * Returns a list containing every node located at the opposite endpoint
+     * of an adjacent undirected links. The returned list can be
+     * subsequently modified without effect on the topology.
+     * @return A list containing the neighbors, with possible duplicates
+     * when several links are shared with a same neighbor.
+     */
+    public List<Node> getNeighbors(){
+        LinkedHashSet<Node> neighbors=new LinkedHashSet<Node>();
+        for (Link l : this.getLinks())
+            neighbors.add(l.getOtherEndpoint(this));
+        return new ArrayList<Node>(neighbors);
+    }
+    /**
+     * Returns a list of messages representing the mailbox of this node.
      * The mailbox can be usefull to scrutinize the arriving of new messages
      * without using the MessageListener interface, or to clear previous 
      * messages (since all received messages are retained in the mailbox). The
-     * returned vector must be considered as the original copy of the node's
+     * returned list must be considered as the original copy of the node's
      * mailbox.
      */
-    public Vector<Message> mailbox(){
+    public List<Message> mailbox(){
         return mailBox;
     }
     /**

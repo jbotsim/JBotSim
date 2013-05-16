@@ -1,13 +1,14 @@
 package jbotsim;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Vector;
+import java.util.List;
 
 import jbotsim.event.PropertyListener;
 
 public abstract class _Properties {
 	protected HashMap<String,Object> properties = new HashMap<String,Object>();
-    Vector<PropertyListener> propertyListeners=new Vector<PropertyListener>();
+    List<PropertyListener> propertyListeners=new ArrayList<PropertyListener>();
     
 	/**
 	 * Registers the specified property listener to this node. The listener
@@ -39,7 +40,7 @@ public abstract class _Properties {
 	 */
 	public void setProperty(String key, Object value){
 		properties.put(key, value);
-	    for (PropertyListener pl : new Vector<PropertyListener>(propertyListeners))
+	    for (PropertyListener pl : new ArrayList<PropertyListener>(propertyListeners))
 	        pl.propertyChanged(this, key);
 	}
 

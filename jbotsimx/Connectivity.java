@@ -20,10 +20,11 @@
  *******************************************************************************/
 package jbotsimx;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.Vector;
 
 import jbotsim.Clock;
 import jbotsim.Link;
@@ -31,7 +32,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 
 public class Connectivity {
-    public static Vector<Node> getKHopNeighbors(Node n, int nbhops){
+    public static ArrayList<Node> getKHopNeighbors(Node n, int nbhops){
         Set<Node> neighbors=new HashSet<Node>();
         if (nbhops==1){
             neighbors.addAll(n.getNeighbors());
@@ -42,21 +43,21 @@ public class Connectivity {
             }
         }
         neighbors.remove(n);
-        return new Vector<Node>(neighbors);
+        return new ArrayList<Node>(neighbors);
     }
-    public static Vector<Vector<Node>> splitIntoConnectedSets(Vector<Node> Vset){
-        Vector<Vector<Node>> connectedSets=new Vector<Vector<Node>>();
-        Vector<Node> Vinit=new Vector<Node>(Vset);
+    public static List<ArrayList<Node>> splitIntoConnectedSets(ArrayList<Node> Vset){
+        List<ArrayList<Node>> connectedSets=new ArrayList<ArrayList<Node>>();
+        List<Node> Vinit=new ArrayList<Node>(Vset);
         while(!Vinit.isEmpty()){
-            Vector<Node> nextConnectedSet=new Vector<Node>();
-            nextConnectedSet.addAll(getConnectedSet(Vinit.elementAt(0), Vinit));
+            ArrayList<Node> nextConnectedSet=new ArrayList<Node>();
+            nextConnectedSet.addAll(getConnectedSet(Vinit.get(0), Vinit));
             Vinit.removeAll(nextConnectedSet);
             connectedSets.add(nextConnectedSet);
         }
         return connectedSets;
     }
-    public static Vector<Node> getConnectedSet(Node node, Vector<Node> among) {
-        Vector<Node> amongSet=new Vector<Node>(among);
+    public static List<Node> getConnectedSet(Node node, List<Node> among) {
+        ArrayList<Node> amongSet=new ArrayList<Node>(among);
         HashSet<Node> connectedSet = new HashSet<Node>();
         amongSet.remove(node);
         connectedSet.add(node);
@@ -66,7 +67,7 @@ public class Connectivity {
                 connectedSet.addAll(getConnectedSet(neigh, amongSet));
             }
         }
-        return new Vector<Node>(connectedSet);
+        return new ArrayList<Node>(connectedSet);
     }
     public static boolean isBiconnected(Topology topo){
         if (!isConnected(topo))
@@ -80,37 +81,37 @@ public class Connectivity {
         return !isConnectedWithout(n.getTopology().getNodes(), n);
     }
     public static boolean isKHopCritical(Node n, int nbhops){
-        Vector<Node> kneighbors=getKHopNeighbors(n, nbhops);
+        ArrayList<Node> kneighbors=getKHopNeighbors(n, nbhops);
         if (kneighbors.size()<=1)
             return false;
         else
             return !isConnectedWithout(kneighbors, n);
     }
-    public static boolean isConnectedWithout(Vector<Node> Vset, Node n){
+    public static boolean isConnectedWithout(List<Node> Vset, Node n){
         Set<Node> Vtmp=new HashSet<Node>(Vset);
         Vtmp.remove(n);
-        return isConnected(new Vector<Node>(Vtmp));
+        return isConnected(new ArrayList<Node>(Vtmp));
     }
     public static boolean isConnected(Topology t){
         return isConnected(t.getNodes());
     }
-    public static boolean isConnected(Vector<Node> Vset){
+    public static boolean isConnected(List<Node> Vset){
         if (Vset.size()<=1)
             return true;
-        Vector<Node> vertices=new Vector<Node>(Vset);
-        removeConnectedNodes(vertices,vertices.elementAt(0));
+        ArrayList<Node> vertices=new ArrayList<Node>(Vset);
+        removeConnectedNodes(vertices,vertices.get(0));
         return vertices.isEmpty();
     }
     public static int getNbConnectedComponents(Topology t){
-    	Vector<Node> vertices=new Vector<Node>(t.getNodes());
+    	ArrayList<Node> vertices=new ArrayList<Node>(t.getNodes());
     	int nbComp=0;
     	while (vertices.size()>0){
-    		removeConnectedNodes(vertices,vertices.elementAt(0));
+    		removeConnectedNodes(vertices,vertices.get(0));
     		nbComp++;
     	}
         return nbComp;
     }
-    private static void removeConnectedNodes(Vector<Node> Vtmp, Node v){
+    private static void removeConnectedNodes(ArrayList<Node> Vtmp, Node v){
         Vtmp.remove(v);
         for(Link l : v.getLinks()){
             Node neighbor=l.getOtherEndpoint(v);
