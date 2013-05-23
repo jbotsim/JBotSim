@@ -92,8 +92,8 @@ public class Link extends _Properties implements Comparable<Link>{
      * <tt>Mode.WIRELESS</tt>).
      */
     public Link(Node from, Node to, Type type, Mode mode) {
-        this.source = from;
-        this.destination = to;
+        source = from;
+        destination = to;
         this.type = type;
         this.mode = mode;
     }
@@ -126,7 +126,7 @@ public class Link extends _Properties implements Comparable<Link>{
      */
     public void setColor(String color){
     	this.color=(color==null||color=="none")?"darkGray":color;
-    	this.setProperty("color", color); // Used for property notification
+    	setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the width of this link.
@@ -139,13 +139,13 @@ public class Link extends _Properties implements Comparable<Link>{
      */
     public void setWidth(Integer width){
     	this.width=width;
-    	this.setProperty("width", width); // Used for property notification
+    	setProperty("width", width); // Used for property notification
     }
     /**
      * Returns the euclidean distance between this link endpoints.
      */
     public Double getLength(){
-    	return this.source.distance(this.destination);
+    	return source.distance(destination);
     }
     /**
      * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless, 
@@ -177,13 +177,13 @@ public class Link extends _Properties implements Comparable<Link>{
      * Compares the specified link to this link in terms of length.
      */
 	public int compareTo(Link l) {
-		return this.getLength().compareTo(l.getLength());
+		return getLength().compareTo(l.getLength());
 	}
     /**
      * Returns a string representation of this link.
      */
     public String toString(){
-        if (this.type==Type.DIRECTED)
+        if (type==Type.DIRECTED)
             return (source+" --> "+destination);
         else
             return (source+" <--> "+destination);

@@ -108,6 +108,8 @@ public class Message{
 			nbDeliveredMessages++;
 			for (MessageListener ml : dest.messageListeners)
 				ml.onMessage(m);
+			for (MessageListener ml : dest.topo.messageListeners)
+				ml.onMessage(m);
 		}
 	}
 	/**

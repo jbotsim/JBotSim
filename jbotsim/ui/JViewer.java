@@ -76,7 +76,7 @@ public class JViewer{
 	 * @param jtopo The JTopology to be encapsulated.
 	 */
     public JViewer(JTopology jtopo, boolean windowed){
-    	this.jtp=jtopo;
+    	jtp=jtopo;
    		jtp.addActionCommand("Set communication range");
    		jtp.addActionCommand("Set sensing range");
    		jtp.addActionCommand("Set clock speed");
@@ -120,7 +120,7 @@ public class JViewer{
      * Adds a slide bar at the top of the topology.
      */
     public void addSlideBar(BarType type, int value){
-    	this.removeSlideBar();
+    	removeSlideBar();
     	slideBarType = type;
     	slideBar.setValue(value);
 		jtp.getParent().add(slideBar,BorderLayout.NORTH);

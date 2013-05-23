@@ -92,7 +92,7 @@ public class JTopology extends JPanel{
      * Disables the drawing of links and sensing radius (if any).
      */
     public void disableDrawings(){
-    	this.showDrawings=false;
+    	showDrawings=false;
     }
     /**
      * Paints this JTopology on the specified graphics (not supposed to be 

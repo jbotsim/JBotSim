@@ -21,7 +21,9 @@ import java.util.Random;
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.ConnectivityListener;
+import jbotsim.event.MessageListener;
 import jbotsim.event.MovementListener;
+import jbotsim.event.SelectionListener;
 import jbotsim.event.TopologyListener;
 
 public class Topology extends _Properties{
@@ -29,11 +31,14 @@ public class Topology extends _Properties{
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
     List<MovementListener> movementListeners=new ArrayList<MovementListener>();
+    List<MessageListener> messageListeners=new ArrayList<MessageListener>();
+    List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
     Message.MessageEngine messageEngine=new Message.MessageEngine(this);
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
     Dimension dimensions = new Dimension(800,600);
+    Node selectedNode = null;
     
     /**
      * Creates a topology.
@@ -44,7 +49,7 @@ public class Topology extends _Properties{
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
-    	this.setDimensions(width, height);
+    	setDimensions(width, height);
     }
     /**
      * Sets the topology dimensions as indicated.
@@ -72,7 +77,7 @@ public class Topology extends _Properties{
      * @param n The node to be added.
      */
     public void addNode(Node n){
-        this.addNode(n.getX(), n.getY(), n);
+        addNode(n.getX(), n.getY(), n);
     }
     /**
      * Adds a new node to this topology at the specified location. The node
@@ -81,7 +86,7 @@ public class Topology extends _Properties{
      * @param y The ordinate of the location.
      */
     public void addNode(double x, double y){
-    	this.addNode(x, y, Node.newInstanceOfModel("default"));
+    	addNode(x, y, Node.newInstanceOfModel("default"));
     }
     /**
      * Adds the specified node to this topology at the specified location.
@@ -97,11 +102,11 @@ public class Topology extends _Properties{
     	if (n.getX()==0 && n.getY()==0)
     		n.setLocation(x, y);
 
-        this.nodes.add(n);
+        nodes.add(n);
         n.topo=this;
         n.onTopologyAttachment(this);
-        this.updateWirelessLinksFor(n);
-        this.notifyNodeAdded(n);
+        notifyNodeAdded(n);
+        updateWirelessLinksFor(n);
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -110,11 +115,15 @@ public class Topology extends _Properties{
      */
     public void removeNode(Node n){
     	for (Link l : n.getLinks(true))
-            this.removeLink(l);
-        this.nodes.remove(n);
-        this.notifyNodeRemoved(n);
+            removeLink(l);
+        notifyNodeRemoved(n);
+        nodes.remove(n);
         n.onTopologyDetachment(this);
         n.topo=null;
+    }
+    public void selectNode(Node n){
+    	selectedNode = n;
+    	notifyNodeSelected(n);
     }
     /**
      * Adds the specified link to this topology. Calling this method makes
@@ -123,7 +132,7 @@ public class Topology extends _Properties{
      * @param l The link to be added.
      */
     public void addLink(Link l){
-        this.addLink(l, false);
+        addLink(l, false);
     }
     /**
      * Adds the specified link to this topology without notifying the listeners
@@ -334,6 +343,36 @@ public class Topology extends _Properties{
     public void removeTopologyListener(TopologyListener listener){
     	topologyListeners.remove(listener);
     }
+    /**
+     * Registers the specified message listener to this topology. The listener
+     * will be notified every time a message is received at any node. 
+     * @param listener The message listener.
+     */
+    public void addMessageListener(MessageListener listener){
+    	messageListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified message listener for this topology.
+     * @param listener The message listener. 
+     */
+    public void removeMessageListener(MessageListener listener){
+    	messageListeners.remove(listener);
+    }
+    /**
+     * Registers the specified selection listener to this topology. The listener
+     * will be notified every time a node is selected. 
+     * @param listener The selection listener.
+     */
+    public void addSelectionListener(SelectionListener listener){
+    	selectionListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified selection listener for this topology.
+     * @param listener The selection listener. 
+     */
+    public void removeSelectionListener(SelectionListener listener){
+    	selectionListeners.remove(listener);
+    }
     protected void notifyLinkAdded(Link l){
     	boolean directed=(l.type==Type.DIRECTED)?true:false;
     	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
@@ -351,30 +390,32 @@ public class Topology extends _Properties{
     		cl.linkRemoved(l);
     }
     protected void notifyNodeAdded(Node node){
-        ArrayList<TopologyListener> listeners=new ArrayList<TopologyListener>(topologyListeners);
-        for (TopologyListener tl : listeners)
+        for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
         	tl.nodeAdded(node);
     }
     protected void notifyNodeRemoved(Node node){
-        ArrayList<TopologyListener> listeners=new ArrayList<TopologyListener>(topologyListeners);
-        for (TopologyListener tl : listeners)
+        for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
         	tl.nodeRemoved(node);
+    }
+    protected void notifyNodeSelected(Node node){
+        for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
+        	tl.nodeSelected(node);
     }
     void updateWirelessLinksFor(Node n){
         for (Node n2 : nodes)
         	if (n2!=n){
-        		this.updateWirelessLink(n, n2);
-        		this.updateWirelessLink(n2, n);
+        		updateWirelessLink(n, n2);
+        		updateWirelessLink(n2, n);
         	}
     }    
     void updateWirelessLink(Node n1, Node n2){
     	Link l=n1.getOutLinkTo(n2);
     	if (l==null){
     		if(n1.distance(n2)<n1.communicationRange)
-    			this.addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
+    			addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
     	}else
     		if (l.isWireless() && n1.distance(n2)>n1.communicationRange)
-    			this.removeLink(l);
+    			removeLink(l);
     }
     /**
      * Returns a string representation of this topology. The output of this

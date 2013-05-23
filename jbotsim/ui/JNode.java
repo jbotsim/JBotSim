@@ -72,7 +72,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         if (e.getButton()==MouseEvent.BUTTON3)
         	node.getTopology().removeNode(node);
         else if (e.getButton()==MouseEvent.BUTTON2)
-        	node.getTopology().setProperty("selectedNode", this.node);
+        	node.getTopology().selectNode(node);
     }
     public void mouseDragged(MouseEvent e){
         node.translate((int)e.getX()-size,(int)e.getY()-size);

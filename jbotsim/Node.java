@@ -51,10 +51,10 @@ public class Node extends _Properties{
      */
     public Node(Node model){
         if (model!=null){
-        	this.properties=new HashMap<String,Object>(model.properties);
-            this.communicationRange=model.communicationRange;
-            this.sensingRange=model.sensingRange;
-            this.color=model.color;
+        	properties=new HashMap<String,Object>(model.properties);
+            communicationRange=model.communicationRange;
+            sensingRange=model.sensingRange;
+            color=model.color;
         }
     }
     /**
@@ -107,7 +107,7 @@ public class Node extends _Properties{
     	else{
     		this.color=(color==null)?"none":color;
     	}
-		this.setProperty("color", color); // Used for property notification
+		setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -121,7 +121,7 @@ public class Node extends _Properties{
      * to other nodes.
      */
     public void setCommunicationRange(double range) {
-        this.communicationRange = range;
+        communicationRange = range;
         if (topo!=null)
         	topo.updateWirelessLinksFor(this);
     }
@@ -135,7 +135,7 @@ public class Node extends _Properties{
      * Sets the sensing range of this node to the specified radius.
      */
     public void setSensingRange(double range) {
-        this.sensingRange = range;
+        sensingRange = range;
     }
     /**
      * Returns the model node corresponding to that name,
@@ -194,10 +194,10 @@ public class Node extends _Properties{
      * @param y The ordinate of the new location.
      */
     public void setLocation(double x, double y){
-        this.coords.setLocation(x, y);
+        coords.setLocation(x, y);
         if (topo!=null)
         	topo.updateWirelessLinksFor(this);
-        this.notifyNodeMoved();
+        notifyNodeMoved();
     }
     /**
      * Changes this node's location to the specified 2D point.
@@ -210,7 +210,7 @@ public class Node extends _Properties{
      * Changes this node's location modulo the size of topology.
      */
     public void wrapLocation(){
-    	Dimension dim = this.topo.dimensions;
+    	Dimension dim = topo.dimensions;
     	setLocation((coords.x + dim.width) % dim.width, (coords.y + dim.height) % dim.height);
     }
     /**
@@ -219,21 +219,21 @@ public class Node extends _Properties{
      * @param dy The ordinate component.
      */
     public void translate(double dx, double dy){
-        this.setLocation(coords.x+dx, coords.y+dy);
+        setLocation(coords.x+dx, coords.y+dy);
     }
     /**
      * Returns the current direction angle of this node (in radians).
      */
     public double getDirection(){
-        return this.direction;
+        return direction;
     }
     /**
      * Sets the direction angle of this node (in radians).
      * @param angle The angle in radians.
      */
     public void setDirection(double angle){
-        this.direction=angle;
-        this.notifyNodeMoved();
+        direction=angle;
+        notifyNodeMoved();
     }
     /**
      * Sets the direction angle of this node using the specified reference
@@ -242,14 +242,14 @@ public class Node extends _Properties{
      * @param p The reference point.
      */
     public void setDirection(Point2D p){
-        this.setDirection(Math.atan2(p.getX()-coords.x, -(p.getY()-coords.y))-Math.PI/2);
+        setDirection(Math.atan2(p.getX()-coords.x, -(p.getY()-coords.y))-Math.PI/2);
     }
     /**
      * Translates the location of this node of the specified distance towards 
      * the node's current direction. The distance unit is the pixel.
      */
     public void move(double distance){
-        this.translate(Math.cos(direction)*distance, Math.sin(direction)*distance);
+        translate(Math.cos(direction)*distance, Math.sin(direction)*distance);
     }
     /**
      * Returns the directed link whose destination is this node and source is
@@ -344,7 +344,7 @@ public class Node extends _Properties{
      */
     public List<Node> getSensedObjects(){
         ArrayList<Node> sensedNodes=new ArrayList<Node>();
-        for (Node n : this.topo.getNodes())
+        for (Node n : topo.getNodes())
         	if (distance(n) < sensingRange && n!=this)
         		sensedNodes.add(n);
         return sensedNodes;
@@ -354,7 +354,7 @@ public class Node extends _Properties{
      * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
      */
     public boolean hasNeighbors(){
-    	return this.getLinks().size()>0;
+    	return getLinks().size()>0;
     }
     /**
      * Returns a list containing every node located at the opposite endpoint
@@ -365,7 +365,7 @@ public class Node extends _Properties{
      */
     public List<Node> getNeighbors(){
         LinkedHashSet<Node> neighbors=new LinkedHashSet<Node>();
-        for (Link l : this.getLinks())
+        for (Link l : getLinks())
             neighbors.add(l.getOtherEndpoint(this));
         return new ArrayList<Node>(neighbors);
     }
