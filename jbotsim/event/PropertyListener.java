@@ -11,11 +11,13 @@
  */
 package jbotsim.event;
 
+import jbotsim._Properties;
+
 public interface PropertyListener {
     /**
      * Notifies that a property of this object has changed.
      * @param o The object.
      * @param key The name of the changed property.
      */
-    public void propertyChanged(Object o, String key);
+    public void propertyChanged(_Properties o, String key);
 }

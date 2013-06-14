@@ -11,10 +11,6 @@
  */
 package jbotsim.ui;
 
-import javax.swing.JPanel;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -25,9 +21,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsim._Properties;
 import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MovementListener;
 import jbotsim.event.PropertyListener;
@@ -149,8 +150,8 @@ public class JTopology extends JPanel{
 	    	updateUI();
 	    	((JNode)n.getProperty("jnode")).update();
 	    }
-		public void propertyChanged(Object o, String property){
-	    	if (property.equals("color"))
+		public void propertyChanged(_Properties o, String property){
+	    	if (property.equals("color") && (o.getProperty("jnode")!=null))
 	    		((JNode)((Node)o).getProperty("jnode")).updateUI();
 	    	if (property.equals("id"))
 	    		((JNode)((Node)o).getProperty("jnode")).setToolTipText(o.toString());
