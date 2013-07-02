@@ -95,10 +95,16 @@ public class Topology extends _Properties{
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
+    	boolean wasRunning=false;
+    	if (Clock.isRunning()){
+    		Clock.pause();
+    		wasRunning=true;
+    	}
+    	Clock.pause();
         if (x == -1)
-        	x = (new Random()).nextDouble() * dimensions.width;
+        	x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
-        	y = (new Random()).nextDouble() * dimensions.height;
+        	y = (new Random()).nextDouble() * (dimensions.height - 12) + 6;
     	if (n.getX()==0 && n.getY()==0)
     		n.setLocation(x, y);
 
@@ -107,6 +113,8 @@ public class Topology extends _Properties{
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
         updateWirelessLinksFor(n);
+        if (wasRunning)
+        	Clock.resume();
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -114,17 +122,31 @@ public class Topology extends _Properties{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
+    	boolean wasRunning=false;
+    	if (Clock.isRunning()){
+    		Clock.pause();
+    		wasRunning=true;
+    	}
     	for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
         nodes.remove(n);
         n.onTopologyDetachment(this);
         n.topo=null;
+        if (wasRunning)
+        	Clock.resume();
     }
     public void selectNode(Node n){
+    	boolean wasRunning=false;
+    	if (Clock.isRunning()){
+    		Clock.pause();
+    		wasRunning=true;
+    	}
     	selectedNode = n;
     	notifyNodeSelected(n);
-    }
+        if (wasRunning)
+        	Clock.resume();
+   }
     /**
      * Adds the specified link to this topology. Calling this method makes
      * sense only for wired links, since wireless links are automatically
