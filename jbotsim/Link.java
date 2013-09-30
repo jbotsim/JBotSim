@@ -169,9 +169,13 @@ public class Link extends _Properties implements Comparable<Link>{
      */
     public boolean equals(Object o){
         Link l=(Link)o;
-        return ((this.type == l.type) &&
-                (l.source==this.source && l.destination==this.destination) ||
-                (this.type==Type.UNDIRECTED && (l.source==this.destination && l.destination==this.source)));
+        if (this.type != l.type)
+        	return false;
+        else if (this.type == Type.DIRECTED)
+        	return (l.source==this.source && l.destination==this.destination);
+        else
+        	return (l.source==this.source && l.destination==this.destination) ||
+        			(l.source==this.destination && l.destination==this.source);
     }
     /**
      * Compares the specified link to this link in terms of length.

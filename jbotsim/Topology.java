@@ -39,6 +39,7 @@ public class Topology extends _Properties{
     List<Link> edges=new ArrayList<Link>();
     Dimension dimensions = new Dimension(800,600);
     Node selectedNode = null;
+    boolean linkUpdate = true;
     
     /**
      * Creates a topology.
@@ -112,7 +113,7 @@ public class Topology extends _Properties{
         n.topo=this;
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
-        updateWirelessLinksFor(n);
+       	updateWirelessLinksFor(n);
         if (wasRunning)
         	Clock.resume();
     }

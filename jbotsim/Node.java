@@ -36,6 +36,7 @@ public class Node extends _Properties{
     double direction=Math.PI/2;
     double communicationRange=100;
     double sensingRange=0;
+    boolean isWirelessEnabled = true;
     Topology topo;
     String color="none";
 	
@@ -116,14 +117,37 @@ public class Node extends _Properties{
         return communicationRange;
     }
     /**
-     * Sets the communication range of this node to the specified radius. This
+     * Activates the wireless capabilities of this node and sets 
+     * its communication range to the specified radius. This
      * determines the distance up to which this node can <i>send</i> messages
      * to other nodes.
      */
     public void setCommunicationRange(double range) {
+    	if (range > 0)
+    		enableWireless();
+    	else if (range < 0)
+    		disableWireless();
         communicationRange = range;
         if (topo!=null)
         	topo.updateWirelessLinksFor(this);
+    }
+    /**
+     * Indicates whether this node has wireless capabilities enabled.
+     */
+    public boolean isWirelessEnabled(){
+    	return isWirelessEnabled;
+    }
+    /**
+     * Enables this node's wireless capabilities.
+     */
+    public void enableWireless(){
+    	isWirelessEnabled = true;
+    }
+    /**
+     * Disables this node's wireless capabilities.
+     */
+    public void disableWireless(){
+    	isWirelessEnabled = false;
     }
     /**
      * Returns the sensing range of this node (as a radius).
@@ -146,6 +170,14 @@ public class Node extends _Properties{
         if (!nodeModels.containsKey(modelName))
             nodeModels.put(modelName,new Node());
         return nodeModels.get(modelName);
+    }
+    /**
+     * Returns the default node model,
+     * all properties assigned to this virtual node will be given to further nodes created 
+     * without explicit model name.
+     */
+    public static Node getDefaultModel(){
+    	return getModel("default");
     }
     /**
      * FIXME
@@ -175,6 +207,7 @@ public class Node extends _Properties{
     		node.properties=new HashMap<String,Object>(model.properties);
     		node.communicationRange=model.communicationRange;
     		node.sensingRange=model.sensingRange;
+    		node.isWirelessEnabled=model.isWirelessEnabled;
     		if (node.color=="none")
     			node.color=model.color;
     		return node;		
