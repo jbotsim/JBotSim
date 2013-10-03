@@ -32,7 +32,7 @@ public class Topology extends _Properties{
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
     List<MovementListener> movementListeners=new ArrayList<MovementListener>();
     List<MessageListener> messageListeners=new ArrayList<MessageListener>();
-    List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
+    List<SelectionListener> selectionListeners;
     Message.MessageEngine messageEngine=new Message.MessageEngine(this);
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
@@ -45,6 +45,7 @@ public class Topology extends _Properties{
      * Creates a topology.
      */
     public Topology(){
+    	selectionListeners=new ArrayList<SelectionListener>();
     }
     /**
      * Creates a topology of given dimensions.

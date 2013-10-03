@@ -39,6 +39,7 @@ public class Node extends _Properties{
     boolean isWirelessEnabled = true;
     Topology topo;
     String color="none";
+    Object state;
 	
     /**
      * Creates a new node using the settings of a default model. FIXME
@@ -109,6 +110,20 @@ public class Node extends _Properties{
     		this.color=(color==null)?"none":color;
     	}
 		setProperty("color", color); // Used for property notification
+    }
+    /**
+     * Returns the state of this node.
+     */
+    public Object getState(){
+    	return state;
+    }
+    /**
+     * Sets the state of this node. This text will appear as a tooltip 
+     * when the mouse cursor is held some time over the node.
+     */
+    public void setState(Object state){
+    	this.state=state;
+		setProperty("state", state); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -210,7 +225,8 @@ public class Node extends _Properties{
     		node.isWirelessEnabled=model.isWirelessEnabled;
     		if (node.color=="none")
     			node.color=model.color;
-    		return node;		
+    		node.state=model.state;
+    		return node;
 		} catch (Exception e) {
 			System.err.println("Problem of model instantiation.."); return new Node();
 		}
@@ -548,7 +564,8 @@ public class Node extends _Properties{
      * Returns a string representation of this node.
      */
 	public String toString(){
-        String s=(String)super.getProperty("id");
-        return (s==null)?super.toString():s;
+		return (state!=null)?state.toString():"none";
+//        String s=(String)super.getProperty("id");
+//        return (s==null)?super.toString():s;
     }
 }

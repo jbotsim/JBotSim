@@ -159,7 +159,7 @@ public class JTopology extends JPanel{
 		public void propertyChanged(_Properties o, String property){
 	    	if (property.equals("color") && (o.getProperty("jnode")!=null))
 	    		((JNode)((Node)o).getProperty("jnode")).updateUI();
-	    	if (property.equals("id"))
+	    	if (property.equals("state"))
 	    		((JNode)((Node)o).getProperty("jnode")).setToolTipText(o.toString());
 			if (property.equals("width"))
 				updateUI();
