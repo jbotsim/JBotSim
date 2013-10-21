@@ -51,6 +51,7 @@ public class Topology extends _Properties{
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
+    	this();
     	setDimensions(width, height);
     }
     /**
