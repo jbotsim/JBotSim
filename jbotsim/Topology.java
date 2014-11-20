@@ -38,6 +38,7 @@ public class Topology extends _Properties{
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
     Dimension dimensions = new Dimension(800,600);
+    WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     boolean linkUpdate = true;
     
@@ -103,7 +104,7 @@ public class Topology extends _Properties{
     		Clock.pause();
     		wasRunning=true;
     	}
-    	Clock.pause();
+    	Clock.pause(); // to be removed.
         if (x == -1)
         	x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
@@ -296,6 +297,13 @@ public class Topology extends _Properties{
         }
     }
     /**
+     * Replaces the default Wireless Link Calculator by a custom one.
+     * @param wlinkcalc An object that implements WLinkCalculator.
+     */
+    public void setWLinkCalculator(WLinkCalculator wlinkcalc){
+    	this.wlinkcalc = wlinkcalc;
+    }
+    /**
      * Registers the specified topology listener to this topology. The listener
      * will be notified whenever an undirected link is added or removed.
      * @param listener The listener to add.
@@ -434,12 +442,12 @@ public class Topology extends _Properties{
         	}
     }    
     void updateWirelessLink(Node n1, Node n2){
-    	Link l=n1.getOutLinkTo(n2);
-    	if (l==null){
-    		if(n1.distance(n2)<n1.communicationRange)
-    			addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
-    	}else
-    		if (l.isWireless() && n1.distance(n2)>n1.communicationRange)
+    	Link l = n1.getOutLinkTo(n2);
+    	boolean linkExisted = (l==null)?false:true;
+    	boolean linkExists = wlinkcalc.isHeardBy(n1, n2); 
+    	if (linkExists && !linkExisted)
+    		addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
+    	else if (!linkExists && linkExisted)
     			removeLink(l);
     }
     /**

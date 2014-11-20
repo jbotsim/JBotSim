@@ -107,6 +107,15 @@ public class Link extends _Properties implements Comparable<Link>{
     	return tmp;
     }
     /**
+     * Returns the requested endpoint node of this link
+     * @param The endpoint index (0 or 1).
+     * @return The endpoint.
+     */
+    public Node endpoint(int index){
+    	assert (index==0 || index==1);
+    	return (index==0)?source:destination;
+    }
+    /**
      * Returns the node located at the opposite of the specified node 
      * (reference node) on the underlying link.
      * @param n The reference node.

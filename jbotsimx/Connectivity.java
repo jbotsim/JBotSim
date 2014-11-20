@@ -45,7 +45,7 @@ public class Connectivity {
         neighbors.remove(n);
         return new ArrayList<Node>(neighbors);
     }
-    public static List<ArrayList<Node>> splitIntoConnectedSets(ArrayList<Node> Vset){
+    public static List<ArrayList<Node>> splitIntoConnectedSets(List<Node> Vset){
         List<ArrayList<Node>> connectedSets=new ArrayList<ArrayList<Node>>();
         List<Node> Vinit=new ArrayList<Node>(Vset);
         while(!Vinit.isEmpty()){

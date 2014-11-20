@@ -43,5 +43,12 @@ public abstract class _Properties {
 	    for (PropertyListener pl : new ArrayList<PropertyListener>(propertyListeners))
 	        pl.propertyChanged(this, key);
 	}
+	/**
+	 * Returns the property stored under the specified key.
+	 * @param key The property key.
+	 */
+	public boolean hasProperty(String key){
+		return properties.containsKey(key);
+	}
 
 }

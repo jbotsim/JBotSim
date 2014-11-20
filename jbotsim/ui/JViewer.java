@@ -143,8 +143,10 @@ public class JViewer{
 	class EventHandler implements ChangeListener, ActionListener{		
 		public void stateChanged(ChangeEvent arg0) {
 			if (slideBarType==BarType.COMMUNICATION){
-				for (Node n : jtp.topo.getNodes())
-					n.setCommunicationRange(slideBar.getValue());
+				for (Node n : jtp.topo.getNodes()){
+					if (n.isWirelessEnabled())
+						n.setCommunicationRange(slideBar.getValue());
+				}
 				Node.getModel("default").setCommunicationRange(slideBar.getValue());			
 			}else if (slideBarType==BarType.SENSING){
 				for (Node n : jtp.topo.getNodes())

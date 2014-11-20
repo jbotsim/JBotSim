@@ -23,7 +23,7 @@ import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MessageListener;
 import jbotsim.event.MovementListener;
 
-public class Node extends _Properties{
+public class Node extends _Properties implements Comparable<Node>{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
@@ -32,7 +32,7 @@ public class Node extends _Properties{
     List<Message> mailBox=new ArrayList<Message>();
     List<Message> sendQueue=new ArrayList<Message>();
     HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
-    Point2D.Double coords=new Point2D.Double();
+    NodePoint coords=new NodePoint();
     double direction=Math.PI/2;
     double communicationRange=100;
     double sensingRange=0;
@@ -81,16 +81,22 @@ public class Node extends _Properties{
     public void onTopologyDetachment(Topology tp){
     }
    /**
-     * Returns the abscissa of this node.
+     * Returns the x-coordinate of this node.
      */
     public double getX(){
-        return coords.x;
+        return coords.getX();
     }
     /**
-     * Returns the ordinate of this node.
+     * Returns the y-coordinate of this node.
      */
     public double getY(){
-        return coords.y;
+        return coords.getY();
+    }
+    /**
+     * Returns the z-coordinate of this node.
+     */
+    public double getZ(){
+        return coords.getZ();
     }
     /**
      * Returns the color of this node as a string.
@@ -99,16 +105,21 @@ public class Node extends _Properties{
     	return color;
     }
     /**
+     * Returns the list of all possible colors.
+     */
+    public static String[] possibleColors(){
+    	return new String[]{"black","blue","cyan","darkGray","gray","green",
+    			"lightGray","magenta","orange","pink","red","white","yellow"};    	
+    }
+    /**
      * Sets the color of this node as a string.
      */
     public void setColor(String color){
-    	String[] colors={"black","blue","cyan","darkGray","gray","green",
-    			"lightGray","magenta","orange","pink","red","white","yellow"};
-    	if (color.equals("random"))
+    	if (color.equals("random")){
+    		String[] colors=possibleColors();
     		this.color=colors[(new Random()).nextInt(colors.length)];
-    	else{
+    	}else
     		this.color=(color==null)?"none":color;
-    	}
 		setProperty("color", color); // Used for property notification
     }
     /**
@@ -138,10 +149,6 @@ public class Node extends _Properties{
      * to other nodes.
      */
     public void setCommunicationRange(double range) {
-    	if (range > 0)
-    		enableWireless();
-    	else if (range < 0)
-    		disableWireless();
         communicationRange = range;
         if (topo!=null)
         	topo.updateWirelessLinksFor(this);
@@ -235,7 +242,7 @@ public class Node extends _Properties{
      * Returns the location of this node (as a 2D point).
      */
     public Point2D getLocation(){
-    	return new Point2D.Double(coords.x, coords.y);
+    	return new Point2D.Double(coords.getX(), coords.getY());
     }
     /**
      * Changes this node's location to the specified coordinates.
@@ -244,6 +251,18 @@ public class Node extends _Properties{
      */
     public void setLocation(double x, double y){
         coords.setLocation(x, y);
+        if (topo!=null)
+        	topo.updateWirelessLinksFor(this);
+        notifyNodeMoved();
+    }
+    /**
+     * Changes this node's location to the specified coordinates.
+     * @param x The abscissa of the new location.
+     * @param y The ordinate of the new location.
+     * @param z The ordinate of the new location.
+     */
+    public void setLocation(double x, double y, double z){
+        coords.setLocation(x, y, z);
         if (topo!=null)
         	topo.updateWirelessLinksFor(this);
         notifyNodeMoved();
@@ -260,7 +279,7 @@ public class Node extends _Properties{
      */
     public void wrapLocation(){
     	Dimension dim = topo.dimensions;
-    	setLocation((coords.x + dim.width) % dim.width, (coords.y + dim.height) % dim.height);
+    	setLocation((coords.getX() + dim.width) % dim.width, (coords.getY() + dim.height) % dim.height);
     }
     /**
      * Translates the location of this node by the specified coordinates.
@@ -268,7 +287,15 @@ public class Node extends _Properties{
      * @param dy The ordinate component.
      */
     public void translate(double dx, double dy){
-        setLocation(coords.x+dx, coords.y+dy);
+        setLocation(coords.getX()+dx, coords.getY()+dy);
+    }
+    /**
+     * Translates the location of this node by the specified coordinates.
+     * @param dx The abscissa component.
+     * @param dy The ordinate component.
+     */
+    public void translate(double dx, double dy, double dz){
+        setLocation(coords.getX()+dx, coords.getY()+dy, coords.getZ()+dz);
     }
     /**
      * Returns the current direction angle of this node (in radians).
@@ -291,7 +318,7 @@ public class Node extends _Properties{
      * @param p The reference point.
      */
     public void setDirection(Point2D p){
-        setDirection(Math.atan2(p.getX()-coords.x, -(p.getY()-coords.y))-Math.PI/2);
+        setDirection(Math.atan2(p.getX()-coords.getX(), -(p.getY()-coords.getY()))-Math.PI/2);
     }
     /**
      * Translates the location of this node of the specified distance towards 
@@ -542,16 +569,47 @@ public class Node extends _Properties{
      * @param p The location (as a point).
      */
     public double distance(Point2D p){
-        return coords.distance(p);
+        return coords.distance(p.getX(), p.getY());
     }
     /**
-     * Returns the distance between this node and the point of specified 
-     * coordinates.
+     * Returns the distance between this node and the specified point.
      * @param x The abscissa of the point to which the distance is measured.
      * @param y The ordinate of the point to which the distance is measured.
      */
     public double distance(double x, double y){
         return coords.distance(x, y);
+    }
+    /**
+     * Returns the distance between this node and the specified point.
+     * @param x The abscissa of the point to which the distance is measured.
+     * @param y The ordinate of the point to which the distance is measured.
+     */
+    public double distance(double x, double y, double z){
+        return coords.distance(x, y, z);
+    }
+    /**
+     * Returns true if the distance to the given node is less than threshold.
+     * @param n The given node.
+     * @param threshold The threshold distance.
+     */
+    public boolean isWithin(Node n, double threshold){
+    	return coords.isWithin(n.coords, threshold);
+    }
+    /**
+     * Returns true if the distance to the given point is less than threshold.
+     * @param n The given point.
+     * @param threshold The threshold distance.
+     */
+    public boolean isWithin(double x, double y, double threshold){
+    	return coords.isWithin(x, y, threshold);
+    }
+    /**
+     * Returns true if the distance to the given point is less than threshold.
+     * @param n The given point.
+     * @param threshold The threshold distance.
+     */
+    public boolean isWithin(double x, double y, double z, double threshold){
+    	return coords.isWithin(x, y, z, threshold);
     }
     protected void notifyNodeMoved(){
     	LinkedHashSet<MovementListener> union=new LinkedHashSet<MovementListener>(movementListeners);
@@ -560,12 +618,15 @@ public class Node extends _Properties{
         for (MovementListener ml : union)
             ml.nodeMoved(this);
     }
+    public int compareTo(Node o){
+    	return (toString().compareTo(o.toString()));
+    }
     /**
      * Returns a string representation of this node.
      */
 	public String toString(){
-		return (state!=null)?state.toString():"none";
-//        String s=(String)super.getProperty("id");
-//        return (s==null)?super.toString():s;
+//		return (state!=null)?state.toString():"none";
+        String s=(String)super.getProperty("id");
+        return (s==null)?super.toString():s;
     }
 }

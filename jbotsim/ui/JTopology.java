@@ -65,6 +65,8 @@ public class JTopology extends JPanel{
         super.setPreferredSize(topo.getDimensions());
         for (Node n : topo.getNodes())
         	handler.nodeAdded(n);
+        for (Link l : topo.getLinks())
+        	handler.linkAdded(l);
         topo.setProperty("popupRunning",false);
     }
     /**
@@ -122,6 +124,8 @@ public class JTopology extends JPanel{
     }
     protected void paintLink(Graphics2D g2d, Link l){
         Integer width=l.getWidth();
+    	if (width==0)
+    		return;
         String color=l.getColor();
     	try{
     		g2d.setColor((Color)Color.class.getField(color).get(color));
@@ -157,13 +161,17 @@ public class JTopology extends JPanel{
 	    	((JNode)n.getProperty("jnode")).update();
 	    }
 		public void propertyChanged(_Properties o, String property){
-	    	if (property.equals("color") && (o.getProperty("jnode")!=null))
-	    		((JNode)((Node)o).getProperty("jnode")).updateUI();
-	    	if (property.equals("state"))
-	    		((JNode)((Node)o).getProperty("jnode")).setToolTipText(o.toString());
-			if (property.equals("width"))
+			if ((o.getProperty("jnode")!=null)){ // Node
+	    		JNode jn = (JNode)((Node)o).getProperty("jnode"); 
+	    		if (property.equals("color")){
+	    			jn.updateUI();
+	    		}else if (property.equals("state")){
+		    		jn.setToolTipText(o.toString());
+	    		}
+	    	}else if (property.equals("width") || property.equals("color")){
 				updateUI();
-		}		
+	    	}
+		}
 	    public void mousePressed(MouseEvent e) {
 	    	if ((Boolean)topo.getProperty("popupRunning")==true){
 	    		topo.setProperty("popupRunning", false);

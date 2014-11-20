@@ -19,6 +19,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 
 import javax.swing.ImageIcon;
@@ -27,44 +29,52 @@ import javax.swing.JButton;
 import jbotsim.Node;
 
 @SuppressWarnings("serial")
-public class JNode extends JButton implements MouseListener, MouseMotionListener{
+public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener{
 	protected Toolkit tk = Toolkit.getDefaultToolkit();
-	protected Image icon=tk.getImage(JNode.class.getResource("circle.png"));
-    protected Integer size;
+	protected Image baseIcon = tk.getImage(JNode.class.getResource("circle.png")); 
+	protected Image icon;
+    protected Integer userSize;
+    protected Integer drawSize;
+    protected double zcoord = -1;
     protected Node node;
+    public static double camheight=200;
 
     public JNode(Node node){
         this.node=node;
         this.setToolTipText(node.toString());
         addMouseListener(this);
         addMouseMotionListener(this);
+        addMouseWheelListener(this);
         setContentAreaFilled(false);
         setBorderPainted(false);
-        size=(Integer)node.getProperty("size"); if (size==null) size = 8;
-        String desiredIconPath=(String)node.getProperty("icon");
-        if (desiredIconPath!=null)
-        	icon=tk.getImage(JNode.class.getResource(desiredIconPath));
-        icon=icon.getScaledInstance(size*2, size*2, Image.SCALE_FAST);
-        setIcon(new ImageIcon(icon));      
-        
+        userSize=node.hasProperty("size")?(Integer)node.getProperty("size"):8;
+        drawSize=userSize;
+        if (node.hasProperty("icon"))
+        	baseIcon=tk.getImage(JNode.class.getResource((String)node.getProperty("icon")));
         update();
     }
     public void update(){
-    	setBounds((int)node.getX()-size, (int)node.getY()-size, size*2, size*2);
+    	if (node.getZ() != zcoord){
+    		zcoord = node.getZ();
+    		drawSize = (int)(userSize * camheight/(camheight-zcoord));
+            icon=baseIcon.getScaledInstance(drawSize*2, drawSize*2, Image.SCALE_DEFAULT);
+            setIcon(new ImageIcon(icon));
+    	}
+    	setBounds((int)node.getX()-drawSize, (int)node.getY()-drawSize, drawSize*2, drawSize*2);
     }
     public void paint(Graphics g){
     	Graphics2D g2d = (Graphics2D) g;
     	double direction=this.node.getDirection();
     	if(direction!=Math.PI/2){
     		AffineTransform newXform = g2d.getTransform();
-    		newXform.rotate(direction+Math.PI/2, size, size);
+    		newXform.rotate(direction+Math.PI/2, drawSize, drawSize);
     		g2d.setTransform(newXform);
     	}
         g2d.drawImage(this.icon, 0, 0, null);
         String sc=node.getColor();
     	if (sc != "none") try{
     		g2d.setColor((Color)Color.class.getField(sc).get(sc));
-    		g2d.fillOval(size/2, size/2, size, size);
+    		g2d.fillOval(drawSize/2, drawSize/2, drawSize, drawSize);
     	}catch(Exception e){System.err.println("Color "+sc+" is not supported.");}
     }
     // EVENTS
@@ -75,11 +85,21 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         	node.getTopology().selectNode(node);
     }
     public void mouseDragged(MouseEvent e){
-        node.translate((int)e.getX()-size,(int)e.getY()-size);
+        node.translate((int)e.getX()-drawSize,(int)e.getY()-drawSize);
     }
     public void mouseClicked(MouseEvent e){}
     public void mouseEntered(MouseEvent e){}
     public void mouseExited(MouseEvent e){}
     public void mouseReleased(MouseEvent e){}
     public void mouseMoved(MouseEvent e){}
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int notches = e.getWheelRotation();
+		double z = node.getZ()-2*notches;
+		if (z > .8*camheight)
+			z = .8*camheight;
+		if (z < 0)
+			z = 0;
+		System.out.println(z);
+		node.setLocation(node.getX(), node.getY(), z);
+	}
 }
