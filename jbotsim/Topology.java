@@ -444,10 +444,10 @@ public class Topology extends _Properties{
     void updateWirelessLink(Node n1, Node n2){
     	Link l = n1.getOutLinkTo(n2);
     	boolean linkExisted = (l==null)?false:true;
-    	boolean linkExists = wlinkcalc.isHeardBy(n1, n2); 
-    	if (linkExists && !linkExisted)
+    	boolean linkExists = wlinkcalc.isHeardBy(n1, n2);
+    	if (!linkExisted && linkExists)
     		addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
-    	else if (!linkExists && linkExisted)
+    	else if (linkExisted && l.isWireless() && !linkExists)
     			removeLink(l);
     }
     /**
