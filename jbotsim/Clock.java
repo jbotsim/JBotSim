@@ -28,7 +28,7 @@ public class Clock{
 	private static TreeMap<ClockListener, Integer> listeners=
 		new TreeMap<ClockListener, Integer>(clock.listenerComparator);
 	private static HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
-	private Timer timer=new Timer(10,new ActionHandler());
+	private Timer timer=new Timer(10, new ActionHandler());
 	private ListenerComparator listenerComparator=new ListenerComparator();
 	private Integer time=0;
 	
