@@ -600,6 +600,10 @@ public class Node extends _Properties implements Comparable<Node>{
     public void removeMovementListener(MovementListener listener){
         movementListeners.remove(listener);
     }
+    /**
+     * Returns the distance between this node and the specified node.
+     * @param n The other node.
+     */
     public double distance(Node n){
         return coords.distance(n.coords);
     }
@@ -636,7 +640,7 @@ public class Node extends _Properties implements Comparable<Node>{
     }
     /**
      * Returns true if the distance to the given point is less than threshold.
-     * @param n The given point.
+     * @param x,y The given point.
      * @param threshold The threshold distance.
      */
     public boolean isWithin(double x, double y, double threshold){
@@ -644,7 +648,7 @@ public class Node extends _Properties implements Comparable<Node>{
     }
     /**
      * Returns true if the distance to the given point is less than threshold.
-     * @param n The given point.
+     * @param x,y The given point.
      * @param threshold The threshold distance.
      */
     public boolean isWithin(double x, double y, double z, double threshold){
@@ -655,7 +659,7 @@ public class Node extends _Properties implements Comparable<Node>{
     	if (topo!=null)
     		union.addAll(topo.movementListeners);
         for (MovementListener ml : union)
-            ml.nodeMoved(this);
+            ml.onMove(this);
     }
     public int compareTo(Node o){
     	return (toString().compareTo(o.toString()));

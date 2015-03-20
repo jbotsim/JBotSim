@@ -496,7 +496,7 @@ public class Topology extends _Properties{
     	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
     	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
     	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
-    		cl.linkAdded(l);
+    		cl.onLinkAdded(l);
     }
     protected void notifyLinkRemoved(Link l){
     	boolean directed=(l.type==Type.DIRECTED)?true:false;
@@ -504,19 +504,19 @@ public class Topology extends _Properties{
     	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
     	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
     	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
-    		cl.linkRemoved(l);
+    		cl.onLinkRemoved(l);
     }
     protected void notifyNodeAdded(Node node){
         for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
-        	tl.nodeAdded(node);
+        	tl.onNodeAdded(node);
     }
     protected void notifyNodeRemoved(Node node){
         for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
-        	tl.nodeRemoved(node);
+        	tl.onNodeRemoved(node);
     }
     protected void notifyNodeSelected(Node node){
         for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
-        	tl.nodeSelected(node);
+        	tl.onSelection(node);
     }
     void updateWirelessLinksFor(Node n){
         for (Node n2 : nodes)

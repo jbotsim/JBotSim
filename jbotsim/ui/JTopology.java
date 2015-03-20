@@ -63,9 +63,9 @@ public class JTopology extends JPanel{
         super.addMouseListener(handler);
         super.setPreferredSize(topo.getDimensions());
         for (Node n : topo.getNodes())
-        	handler.nodeAdded(n);
+        	handler.onNodeAdded(n);
         for (Link l : topo.getLinks())
-        	handler.linkAdded(l);
+        	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
     }
     /**
@@ -141,26 +141,26 @@ public class JTopology extends JPanel{
     }
 	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{
-	    public void nodeAdded(Node n){
+	    public void onNodeAdded(Node n){
 	    	JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
 	        n.addPropertyListener(this);
 	        add(jv);
 	        updateUI();
 	    }
-	    public void nodeRemoved(Node n){
+	    public void onNodeRemoved(Node n){
 	    	JNode jn=(JNode)n.getProperty("jnode");
 	        remove(jn);
 	        updateUI();
 	    }
-	    public void linkAdded(Link l){
+	    public void onLinkAdded(Link l){
 	    	l.addPropertyListener(this);
 	    	updateUI();
 	    }
-	    public void linkRemoved(Link l){
+	    public void onLinkRemoved(Link l){
 	    	updateUI();
 	    }	    
-	    public void nodeMoved(Node n) {
+	    public void onMove(Node n) {
 	    	updateUI();
 	    	((JNode)n.getProperty("jnode")).update();
 	    }

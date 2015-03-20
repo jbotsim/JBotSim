@@ -14,9 +14,9 @@ package jbotsim.event;
 import jbotsim.Node;
 
 public interface SelectionListener{
-	/**
-	 * Notifies the underlying listener that a node has selected.
-	 * @param node The selected node.
-	 */
-    public void nodeSelected(Node node);
+    /**
+     * Notifies the underlying listener that a node has selected.
+     * @param node The selected node.
+     */
+    public void onSelection(Node node);
 }

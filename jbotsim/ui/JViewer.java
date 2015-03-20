@@ -93,6 +93,7 @@ public class JViewer{
    		jtp.addActionCommand("Set clock speed");
         jtp.addActionCommand("Pause or resume execution");
         jtp.addActionCommand("Reset nodes");
+		jtp.addActionCommand("Export topology");
    		jtp.addActionListener(handler);
     	if (windowed){ // This JViewer creates its own window
 	   		window=new JFrame();
@@ -192,6 +193,8 @@ public class JViewer{
                     Clock.resume();
             }else if (cmd.equals("Reset nodes")){
                 jtp.topo.reset();
+			}else if (cmd.equals("Export topology")){
+				System.out.println(jbotsimx.Tikz.exportTopology(jtp.topo));
             }
 		}
 	}

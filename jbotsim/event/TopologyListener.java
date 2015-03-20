@@ -14,16 +14,16 @@ package jbotsim.event;
 import jbotsim.Node;
 
 public interface TopologyListener{
-	/**
-	 * Notifies the underlying listener that a node has been added to the 
+    /**
+     * Notifies the underlying listener that a node has been added to the
      * topology.
-	 * @param node The added node.
-	 */
-    public void nodeAdded(Node node);
+     * @param node The added node.
+     */
+    public void onNodeAdded(Node node);
     /**
      * Notifies the underlying listener that a node has been removed to the 
      * topology.
      * @param node The removed node.
      */
-    public void nodeRemoved(Node node);
+    public void onNodeRemoved(Node node);
 }

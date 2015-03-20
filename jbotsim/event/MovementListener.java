@@ -14,9 +14,9 @@ package jbotsim.event;
 import jbotsim.Node;
 
 public interface MovementListener{
-	/**
-	 * Notifies the underlying listener that a node has moved.
-	 * @param node The node.
-	 */
-    public void nodeMoved(Node node);
+    /**
+     * Notifies the underlying listener that a node has moved.
+     * @param node The node.
+     */
+    public void onMove(Node node);
 }

@@ -18,10 +18,10 @@ public interface ConnectivityListener {
      * Notifies the underlying listener that a link has been added.
      * @param link The added link.
      */
-    public void linkAdded(Link link);
+    public void onLinkAdded(Link link);
     /**
      * Notifies the underlying listener that a link has been removed.
      * @param link The removed link.
      */
-    public void linkRemoved(Link link);
+    public void onLinkRemoved(Link link);
 }
