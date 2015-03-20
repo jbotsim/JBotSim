@@ -14,7 +14,6 @@ package jbotsim;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -38,7 +37,7 @@ public class Topology extends _Properties{
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     boolean linkUpdate = true;
-    
+
     /**
      * Creates a topology.
      */
@@ -49,8 +48,15 @@ public class Topology extends _Properties{
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
-    	this();
-    	setDimensions(width, height);
+        this();
+        setDimensions(width, height);
+    }
+    /**
+     * Sets the default node model to the given node instance.
+     * @param node
+     */
+    public void setDefaultNodeModel(Node node){
+        Node.setDefaultModel(node);
     }
     /**
      * Gets a reference on the message engine of this topology.
@@ -78,13 +84,13 @@ public class Topology extends _Properties{
      * Sets the topology dimensions as indicated.
      */
     public void setDimensions(int width, int height){
-    	dimensions = new Dimension(width,height);
+        dimensions = new Dimension(width,height);
     }
     /**
      * Returns the topology dimensions.
      */
     public Dimension getDimensions(){
-    	return new Dimension(dimensions);
+        return new Dimension(dimensions);
     }
     /**
      * Reset the color and width of nodes and links, then calls the
@@ -134,7 +140,7 @@ public class Topology extends _Properties{
      * @param y The ordinate of the location.
      */
     public void addNode(double x, double y){
-    	addNode(x, y, Node.newInstanceOfModel("default"));
+        addNode(x, y, Node.newInstanceOfModel("default"));
     }
     /**
      * Adds the specified node to this topology at the specified location.
@@ -143,18 +149,18 @@ public class Topology extends _Properties{
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
-    	boolean wasRunning=false;
-    	if (Clock.isRunning()){
-    		Clock.pause();
-    		wasRunning=true;
-    	}
-    	Clock.pause(); // to be removed.
+        boolean wasRunning=false;
+        if (Clock.isRunning()){
+            Clock.pause();
+            wasRunning=true;
+        }
+        Clock.pause(); // to be removed.
         if (x == -1)
-        	x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
+            x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
-        	y = (new Random()).nextDouble() * (dimensions.height - 12) + 6;
-    	if (n.getX()==0 && n.getY()==0)
-    		n.setLocation(x, y);
+            y = (new Random()).nextDouble() * (dimensions.height - 12) + 6;
+        if (n.getX()==0 && n.getY()==0)
+            n.setLocation(x, y);
 
         nodes.add(n);
         n.topo=this;
@@ -163,9 +169,9 @@ public class Topology extends _Properties{
         Clock.removeClockListener(n);// Transitional FIXME
         Clock.addClockListener(n, 1);
         n.onStart();
-       	updateWirelessLinksFor(n);
+        updateWirelessLinksFor(n);
         if (wasRunning)
-        	Clock.resume();
+            Clock.resume();
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -173,31 +179,32 @@ public class Topology extends _Properties{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
-    	boolean wasRunning=false;
-    	if (Clock.isRunning()){
-    		Clock.pause();
-    		wasRunning=true;
-    	}
-    	for (Link l : n.getLinks(true))
+        boolean wasRunning=false;
+        if (Clock.isRunning()){
+            Clock.pause();
+            wasRunning=true;
+        }
+        for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
         nodes.remove(n);
         n.onTopologyDetachment(this);
         n.topo=null;
         if (wasRunning)
-        	Clock.resume();
+            Clock.resume();
     }
     public void selectNode(Node n){
-    	boolean wasRunning=false;
-    	if (Clock.isRunning()){
-    		Clock.pause();
-    		wasRunning=true;
-    	}
-    	selectedNode = n;
-    	notifyNodeSelected(n);
+        boolean wasRunning=false;
+        if (Clock.isRunning()){
+            Clock.pause();
+            wasRunning=true;
+        }
+        selectedNode = n;
+        n.onSelection();
+        notifyNodeSelected(n);
         if (wasRunning)
-        	Clock.resume();
-   }
+            Clock.resume();
+    }
     /**
      * Adds the specified link to this topology. Calling this method makes
      * sense only for wired links, since wireless links are automatically
@@ -222,33 +229,33 @@ public class Topology extends _Properties{
                 Link edge=new Link(l.source,l.destination,Link.Type.UNDIRECTED,l.mode);
                 edges.add(edge);
                 if (!silent)
-                	notifyLinkAdded(edge);
+                    notifyLinkAdded(edge);
             }
         }else{ // UNDIRECTED
-        	Link arc1 = l.source.outLinks.get(l.destination);
-        	Link arc2 = l.destination.outLinks.get(l.source);
+            Link arc1 = l.source.outLinks.get(l.destination);
+            Link arc2 = l.destination.outLinks.get(l.source);
             if (arc1 == null){
                 arc1 = new Link(l.source,l.destination,Link.Type.DIRECTED);
                 arcs.add(arc1);
                 arc1.source.outLinks.put(arc1.destination, arc1);
                 if (!silent)
-                	notifyLinkAdded(arc1);
+                    notifyLinkAdded(arc1);
             }else{
-            	arc1.mode = l.mode;
+                arc1.mode = l.mode;
             }
             if (arc2 == null){
                 arc2 = new Link(l.destination,l.source,Link.Type.DIRECTED);
                 arcs.add(arc2);
                 arc2.source.outLinks.put(arc2.destination, arc2);
                 if (!silent)
-                	notifyLinkAdded(arc2);
+                    notifyLinkAdded(arc2);
             }else{
-            	arc2.mode = l.mode;
+                arc2.mode = l.mode;
             }
             edges.add(l);
         }
         if (!silent)
-        	notifyLinkAdded(l);
+            notifyLinkAdded(l);
     }
     /**
      * Removes the specified link from this topology. Calling this method makes
@@ -291,7 +298,7 @@ public class Topology extends _Properties{
     public List<Node> getNodes(){
         return new ArrayList<Node>(nodes);
     }
-    /** 
+    /**
      * Returns a list containing all undirected links in this topology. The 
      * returned ArrayList can be subsequently modified without effect on the
      * topology.
@@ -299,7 +306,7 @@ public class Topology extends _Properties{
     public List<Link> getLinks(){
         return getLinks(false);
     }
-    /** 
+    /**
      * Returns a list containing all links of the specified type in this
      * topology. The returned ArrayList can be subsequently modified without
      * effect on the topology.
@@ -314,7 +321,7 @@ public class Topology extends _Properties{
         List<Link> allLinks=(directed)?arcs:edges;
         for(Link l : allLinks)
             switch(pos){
-                case 0:	if(l.source==n || l.destination==n) 
+                case 0:	if(l.source==n || l.destination==n)
                     result.add(l); break;
                 case 1:	if(l.source==n)
                     result.add(l); break;
@@ -339,8 +346,8 @@ public class Topology extends _Properties{
      */
     public Link getLink(Node from, Node to, boolean directed){
         if (directed){
-        	return from.outLinks.get(to);
-        	//Link l=new Link(from, to,Link.Type.DIRECTED);
+            return from.outLinks.get(to);
+            //Link l=new Link(from, to,Link.Type.DIRECTED);
             //int pos=arcs.indexOf(l);
             //return (pos != -1)?arcs.get(pos):null;
         }else{
@@ -354,7 +361,7 @@ public class Topology extends _Properties{
      * @param wlinkcalc An object that implements WLinkCalculator.
      */
     public void setWLinkCalculator(WLinkCalculator wlinkcalc){
-    	this.wlinkcalc = wlinkcalc;
+        this.wlinkcalc = wlinkcalc;
     }
     /**
      * Registers the specified topology listener to this topology. The listener
@@ -374,9 +381,9 @@ public class Topology extends _Properties{
      */
     public void addConnectivityListener(ConnectivityListener listener, boolean directed){
         if (directed)
-        	cxDirectedListeners.add(listener); 
-        else 
-        	cxUndirectedListeners.add(listener);
+            cxDirectedListeners.add(listener);
+        else
+            cxUndirectedListeners.add(listener);
     }
     /**
      * Unregisters the specified connectivity listener from the 'undirected' 
@@ -384,7 +391,7 @@ public class Topology extends _Properties{
      * @param listener The listener to unregister.
      */
     public void removeConnectivityListener(ConnectivityListener listener){
-    	cxUndirectedListeners.remove(listener);
+        cxUndirectedListeners.remove(listener);
     }
     /**
      * Unregisters the specified connectivity listener from the listeners 
@@ -394,10 +401,10 @@ public class Topology extends _Properties{
      * (<tt>true</tt> for directed, <tt>false</tt> for undirected).
      */
     public void removeConnectivityListener(ConnectivityListener listener, boolean directed){
-        if (directed) 
-        	cxDirectedListeners.remove(listener); 
-        else 
-        	cxUndirectedListeners.remove(listener);
+        if (directed)
+            cxDirectedListeners.remove(listener);
+        else
+            cxUndirectedListeners.remove(listener);
     }
     /**
      * Registers the specified movement listener to this topology. The
@@ -427,7 +434,7 @@ public class Topology extends _Properties{
      * @param listener The listener to unregister.
      */
     public void removeTopologyListener(TopologyListener listener){
-    	topologyListeners.remove(listener);
+        topologyListeners.remove(listener);
     }
     /**
      * Registers the specified message listener to this topology. The listener
@@ -435,14 +442,14 @@ public class Topology extends _Properties{
      * @param listener The message listener.
      */
     public void addMessageListener(MessageListener listener){
-    	messageListeners.add(listener);
+        messageListeners.add(listener);
     }
     /**
      * Unregisters the specified message listener for this topology.
      * @param listener The message listener. 
      */
     public void removeMessageListener(MessageListener listener){
-    	messageListeners.remove(listener);
+        messageListeners.remove(listener);
     }
     /**
      * Registers the specified selection listener to this topology. The listener
@@ -499,48 +506,58 @@ public class Topology extends _Properties{
         Clock.removeClockListener(listener);
     }
     protected void notifyLinkAdded(Link l){
-    	boolean directed=(l.type==Type.DIRECTED)?true:false;
-    	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
-    	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
-    	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
-    	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
-    		cl.onLinkAdded(l);
+        if (l.type==Type.DIRECTED) {
+            l.endpoint(0).onDirectedLinkAdded(l);
+            l.endpoint(1).onDirectedLinkAdded(l);
+            for (ConnectivityListener cl : cxDirectedListeners)
+                cl.onLinkAdded(l);
+        }else {
+            l.endpoint(0).onLinkAdded(l);
+            l.endpoint(1).onLinkAdded(l);
+            for (ConnectivityListener cl : cxUndirectedListeners)
+                cl.onLinkAdded(l);
+        }
     }
     protected void notifyLinkRemoved(Link l){
-    	boolean directed=(l.type==Type.DIRECTED)?true:false;
-    	LinkedHashSet<ConnectivityListener> union=new LinkedHashSet<ConnectivityListener>(directed?cxDirectedListeners:cxUndirectedListeners);
-    	union.addAll(directed?l.source.cxDirectedListeners:l.source.cxUndirectedListeners);
-    	union.addAll(directed?l.destination.cxDirectedListeners:l.destination.cxUndirectedListeners);
-    	for (ConnectivityListener cl : new ArrayList<ConnectivityListener>(union))
-    		cl.onLinkRemoved(l);
+        if (l.type==Type.DIRECTED) {
+            l.endpoint(0).onDirectedLinkRemoved(l);
+            l.endpoint(1).onDirectedLinkRemoved(l);
+            for (ConnectivityListener cl : cxDirectedListeners)
+                cl.onLinkRemoved(l);
+        }else {
+            l.endpoint(0).onLinkRemoved(l);
+            l.endpoint(1).onLinkRemoved(l);
+            for (ConnectivityListener cl : cxUndirectedListeners)
+                cl.onLinkRemoved(l);
+        }
     }
     protected void notifyNodeAdded(Node node){
         for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
-        	tl.onNodeAdded(node);
+            tl.onNodeAdded(node);
     }
     protected void notifyNodeRemoved(Node node){
         for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
-        	tl.onNodeRemoved(node);
+            tl.onNodeRemoved(node);
     }
     protected void notifyNodeSelected(Node node){
         for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
-        	tl.onSelection(node);
+            tl.onSelection(node);
     }
     void updateWirelessLinksFor(Node n){
         for (Node n2 : nodes)
-        	if (n2!=n){
-        		updateWirelessLink(n, n2);
-        		updateWirelessLink(n2, n);
-        	}
-    }    
+            if (n2!=n){
+                updateWirelessLink(n, n2);
+                updateWirelessLink(n2, n);
+            }
+    }
     void updateWirelessLink(Node n1, Node n2){
-    	Link l = n1.getOutLinkTo(n2);
-    	boolean linkExisted = (l==null)?false:true;
-    	boolean linkExists = wlinkcalc.isHeardBy(n1, n2);
-    	if (!linkExisted && linkExists)
-    		addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
-    	else if (linkExisted && l.isWireless() && !linkExists)
-    			removeLink(l);
+        Link l = n1.getOutLinkTo(n2);
+        boolean linkExisted = (l==null)?false:true;
+        boolean linkExists = wlinkcalc.isHeardBy(n1, n2);
+        if (!linkExisted && linkExists)
+            addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
+        else if (linkExisted && l.isWireless() && !linkExists)
+            removeLink(l);
     }
     /**
      * Returns a string representation of this topology. The output of this
@@ -549,35 +566,35 @@ public class Topology extends _Properties{
      * here (not the topology's properties).
      */
     public String toString(){
-		StringBuffer res = new StringBuffer();
-		for (Node n : nodes)
-			res.append(n.toString() + " " + n.coords.toString().substring(14) + "\n");
-		for (Link l : getLinks())
-			if (!l.isWireless())
-				res.append(l.toString()+ "\n");
-		return res.toString();
-	}
+        StringBuffer res = new StringBuffer();
+        for (Node n : nodes)
+            res.append(n.toString() + " " + n.coords.toString().substring(14) + "\n");
+        for (Link l : getLinks())
+            if (!l.isWireless())
+                res.append(l.toString()+ "\n");
+        return res.toString();
+    }
     /**
      * Imports nodes and wired links from the specified string representation of a 
      * topology.
      * @param s The string representation.
      */
     public void fromString(String s){
-		HashMap<String,Node> nodeTable=new HashMap<String,Node>();
-    	while(s.indexOf("[")>0){	
-    		Node n=new Node();
-    		String id=s.substring(0, s.indexOf(" "));
-    		n.setProperty("id", id);
-    		nodeTable.put(id, n);
-    		addNode(new Double(s.substring(s.indexOf("[")+1,s.indexOf(","))),new Double(s.substring(s.indexOf(",")+2,s.indexOf("]"))),n);
-    		s=s.substring(s.indexOf("\n")+1);
-    	}
-    	while(s.indexOf("--")>0){
-    		Node n1=nodeTable.get(s.substring(0,s.indexOf(" ")));
-    		Node n2=nodeTable.get(s.substring(s.indexOf(">")+2,s.indexOf("\n")));
-    		Type type=(s.indexOf("<")>0 && s.indexOf("<")<s.indexOf("\n"))?Type.UNDIRECTED:Type.DIRECTED;
-    		addLink(new Link(n1,n2,type,Link.Mode.WIRED));
-    		s=s.substring(s.indexOf("\n")+1);
-    	}
+        HashMap<String,Node> nodeTable=new HashMap<String,Node>();
+        while(s.indexOf("[")>0){
+            Node n=new Node();
+            String id=s.substring(0, s.indexOf(" "));
+            n.setProperty("id", id);
+            nodeTable.put(id, n);
+            addNode(new Double(s.substring(s.indexOf("[")+1,s.indexOf(","))),new Double(s.substring(s.indexOf(",")+2,s.indexOf("]"))),n);
+            s=s.substring(s.indexOf("\n")+1);
+        }
+        while(s.indexOf("--")>0){
+            Node n1=nodeTable.get(s.substring(0,s.indexOf(" ")));
+            Node n2=nodeTable.get(s.substring(s.indexOf(">")+2,s.indexOf("\n")));
+            Type type=(s.indexOf("<")>0 && s.indexOf("<")<s.indexOf("\n"))?Type.UNDIRECTED:Type.DIRECTED;
+            addLink(new Link(n1,n2,type,Link.Mode.WIRED));
+            s=s.substring(s.indexOf("\n")+1);
+        }
     }
 }

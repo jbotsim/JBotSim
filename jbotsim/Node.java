@@ -20,14 +20,10 @@ import java.util.List;
 import java.util.Random;
 
 import jbotsim.event.ClockListener;
-import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node>{
-	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
-    List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
-    List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
-    List<MovementListener> movementListeners=new ArrayList<MovementListener>();
+    static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
     List<Message> mailBox=new ArrayList<Message>();
     List<Message> sendQueue=new ArrayList<Message>();
     HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
@@ -55,7 +51,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public Node(Node model){
         if (model!=null){
-        	properties=new HashMap<String,Object>(model.properties);
+            properties=new HashMap<String,Object>(model.properties);
             communicationRange=model.communicationRange;
             sensingRange=model.sensingRange;
             color=model.color;
@@ -112,6 +108,11 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void onTopologyDetachment(Topology tp){
     }
     /**
+     * Called when this node is selected (e.g. middle click in the UI)
+     */
+    public void onSelection(){
+    }
+    /**
      * Override this method to reset this node's state
      */
     public void onStart(){
@@ -122,13 +123,38 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void onClock(){
     }
     /**
+     * Override this method to perform some action when the node moves.
+     */
+    public void onMove(){
+    }
+    /**
      * Called when this node receives a message
      */
     public void onMessage(Message message){
         if (mailBox.size() < 100) // FIXME (arbitrary threshold)
             mailBox.add(message);
     }
-   /**
+    /**
+     * Called when an adjacent undirected link is added
+     */
+    public void onLinkAdded(Link link){
+    }
+    /**
+     * Called when an adjacent undirected link is removed
+     */
+    public void onLinkRemoved(Link link){
+    }
+    /**
+     * Called when an adjacent directed link is added
+     */
+    public void onDirectedLinkAdded(Link link){
+    }
+    /**
+     * Called when an adjacent directed link is removed
+     */
+    public void onDirectedLinkRemoved(Link link){
+    }
+    /**
      * Returns the x-coordinate of this node.
      */
     public double getX(){
@@ -150,39 +176,39 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the color of this node as a string.
      */
     public String getColor(){
-    	return new String(color);
+        return new String(color);
     }
     /**
      * Returns the list of all possible colors.
      */
     public static String[] possibleColors(){
-    	return new String[]{"black","blue","cyan","darkGray","gray","green",
-    			"lightGray","magenta","orange","pink","red","white","yellow"};    	
+        return new String[]{"black","blue","cyan","darkGray","gray","green",
+                "lightGray","magenta","orange","pink","red","white","yellow"};
     }
     /**
      * Sets the color of this node as a string.
      */
     public void setColor(String color){
-    	if (color.equals("random")){
-    		String[] colors=possibleColors();
-    		this.color=colors[(new Random()).nextInt(colors.length)];
-    	}else
-    		this.color=(color==null)?"none":color;
-		setProperty("color", color); // Used for property notification
+        if (color.equals("random")){
+            String[] colors=possibleColors();
+            this.color=colors[(new Random()).nextInt(colors.length)];
+        }else
+            this.color=(color==null)?"none":color;
+        setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the state of this node.
      */
     public Object getState(){
-    	return state;
+        return state;
     }
     /**
      * Sets the state of this node. This text will appear as a tooltip 
      * when the mouse cursor is held some time over the node.
      */
     public void setState(Object state){
-    	this.state=state;
-		setProperty("state", state); // Used for property notification
+        this.state=state;
+        setProperty("state", state); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -199,25 +225,25 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setCommunicationRange(double range) {
         communicationRange = range;
         if (topo!=null)
-        	topo.updateWirelessLinksFor(this);
+            topo.updateWirelessLinksFor(this);
     }
     /**
      * Indicates whether this node has wireless capabilities enabled.
      */
     public boolean isWirelessEnabled(){
-    	return isWirelessEnabled;
+        return isWirelessEnabled;
     }
     /**
      * Enables this node's wireless capabilities.
      */
     public void enableWireless(){
-    	isWirelessEnabled = true;
+        isWirelessEnabled = true;
     }
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless(){
-    	isWirelessEnabled = false;
+        isWirelessEnabled = false;
     }
     /**
      * Returns the sensing range of this node (as a radius).
@@ -247,7 +273,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * without explicit model name.
      */
     public static Node getDefaultModel(){
-    	return getModel("default");
+        return getModel("default");
     }
     /**
      * Adds the given node instance as a model.
@@ -276,28 +302,28 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @return pouet
      */
     @SuppressWarnings("unchecked")
-	public static Node newInstanceOfModel(String modelName){
-    	Node model=getModel(modelName);
-		Class modelClass=model.getClass();
-    	try {
-    		Node node = (Node) modelClass.getConstructor().newInstance();
-    		node.properties=new HashMap<String,Object>(model.properties);
-    		node.communicationRange=model.communicationRange;
-    		node.sensingRange=model.sensingRange;
-    		node.isWirelessEnabled=model.isWirelessEnabled;
-    		if (node.color=="none")
-    			node.color=model.color;
-    		node.state=model.state;
-    		return node;
-		} catch (Exception e) {
-			System.err.println("Problem of model instantiation.."); return new Node();
-		}
+    public static Node newInstanceOfModel(String modelName){
+        Node model=getModel(modelName);
+        Class modelClass=model.getClass();
+        try {
+            Node node = (Node) modelClass.getConstructor().newInstance();
+            node.properties=new HashMap<String,Object>(model.properties);
+            node.communicationRange=model.communicationRange;
+            node.sensingRange=model.sensingRange;
+            node.isWirelessEnabled=model.isWirelessEnabled;
+            if (node.color=="none")
+                node.color=model.color;
+            node.state=model.state;
+            return node;
+        } catch (Exception e) {
+            System.err.println("Problem of model instantiation.."); return new Node();
+        }
     }
     /**
      * Returns the location of this node (as a 2D point).
      */
     public Point2D getLocation(){
-    	return new Point2D.Double(coords.getX(), coords.getY());
+        return new Point2D.Double(coords.getX(), coords.getY());
     }
     /**
      * Changes this node's location to the specified coordinates.
@@ -307,7 +333,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setLocation(double x, double y){
         coords.setLocation(x, y);
         if (topo!=null)
-        	topo.updateWirelessLinksFor(this);
+            topo.updateWirelessLinksFor(this);
         notifyNodeMoved();
     }
     /**
@@ -319,7 +345,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setLocation(double x, double y, double z){
         coords.setLocation(x, y, z);
         if (topo!=null)
-        	topo.updateWirelessLinksFor(this);
+            topo.updateWirelessLinksFor(this);
         notifyNodeMoved();
     }
     /**
@@ -327,14 +353,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param loc The new location point.
      */
     public void setLocation(Point2D loc){
-    	setLocation(loc.getX(), loc.getY());
+        setLocation(loc.getX(), loc.getY());
     }
     /**
      * Changes this node's location modulo the size of topology.
      */
     public void wrapLocation(){
-    	Dimension dim = topo.dimensions;
-    	setLocation((coords.getX() + dim.width) % dim.width, (coords.getY() + dim.height) % dim.height);
+        Dimension dim = topo.dimensions;
+        setLocation((coords.getX() + dim.width) % dim.width, (coords.getY() + dim.height) % dim.height);
     }
     /**
      * Translates the location of this node by the specified coordinates.
@@ -416,7 +442,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @return The requested link, or <tt>null</tt> if no such link is found.
      */
     public Link getOutLinkTo(Node n){
-    	return outLinks.get(n);
+        return outLinks.get(n);
     }
     /**
      * Returns the undirected link whose endpoints are this node and the
@@ -441,7 +467,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * on the topology.
      */
     public List<Link> getOutLinks(){
-        return new ArrayList<Link>(outLinks.values()); 	
+        return new ArrayList<Link>(outLinks.values());
     }
     /**
      * Returns a list containing all undirected links adjacent to this node.
@@ -494,8 +520,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public List<Node> getSensedObjects(){
         ArrayList<Node> sensedNodes=new ArrayList<Node>();
         for (Node n : topo.getNodes())
-        	if (distance(n) < sensingRange && n!=this)
-        		sensedNodes.add(n);
+            if (distance(n) < sensingRange && n!=this)
+                sensedNodes.add(n);
         return sensedNodes;
     }
     /**
@@ -503,7 +529,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
      */
     public boolean hasNeighbors(){
-    	return getLinks().size()>0;
+        return getLinks().size()>0;
     }
     /**
      * Returns a list containing every node located at the opposite endpoint
@@ -568,66 +594,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         send(null, message);
     }
     /**
-     * Registers the specified node listener to this node. The listener
-     * will be notified whenever an undirected link incident to this node 
-     * appears or disappears.
-     * @param listener The connectivity listener.
-     */
-    public void addConnectivityListener(ConnectivityListener listener){
-        addConnectivityListener(listener, false);
-    }
-    /**
-     * Registers the specified connectivity listener to this node. The listener
-     * will be notified whenever a link incident to this node appears or 
-     * disappears. Depending on the <tt>directed</tt> parameter, the listener
-     * will be notified only for directed or undirected links. Listening both
-     * types of links thus implies two different registrations by this method. 
-     * @param listener The connectivity listener.
-     * @param directed The type of link to be listened to.
-     */
-    public void addConnectivityListener(ConnectivityListener listener, boolean directed){
-        if (directed)
-            cxDirectedListeners.add(listener);
-        else
-            cxUndirectedListeners.add(listener);
-    }
-    /**
-     * Unregisters the specified node listener for this node.
-     * The listener will be removed from the list of 'undirected' listener. 
-     * @param listener The connectivity listener. 
-     */
-    public void removeConnectivityListener(ConnectivityListener listener){
-        removeConnectivityListener(listener, false);
-    }
-    /**
-     * Unregisters the specified connectivity listener for this node.
-     * Depending on the parameter <tt>directed</tt>, the listener will be
-     * removed from the list of 'directed' or 'undirected' listeners.
-     * @param listener The connectivity listener. 
-     * @param directed The type of link that was listened to.
-     */
-    public void removeConnectivityListener(ConnectivityListener listener, boolean directed){
-        if (directed)
-            cxDirectedListeners.remove(listener);
-        else
-            cxUndirectedListeners.remove(listener);
-    }
-    /**
-     * Registers the specified movement listener to this node. The listener
-     * will be notified every time the location of this node changes. 
-     * @param listener The movement listener.
-     */
-    public void addMovementListener(MovementListener listener){
-        movementListeners.add(listener);
-    }
-    /**
-     * Unregisters the specified movement listener for this node.
-     * @param listener The movement listener. 
-     */
-    public void removeMovementListener(MovementListener listener){
-        movementListeners.remove(listener);
-    }
-    /**
      * Returns the distance between this node and the specified node.
      * @param n The other node.
      */
@@ -663,7 +629,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param threshold The threshold distance.
      */
     public boolean isWithin(Node n, double threshold){
-    	return coords.isWithin(n.coords, threshold);
+        return coords.isWithin(n.coords, threshold);
     }
     /**
      * Returns true if the distance to the given point is less than threshold.
@@ -671,7 +637,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param threshold The threshold distance.
      */
     public boolean isWithin(double x, double y, double threshold){
-    	return coords.isWithin(x, y, threshold);
+        return coords.isWithin(x, y, threshold);
     }
     /**
      * Returns true if the distance to the given point is less than threshold.
@@ -679,17 +645,16 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param threshold The threshold distance.
      */
     public boolean isWithin(double x, double y, double z, double threshold){
-    	return coords.isWithin(x, y, z, threshold);
+        return coords.isWithin(x, y, z, threshold);
     }
     protected void notifyNodeMoved(){
-    	LinkedHashSet<MovementListener> union=new LinkedHashSet<MovementListener>(movementListeners);
-    	if (topo!=null)
-    		union.addAll(topo.movementListeners);
-        for (MovementListener ml : union)
-            ml.onMove(this);
+        onMove();
+        if (topo!=null)
+            for (MovementListener ml : new ArrayList<MovementListener>(topo.movementListeners))
+                ml.onMove(this);
     }
     public int compareTo(Node o){
-    	return (toString().compareTo(o.toString()));
+        return (toString().compareTo(o.toString()));
     }
     /**
      * Returns a string representation of this node.
