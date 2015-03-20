@@ -31,10 +31,13 @@ public class TopologyGenerator {
 		topology.addLink(new Link(nodes.get(nbNodes - 1), nodes.get(0), type));
 	}
 	public static void generateGrid(Topology tp, int order){
-		int scale=(tp.getDimensions().width-50)/order;
+		generateGrid(tp, order, order);
+	}
+	public static void generateGrid(Topology tp, int orderX, int orderY){
+		int scale=(tp.getDimensions().width-50)/orderX;
 		Node.getModel("default").setCommunicationRange(scale+1);
-		for (int i=0; i<order; i++)
-			for (int j=0; j<order; j++)
+		for (int i=0; i<orderX; i++)
+			for (int j=0; j<orderY; j++)
 				tp.addNode(50+i*scale,50+j*scale,Node.newInstanceOfModel("default"));
 	}
 	public static void generateTorus(Topology tp, int order){
