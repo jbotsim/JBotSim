@@ -26,6 +26,7 @@ import java.awt.geom.AffineTransform;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import jbotsim.Link;
 import jbotsim.Node;
 
 @SuppressWarnings("serial")
@@ -38,6 +39,9 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     protected double zcoord = -1;
     protected Node node;
     public static double camheight=200;
+    protected static Node destination=null;
+    protected static Integer currentButton = 1;
+
 
     public JNode(Node node){
         this.node=node;
@@ -72,34 +76,48 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     	}
         g2d.drawImage(this.icon, 0, 0, null);
         String sc=node.getColor();
-    	if (sc != "none") try{
+    	if (!sc.equals("none")) try{
     		g2d.setColor((Color)Color.class.getField(sc).get(sc));
     		g2d.fillOval(drawSize/2, drawSize/2, drawSize, drawSize);
     	}catch(Exception e){System.err.println("Color "+sc+" is not supported.");}
     }
     // EVENTS
     public void mousePressed(MouseEvent e) {
-        if (e.getButton()==MouseEvent.BUTTON3)
-        	node.getTopology().removeNode(node);
-        else if (e.getButton()==MouseEvent.BUTTON2)
-        	node.getTopology().selectNode(node);
+        currentButton = e.getButton();
     }
     public void mouseDragged(MouseEvent e){
-        node.translate((int)e.getX()-drawSize,(int)e.getY()-drawSize);
+        if (currentButton==1)
+            node.translate((int) e.getX() - drawSize, (int) e.getY() - drawSize);
     }
     public void mouseClicked(MouseEvent e){}
-    public void mouseEntered(MouseEvent e){}
-    public void mouseExited(MouseEvent e){}
-    public void mouseReleased(MouseEvent e){}
+    public void mouseEntered(MouseEvent e){
+        if (currentButton==3) {
+            destination = node;
+        }
+    }
+    public void mouseExited(MouseEvent e){
+        destination = null;
+    }
+    public void mouseReleased(MouseEvent e){
+        if (destination != null) {
+            node.getTopology().addLink(new Link(node, destination));
+            destination = null;
+        }else {
+            if (e.getButton() == MouseEvent.BUTTON3) {
+                node.getTopology().removeNode(node);
+            } else if (e.getButton() == MouseEvent.BUTTON2)
+                node.getTopology().selectNode(node);
+        }
+        currentButton=1;
+    }
     public void mouseMoved(MouseEvent e){}
-	public void mouseWheelMoved(MouseWheelEvent e) {
-		int notches = e.getWheelRotation();
-		double z = node.getZ()-2*notches;
-		if (z > .8*camheight)
-			z = .8*camheight;
-		if (z < 0)
-			z = 0;
-		System.out.println(z);
-		node.setLocation(node.getX(), node.getY(), z);
-	}
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        int notches = e.getWheelRotation();
+        double z = node.getZ()-2*notches;
+        if (z > .8*camheight)
+            z = .8*camheight;
+        if (z < 0)
+            z = 0;
+        node.setLocation(node.getX(), node.getY(), z);
+    }
 }

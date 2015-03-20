@@ -35,7 +35,8 @@ import jbotsim.Topology;
  */
 public class JViewer{
 	protected JTopology jtp;
-	protected JSlider slideBar = new JSlider(0,800);
+    protected int width=600;
+    protected JSlider slideBar = new JSlider(0, width);
 	protected enum BarType {COMMUNICATION, SENSING, SPEED};
 	protected BarType slideBarType = null;
 	protected JFrame window = null;
@@ -47,8 +48,8 @@ public class JViewer{
     	this(new Topology(), true);
     }
 	/**
-	 * Creates a windowed viewer for the specified topology. 
-	 * @param topo The topology to be drawn and/or manipulated.
+     * Creates a windowed viewer for the specified topology.
+     * @param topo The topology to be drawn and/or manipulated.
 	 */
     public JViewer(Topology topo){
     	this(topo, true);
@@ -60,14 +61,16 @@ public class JViewer{
 	 * no window will be created and the viewer can be subsequently
 	 * integrated to another swing container (e.g. another <tt>JFrame</tt> 
 	 * or a <tt>JApplet</tt>).
-	 * @param topo The topology to be drawn and/or manipulated.
+     * @param topo The topology to be drawn and/or manipulated.
+     * @param selfContained Set this to false to avoid creating a JFrame
+     *                      (e.g. for embedding the JViewer in your own frame).
 	 */
     public JViewer(Topology topo, boolean selfContained){
     	this(new JTopology(topo), selfContained);
     }
 	/**
-	 * Creates a windowed viewer encapsulating the specified jtopology. 
-	 * @param jtopo The jtopology to be encapsulated.
+	 * Creates a windowed viewer encapsulating the specified jtopology.
+     * @param jtopo The jtopology to be encapsulated.
 	 */
     public JViewer(JTopology jtopo){
     	this(jtopo, true);
@@ -79,14 +82,17 @@ public class JViewer{
 	 * is <tt>false</tt>, no window will be created and the viewer can be 
 	 * subsequently integrated to another swing container (e.g. another 
 	 * <tt>JFrame</tt> or a <tt>JApplet</tt>).
-	 * @param jtopo The JTopology to be encapsulated.
+     * @param jtopo The JTopology to be encapsulated.
+     * @param windowed Set this to false to avoid creating a JFrame
+     *                 (e.g. for embedding the JViewer in your own frame).
 	 */
     public JViewer(JTopology jtopo, boolean windowed){
     	jtp=jtopo;
    		jtp.addActionCommand("Set communication range");
    		jtp.addActionCommand("Set sensing range");
    		jtp.addActionCommand("Set clock speed");
-   		jtp.addActionCommand("Pause / Resume");
+        jtp.addActionCommand("Pause or resume execution");
+        jtp.addActionCommand("Reset nodes");
    		jtp.addActionListener(handler);
     	if (windowed){ // This JViewer creates its own window
 	   		window=new JFrame();
@@ -153,7 +159,7 @@ public class JViewer{
 					n.setSensingRange(slideBar.getValue());
 				Node.getModel("default").setSensingRange(slideBar.getValue());			
 			}else if (slideBarType==BarType.SPEED){
-				Clock.setTimeUnit((800-slideBar.getValue())/40+1);
+				Clock.setTimeUnit((width-slideBar.getValue())/40+1);
 			}
 			jtp.updateUI();
 		}
@@ -175,16 +181,18 @@ public class JViewer{
 				jtp.updateUI();
 			}else if (cmd.equals("Set clock speed")){
 				if (slideBarType != BarType.SPEED) 
-					addSlideBar(BarType.SPEED, (800-Clock.getTimeUnit()*40));
+					addSlideBar(BarType.SPEED, (width-Clock.getTimeUnit()*40));
 				else
 					removeSlideBar();
 				jtp.updateUI();
-			}else if (cmd.equals("Pause / Resume")){
-				if (Clock.isRunning())
-					Clock.pause();
-				else
-					Clock.resume();
-			}
+            }else if (cmd.equals("Pause or resume execution")){
+                if (Clock.isRunning())
+                    Clock.pause();
+                else
+                    Clock.resume();
+            }else if (cmd.equals("Reset nodes")){
+                jtp.topo.reset();
+            }
 		}
 	}
 }

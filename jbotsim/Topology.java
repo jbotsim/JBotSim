@@ -20,11 +20,7 @@ import java.util.Random;
 
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
-import jbotsim.event.ConnectivityListener;
-import jbotsim.event.MessageListener;
-import jbotsim.event.MovementListener;
-import jbotsim.event.SelectionListener;
-import jbotsim.event.TopologyListener;
+import jbotsim.event.*;
 
 public class Topology extends _Properties{
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
@@ -32,12 +28,13 @@ public class Topology extends _Properties{
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
     List<MovementListener> movementListeners=new ArrayList<MovementListener>();
     List<MessageListener> messageListeners=new ArrayList<MessageListener>();
-    List<SelectionListener> selectionListeners;
-    Message.MessageEngine messageEngine=new Message.MessageEngine(this);
+    List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
+    List<ResetListener> resetListeners=new ArrayList<ResetListener>();
+    MessageEngine messageEngine=null;
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
-    Dimension dimensions = new Dimension(800,600);
+    Dimension dimensions = new Dimension(600,400);
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     boolean linkUpdate = true;
@@ -46,7 +43,7 @@ public class Topology extends _Properties{
      * Creates a topology.
      */
     public Topology(){
-    	selectionListeners=new ArrayList<SelectionListener>();
+        setMessageEngine(new MessageEngine());
     }
     /**
      * Creates a topology of given dimensions.
@@ -54,6 +51,22 @@ public class Topology extends _Properties{
     public Topology(int width, int height){
     	this();
     	setDimensions(width, height);
+    }
+    /**
+     * Gets a reference on the message engine of this topology.
+     */
+    public MessageEngine getMessageEngine() {
+        return messageEngine;
+    }
+    /**
+     * Sets the message engine of this topology.
+     */
+    public void setMessageEngine(MessageEngine messageEngine) {
+        if (messageEngine != null)
+            Clock.removeClockListener(this.messageEngine);
+        this.messageEngine = messageEngine;
+        messageEngine.setTopology(this);
+        Clock.addClockListener(messageEngine, 1);
     }
     /**
      * Sets the topology dimensions as indicated.
@@ -68,11 +81,36 @@ public class Topology extends _Properties{
     	return new Dimension(dimensions);
     }
     /**
+     * Reset the color and width of nodes and links, then calls the
+     * onStart() method on each node.
+     */
+    public void reset(){
+        for (Link link : edges) {
+            link.setWidth(1);
+            link.setColor("black");
+        }
+        for (Node node : nodes)
+            node.setColor("none");
+        for (ResetListener listener : resetListeners)
+            listener.onReset();
+        for (Node n : nodes)
+            n.onStart();
+    }
+    /**
      * Removes all the nodes (and links) of this topology.
      */
     public void clear(){
         for (Node n : new ArrayList<Node>(nodes))
             removeNode(n);
+    }
+    /**
+     * Removes all the ongoing messages in this topology.
+     */
+    public void clearMessages(){
+        for (Node n : nodes) {
+            n.sendQueue.clear();
+            n.mailBox.clear();
+        }
     }
     /**
      * Adds the specified node to this topology. The location of the node
@@ -116,6 +154,7 @@ public class Topology extends _Properties{
         n.topo=this;
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
+        n.onStart();
        	updateWirelessLinksFor(n);
         if (wasRunning)
         	Clock.resume();
@@ -230,6 +269,12 @@ public class Topology extends _Properties{
             edges.remove(l);
         }
         notifyLinkRemoved(l);
+    }
+    /**
+     * Returns true if this topology has at least one directed link.
+     */
+    public boolean hasDirectedLinks(){
+        return arcs.size()>2*edges.size();
     }
     /**
      * Returns a list containing all the nodes in this topology. The returned
@@ -397,14 +442,53 @@ public class Topology extends _Properties{
      * @param listener The selection listener.
      */
     public void addSelectionListener(SelectionListener listener){
-    	selectionListeners.add(listener);
+        selectionListeners.add(listener);
     }
     /**
      * Unregisters the specified selection listener for this topology.
      * @param listener The selection listener. 
      */
     public void removeSelectionListener(SelectionListener listener){
-    	selectionListeners.remove(listener);
+        selectionListeners.remove(listener);
+    }
+    /**
+     * Registers the specified reset listener to this topology. The listener
+     * will be notified every time a reset is requested on the topology.
+     * @param listener The reset listener.
+     */
+    public void addResetListener(ResetListener listener){
+        resetListeners.add(listener);
+    }
+    /**
+     * Unregisters the specified selection listener for this topology.
+     * @param listener The reset listener.
+     */
+    public void removeResetListener(ResetListener listener){
+        resetListeners.remove(listener);
+    }
+    /**
+     * Registers the specified listener to the events of the topology clock.
+     * @param listener The listener to register.
+     * @param period The number of rounds between consecutive onClock() events,
+     * in time units.
+     */
+    public static void addClockListener(ClockListener listener, int period){
+        Clock.addClockListener(listener, period);
+    }
+    /**
+     * Registers the specified listener to the events of the topology clock.
+     * @param listener The listener to register.
+     */
+    public static void addClockListener(ClockListener listener){
+        Clock.addClockListener(listener);
+    }
+    /**
+     * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
+     * listener will not longer be called.)
+     * @param listener The listener to unregister.
+     */
+    public static void removeClockListener(ClockListener listener){
+        Clock.removeClockListener(listener);
     }
     protected void notifyLinkAdded(Link l){
     	boolean directed=(l.type==Type.DIRECTED)?true:false;

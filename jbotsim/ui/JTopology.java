@@ -43,7 +43,6 @@ public class JTopology extends JPanel{
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
 	protected boolean showDrawings=true;
-    
     /**
      * Creates a new JTopology with default topology.
      */
@@ -67,7 +66,7 @@ public class JTopology extends JPanel{
         	handler.nodeAdded(n);
         for (Link l : topo.getLinks())
         	handler.linkAdded(l);
-        topo.setProperty("popupRunning",false);
+        topo.setProperty("popupRunning", false);
     }
     /**
      * Registers the specified action listener to this JTopology.
@@ -101,7 +100,7 @@ public class JTopology extends JPanel{
      * Disables the drawing of links and sensing radius (if any).
      */
     public void disableDrawings(){
-    	showDrawings=false;
+        showDrawings=false;
     }
     /**
      * Paints this JTopology on the specified graphics (not supposed to be 
@@ -111,8 +110,8 @@ public class JTopology extends JPanel{
         super.paint(g);
         if (showDrawings){
             Graphics2D g2d=(Graphics2D)g;
-            for(Link l : topo.getLinks())
-            	paintLink(g2d, l);
+            for(Link l : topo.getLinks(topo.hasDirectedLinks()))
+                paintLink(g2d, l);
             for(Node n : topo.getNodes()){
             	double sR=n.getSensingRange();
             	if(sR>0){
@@ -134,6 +133,11 @@ public class JTopology extends JPanel{
         int srcX=(int)l.source.getX(), srcY=(int)l.source.getY();
         int destX=(int)l.destination.getX(), destY=(int)l.destination.getY();
         g2d.drawLine(srcX, srcY, (int)(srcX+(destX-srcX)), (int)(srcY+(destY-srcY)));
+		if (topo.hasDirectedLinks()) {
+			int x=srcX+4*(destX-srcX)/5-2;
+			int y=srcY+4*(destY-srcY)/5-2;
+			g2d.drawOval(x,y,4,4);
+		}
     }
 	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{
@@ -161,7 +165,7 @@ public class JTopology extends JPanel{
 	    	((JNode)n.getProperty("jnode")).update();
 	    }
 		public void propertyChanged(_Properties o, String property){
-			if ((o.getProperty("jnode")!=null)){ // Node
+			if (o instanceof Node){ // Node
 	    		JNode jn = (JNode)((Node)o).getProperty("jnode"); 
 	    		if (property.equals("color")){
 	    			jn.updateUI();

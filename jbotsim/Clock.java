@@ -11,19 +11,18 @@
  */
 package jbotsim;
 
+import jbotsim.event.ClockListener;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
-import java.util.ArrayList;
-
-import javax.swing.Timer;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import jbotsim.event.ClockListener;
 
 
-public class Clock{
+public class Clock {
 	private static Clock clock=new Clock();
 	private static TreeMap<ClockListener, Integer> listeners=
 		new TreeMap<ClockListener, Integer>(clock.listenerComparator);
@@ -34,12 +33,13 @@ public class Clock{
 	
 	private Clock(){
 		timer.start();
+		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 	}
 	private class ListenerComparator implements Comparator<ClockListener>{
 		public int compare(ClockListener arg0, ClockListener arg1) {
-			if (arg0 instanceof Message.MessageEngine && !(arg1 instanceof Message.MessageEngine))
+			if (arg0 instanceof MessageEngine && !(arg1 instanceof MessageEngine))
 				return -1;
-			if (!(arg0 instanceof Message.MessageEngine) && arg1 instanceof Message.MessageEngine)
+			if (!(arg0 instanceof MessageEngine) && arg1 instanceof MessageEngine)
 				return 1;
 			if (!(arg0 instanceof Node) && arg1 instanceof Node)
 				return -1;
@@ -70,16 +70,22 @@ public class Clock{
 		}
 	}
 	/**
-	 * Registers the specified listener to the events of the clock. If the 
-	 * listener is a <tt>Node</tt>, it is notified only once added to a 
-	 * <tt>Topology</tt>. 
+	 * Registers the specified listener to the events of the clock.
 	 * @param listener The listener to register.
-	 * @param period The desired period between consecutive onClock() events, 
+	 * @param period The desired period between consecutive onClock() events,
 	 * in time units.
 	 */
 	public static void addClockListener(ClockListener listener, int period){
 		listeners.put(listener, period);
 		countdown.put(listener, period);
+	}
+	/**
+	 * Registers the specified listener to every pulse of the clock.
+	 * @param listener The listener to register.
+	 */
+	public static void addClockListener(ClockListener listener){
+		listeners.put(listener, 1);
+		countdown.put(listener, 1);
 	}
 	/**
 	 * Unregisters the specified listener. (The <tt>onClock()</tt> method of this 

@@ -33,13 +33,20 @@ public class Tikz {
 		}
 		s=s+"  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]"+delim;
 		for (Node n : tp.getNodes()){
+			String id = "v"+n.toString();
 			double x=Math.round(n.getX()*100/scale)/100.0;
 			double y=Math.round((600-n.getY())*100/scale)/100.0;
-			s=s+"  \\path ("+x+","+y+") node ("+n+") {};"+delim;
+			s=s+"  \\path ("+x+","+y+") node ("+id+") {};"+delim;
 		}
 		s+="  \\tikzstyle{every path}=[];"+delim;
-		for (Link l : tp.getLinks())
-			s+="  \\draw ("+l.source+")--("+l.destination+");"+delim;
+		for (Link l : tp.getLinks()) {
+			String width="";
+			if (l.getWidth()>1)
+				width="[ultra thick]";
+			String id1 = "v"+l.source.toString();
+			String id2 = "v"+l.destination.toString();
+			s += "  \\draw"+width+" (" + id1 + ")--(" + id2 + ");" + delim;
+		}
 		s+="\\end{tikzpicture}"+delim;
 		return s;		
 	}

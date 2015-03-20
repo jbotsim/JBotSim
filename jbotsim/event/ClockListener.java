@@ -13,9 +13,7 @@ package jbotsim.event;
 
 public interface ClockListener {
 	/**
-	 * Notifies the underlying listener that the clock has reached the desired
-	 * number of time steps, repeatedly. This number of steps is to be 
-	 * specified during subscription (see <tt>Clock.addClockListener</tt>). 
+	 * Called periodically by the central scheduler.
 	 */
 	public void onClock();
 }

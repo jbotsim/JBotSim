@@ -29,7 +29,7 @@ public class Link extends _Properties implements Comparable<Link>{
 	 */
     public static enum Mode{WIRED, WIRELESS};
     /**
-     * The source node of this link (if directed), 
+     * The source node of this link (if directed),
      * the first endpoint otherwise.
      */
     public Node source; 

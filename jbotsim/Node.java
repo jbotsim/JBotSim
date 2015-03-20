@@ -39,8 +39,10 @@ public class Node extends _Properties implements Comparable<Node>{
     boolean isWirelessEnabled = true;
     Topology topo;
     String color="none";
-    Object state;
-	
+    Object state=null;
+    Integer ID;
+    static Integer maxID=0;
+
     /**
      * Creates a new node using the settings of a default model. FIXME
      */
@@ -58,6 +60,21 @@ public class Node extends _Properties implements Comparable<Node>{
             sensingRange=model.sensingRange;
             color=model.color;
         }
+        ID = maxID++;
+    }
+    /**
+     * Returns the identifier of this node.
+     * @return The identifier as an integer.
+     */
+    public int getID() {
+        return ID;
+    }
+    /**
+     * Sets the identifier of this node. Nodes have an identifier by default,
+     * which is the smallest available integer.
+     */
+    public void setID(int ID) {
+        this.ID = ID;
     }
     /**
      * Returns the parent topology of this node, if any.
@@ -79,6 +96,11 @@ public class Node extends _Properties implements Comparable<Node>{
      * node class to perform topology related clean up. 
      */
     public void onTopologyDetachment(Topology tp){
+    }
+    /**
+     * Override this method to reset this node's state
+     */
+    public void onStart(){
     }
    /**
      * Returns the x-coordinate of this node.
@@ -102,7 +124,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * Returns the color of this node as a string.
      */
     public String getColor(){
-    	return color;
+    	return new String(color);
     }
     /**
      * Returns the list of all possible colors.
@@ -202,12 +224,19 @@ public class Node extends _Properties implements Comparable<Node>{
     	return getModel("default");
     }
     /**
-     * FIXME
-     * @param id
-     * @param n
+     * Adds the given node instance as a model.
+     * @param name
+     * @param node
      */
-    public static void setModel(String id, Node n){
-        nodeModels.put(id,n);
+    public static void setModel(String name, Node node){
+        nodeModels.put(name,node);
+    }
+    /**
+     * Sets the default node model to the given node instance.
+     * @param node
+     */
+    public static void setDefaultModel(Node node){
+        setModel("default", node);
     }
     /**
      * Returns the list of all available model names. FIXME
@@ -287,7 +316,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param dy The ordinate component.
      */
     public void translate(double dx, double dy){
-        setLocation(coords.getX()+dx, coords.getY()+dy);
+        setLocation(coords.getX() + dx, coords.getY() + dy);
     }
     /**
      * Translates the location of this node by the specified coordinates.
@@ -295,7 +324,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param dy The ordinate component.
      */
     public void translate(double dx, double dy, double dz){
-        setLocation(coords.getX()+dx, coords.getY()+dy, coords.getZ()+dz);
+        setLocation(coords.getX() + dx, coords.getY() + dy, coords.getZ() + dz);
     }
     /**
      * Returns the current direction angle of this node (in radians).
@@ -318,26 +347,38 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param p The reference point.
      */
     public void setDirection(Point2D p){
-        setDirection(Math.atan2(p.getX()-coords.getX(), -(p.getY()-coords.getY()))-Math.PI/2);
+        setDirection(Math.atan2(p.getX() - coords.getX(), -(p.getY() - coords.getY())) - Math.PI / 2);
+    }
+    /**
+     * Sets the direction angle of this node using the specified reference
+     * point. Only the resulting angle matters (not the particular location of
+     * the reference point).
+     * @param p The reference point.
+     */
+    public void setDirection(Point2D p, boolean opposite){
+        Point2D p2 = (Point2D) p.clone();
+        if (opposite)
+            p2.setLocation(2*getX()-p.getX(), 2*getY()-p.getY());
+        setDirection(p2);
     }
     /**
      * Translates the location of this node of the specified distance towards 
      * the node's current direction. The distance unit is the pixel.
      */
     public void move(double distance){
-        translate(Math.cos(direction)*distance, Math.sin(direction)*distance);
+        translate(Math.cos(direction) * distance, Math.sin(direction) * distance);
     }
     /**
-     * Returns the directed link whose destination is this node and source is
+     * Returns the directed link whose destination is this node and sender is
      * the specified node, if any such link exists.
-     * @param n The source node.
+     * @param n The sender node.
      * @return The requested link, or <tt>null</tt> if no such link is found.
      */
     public Link getInLinkFrom(Node n){
         return topo.getLink(n, this, true);
     }
     /**
-     * Returns the directed link whose source is this node and destination is
+     * Returns the directed link whose sender is this node and destination is
      * the specified node, if any such link exists.
      * @param n The destination node.
      * @return The requested link, or <tt>null</tt> if no such link is found.
@@ -360,11 +401,11 @@ public class Node extends _Properties implements Comparable<Node>{
      * effect on the topology.
      */
     public List<Link> getInLinks(){
-        return topo.getLinks(true,this,2);
+        return topo.getLinks(true, this, 2);
     }
     /**
      * Returns a list containing all links for which this node is the
-     * source. The returned list can be subsequently modified without effect
+     * sender. The returned list can be subsequently modified without effect
      * on the topology.
      */
     public List<Link> getOutLinks(){
@@ -385,7 +426,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * effect on the topology.
      */
     public List<Link> getLinks(boolean directed){
-        return topo.getLinks(directed,this,0);
+        return topo.getLinks(directed, this, 0);
     }
     /**
      * Returns a list containing every node serving as source for an adjacent
@@ -447,8 +488,8 @@ public class Node extends _Properties implements Comparable<Node>{
     }
     /**
      * Returns a list of messages representing the mailbox of this node.
-     * The mailbox can be usefull to scrutinize the arriving of new messages
-     * without using the MessageListener interface, or to clear previous 
+     * The mailbox can be useful to scrutinize new messages in a non-event,
+     * round-based way (as opposed to the onMessage() method), or to clear previous
      * messages (since all received messages are retained in the mailbox). The
      * returned list must be considered as the original copy of the node's
      * mailbox.
@@ -457,30 +498,41 @@ public class Node extends _Properties implements Comparable<Node>{
         return mailBox;
     }
     /**
-     * Sends a message from this node to the specified destination node. 
-     * A <tt>null</tt> destination stands for the broadcast mode (that is, all
-     * the neighbors of this node will receive the message). The content of the
+     * Sends a message from this node to the specified destination node.
+     * The content of the
      * message is specified as an object reference, to be passed 'as is' to the
      * destination(s). The effective transmission will occur at the
      * <tt>x<sup>th</sup></tt> following clock step, where <tt>x</tt> is the
      * message delay specified by the static method <tt>Message.setMessageDelay
      * </tt> (1 by default).
-     * @param dest The destination node, or <tt>null</tt>.
-     * @param content The object whose reference will be passed. 
+     * @param destination The destination node.
+     * @param message The message to be sent.
      */
-    public void send(Node dest, Object content){
-        sendQueue.add(new Message(this, dest, content));
+    public void send(Node destination, Object message){
+        sendQueue.add(new Message(this, destination, message));
     }
     /**
      * Same method as <tt>send()</tt>, but retries to send the message later
-     * if the link to the destination disappeared during transmission. 
+     * if the link to the destination disappeared during transmission.
      * (Does not work for <tt>null</tt> destinations.)
-     * @param dest The non-null destination.
-     * @param content The message.
+     * @param destination The non-null destination.
+     * @param message The message.
      */
-    public void sendRetry(Node dest, Object content){
-    	assert(dest!=null);
-        sendQueue.add(new Message(this, dest, content, true));
+    public void sendRetry(Node destination, Object message){
+    	assert(destination!=null);
+        sendQueue.add(new Message(this, destination, message, true));
+    }
+    /**
+     * Sends a message to all neighbors. The content of the
+     * message is specified as an object reference, to be passed 'as is' to the
+     * destination(s). The effective transmission will occur at the
+     * <tt>x<sup>th</sup></tt> following clock step, where <tt>x</tt> is the
+     * message delay specified by the static method <tt>Message.setMessageDelay
+     * </tt> (1 by default).
+     * @param message The message to be sent.
+     */
+    public void sendAll(Message message){
+        send(null, message);
     }
     /**
      * Registers the specified node listener to this node. The listener
@@ -624,9 +676,10 @@ public class Node extends _Properties implements Comparable<Node>{
     /**
      * Returns a string representation of this node.
      */
-	public String toString(){
-//		return (state!=null)?state.toString():"none";
-        String s=(String)super.getProperty("id");
-        return (s==null)?super.toString():s;
+    public String toString(){
+        if (state==null)
+            return ID.toString();
+        else
+            return state.toString();
     }
 }
