@@ -4,13 +4,11 @@ import jbotsim.event.ClockListener;
 import jbotsim.event.MessageListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by acasteig on 2/20/15.
  */
 public class MessageEngine implements ClockListener {
-    protected HashMap<Message, Integer> currentMessages=new HashMap<Message,Integer>();
     protected Topology topology;
     protected boolean debug=false;
 
@@ -18,54 +16,35 @@ public class MessageEngine implements ClockListener {
         this.topology = topology;
     }
     public void onClock(){
-        for (Node n : topology.nodes){
-            ArrayList<Message> toRemove=new ArrayList<Message>();
-            for (Message m : n.sendQueue){
-                if (m.destination!=null && m.source.getOutLinkTo(m.destination)==null){
-                    if (!m.retryMode)
-                        toRemove.add(m);
-                }else{
-                    currentMessages.put(m, m.messageDelay);
-                    toRemove.add(m);
-                }
-            }
-            n.sendQueue.removeAll(toRemove);
-        }
-        for (Message m : new HashMap<Message,Integer>(currentMessages).keySet()){
-            int remainingDelay=currentMessages.get(m);
-            if (remainingDelay==1){
-                currentMessages.remove(m);
-                if (m.destination!=null){
-                    if (m.source.getOutLinkTo(m.destination)!=null)
-                        deliverMessageTo(m, m.destination);
-                    else{
-                        if (m.retryMode)
-                            m.source.sendQueue.add(m);
-                    }
-                }else
-                    for(Link l : m.source.getOutLinks())
-                        deliverMessageTo(m, l.destination);
-            }else{
-                if (m.source.getOutLinkTo(m.destination)!=null){
-                    currentMessages.put(m, remainingDelay-1);
-                }else{
-                    currentMessages.remove(m);
-                    if (m.retryMode)
-                        m.source.sendQueue.add(m);
-                }
-            }
-        }
+        processMessages(collectMessages());
     }
-    protected void deliverMessageTo(Message m, Node dest){
-        dest.mailBox.add(m);
+    protected ArrayList<Message> collectMessages(){
+        ArrayList<Message> messages = new ArrayList<Message>();
+        for (Node n : topology.getNodes()) {
+            for (Message m : n.sendQueue) {
+                if (m.destination == null)
+                    for (Node ng : m.sender.getOutNeighbors())
+                        messages.add(new Message(n, ng, m.content));
+                else
+                    messages.add(m);
+            }
+            n.sendQueue.clear();
+        }
+        return messages;
+    }
+    protected void processMessages(ArrayList<Message> messages){
+        for (Message m : messages)
+            if (m.sender.getOutLinkTo(m.destination) != null)
+                deliverMessage(m);
+            else if (m.retryMode)
+                m.sender.sendQueue.add(m);
+    }
+    protected void deliverMessage(Message m){
+        m.destination.onMessage(m);
+        for (MessageListener ml : topology.messageListeners)
+            ml.onMessage(m);
         if (debug)
-            System.err.println((Clock.currentTime()-m.messageDelay)+"->"+Clock.currentTime()+": "+
-                    m.source+ "->" + dest+": "+m.content+" ("+
-                    m.content.getClass().getSimpleName()+")");
-        for (MessageListener ml : dest.messageListeners)
-            ml.onMessage(m);
-        for (MessageListener ml : dest.topo.messageListeners)
-            ml.onMessage(m);
+            System.err.println(Clock.currentTime()+": " + m);
     }
     public void setDebug(boolean debug){
         this.debug=debug;

@@ -13,45 +13,46 @@ package jbotsim;
 
 
 public final class Message extends _Properties{
-	public Node source;
-	public Node destination;
-	public Object content;
+	protected Node sender;
+	protected Node destination;
+	protected Object content;
 	protected boolean retryMode;
-	protected static int messageDelay=1;
-	
-	Message(Node source, Node destination, Object content){
-		this(source, destination, content, false);
+
+	public Message(){
+		this(null, null, "");
 	}
-	Message(Node source, Node destination, Object content, boolean retryMode){
-		assert(destination!=null || !retryMode);
-		this.source=source;
+	/**
+	 * @param content The content of this message. It may be an object of any class, whose
+	 *                reference is going to be shared between sender and destination (no copy).
+	 */
+	public Message(Object content){
+		this(null, null, content);
+	}
+	Message(Node sender, Node destination, Object content){
+		assert(destination!=null);
+		this.sender = sender;
 		this.destination=destination;
 		this.content=content;
-		this.retryMode=retryMode;
+	}
+	/**
+	 * The sender of this message.
+	 */
+	public Node getSender(){
+		return sender;
+	}
+	/**
+	 * The destination of this message.
+	 */
+	public Node getDestination(){
+		return destination;
+	}
+	/**
+	 * The content of this message, which may be an object of any class.
+	 */
+	public Object getContent(){
+		return content;
 	}
 	public String toString(){
-		String dest=(destination==null)?"all"+source.getNeighbors():destination.toString();
-		return source + " -> " + dest + ": " + content;
+		return sender + " -> " + destination+ ": " + content;
 	}
-	/**
-	 * Returns the number of clock steps separating the effective delivery of a 
-	 * message from its sending through the <tt>Node.send</tt> method. 
-	 */
-    public static int getMessageDelay(){
-    	return Message.messageDelay;
-    }
-	/**
-	 * Sets the number of clock steps separating the effective delivery of a 
-	 * message from its sending through the <tt>Node.send</tt> method. The
-	 * minimum is 1 (delivery occurring at the next clock step).
-	 * @param delay The message delay.
-	 */
-    public static void setMessageDelay(int delay){
-    	Message.messageDelay=Math.max(delay, 1);
-    }
-    /**
-	 * Causes all messages to be printed on <tt>System.err</tt> at delivery 
-	 * time.
-	 * @param debugMode <tt>true</tt> to enable, <tt>false</tt> to disable.
-	 */
 }

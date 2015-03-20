@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.Random;
 
 import jbotsim.event.ConnectivityListener;
-import jbotsim.event.MessageListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements Comparable<Node>{
@@ -28,7 +27,6 @@ public class Node extends _Properties implements Comparable<Node>{
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<MovementListener> movementListeners=new ArrayList<MovementListener>();
-    List<MessageListener> messageListeners=new ArrayList<MessageListener>();
     List<Message> mailBox=new ArrayList<Message>();
     List<Message> sendQueue=new ArrayList<Message>();
     HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
@@ -101,6 +99,13 @@ public class Node extends _Properties implements Comparable<Node>{
      * Override this method to reset this node's state
      */
     public void onStart(){
+    }
+    /**
+     * Called when this node receives a message
+     */
+    public void onMessage(Message message){
+        if (mailBox.size() < 100) // FIXME (arbitrary threshold)
+            mailBox.add(message);
     }
    /**
      * Returns the x-coordinate of this node.
@@ -229,7 +234,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param node
      */
     public static void setModel(String name, Node node){
-        nodeModels.put(name,node);
+        nodeModels.put(name, node);
     }
     /**
      * Sets the default node model to the given node instance.
@@ -494,7 +499,7 @@ public class Node extends _Properties implements Comparable<Node>{
      * returned list must be considered as the original copy of the node's
      * mailbox.
      */
-    public List<Message> mailbox(){
+    public List<Message> getMailbox(){
         return mailBox;
     }
     /**
@@ -508,8 +513,8 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param destination The destination node.
      * @param message The message to be sent.
      */
-    public void send(Node destination, Object message){
-        sendQueue.add(new Message(this, destination, message));
+    public void send(Node destination, Message message){
+        sendQueue.add(new Message(this, destination, message.content));
     }
     /**
      * Same method as <tt>send()</tt>, but retries to send the message later
@@ -518,9 +523,10 @@ public class Node extends _Properties implements Comparable<Node>{
      * @param destination The non-null destination.
      * @param message The message.
      */
-    public void sendRetry(Node destination, Object message){
-    	assert(destination!=null);
-        sendQueue.add(new Message(this, destination, message, true));
+    public void sendRetry(Node destination, Message message){
+        assert(destination!=null);
+        message.retryMode=true;
+        send(destination, message);
     }
     /**
      * Sends a message to all neighbors. The content of the
@@ -594,25 +600,6 @@ public class Node extends _Properties implements Comparable<Node>{
     public void removeMovementListener(MovementListener listener){
         movementListeners.remove(listener);
     }
-    /**
-     * Registers the specified message listener to this node. The listener
-     * will be notified every time a message is received at this node. 
-     * @param listener The message listener.
-     */
-    public void addMessageListener(MessageListener listener){
-    	messageListeners.add(listener);
-    }
-    /**
-     * Unregisters the specified message listener for this node.
-     * @param listener The message listener. 
-     */
-    public void removeMessageListener(MessageListener listener){
-    	messageListeners.remove(listener);
-    }
-    /**
-     * Returns the distance between this node and the specified node.
-     * @param n The other node.
-     */
     public double distance(Node n){
         return coords.distance(n.coords);
     }
