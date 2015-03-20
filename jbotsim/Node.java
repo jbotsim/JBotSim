@@ -19,10 +19,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
+import jbotsim.event.ClockListener;
 import jbotsim.event.ConnectivityListener;
 import jbotsim.event.MovementListener;
 
-public class Node extends _Properties implements Comparable<Node>{
+public class Node extends _Properties implements ClockListener, Comparable<Node>{
 	static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
@@ -35,6 +36,7 @@ public class Node extends _Properties implements Comparable<Node>{
     double communicationRange=100;
     double sensingRange=0;
     boolean isWirelessEnabled = true;
+    int clockPeriod;
     Topology topo;
     String color="none";
     Object state=null;
@@ -75,6 +77,20 @@ public class Node extends _Properties implements Comparable<Node>{
         this.ID = ID;
     }
     /**
+     * Returns the period in-between two onClock() events in this node.
+     */
+    public int getClockPeriod() {
+        return clockPeriod;
+    }
+    /**
+     * Sets the period in-between two onClock() events in this node.
+     */
+    public void setClockPeriod(int clockPeriod) {
+        this.clockPeriod = clockPeriod;
+        Clock.removeClockListener(this);
+        Clock.addClockListener(this,clockPeriod);
+    }
+    /**
      * Returns the parent topology of this node, if any.
      * @return The parent topology, or <tt>null</tt> if the node is orphan.
      */
@@ -99,6 +115,11 @@ public class Node extends _Properties implements Comparable<Node>{
      * Override this method to reset this node's state
      */
     public void onStart(){
+    }
+    /**
+     * Override this method to perform some action upon clock pulse.
+     */
+    public void onClock(){
     }
     /**
      * Called when this node receives a message
@@ -330,6 +351,12 @@ public class Node extends _Properties implements Comparable<Node>{
      */
     public void translate(double dx, double dy, double dz){
         setLocation(coords.getX() + dx, coords.getY() + dy, coords.getZ() + dz);
+    }
+    /**
+     * Returns the current time (current round number)
+     */
+    public int getTime(){
+        return Clock.currentTime();
     }
     /**
      * Returns the current direction angle of this node (in radians).

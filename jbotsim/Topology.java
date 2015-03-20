@@ -69,6 +69,12 @@ public class Topology extends _Properties{
         Clock.addClockListener(messageEngine, 1);
     }
     /**
+     * Returns the current time (current round number)
+     */
+    public int getTime(){
+        return Clock.currentTime();
+    }
+    /**
      * Sets the topology dimensions as indicated.
      */
     public void setDimensions(int width, int height){
@@ -154,6 +160,8 @@ public class Topology extends _Properties{
         n.topo=this;
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
+        Clock.removeClockListener(n);// Transitional FIXME
+        Clock.addClockListener(n, 1);
         n.onStart();
        	updateWirelessLinksFor(n);
         if (wasRunning)
