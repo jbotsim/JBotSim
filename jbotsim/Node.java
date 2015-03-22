@@ -32,7 +32,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     double communicationRange=100;
     double sensingRange=0;
     boolean isWirelessEnabled = true;
-    int clockPeriod;
+    int clockPeriod=1;
     Topology topo;
     String color="none";
     Object state=null;
@@ -238,12 +238,16 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void enableWireless(){
         isWirelessEnabled = true;
+        if (topo!=null)
+            topo.updateWirelessLinksFor(this);
     }
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless(){
         isWirelessEnabled = false;
+        if (topo!=null)
+            topo.updateWirelessLinksFor(this);
     }
     /**
      * Returns the sensing range of this node (as a radius).

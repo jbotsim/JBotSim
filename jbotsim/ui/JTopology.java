@@ -103,7 +103,7 @@ public class JTopology extends JPanel{
         showDrawings=false;
     }
     /**
-     * Paints this JTopology on the specified graphics (not supposed to be 
+     * Paints this JTopology on the specified graphics (not supposed to be
      * used explicitly).
      */
     public void paint(Graphics g){
@@ -142,7 +142,7 @@ public class JTopology extends JPanel{
 	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{
 	    public void onNodeAdded(Node n){
-	    	JNode jv=new JNode(n);
+            JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
 	        n.addPropertyListener(this);
 	        add(jv);
@@ -159,14 +159,15 @@ public class JTopology extends JPanel{
 	    }
 	    public void onLinkRemoved(Link l){
 	    	updateUI();
-	    }	    
+	    }
 	    public void onMove(Node n) {
-	    	updateUI();
-	    	((JNode)n.getProperty("jnode")).update();
+            updateUI();
+            if (n.hasProperty("jnode"))
+    	    	((JNode)n.getProperty("jnode")).update();
 	    }
 		public void propertyChanged(_Properties o, String property){
 			if (o instanceof Node){ // Node
-	    		JNode jn = (JNode)((Node)o).getProperty("jnode"); 
+	    		JNode jn = (JNode)((Node)o).getProperty("jnode");
 	    		if (property.equals("color")){
 	    			jn.updateUI();
 	    		}else if (property.equals("state")){
@@ -208,7 +209,7 @@ public class JTopology extends JPanel{
 	    		popup.show(jtopo,e.getX(),e.getY());
 	        }
 	    }
-	    
+
 		public void actionPerformed(ActionEvent arg0) {
 			topo.setProperty("popupRunning", false);
 			String[] args=arg0.getActionCommand().split(" ");

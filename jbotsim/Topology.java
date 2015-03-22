@@ -167,7 +167,7 @@ public class Topology extends _Properties{
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
         Clock.removeClockListener(n);// Transitional FIXME
-        Clock.addClockListener(n, 1);
+        Clock.addClockListener(n, n.clockPeriod);
         n.onStart();
         updateWirelessLinksFor(n);
         if (wasRunning)
