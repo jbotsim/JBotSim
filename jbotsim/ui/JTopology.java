@@ -112,6 +112,7 @@ public class JTopology extends JPanel{
             Graphics2D g2d=(Graphics2D)g;
             for(Link l : topo.getLinks(topo.hasDirectedLinks()))
                 paintLink(g2d, l);
+            g2d.setStroke(new BasicStroke(1));
             for(Node n : topo.getNodes()){
             	double sR=n.getSensingRange();
             	if(sR>0){
