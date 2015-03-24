@@ -15,6 +15,10 @@ public class MessageEngine implements ClockListener {
     public void setTopology(Topology topology){
         this.topology = topology;
     }
+    public void setSpeed(int speed){
+        Clock.removeClockListener(this);
+        Clock.addClockListener(this, speed);
+    }
     public void onClock(){
         processMessages(collectMessages());
     }
