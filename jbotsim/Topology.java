@@ -188,6 +188,12 @@ public class Topology extends _Properties{
             removeLink(l);
         notifyNodeRemoved(n);
         nodes.remove(n);
+        for (Node n2 : nodes){
+            if (n2.sensedNodes.contains(n)){
+                n2.sensedNodes.remove(n);
+                n2.onSensingOut(n);
+            }
+        }
         n.onTopologyDetachment(this);
         n.topo=null;
         if (wasRunning)
@@ -549,6 +555,12 @@ public class Topology extends _Properties{
                 updateWirelessLink(n, n2);
                 updateWirelessLink(n2, n);
             }
+        for (Node n2 : new ArrayList<Node>(nodes)) {
+            if (n2 != n) {
+                updateSensedNodes(n, n2);
+                updateSensedNodes(n2, n);
+            }
+        }
     }
     void updateWirelessLink(Node n1, Node n2){
         Link l = n1.getOutLinkTo(n2);
@@ -558,6 +570,17 @@ public class Topology extends _Properties{
             addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
         else if (linkExisted && l.isWireless() && !linkExists)
             removeLink(l);
+    }
+    void updateSensedNodes(Node from, Node to){
+        if (from.distance(to) < from.sensingRange) {
+            if (!from.sensedNodes.contains(to)) {
+                from.sensedNodes.add(to);
+                from.onSensingIn(to);
+            }
+        } else if (from.sensedNodes.contains(to)) {
+            from.sensedNodes.remove(to);
+            from.onSensingOut(to);
+        }
     }
     /**
      * Returns a string representation of this topology. The output of this

@@ -31,6 +31,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     double direction=Math.PI/2;
     double communicationRange=100;
     double sensingRange=0;
+    List<Node> sensedNodes=new ArrayList<Node>();
     boolean isWirelessEnabled = true;
     int clockPeriod=1;
     Topology topo;
@@ -153,6 +154,16 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Called when an adjacent directed link is removed
      */
     public void onDirectedLinkRemoved(Link link){
+    }
+    /**
+     * Called when another node is sensed for the first time
+     */
+    public void onSensingIn(Node node){
+    }
+    /**
+     * Called when a sensed node is no more sensed
+     */
+    public void onSensingOut(Node node){
     }
     /**
      * Returns the x-coordinate of this node.
