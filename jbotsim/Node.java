@@ -19,6 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Random;
 
+import javafx.geometry.Point3D;
 import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
@@ -27,7 +28,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     List<Message> mailBox=new ArrayList<Message>();
     List<Message> sendQueue=new ArrayList<Message>();
     HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
-    NodePoint coords=new NodePoint();
+    Point3D coords=new Point3D(0, 0, 0);
     double direction=Math.PI/2;
     double communicationRange=100;
     double sensingRange=0;
@@ -341,12 +342,18 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return new Point2D.Double(coords.getX(), coords.getY());
     }
     /**
+     * Returns the location of this node (as a 3D point).
+     */
+    public Point3D getLocation3D(){
+        return new Point3D(coords.getX(),coords.getY(),coords.getZ());
+    }
+    /**
      * Changes this node's location to the specified coordinates.
      * @param x The abscissa of the new location.
      * @param y The ordinate of the new location.
      */
     public void setLocation(double x, double y){
-        coords.setLocation(x, y);
+        coords = new Point3D(x, y, 0);
         if (topo!=null)
             topo.updateWirelessLinksFor(this);
         notifyNodeMoved();
@@ -358,7 +365,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param z The ordinate of the new location.
      */
     public void setLocation(double x, double y, double z){
-        coords.setLocation(x, y, z);
+        coords = new Point3D(x, y, z);
         if (topo!=null)
             topo.updateWirelessLinksFor(this);
         notifyNodeMoved();
@@ -369,6 +376,13 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void setLocation(Point2D loc){
         setLocation(loc.getX(), loc.getY());
+    }
+    /**
+     * Changes this node's location to the specified 2D point.
+     * @param loc The new location point.
+     */
+    public void setLocation(Point3D loc){
+        setLocation(loc.getX(), loc.getY(), loc.getZ());
     }
     /**
      * Changes this node's location modulo the size of topology.
@@ -620,7 +634,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param p The location (as a point).
      */
     public double distance(Point2D p){
-        return coords.distance(p.getX(), p.getY());
+        return coords.distance(p.getX(), p.getY(), 0);
     }
     /**
      * Returns the distance between this node and the specified point.
@@ -628,7 +642,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param y The ordinate of the point to which the distance is measured.
      */
     public double distance(double x, double y){
-        return coords.distance(x, y);
+        return coords.distance(x, y, 0);
     }
     /**
      * Returns the distance between this node and the specified point.
@@ -637,30 +651,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public double distance(double x, double y, double z){
         return coords.distance(x, y, z);
-    }
-    /**
-     * Returns true if the distance to the given node is less than threshold.
-     * @param n The given node.
-     * @param threshold The threshold distance.
-     */
-    public boolean isWithin(Node n, double threshold){
-        return coords.isWithin(n.coords, threshold);
-    }
-    /**
-     * Returns true if the distance to the given point is less than threshold.
-     * @param x,y The given point.
-     * @param threshold The threshold distance.
-     */
-    public boolean isWithin(double x, double y, double threshold){
-        return coords.isWithin(x, y, threshold);
-    }
-    /**
-     * Returns true if the distance to the given point is less than threshold.
-     * @param x,y The given point.
-     * @param threshold The threshold distance.
-     */
-    public boolean isWithin(double x, double y, double z, double threshold){
-        return coords.isWithin(x, y, z, threshold);
     }
     protected void notifyNodeMoved(){
         onMove();
