@@ -126,10 +126,7 @@ public class JTopology extends JPanel{
         Integer width=l.getWidth();
     	if (width==0)
     		return;
-        String color=l.getColor();
-    	try{
-    		g2d.setColor((Color)Color.class.getField(color).get(color));
-    	}catch(Exception e){System.err.println("Color "+color+" is not supported.");}
+   		g2d.setColor(l.getColor());
     	g2d.setStroke(new BasicStroke(width));
         int srcX=(int)l.source.getX(), srcY=(int)l.source.getY();
         int destX=(int)l.destination.getX(), destY=(int)l.destination.getY();

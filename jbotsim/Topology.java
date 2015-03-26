@@ -11,7 +11,7 @@
  */
 package jbotsim;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,10 +99,10 @@ public class Topology extends _Properties{
     public void reset(){
         for (Link link : edges) {
             link.setWidth(1);
-            link.setColor("black");
+            link.setColor(Color.black);
         }
         for (Node node : nodes)
-            node.setColor("none");
+            node.setColor(null);
         for (ResetListener listener : resetListeners)
             listener.onReset();
         for (Node n : nodes)

@@ -11,12 +11,13 @@
  */
 package jbotsim;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Link extends _Properties implements Comparable<Link>{
 	Integer width=1;
-	String color="darkGray";
+	Color color = Color.darkGray;
 	
 	/**
 	 * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
@@ -127,14 +128,14 @@ public class Link extends _Properties implements Comparable<Link>{
     /**
      * Returns the color of this link as a string.
      */
-    public String getColor(){
+    public Color getColor(){
     	return color;
     }
     /**
      * Sets the color of this link as a string.
      */
-    public void setColor(String color){
-    	this.color=(color==null||color=="none")?"darkGray":color;
+    public void setColor(Color color){
+    	this.color = color;
     	setProperty("color", color); // Used for property notification
     }
     /**

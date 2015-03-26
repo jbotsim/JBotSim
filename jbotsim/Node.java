@@ -11,7 +11,7 @@
  */
 package jbotsim;
 
-import java.awt.Dimension;
+import java.awt.*;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +36,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     boolean isWirelessEnabled = true;
     int clockPeriod=1;
     Topology topo;
-    String color="none";
+    Color color = null;
     Object state=null;
     Integer ID;
     static Integer maxID=0;
@@ -185,28 +185,24 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return coords.getZ();
     }
     /**
-     * Returns the color of this node as a string.
+     * Returns the color of this node.
      */
-    public String getColor(){
-        return new String(color);
+    public Color getColor(){
+        return color;
     }
     /**
-     * Returns the list of all possible colors.
+     * Sets the color of this node.
      */
-    public static String[] possibleColors(){
-        return new String[]{"black","blue","cyan","darkGray","gray","green",
-                "lightGray","magenta","orange","pink","red","white","yellow"};
-    }
-    /**
-     * Sets the color of this node as a string.
-     */
-    public void setColor(String color){
-        if (color.equals("random")){
-            String[] colors=possibleColors();
-            this.color=colors[(new Random()).nextInt(colors.length)];
-        }else
-            this.color=(color==null)?"none":color;
+    public void setColor(Color color){
+        this.color=color;
         setProperty("color", color); // Used for property notification
+    }
+    /**
+     * Assign a random color to this node.
+     */
+    public void setRandomColor(){
+        Random r = new Random();
+        setColor(new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
     }
     /**
      * Returns the state of this node.
@@ -327,7 +323,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
             node.communicationRange=model.communicationRange;
             node.sensingRange=model.sensingRange;
             node.isWirelessEnabled=model.isWirelessEnabled;
-            if (node.color=="none")
+            if (node.color==null)
                 node.color=model.color;
             node.state=model.state;
             return node;
