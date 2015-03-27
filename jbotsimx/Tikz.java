@@ -22,7 +22,7 @@ public class Tikz {
 	public static String exportTopology(Topology tp, int scale){
 		String delim="\n";
 		String s="\\begin{tikzpicture}[xscale=1,yscale=1]"+delim;
-		Integer sr=(int)Node.getModel("default").getSensingRange();
+		Integer sr=(int)tp.getSensingRange();
 		if (sr!=0){
 			s=s+"  \\tikzstyle{every node}=[draw,circle,inner sep="+sr/5.0+", fill opacity=0.5,gray,fill=gray!40]"+delim;
 			for (Node n : tp.getNodes()){

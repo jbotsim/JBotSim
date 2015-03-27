@@ -132,8 +132,8 @@ public class Connectivity {
 	return (int)Math.round(Math.sqrt(nbNodes/d));
     }
     public static void addRandomConnectedNodes(Topology tp, int nbNodes){
-    	double Cr=Node.getModel("default").getCommunicationRange();
-    	double Sr=Node.getModel("default").getSensingRange();
+    	double Cr=tp.getCommunicationRange();
+    	double Sr=tp.getSensingRange();
     	int size = getOptimalTopologySize(nbNodes, Cr, 100);
     	int bordure = new Double(4*Sr).intValue();
     	Random rand = new Random();
@@ -142,10 +142,10 @@ public class Connectivity {
     	do{
     		tmp.clear();
     	    for (int i=0; i<nbNodes; i++)
-    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, new Node(Node.getModel("default")));
+    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, tp.newInstanceOfModel("default"));
     	} while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
     	for (Node n:tmp.getNodes())
-    		tp.addNode(n.getX(), n.getY(), Node.newInstanceOfModel("default"));
+    		tp.addNode(n.getX(), n.getY(), tp.newInstanceOfModel("default"));
     }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
 	int size = getOptimalTopologySize(nbNodes, cRange, ratio);
@@ -153,13 +153,13 @@ public class Connectivity {
 	int attempts = 0;
 	Random rand = new Random();
 	Topology topo = new Topology();
-	Node.getModel("default").setSensingRange(sRange);
-	Node.getModel("default").setCommunicationRange(cRange);
+	topo.setSensingRange(sRange);
+	topo.setCommunicationRange(cRange);
 	Clock.pause();
 	do{ attempts++;
 	    topo.clear();
 	    for (int i=0; i<nbNodes; i++)
-		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, new Node(Node.getModel("default")));
+		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, topo.newInstanceOfModel("default"));
 	} while (!Connectivity.isConnected(topo) || Connectivity.isBiconnected(topo));
 	Clock.resume();
 	topo.setProperty("attempts", attempts);

@@ -80,13 +80,13 @@ public class JConsole extends TextArea implements TextListener{
     }
 //	public static void main(String args[]) throws Exception{
 //		jbotsim.Topology tp=new jbotsim.Topology();
-//		Node.getModel("default").setSensingRange(25);
+//		Node.getNodeModel("default").setSensingRange(25);
 //		JFrame win=new JFrame();
 //		jbotsim.ui.JViewer v=new jbotsim.ui.JViewer(tp, false); 
 //		win.add(v.getJTopology(), BorderLayout.CENTER);
 //		win.add(new JConsole(tp),BorderLayout.SOUTH);
 //		win.setSize(800, 650);
 //		win.setVisible(true);
-//		Node.getModel("default").setCommunicationRange(50);
+//		Node.getNodeModel("default").setCommunicationRange(50);
 //	}    
 }

@@ -12,10 +12,8 @@
 package jbotsim;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
@@ -33,6 +31,9 @@ public class Topology extends _Properties{
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
+    HashMap<String,Class<Node>> nodeModels=new HashMap<String,Class<Node>>();
+    double communicationRange = 100;
+    double sensingRange = 0;
     Dimension dimensions = new Dimension(600,400);
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
@@ -52,12 +53,92 @@ public class Topology extends _Properties{
         setDimensions(width, height);
     }
     /**
-     * Sets the default node model to the given node instance.
-     * @param node
+     * Returns the node class corresponding to that name.
      */
-    public void setDefaultNodeModel(Node node){
-        Node.setDefaultModel(node);
+    public Class<Node> getNodeModel(String modelName){
+        return nodeModels.get(modelName);
     }
+    /**
+     * Returns the default node model,
+     * all properties assigned to this virtual node will be given to further nodes created
+     * without explicit model name.
+     */
+    public Class<Node> getDefaultNodeModel(){
+        return getNodeModel("default");
+    }
+    /**
+     * Adds the given node instance as a model.
+     * @param modelName
+     * @param nodeClass
+     */
+    public void setNodeModel(String modelName, Class nodeClass){
+        nodeModels.put(modelName, nodeClass);
+    }
+    /**
+     * Sets the default node model to the given node instance.
+     * @param nodeClass
+     */
+    public void setDefaultNodeModel(Class nodeClass){
+        setNodeModel("default", nodeClass);
+    }
+    /**
+     * Returns the set registered node classes.
+     */
+    public Set<String> getModelsNames(){
+        return nodeModels.keySet();
+    }
+
+    /**
+     * Create a new instance of this type of node.
+     * @param modelName
+     * @return a new instance of this type of node
+     */
+    public Node newInstanceOfModel(String modelName){
+        try {
+            return (Node) getNodeModel(modelName).newInstance();
+        } catch (Exception e) {
+            return new Node();
+       }
+    }
+
+    /**
+     * Returns the default communication range.
+     * @return the default communication range
+     */
+    public double getCommunicationRange() {
+        return communicationRange;
+    }
+
+    /**
+     * Sets the default communication range.
+     * If the topology already has some nodes, their range is changed.
+     * @param communicationRange The communication range
+     */
+    public void setCommunicationRange(double communicationRange) {
+        this.communicationRange = communicationRange;
+        for (Node node : nodes)
+            node.setCommunicationRange(communicationRange);
+    }
+
+    /**
+     * Returns the default sensing range,
+     * @return the default sensing range
+     */
+    public double getSensingRange() {
+        return sensingRange;
+    }
+
+    /**
+     * Sets the default sensing range.
+     * If the topology already has some nodes, their range is changed.
+     * @param sensingRange The sensing range
+     */
+    public void setSensingRange(double sensingRange) {
+        this.sensingRange = sensingRange;
+        for (Node node : nodes)
+            node.setSensingRange(sensingRange);
+    }
+
     /**
      * Gets a reference on the message engine of this topology.
      */
@@ -140,7 +221,7 @@ public class Topology extends _Properties{
      * @param y The ordinate of the location.
      */
     public void addNode(double x, double y){
-        addNode(x, y, Node.newInstanceOfModel("default"));
+        addNode(x, y, newInstanceOfModel("default"));
     }
     /**
      * Adds the specified node to this topology at the specified location.
@@ -162,6 +243,10 @@ public class Topology extends _Properties{
         if (n.getX()==0 && n.getY()==0)
             n.setLocation(x, y);
 
+        if (n.communicationRange == null)
+            n.setCommunicationRange(communicationRange);
+        if (n.sensingRange == null)
+            n.setSensingRange(sensingRange);
         nodes.add(n);
         n.topo=this;
         n.onTopologyAttachment(this);

@@ -12,7 +12,7 @@ public class TVGPlayer implements ClockListener{
 	/**
 	 * Plays the specified time-varying graph on the specified topology.
 	 * @param tvg the time-varying graph
-	 * @param t the target topology
+	 * @param tp the target topology
 	 */
 	public TVGPlayer (TVG tvg, Topology tp){
 		this(tvg, tp, null);
@@ -21,13 +21,13 @@ public class TVGPlayer implements ClockListener{
 	 * Plays forever the specified time-varying graph on the specified topology
 	 * by taking all dates modulo the specified period.
 	 * @param tvg the time-varying graph
-	 * @param t the target topology
+	 * @param tp the target topology
 	 */
 	public TVGPlayer (TVG tvg, Topology tp, Integer period){
 		this.tvg=tvg;
 		this.tp=tp;
 		this.period=period;
-		Node.getModel("default").setCommunicationRange(0);
+		tp.setCommunicationRange(0);
 		for (Node n : tvg.nodes)
 			tp.addNode(n);
 	}

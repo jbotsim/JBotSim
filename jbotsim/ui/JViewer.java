@@ -150,15 +150,9 @@ public class JViewer{
 	class EventHandler implements ChangeListener, ActionListener{		
 		public void stateChanged(ChangeEvent arg0) {
 			if (slideBarType==BarType.COMMUNICATION){
-				for (Node n : jtp.topo.getNodes()){
-					if (n.isWirelessEnabled())
-						n.setCommunicationRange(slideBar.getValue());
-				}
-				Node.getModel("default").setCommunicationRange(slideBar.getValue());			
+				jtp.topo.setCommunicationRange(slideBar.getValue());
 			}else if (slideBarType==BarType.SENSING){
-				for (Node n : jtp.topo.getNodes())
-					n.setSensingRange(slideBar.getValue());
-				Node.getModel("default").setSensingRange(slideBar.getValue());			
+				jtp.topo.setSensingRange(slideBar.getValue());
 			}else if (slideBarType==BarType.SPEED){
 				Clock.setTimeUnit((width-slideBar.getValue())/40+1);
 			}
@@ -169,14 +163,14 @@ public class JViewer{
 			if (cmd.equals("Set communication range")){
 				if (slideBarType != BarType.COMMUNICATION) 
 					addSlideBar(BarType.COMMUNICATION, 
-							(int)Node.getModel("default").getCommunicationRange());
+							(int)jtp.topo.getCommunicationRange());
 				else 
 					removeSlideBar();
 				jtp.updateUI();
 			}else if (cmd.equals("Set sensing range")){
 				if (slideBarType != BarType.SENSING) 
 					addSlideBar(BarType.SENSING, 
-							(int)Node.getModel("default").getSensingRange());
+							(int)jtp.topo.getSensingRange());
 				else
 					removeSlideBar();
 				jtp.updateUI();

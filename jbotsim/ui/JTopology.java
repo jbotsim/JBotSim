@@ -182,7 +182,7 @@ public class JTopology extends JPanel{
 	    	}
 	    	if (e.getButton()==MouseEvent.BUTTON1){
 	        	JPopupMenu popup=new JPopupMenu();
-	        	for (String type : Node.getModelsNames()){
+	        	for (String type : topo.getModelsNames()){
 	        		JMenuItem jitem=new JMenuItem(type);
 	        		jitem.setActionCommand("addNode "+type+" "+e.getX()+" "+e.getY());
 	        		jitem.addActionListener(this);
@@ -192,7 +192,7 @@ public class JTopology extends JPanel{
 	            	topo.setProperty("popupRunning", true);
 	        		popup.show(jtopo,e.getX(),e.getY());
 	        	}else{
-	        		topo.addNode(e.getX(),e.getY(),Node.newInstanceOfModel("default"));
+	        		topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel("default"));
 	        	}
 	        }else if (e.getButton()==MouseEvent.BUTTON3){
 	        	JPopupMenu popup=new JPopupMenu();
@@ -214,7 +214,7 @@ public class JTopology extends JPanel{
 			if (args[0].equals("addNode")){
 				int x=Integer.parseInt(args[2]);
 				int y=Integer.parseInt(args[3]);
-				topo.addNode(x, y, Node.newInstanceOfModel(args[1]));
+				topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
 			}
 		}
 	    public void mouseClicked(MouseEvent e){}

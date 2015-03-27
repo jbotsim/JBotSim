@@ -1,6 +1,5 @@
 package jbotsimx.tvg;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -14,7 +13,7 @@ public class EMEGTopology extends Topology{
 	public EMEGTopology(double birthRate, double deathRate){
 		this.birthRate=birthRate;
 		this.deathRate=deathRate;
-		Node.getModel("default").setCommunicationRange(0);
+		setCommunicationRange(0);
 	}
 	public void initializeEdges() {
 		for (Link l : super.getLinks())

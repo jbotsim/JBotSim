@@ -13,25 +13,21 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 
 import javafx.geometry.Point3D;
 import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node>{
-    static HashMap<String,Node> nodeModels=new HashMap<String,Node>();
     List<Message> mailBox=new ArrayList<Message>();
     List<Message> sendQueue=new ArrayList<Message>();
     HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
     Point3D coords=new Point3D(0, 0, 0);
     double direction=Math.PI/2;
-    double communicationRange=100;
-    double sensingRange=0;
+    Double communicationRange = null;
+    Double sensingRange = null;
     List<Node> sensedNodes=new ArrayList<Node>();
     boolean isWirelessEnabled = true;
     int clockPeriod=1;
@@ -45,19 +41,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Creates a new node using the settings of a default model. FIXME
      */
     public Node() {
-        this(Node.nodeModels.get("default"));
-    }
-    /**
-     * FIXME
-     * @param model
-     */
-    public Node(Node model){
-        if (model!=null){
-            properties=new HashMap<String,Object>(model.properties);
-            communicationRange=model.communicationRange;
-            sensingRange=model.sensingRange;
-            color=model.color;
-        }
         ID = maxID++;
     }
     /**
@@ -268,68 +251,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void setSensingRange(double range) {
         sensingRange = range;
-    }
-    /**
-     * Returns the model node corresponding to that name,
-     * all properties assigned to this virtual node will be given to further nodes created 
-     * using this model name. If the requested model does not exist, it is created. FIXME
-     */
-    public static Node getModel(String modelName){
-        if (!nodeModels.containsKey(modelName))
-            nodeModels.put(modelName,new Node());
-        return nodeModels.get(modelName);
-    }
-    /**
-     * Returns the default node model,
-     * all properties assigned to this virtual node will be given to further nodes created 
-     * without explicit model name.
-     */
-    public static Node getDefaultModel(){
-        return getModel("default");
-    }
-    /**
-     * Adds the given node instance as a model.
-     * @param name
-     * @param node
-     */
-    public static void setModel(String name, Node node){
-        nodeModels.put(name, node);
-    }
-    /**
-     * Sets the default node model to the given node instance.
-     * @param node
-     */
-    public static void setDefaultModel(Node node){
-        setModel("default", node);
-    }
-    /**
-     * Returns the list of all available model names. FIXME
-     */
-    public static List<String> getModelsNames(){
-        return new ArrayList<String>(nodeModels.keySet());
-    }
-    /**
-     * Create a new Node based on the specified model.
-     * @param modelName
-     * @return pouet
-     */
-    @SuppressWarnings("unchecked")
-    public static Node newInstanceOfModel(String modelName){
-        Node model=getModel(modelName);
-        Class modelClass=model.getClass();
-        try {
-            Node node = (Node) modelClass.getConstructor().newInstance();
-            node.properties=new HashMap<String,Object>(model.properties);
-            node.communicationRange=model.communicationRange;
-            node.sensingRange=model.sensingRange;
-            node.isWirelessEnabled=model.isWirelessEnabled;
-            if (node.color==null)
-                node.color=model.color;
-            node.state=model.state;
-            return node;
-        } catch (Exception e) {
-            System.err.println("Problem of model instantiation.."); return new Node();
-        }
     }
     /**
      * Returns the location of this node (as a 2D point).

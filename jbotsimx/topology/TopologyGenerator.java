@@ -9,20 +9,20 @@ import java.util.List;
 public class TopologyGenerator {
 	public static void generateLine(Topology tp, int order){
 		int scale=(tp.getDimensions().width-50)/order;
-		Node.getModel("default").setCommunicationRange(scale+1);
+		tp.setCommunicationRange(scale+1);
 		for (int i=0; i<order; i++)
-			tp.addNode(50+i*scale,100,Node.newInstanceOfModel("default"));
+			tp.addNode(50+i*scale,100,tp.newInstanceOfModel("default"));
 	}
 	public static void generateRing(Topology topology, int nbNodes) {
 		generateRing(topology, nbNodes, false);
 	}
 	public static void generateRing(Topology topology, int nbNodes, boolean directed){
-		Node.getModel("default").setCommunicationRange(0);
+		topology.setCommunicationRange(0);
 		double angle=Math.PI*2.0/nbNodes;
 		int scale=100;
 		for (int i=0; i<nbNodes; i++)
 			topology.addNode(50 + scale + Math.cos(angle*i)*scale,
-					50 + scale + Math.sin(angle*i)*scale,Node.newInstanceOfModel("default"));
+					50 + scale + Math.sin(angle*i)*scale,topology.newInstanceOfModel("default"));
 
 		List<Node> nodes = topology.getNodes();
 		Link.Type type = directed?Link.Type.DIRECTED:Link.Type.UNDIRECTED;
@@ -35,18 +35,18 @@ public class TopologyGenerator {
 	}
 	public static void generateGrid(Topology tp, int orderX, int orderY){
 		int scale=(tp.getDimensions().width-50)/orderX;
-		Node.getModel("default").setCommunicationRange(scale+1);
+		tp.setCommunicationRange(scale+1);
 		for (int i=0; i<orderX; i++)
 			for (int j=0; j<orderY; j++)
-				tp.addNode(50+i*scale,50+j*scale,Node.newInstanceOfModel("default"));
+				tp.addNode(50+i*scale,50+j*scale,tp.newInstanceOfModel("default"));
 	}
 	public static void generateTorus(Topology tp, int order){
 		int scale=(tp.getDimensions().width-50)/order;
-		Node.getModel("default").setCommunicationRange(scale+1);
+		tp.setCommunicationRange(scale+1);
 		Node[][] matrix = new Node[order][order];
 		for (int i=0; i<order; i++)
 			for (int j=0; j<order; j++){
-				Node node = Node.newInstanceOfModel("default");
+				Node node = tp.newInstanceOfModel("default");
 				tp.addNode(50+i*scale, 50+j*scale, node);
 				matrix[i][j]=node;
 			}
