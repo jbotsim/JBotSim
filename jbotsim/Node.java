@@ -16,7 +16,6 @@ import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
-import javafx.geometry.Point3D;
 import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
