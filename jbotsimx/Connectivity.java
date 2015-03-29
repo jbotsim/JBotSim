@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import jbotsim.Clock;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
@@ -138,7 +137,7 @@ public class Connectivity {
     	int bordure = new Double(4*Sr).intValue();
     	Random rand = new Random();
     	Topology tmp=new Topology();
-    	Clock.pause();
+    	tp.pause();
     	do{
     		tmp.clear();
     	    for (int i=0; i<nbNodes; i++)
@@ -155,13 +154,11 @@ public class Connectivity {
 	Topology topo = new Topology();
 	topo.setSensingRange(sRange);
 	topo.setCommunicationRange(cRange);
-	Clock.pause();
 	do{ attempts++;
 	    topo.clear();
 	    for (int i=0; i<nbNodes; i++)
 		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, topo.newInstanceOfModel("default"));
 	} while (!Connectivity.isConnected(topo) || Connectivity.isBiconnected(topo));
-	Clock.resume();
 	topo.setProperty("attempts", attempts);
 	return topo;
     }

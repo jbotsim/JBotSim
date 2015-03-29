@@ -22,16 +22,14 @@ import java.util.HashMap;
 import java.util.TreeMap;
 
 
-public class Clock {
-	private static Clock clock=new Clock();
-	private static TreeMap<ClockListener, Integer> listeners=
-		new TreeMap<ClockListener, Integer>(clock.listenerComparator);
-	private static HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
-	private Timer timer=new Timer(10, new ActionHandler());
-	private ListenerComparator listenerComparator=new ListenerComparator();
-	private Integer time=0;
-	
-	private Clock(){
+class Clock {
+	TreeMap<ClockListener, Integer> listeners;
+	HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
+	Timer timer=new Timer(10, new ActionHandler());
+	Integer time=0;
+
+	Clock(){
+        listeners = new TreeMap<ClockListener, Integer>(new ListenerComparator());
 		timer.start();
 		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 	}
@@ -75,7 +73,7 @@ public class Clock {
 	 * @param period The desired period between consecutive onClock() events,
 	 * in time units.
 	 */
-	public static void addClockListener(ClockListener listener, int period){
+	public void addClockListener(ClockListener listener, int period){
 		listeners.put(listener, period);
 		countdown.put(listener, period);
 	}
@@ -83,7 +81,7 @@ public class Clock {
 	 * Registers the specified listener to every pulse of the clock.
 	 * @param listener The listener to register.
 	 */
-	public static void addClockListener(ClockListener listener){
+	public void addClockListener(ClockListener listener){
 		listeners.put(listener, 1);
 		countdown.put(listener, 1);
 	}
@@ -92,53 +90,53 @@ public class Clock {
 	 * listener will not longer be called.) 
 	 * @param listener The listener to unregister.
 	 */
-	public static void removeClockListener(ClockListener listener){
+	public void removeClockListener(ClockListener listener){
 		listeners.remove(listener);
 		countdown.remove(listener);
 	}
 	/**
 	 * Returns the time unit of the clock, in milliseconds.
 	 */
-	public static int getTimeUnit(){
-		return clock.timer.getDelay();
+	public int getTimeUnit(){
+		return timer.getDelay();
 	}
 	/**
 	 * Sets the time unit of the clock to the specified value in millisecond.
 	 * @param delay The desired time unit (1 corresponds to the fastest rate)
 	 */
-	public static void setTimeUnit(int delay){
-		clock.timer.setDelay(delay);
+	public void setTimeUnit(int delay){
+		timer.setDelay(delay);
 	}
 	/**
 	 * Returns the current time of the clock in time units.
 	 */
-	public static Integer currentTime(){
-		return clock.time;
+	public Integer currentTime(){
+		return time;
 	}
 	/**
 	 * Indicates whether the clock is currently running or paused.
 	 * @return <tt>true</tt> if running, <tt>false</tt> if paused.
 	 */
-	public static boolean isRunning(){
-		return clock.timer.isRunning();
+	public boolean isRunning(){
+		return timer.isRunning();
 	}
 	/**
 	 * Pauses the clock (freezes time and stops to send onClock() events to 
 	 * listeners).
 	 */
-	public static void pause(){
-		clock.timer.stop();
+	public void pause(){
+		timer.stop();
 	}
 	/**
 	 * Resumes the clock if it was paused. 
 	 */
-	public static void resume(){
-		clock.timer.start();
+	public void resume(){
+		timer.start();
 	}
 	/** 
 	 * Sets the clock time to 0.
 	 */
-	public static void reset(){
-		clock.time=0;
+	public void reset(){
+		time=0;
 	}
 }

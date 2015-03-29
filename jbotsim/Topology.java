@@ -20,6 +20,7 @@ import jbotsim.Link.Type;
 import jbotsim.event.*;
 
 public class Topology extends _Properties{
+    Clock clock = new Clock();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
@@ -34,7 +35,7 @@ public class Topology extends _Properties{
     HashMap<String,Class<Node>> nodeModels=new HashMap<String,Class<Node>>();
     double communicationRange = 100;
     double sensingRange = 0;
-    Dimension dimensions = new Dimension(600,400);
+    Dimension dimensions;
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     boolean linkUpdate = true;
@@ -43,13 +44,13 @@ public class Topology extends _Properties{
      * Creates a topology.
      */
     public Topology(){
-        setMessageEngine(new MessageEngine());
+        this(600, 400);
     }
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
-        this();
+        setMessageEngine(new MessageEngine());
         setDimensions(width, height);
     }
     /**
@@ -150,20 +151,68 @@ public class Topology extends _Properties{
      */
     public void setMessageEngine(MessageEngine messageEngine) {
         if (messageEngine != null)
-            Clock.removeClockListener(this.messageEngine);
+            clock.removeClockListener(this.messageEngine);
         this.messageEngine = messageEngine;
         messageEngine.setTopology(this);
-        Clock.addClockListener(messageEngine, 1);
+        clock.addClockListener(messageEngine, 1);
     }
+
+    /**
+     * Returns the global duration of a round in this topology (in millisecond).
+     * @return The duration
+     */
+    public int getClockSpeed(){
+        return clock.getTimeUnit();
+    }
+
+    /**
+     * Sets the global duration of a round in this topology (in millisecond).
+     * @param period The desired duration
+     */
+    public void setClockSpeed(int period){
+        clock.setTimeUnit(period);
+    }
+
     /**
      * Returns the current time (current round number)
      */
     public int getTime(){
-        return Clock.currentTime();
+        return clock.currentTime();
     }
     /**
      * Sets the topology dimensions as indicated.
      */
+
+    /**
+     * Indicates whether the internal clock is currently running or in pause.
+     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
+     */
+    public boolean isRunning(){
+        return clock.isRunning();
+    }
+
+    /**
+     * Pauses the clock (freezes time and stops to send onClock() events to
+     * listeners).
+     */
+    public void pause(){
+        clock.pause();
+    }
+
+    /**
+     * Resumes the clock if it was paused.
+     */
+    public void resume(){
+        clock.resume();
+    }
+
+    /**
+     * Reset the round number to 0.
+     */
+    public void resetTime(){
+        clock.reset();
+    }
+
     public void setDimensions(int width, int height){
         dimensions = new Dimension(width,height);
     }
@@ -231,11 +280,11 @@ public class Topology extends _Properties{
      */
     public void addNode(double x, double y, Node n){
         boolean wasRunning=false;
-        if (Clock.isRunning()){
-            Clock.pause();
+        if (clock.isRunning()){
+            clock.pause();
             wasRunning=true;
         }
-        Clock.pause(); // to be removed.
+        clock.pause(); // to be removed.
         if (x == -1)
             x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
@@ -251,12 +300,11 @@ public class Topology extends _Properties{
         n.topo=this;
         n.onTopologyAttachment(this);
         notifyNodeAdded(n);
-        Clock.removeClockListener(n);// Transitional FIXME
-        Clock.addClockListener(n, n.clockPeriod);
+        clock.addClockListener(n, n.clockSpeed);
         n.onStart();
         updateWirelessLinksFor(n);
         if (wasRunning)
-            Clock.resume();
+            clock.resume();
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -265,13 +313,14 @@ public class Topology extends _Properties{
      */
     public void removeNode(Node n){
         boolean wasRunning=false;
-        if (Clock.isRunning()){
-            Clock.pause();
+        if (clock.isRunning()){
+            clock.pause();
             wasRunning=true;
         }
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
+        clock.removeClockListener(n);
         nodes.remove(n);
         for (Node n2 : nodes){
             if (n2.sensedNodes.contains(n)){
@@ -282,19 +331,19 @@ public class Topology extends _Properties{
         n.onTopologyDetachment(this);
         n.topo=null;
         if (wasRunning)
-            Clock.resume();
+            clock.resume();
     }
     public void selectNode(Node n){
         boolean wasRunning=false;
-        if (Clock.isRunning()){
-            Clock.pause();
+        if (clock.isRunning()){
+            clock.pause();
             wasRunning=true;
         }
         selectedNode = n;
         n.onSelection();
         notifyNodeSelected(n);
         if (wasRunning)
-            Clock.resume();
+            clock.resume();
     }
     /**
      * Adds the specified link to this topology. Calling this method makes
@@ -578,23 +627,23 @@ public class Topology extends _Properties{
      * @param period The number of rounds between consecutive onClock() events,
      * in time units.
      */
-    public static void addClockListener(ClockListener listener, int period){
-        Clock.addClockListener(listener, period);
+    public void addClockListener(ClockListener listener, int period){
+        clock.addClockListener(listener, period);
     }
     /**
      * Registers the specified listener to the events of the topology clock.
      * @param listener The listener to register.
      */
-    public static void addClockListener(ClockListener listener){
-        Clock.addClockListener(listener);
+    public void addClockListener(ClockListener listener){
+        clock.addClockListener(listener);
     }
     /**
      * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
      * listener will not longer be called.)
      * @param listener The listener to unregister.
      */
-    public static void removeClockListener(ClockListener listener){
-        Clock.removeClockListener(listener);
+    public void removeClockListener(ClockListener listener){
+        clock.removeClockListener(listener);
     }
     protected void notifyLinkAdded(Link l){
         if (l.type==Type.DIRECTED) {

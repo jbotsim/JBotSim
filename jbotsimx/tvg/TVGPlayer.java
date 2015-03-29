@@ -1,6 +1,5 @@
 package jbotsimx.tvg;
 
-import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
@@ -32,8 +31,8 @@ public class TVGPlayer implements ClockListener{
 			tp.addNode(n);
 	}
 	public void start(){
-		Clock.reset();
-		Clock.addClockListener(this, 1);
+		tp.resetTime();
+		tp.addClockListener(this);
 		for (TVLink l : tvg.tvlinks)
 			if (l.appearanceDates.contains(0))
 				//tp.addLink(l, true); // add silently.. (nodes not notified)
@@ -43,7 +42,7 @@ public class TVGPlayer implements ClockListener{
 		updateLinks();
 	}
 	protected void updateLinks(){
-		Integer time = (period==null) ? Clock.currentTime() : Clock.currentTime() % period;
+		Integer time = (period==null) ? tp.getTime() : tp.getTime() % period;
 		for (TVLink l : tvg.tvlinks){
 			if (l.disappearanceDates.contains(time) && tp.getLinks().contains(l))
 				tp.removeLink(l);

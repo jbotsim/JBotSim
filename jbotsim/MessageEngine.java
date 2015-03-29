@@ -16,8 +16,8 @@ public class MessageEngine implements ClockListener {
         this.topology = topology;
     }
     public void setSpeed(int speed){
-        Clock.removeClockListener(this);
-        Clock.addClockListener(this, speed);
+        topology.removeClockListener(this);
+        topology.addClockListener(this, speed);
     }
     public void onClock(){
         processMessages(collectMessages());
@@ -48,7 +48,7 @@ public class MessageEngine implements ClockListener {
         for (MessageListener ml : topology.messageListeners)
             ml.onMessage(m);
         if (debug)
-            System.err.println(Clock.currentTime()+": " + m);
+            System.err.println(topology.getTime()+": " + m);
     }
     public void setDebug(boolean debug){
         this.debug=debug;

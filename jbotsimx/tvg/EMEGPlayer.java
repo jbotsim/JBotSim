@@ -2,7 +2,6 @@ package jbotsimx.tvg;
 
 import java.util.Random;
 
-import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
@@ -29,8 +28,8 @@ public class EMEGPlayer implements ClockListener{
 			tp.addNode(n);
 	}
 	public void start(){
-		Clock.reset();
-		Clock.addClockListener(this, 1);
+		tp.resetTime();
+		tp.addClockListener(this);
 		Random r = new Random();
 		for (TVLink l : tvg.tvlinks)
 			if (r.nextDouble()<steadyProb)
@@ -55,6 +54,6 @@ public class EMEGPlayer implements ClockListener{
 		tvg.buildCompleteGraph(10);
 		(new EMEGPlayer(tvg, tp, .8, .8)).start();
 		//new TopologyObserver(tp);
-		Clock.setTimeUnit(100);
+		tp.setClockSpeed(100);
 	}
 }

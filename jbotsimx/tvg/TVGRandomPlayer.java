@@ -2,7 +2,6 @@ package jbotsimx.tvg;
 
 import java.util.Random;
 
-import jbotsim.Clock;
 import jbotsim.Topology;
 import jbotsim.ui.JViewer;
 
@@ -28,7 +27,7 @@ public class TVGRandomPlayer extends TVGPlayer{
 		updateLinks();
 	}
 	protected void updateLinks(){
-		int now=Clock.currentTime();
+		int now=tp.getTime();
 		for (TVLink l : super.tvg.tvlinks){
 			int nextApp=(Integer)l.getProperty("nextApp");
 			int nextDis=(Integer)l.getProperty("nextDis");
@@ -46,11 +45,11 @@ public class TVGRandomPlayer extends TVGPlayer{
 		tvg.buildFromFile("/home/arnaud/workspace/code/jbotsim/_testing/dtn/star.tvg");
 		Topology tp=new Topology();
 		new JViewer(tp);
-		Clock.reset();
-		Clock.pause();
-		Clock.setTimeUnit(50);
+		tp.resetTime();
+		tp.pause();
+		tp.setClockSpeed(50);
 		TVGRandomPlayer player = new TVGRandomPlayer(tvg, tp, 100);
 		player.start();
-		Clock.resume();
+		tp.resume();
 	}
 }

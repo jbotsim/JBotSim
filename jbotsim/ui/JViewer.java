@@ -23,7 +23,6 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import jbotsim.Clock;
 import jbotsim.Node;
 import jbotsim.Topology;
 
@@ -154,7 +153,7 @@ public class JViewer{
 			}else if (slideBarType==BarType.SENSING){
 				jtp.topo.setSensingRange(slideBar.getValue());
 			}else if (slideBarType==BarType.SPEED){
-				Clock.setTimeUnit((width-slideBar.getValue())/40+1);
+				jtp.topo.setClockSpeed((width-slideBar.getValue())/40+1);
 			}
 			jtp.updateUI();
 		}
@@ -176,15 +175,15 @@ public class JViewer{
 				jtp.updateUI();
 			}else if (cmd.equals("Set clock speed")){
 				if (slideBarType != BarType.SPEED) 
-					addSlideBar(BarType.SPEED, (width-Clock.getTimeUnit()*40));
+					addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
 				else
 					removeSlideBar();
 				jtp.updateUI();
             }else if (cmd.equals("Pause or resume execution")){
-                if (Clock.isRunning())
-                    Clock.pause();
+                if (jtp.topo.isRunning())
+                    jtp.topo.pause();
                 else
-                    Clock.resume();
+                    jtp.topo.resume();
             }else if (cmd.equals("Reset nodes")){
                 jtp.topo.reset();
 			}else if (cmd.equals("Export topology")){

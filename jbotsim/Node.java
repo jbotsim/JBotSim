@@ -30,7 +30,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Double sensingRange = null;
     List<Node> sensedNodes=new ArrayList<Node>();
     boolean isWirelessEnabled = true;
-    int clockPeriod=1;
+    int clockSpeed = 1;
     Topology topo;
     Color color = null;
     Object state=null;
@@ -60,16 +60,18 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     /**
      * Returns the period in-between two onClock() events in this node.
      */
-    public int getClockPeriod() {
-        return clockPeriod;
+    public int getClockSpeed() {
+        return clockSpeed;
     }
     /**
      * Sets the period in-between two onClock() events in this node.
      */
-    public void setClockPeriod(int clockPeriod) {
-        this.clockPeriod = clockPeriod;
-        Clock.removeClockListener(this);
-        Clock.addClockListener(this,clockPeriod);
+    public void setClockSpeed(int period) {
+        this.clockSpeed = period;
+        if (topo != null) {
+            topo.removeClockListener(this);
+            topo.addClockListener(this, clockSpeed);
+        }
     }
     /**
      * Returns the parent topology of this node, if any.
@@ -80,17 +82,17 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
     /**
      * Called once this node has been added to a topology, but before this
-     * topology listeners are notified. This method is to be overwritten in the 
-     * node class to perform topology related initialization. 
+     * topology listeners are notified. This method is to be overwritten in the
+     * node class to perform topology related initialization.
      */
-    public void onTopologyAttachment(Topology tp){
+    protected void onTopologyAttachment(Topology tp){
     }
     /**
      * Called once this node has been removed from a topology, right after this
-     * topology listeners are notified. This method is to be overwritten in the 
-     * node class to perform topology related clean up. 
+     * topology listeners are notified. This method is to be overwritten in the
+     * node class to perform topology related clean up.
      */
-    public void onTopologyDetachment(Topology tp){
+    protected void onTopologyDetachment(Topology tp){
     }
     /**
      * Called when this node is selected (e.g. middle click in the UI)
@@ -328,7 +330,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the current time (current round number)
      */
     public int getTime(){
-        return Clock.currentTime();
+        return topo.getTime();
     }
     /**
      * Returns the current direction angle of this node (in radians).

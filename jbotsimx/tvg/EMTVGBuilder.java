@@ -3,7 +3,6 @@ package jbotsimx.tvg;
 import java.util.Random;
 import java.util.Vector;
 
-import jbotsim.Clock;
 import jbotsim.Node;
 
 /*
@@ -51,7 +50,6 @@ public class EMTVGBuilder {
 				l.disappearanceDates.add(date);
 	}
 	public static void main(String args[]){
-		Clock.setTimeUnit(100);
 		Vector<Node> nodes=new Vector<Node>();
 		Node n1=new Node(); n1.setLocation(100, 100); nodes.add(n1);
 		Node n2=new Node(); n2.setLocation(100, 200); nodes.add(n2);
@@ -60,6 +58,7 @@ public class EMTVGBuilder {
 		TVG tvg=EMTVGBuilder.createGraph(nodes, 0.1, 0.1, 20);
 		System.out.println(tvg);
 		jbotsim.Topology tp=new jbotsim.Topology();
+        tp.setClockSpeed(100);
 		new jbotsim.ui.JViewer(tp);
 		TVGPlayer player=new TVGPlayer(tvg, tp, 20);
 		player.start();
