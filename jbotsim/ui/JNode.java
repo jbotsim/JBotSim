@@ -31,10 +31,8 @@ import jbotsim.Node;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener{
-	protected Toolkit tk = Toolkit.getDefaultToolkit();
-	protected Image baseIcon = tk.getImage(JNode.class.getResource("circle.png")); 
 	protected Image icon;
-    protected Integer userSize;
+	protected Image scaledIcon;
     protected Integer drawSize;
     protected double zcoord = -1;
     protected Node node;
@@ -51,20 +49,31 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         addMouseWheelListener(this);
         setContentAreaFilled(false);
         setBorderPainted(false);
-        userSize=node.hasProperty("size")?(Integer)node.getProperty("size"):8;
-        drawSize=userSize;
-        if (node.hasProperty("icon"))
-        	baseIcon=tk.getImage(JNode.class.getResource((String)node.getProperty("icon")));
+        updateIcon();
         update();
+    }
+    public void updateIcon(){
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        String filename;
+        if (node.hasProperty("icon"))
+            filename = (String) node.getProperty("icon");
+        else
+            filename = "/jbotsim/ui/circle.png";
+
+        icon = tk.getImage(getClass().getResource(filename));
+        updateIconSize();
+    }
+    public void updateIconSize(){
+        drawSize = (int)(node.getSize() * camheight/(camheight-node.getZ()));
+        scaledIcon = icon.getScaledInstance(drawSize*2, drawSize*2, Image.SCALE_DEFAULT);
+        setIcon(new ImageIcon(scaledIcon));
     }
     public void update(){
     	if (node.getZ() != zcoord){
     		zcoord = node.getZ();
-    		drawSize = (int)(userSize * camheight/(camheight-zcoord));
-            icon=baseIcon.getScaledInstance(drawSize*2, drawSize*2, Image.SCALE_DEFAULT);
-            setIcon(new ImageIcon(icon));
-    	}
-    	setBounds((int)node.getX()-drawSize, (int)node.getY()-drawSize, drawSize*2, drawSize*2);
+            updateIconSize();
+        }
+        setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize*2, drawSize*2);
     }
     public void paint(Graphics g){
     	Graphics2D g2d = (Graphics2D) g;
@@ -74,7 +83,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     		newXform.rotate(direction+Math.PI/2, drawSize, drawSize);
     		g2d.setTransform(newXform);
     	}
-        g2d.drawImage(this.icon, 0, 0, null);
+        g2d.drawImage(scaledIcon, 0, 0, null);
         if (node.getColor() != null){
     		g2d.setColor(node.getColor());
     		g2d.fillOval(drawSize/2, drawSize/2, drawSize, drawSize);

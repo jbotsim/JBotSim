@@ -170,7 +170,11 @@ public class JTopology extends JPanel{
 	    			jn.updateUI();
 	    		}else if (property.equals("state")){
 		    		jn.setToolTipText(o.toString());
-	    		}
+	    		}else if (property.equals("icon")){
+                    jn.updateIcon();
+                }else if (property.equals("size")){
+                    jn.updateIcon();
+                }
 	    	}else if (property.equals("width") || property.equals("color")){
 				updateUI();
 	    	}

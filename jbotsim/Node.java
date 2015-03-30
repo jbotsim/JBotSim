@@ -35,6 +35,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Object state=null;
     Integer ID;
     static Integer maxID=0;
+    int size = 8;
 
     /**
      * Creates a new node using the settings of a default model. FIXME
@@ -186,8 +187,31 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void setRandomColor(){
         Random r = new Random();
-        setColor(new Color(r.nextInt(255),r.nextInt(255),r.nextInt(255)));
+        setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
+
+    /**
+     * Sets the icon of this node.
+     */
+    public void setIcon(String fileName){
+        setProperty("icon", fileName);
+    }
+
+    /**
+     * Returns the size of this node.
+     */
+    public int getSize(){
+        return size;
+    }
+
+    /**
+     * Sets the size of this node.
+     */
+    public void setSize(int size){
+        this.size = size;
+        setProperty("size", size); // used for property notification
+    }
+
     /**
      * Returns the state of this node.
      */
