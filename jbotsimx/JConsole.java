@@ -71,7 +71,7 @@ public class JConsole extends TextArea implements TextListener{
 		   	String exemple="communicationRange 0.0\nsensingRange 0.0\nA [345.0, 291.0]\nB [419.0, 239.0]\nC [367.0, 367.0]\nNode@671f95 [388.0, 305.0]\nA <--> B\nA <--> C\n";
 		   	topo.fromString(exemple);
 	   	}else if (args[0].equals("tikz")){
-	   		this.setText(jbotsimx.Tikz.exportTopology(topo));
+	   		this.setText(Tikz.exportTopology(topo));
 	   	}else if (args[0].equals("rename")){
 	   		Node n=(Node)topo.getProperty("selectedNode");
 	   		if (n!=null) 

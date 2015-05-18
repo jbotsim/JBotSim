@@ -11,12 +11,12 @@ import jbotsim.Node;
 public class TVG{
 	Vector<Node> nodes=new Vector<Node>();
 	Vector<TVLink> tvlinks=new Vector<TVLink>();
-	Class nodeClass;
+	Class cNode;
 	public TVG(){
 		this(Node.class);
 	}
-	public TVG(Class nodeClass){
-		this.nodeClass=nodeClass;
+	public TVG(Class cNode){
+		this.cNode = cNode;
 	}
 	public void buildFromFile(String filename){
         try{
@@ -28,7 +28,7 @@ public class TVG{
             while ((sin=in.readLine()).compareTo("")!=0){
                 st = new StringTokenizer(sin," ");
                 String id=st.nextToken();
-                Node n=(Node)nodeClass.newInstance();
+                Node n=(Node)cNode.newInstance();
                 n.setProperty("id", id);
                 if (st.hasMoreTokens()){
                     double x=Double.parseDouble(st.nextToken());
@@ -64,10 +64,10 @@ public class TVG{
 	public void buildCompleteGraph(Integer N){
 		try{
 			for (int i=0; i<N; i++){
-				Node node = (Node)nodeClass.newInstance();
+				Node node = (Node)cNode.newInstance();
 				node.setProperty("id", "v"+(new Integer(i)).toString());
 				double angle=(2.0*Math.PI/N)*i;
-				node.setLocation(250+Math.cos(angle)*150, 250+Math.sin(angle)*150);
+				node.setLocation(200+Math.cos(angle)*150, 200+Math.sin(angle)*150);
 	            addNode(node);
 			}
 		}catch (Exception e) {e.printStackTrace();}
@@ -79,7 +79,7 @@ public class TVG{
 		}		
 	}
 	public void addNode(Node n){
-        n.setCommunicationRange(0);
+        n.disableWireless();
 		nodes.add(n);
 	}
 	public void addTVLink(TVLink l){
@@ -98,9 +98,6 @@ public class TVG{
 			allDates.addAll(l.disappearanceDates);
 		}
 		return allDates.size();
-	}
-	public void addRandomSchedule(int totalBound, int presenceBound, int timeLimit){
-		
 	}
 	public String toString(){
 		String s="";

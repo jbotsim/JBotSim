@@ -33,6 +33,7 @@ public class Topology extends _Properties{
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
     HashMap<String,Class<Node>> nodeModels=new HashMap<String,Class<Node>>();
+    boolean isWirelessEnabled = true;
     double communicationRange = 100;
     double sensingRange = 0;
     Dimension dimensions;
@@ -102,6 +103,22 @@ public class Topology extends _Properties{
        }
     }
 
+    /**
+     * Enables this node's wireless capabilities.
+     */
+    public void enableWireless(){
+        isWirelessEnabled = true;
+        for (Node node : nodes)
+            node.enableWireless();
+    }
+    /**
+     * Disables this node's wireless capabilities.
+     */
+    public void disableWireless(){
+        isWirelessEnabled = false;
+        for (Node node : nodes)
+            node.disableWireless();
+    }
     /**
      * Returns the default communication range.
      * @return the default communication range
@@ -227,6 +244,7 @@ public class Topology extends _Properties{
      * onStart() method on each node.
      */
     public void reset(){
+        clearMessages();
         for (Link link : edges) {
             link.setWidth(1);
             link.setColor(Color.black);
@@ -296,6 +314,8 @@ public class Topology extends _Properties{
             n.setCommunicationRange(communicationRange);
         if (n.sensingRange == null)
             n.setSensingRange(sensingRange);
+        if (isWirelessEnabled == false)
+            n.disableWireless();
         nodes.add(n);
         n.topo=this;
         n.onTopologyAttachment(this);
@@ -320,7 +340,7 @@ public class Topology extends _Properties{
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
-        clock.removeClockListener(n);
+        removeClockListener(n);
         nodes.remove(n);
         for (Node n2 : nodes){
             if (n2.sensedNodes.contains(n)){

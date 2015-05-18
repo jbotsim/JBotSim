@@ -95,7 +95,9 @@ public class Connectivity {
         return isConnected(t.getNodes());
     }
     public static boolean isConnected(List<Node> Vset){
-        if (Vset.size()<=1)
+        if (Vset.size()==0)
+            return false;
+        if (Vset.size()==1)
             return true;
         ArrayList<Node> vertices=new ArrayList<Node>(Vset);
         removeConnectedNodes(vertices,vertices.get(0));

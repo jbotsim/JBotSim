@@ -58,12 +58,12 @@ public class Algorithms {
         if (!Connectivity.isConnected(Vset))
             return null;
         Collections.sort(Eset);
-		
+
         ArrayList<Node> Vmst=new ArrayList<Node>();
         ArrayList<Link> Emst=new ArrayList<Link>();
 		
         Vmst.add(Vset.get(0));
-		
+
         while(Vmst.size()!=Vset.size()){
             boolean added=false;
             Enumeration<Link> en=new Vector<Link>(Eset).elements();
@@ -74,7 +74,7 @@ public class Algorithms {
                         Vmst.add(l.destination);
                         Emst.add(l);
                         added=true;
-                    }else if (Vmst.contains(l.destination) && !Vmst.contains(l.destination)){
+                    }else if (Vmst.contains(l.destination) && !Vmst.contains(l.source)){
                         Vmst.add(l.source);
                         Emst.add(l);
                         added=true;

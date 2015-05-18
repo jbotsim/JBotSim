@@ -55,15 +55,19 @@ class Clock {
 			time++;
 			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())){
 				Integer I=countdown.get(cl);
-				if(I==1){
-					try{
-						if(((Node)cl).topo!=null)
+				if(I!=null) {
+					if (I == 1) {
+						try {
+							if (((Node) cl).topo != null)
+								cl.onClock();
+						} catch (Exception e) {
 							cl.onClock();
-					}catch(Exception e){cl.onClock();};
-					countdown.put(cl, listeners.get(cl));
-				}else{
-					countdown.put(cl, I-1);
-				}	
+						}
+						countdown.put(cl, listeners.get(cl));
+					} else {
+						countdown.put(cl, I - 1);
+					}
+				}
 			}	
 		}
 	}

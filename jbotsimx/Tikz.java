@@ -28,7 +28,7 @@ public class Tikz {
 			for (Node n : tp.getNodes()){
 				double x=Math.round(n.getX()*100/scale)/100.0;
 				double y=Math.round((600-n.getY())*100/scale)/100.0;
-				s=s+"  \\path ("+x+","+y+") node ("+n+") {};"+delim;
+				s=s+"  \\path ("+x+","+y+") node (v" + n + ") {};"+delim;
 			}
 		}
 		s=s+"  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]"+delim;

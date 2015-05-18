@@ -23,8 +23,8 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsimx.Tikz;
 
 /**
  * The viewer includes a central jtopology which will draw the attached 
@@ -187,7 +187,7 @@ public class JViewer{
             }else if (cmd.equals("Reset nodes")){
                 jtp.topo.reset();
 			}else if (cmd.equals("Export topology")){
-				System.out.println(jbotsimx.Tikz.exportTopology(jtp.topo));
+				System.out.println(Tikz.exportTopology(jtp.topo));
             }
 		}
 	}

@@ -11,10 +11,7 @@
  */
 package jbotsim.ui;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -29,14 +26,11 @@ import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
-import jbotsim.event.ConnectivityListener;
-import jbotsim.event.MovementListener;
-import jbotsim.event.PropertyListener;
-import jbotsim.event.TopologyListener;
+import jbotsim.event.*;
 
 
 @SuppressWarnings("serial")
-public class JTopology extends JPanel{
+public class JTopology extends JPanel {
     protected ArrayList<ActionListener> actionListeners=new ArrayList<ActionListener>();
     protected ArrayList<String> actionCommands=new ArrayList<String>();
     protected Topology topo;
@@ -137,7 +131,8 @@ public class JTopology extends JPanel{
 			g2d.drawOval(x,y,4,4);
 		}
     }
-	class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
+
+    class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{
 	    public void onNodeAdded(Node n){
             JNode jv=new JNode(n);
@@ -159,7 +154,8 @@ public class JTopology extends JPanel{
 	    	updateUI();
 	    }
 	    public void onMove(Node n) {
-            updateUI();
+			Toolkit.getDefaultToolkit().sync();
+			updateUI();
             if (n.hasProperty("jnode"))
     	    	((JNode)n.getProperty("jnode")).update();
 	    }

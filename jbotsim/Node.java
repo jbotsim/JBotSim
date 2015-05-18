@@ -391,7 +391,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         setDirection(p2);
     }
     /**
-     * Translates the location of this node of the specified distance towards 
+     * Translates the location of this node by one unit towards
+     * the node's current direction. The distance unit is the pixel.
+     */
+    public void move(){
+        move(1);
+    }
+    /**
+     * Translates the location of this node by the specified distance towards
      * the node's current direction. The distance unit is the pixel.
      */
     public void move(double distance){
@@ -538,7 +545,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param message The message to be sent.
      */
     public void send(Node destination, Message message){
-        sendQueue.add(new Message(this, destination, message.content));
+        Message m = new Message(this, destination, message.content);
+        m.retryMode = message.retryMode;
+        sendQueue.add(m);
     }
     /**
      * Same method as <tt>send()</tt>, but retries to send the message later

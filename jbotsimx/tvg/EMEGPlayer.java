@@ -32,7 +32,7 @@ public class EMEGPlayer implements ClockListener{
 		tp.addClockListener(this);
 		Random r = new Random();
 		for (TVLink l : tvg.tvlinks)
-			if (r.nextDouble()<steadyProb)
+			if (r.nextDouble() < steadyProb)
 				tp.addLink(l);
 	}
 	public void onClock(){
@@ -48,12 +48,12 @@ public class EMEGPlayer implements ClockListener{
 		}		
 	}
 	public static void main(String args[]){
-		Topology tp=new Topology();
+		Topology tp=new Topology(400, 400);
 		new JViewer(tp);
 		TVG tvg=new TVG();
-		tvg.buildCompleteGraph(10);
-		(new EMEGPlayer(tvg, tp, .8, .8)).start();
+		tvg.buildCompleteGraph(30);
+		(new EMEGPlayer(tvg, tp, .2, .4)).start();
 		//new TopologyObserver(tp);
-		tp.setClockSpeed(100);
+		tp.setClockSpeed(10);
 	}
 }
