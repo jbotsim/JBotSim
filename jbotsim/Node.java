@@ -189,7 +189,12 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         Random r = new Random();
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
+    public static Color[] getBasicColors(){
+        return new Color[]{Color.red,Color.green,Color.blue,Color.yellow,Color.pink,
+                Color.black,Color.white,Color.gray,Color.darkGray,Color.lightGray,
+                Color.orange,Color.cyan,Color.magenta};
 
+    }
     /**
      * Sets the icon of this node.
      */
