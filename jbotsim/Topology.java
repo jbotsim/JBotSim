@@ -99,6 +99,8 @@ public class Topology extends _Properties{
         try {
             return (Node) getNodeModel(modelName).newInstance();
         } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Instance of class Node created instead");
             return new Node();
        }
     }
