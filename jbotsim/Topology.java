@@ -53,6 +53,7 @@ public class Topology extends _Properties{
     public Topology(int width, int height){
         setMessageEngine(new MessageEngine());
         setDimensions(width, height);
+        nodeModels.put("default", Node.class);
     }
     /**
      * Returns the node class corresponding to that name.
@@ -98,11 +99,14 @@ public class Topology extends _Properties{
     public Node newInstanceOfModel(String modelName){
         try {
             return (Node) getNodeModel(modelName).newInstance();
-        } catch (Exception e) {
+        } catch (IllegalAccessException e) {
             e.printStackTrace();
-            System.err.println("Instance of class Node created instead");
+            System.err.println("(is your class of node public?)");
+        } catch (Exception e){
+            e.printStackTrace();
+        } finally {
             return new Node();
-       }
+        }
     }
 
     /**
