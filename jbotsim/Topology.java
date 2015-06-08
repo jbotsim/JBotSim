@@ -104,9 +104,8 @@ public class Topology extends _Properties{
             System.err.println("(is your class of node public?)");
         } catch (Exception e){
             e.printStackTrace();
-        } finally {
-            return new Node();
         }
+        return new Node();
     }
 
     /**
