@@ -32,7 +32,7 @@ public class Topology extends _Properties{
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
-    HashMap<String,Class<Node>> nodeModels=new HashMap<String,Class<Node>>();
+    HashMap<String,Class<? extends Node>> nodeModels=new HashMap<String,Class<? extends Node>>();
     boolean isWirelessEnabled = true;
     double communicationRange = 100;
     double sensingRange = 0;
@@ -57,7 +57,7 @@ public class Topology extends _Properties{
     /**
      * Returns the node class corresponding to that name.
      */
-    public Class<Node> getNodeModel(String modelName){
+    public Class<? extends Node> getNodeModel(String modelName){
         return nodeModels.get(modelName);
     }
     /**
@@ -65,7 +65,7 @@ public class Topology extends _Properties{
      * all properties assigned to this virtual node will be given to further nodes created
      * without explicit model name.
      */
-    public Class<Node> getDefaultNodeModel(){
+    public Class<? extends Node> getDefaultNodeModel(){
         return getNodeModel("default");
     }
     /**
@@ -73,14 +73,14 @@ public class Topology extends _Properties{
      * @param modelName
      * @param nodeClass
      */
-    public void setNodeModel(String modelName, Class nodeClass){
+    public void setNodeModel(String modelName, Class<? extends Node> nodeClass){
         nodeModels.put(modelName, nodeClass);
     }
     /**
      * Sets the default node model to the given node instance.
      * @param nodeClass
      */
-    public void setDefaultNodeModel(Class nodeClass){
+    public void setDefaultNodeModel(Class<? extends Node> nodeClass){
         setNodeModel("default", nodeClass);
     }
     /**
