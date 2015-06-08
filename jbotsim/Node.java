@@ -81,20 +81,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return topo;
     }
     /**
-     * Called once this node has been added to a topology, but before this
-     * topology listeners are notified. This method is to be overwritten in the
-     * node class to perform topology related initialization.
-     */
-    protected void onTopologyAttachment(Topology tp){
-    }
-    /**
-     * Called once this node has been removed from a topology, right after this
-     * topology listeners are notified. This method is to be overwritten in the
-     * node class to perform topology related clean up.
-     */
-    protected void onTopologyDetachment(Topology tp){
-    }
-    /**
      * Called when this node is selected (e.g. middle click in the UI)
      */
     public void onSelection(){

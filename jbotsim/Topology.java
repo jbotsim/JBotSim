@@ -39,7 +39,6 @@ public class Topology extends _Properties{
     Dimension dimensions;
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
-    boolean linkUpdate = true;
 
     /**
      * Creates a topology.
@@ -307,7 +306,6 @@ public class Topology extends _Properties{
             clock.pause();
             wasRunning=true;
         }
-        clock.pause(); // to be removed.
         if (x == -1)
             x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
@@ -323,7 +321,6 @@ public class Topology extends _Properties{
             n.disableWireless();
         nodes.add(n);
         n.topo=this;
-        n.onTopologyAttachment(this);
         notifyNodeAdded(n);
         clock.addClockListener(n, n.clockSpeed);
         n.onStart();
@@ -353,22 +350,14 @@ public class Topology extends _Properties{
                 n2.onSensingOut(n);
             }
         }
-        n.onTopologyDetachment(this);
         n.topo=null;
         if (wasRunning)
             clock.resume();
     }
     public void selectNode(Node n){
-        boolean wasRunning=false;
-        if (clock.isRunning()){
-            clock.pause();
-            wasRunning=true;
-        }
         selectedNode = n;
         n.onSelection();
         notifyNodeSelected(n);
-        if (wasRunning)
-            clock.resume();
     }
     /**
      * Adds the specified link to this topology. Calling this method makes
