@@ -286,8 +286,7 @@ public class Topology extends _Properties{
         addNode(n.getX(), n.getY(), n);
     }
     /**
-     * Adds a new node to this topology at the specified location. The node
-     * will be created using default settings FIXME
+     * Adds a new node to this topology at the specified location.
      * @param x The abscissa of the location.
      * @param y The ordinate of the location.
      */

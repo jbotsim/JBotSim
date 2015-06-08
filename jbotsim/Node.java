@@ -38,7 +38,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     int size = 8;
 
     /**
-     * Creates a new node using the settings of a default model. FIXME
+     * Creates a new node.
      */
     public Node() {
         ID = maxID++;
