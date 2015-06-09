@@ -27,7 +27,7 @@ public class Topology extends _Properties{
     List<MovementListener> movementListeners=new ArrayList<MovementListener>();
     List<MessageListener> messageListeners=new ArrayList<MessageListener>();
     List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
-    List<ResetListener> resetListeners=new ArrayList<ResetListener>();
+    List<StartListener> startListeners =new ArrayList<StartListener>();
     MessageEngine messageEngine=null;
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
@@ -255,8 +255,8 @@ public class Topology extends _Properties{
         }
         for (Node node : nodes)
             node.setColor(null);
-        for (ResetListener listener : resetListeners)
-            listener.onReset();
+        for (StartListener listener : startListeners)
+            listener.onStart();
         for (Node n : nodes)
             n.onStart();
     }
@@ -622,17 +622,17 @@ public class Topology extends _Properties{
     /**
      * Registers the specified reset listener to this topology. The listener
      * will be notified every time a reset is requested on the topology.
-     * @param listener The reset listener.
+     * @param listener The start listener.
      */
-    public void addResetListener(ResetListener listener){
-        resetListeners.add(listener);
+    public void addStartListener(StartListener listener){
+        startListeners.add(listener);
     }
     /**
      * Unregisters the specified selection listener for this topology.
-     * @param listener The reset listener.
+     * @param listener The start listener.
      */
-    public void removeResetListener(ResetListener listener){
-        resetListeners.remove(listener);
+    public void removeStartListener(StartListener listener){
+        startListeners.remove(listener);
     }
     /**
      * Registers the specified listener to the events of the topology clock.
