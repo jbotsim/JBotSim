@@ -52,7 +52,6 @@ public class Topology extends _Properties{
     public Topology(int width, int height){
         setMessageEngine(new MessageEngine());
         setDimensions(width, height);
-        nodeModels.put("default", Node.class);
     }
     /**
      * Returns the node class corresponding to that name.
@@ -101,6 +100,7 @@ public class Topology extends _Properties{
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             System.err.println("(is your class of node public?)");
+        } catch (NullPointerException e) {
         } catch (Exception e){
             e.printStackTrace();
         }

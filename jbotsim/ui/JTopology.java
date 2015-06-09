@@ -201,7 +201,10 @@ public class JTopology extends JPanel {
 	            	topo.setProperty("popupRunning", true);
 	        		popup.show(jtopo,e.getX(),e.getY());
 	        	}else{
-	        		topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel("default"));
+                    String modelName = "default";
+                    if (topo.getModelsNames().size()>0)
+                        modelName = topo.getModelsNames().iterator().next();
+	        		topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel(modelName));
 	        	}
 	        }else if (e.getButton()==MouseEvent.BUTTON3){
 	        	JPopupMenu popup=new JPopupMenu();
