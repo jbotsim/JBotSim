@@ -31,6 +31,7 @@ import jbotsim.event.*;
 
 @SuppressWarnings("serial")
 public class JTopology extends JPanel {
+    protected ArrayList<SurfacePainter> surfacePainters=new ArrayList<SurfacePainter>();
     protected ArrayList<ActionListener> actionListeners=new ArrayList<ActionListener>();
     protected ArrayList<String> actionCommands=new ArrayList<String>();
     protected Topology topo;
@@ -61,6 +62,12 @@ public class JTopology extends JPanel {
         for (Link l : topo.getLinks())
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
+    }
+    public void addSurfacePainter(SurfacePainter painter){
+        surfacePainters.add(painter);
+    }
+    public void removeSurfacePainter(SurfacePainter painter){
+        surfacePainters.remove(painter);
     }
     /**
      * Registers the specified action listener to this JTopology.
@@ -100,8 +107,10 @@ public class JTopology extends JPanel {
      * Paints this JTopology on the specified graphics (not supposed to be
      * used explicitly).
      */
-    public void paint(Graphics g){
-        super.paint(g);
+    public void paintComponent(Graphics g){
+        super.paintComponent(g);
+        for (SurfacePainter painter : surfacePainters)
+            painter.onPaint(g);
         if (showDrawings){
             Graphics2D g2d=(Graphics2D)g;
             for(Link l : topo.getLinks(topo.hasDirectedLinks()))
