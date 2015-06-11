@@ -128,6 +128,13 @@ public class JViewer{
     	if (window!=null)
     		window.pack();
     }
+	/**
+	 * Sets the title of the corresponding window
+	 */
+    public void setTitle(String title){
+        if (window != null)
+            window.setTitle(title);
+    }
     /**
      * Adds a slide bar at the top of the topology.
      */

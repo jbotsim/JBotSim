@@ -38,6 +38,7 @@ public class JTopology extends JPanel {
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
 	protected boolean showDrawings=true;
+    protected boolean isInteractive=true;
     /**
      * Creates a new JTopology with default topology.
      */
@@ -62,6 +63,12 @@ public class JTopology extends JPanel {
         for (Link l : topo.getLinks())
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
+    }
+    public void setInteractive(boolean interactive){
+        if (interactive && !isInteractive)
+            addMouseListener(handler);
+        if (!interactive && isInteractive)
+            removeMouseListener(handler);
     }
     public void addSurfacePainter(SurfacePainter painter){
         surfacePainters.add(painter);
