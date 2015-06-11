@@ -39,6 +39,7 @@ public class Topology extends _Properties{
     Dimension dimensions;
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
+    int nbPauses = 0;
 
     /**
      * Creates a topology.
@@ -213,18 +214,22 @@ public class Topology extends _Properties{
     }
 
     /**
-     * Pauses the clock (freezes time and stops to send onClock() events to
-     * listeners).
+     * Pauses the clock (or increments the pause counter).
      */
     public void pause(){
-        clock.pause();
+        if (nbPauses == 0)
+            clock.pause();
+        nbPauses++;
     }
 
     /**
-     * Resumes the clock if it was paused.
+     * Resumes the clock (or decrements the pause counter).
      */
     public void resume(){
-        clock.resume();
+        assert(nbPauses > 0);
+        nbPauses--;
+        if (nbPauses == 0)
+            clock.resume();
     }
 
     /**
@@ -300,11 +305,7 @@ public class Topology extends _Properties{
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
-        boolean wasRunning=false;
-        if (clock.isRunning()){
-            clock.pause();
-            wasRunning=true;
-        }
+        pause();
         if (x == -1)
             x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
         if (y == -1)
@@ -324,8 +325,7 @@ public class Topology extends _Properties{
         clock.addClockListener(n, n.clockSpeed);
         n.onStart();
         updateWirelessLinksFor(n);
-        if (wasRunning)
-            clock.resume();
+        resume();
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -333,11 +333,7 @@ public class Topology extends _Properties{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
-        boolean wasRunning=false;
-        if (clock.isRunning()){
-            clock.pause();
-            wasRunning=true;
-        }
+        pause();
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
@@ -350,8 +346,7 @@ public class Topology extends _Properties{
             }
         }
         n.topo=null;
-        if (wasRunning)
-            clock.resume();
+        resume();
     }
     public void selectNode(Node n){
         selectedNode = n;
