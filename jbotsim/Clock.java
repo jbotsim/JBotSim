@@ -39,16 +39,14 @@ class Clock {
 				return -1;
 			if (!(arg0 instanceof MessageEngine) && arg1 instanceof MessageEngine)
 				return 1;
-			if (!(arg0 instanceof Node) && arg1 instanceof Node)
-				return -1;
 			if (arg0 instanceof Node && !(arg1 instanceof Node))
+				return -1;
+			if (!(arg0 instanceof Node) && arg1 instanceof Node)
 				return 1;
 			if (arg0 instanceof Node && arg1 instanceof Node)
 				return (new Integer(arg0.hashCode())).compareTo(arg1.hashCode());
-				//return (arg0.toString()+((Integer)arg0.hashCode()).toString())
-				//.compareTo(arg1.toString()+((Integer)arg1.hashCode()).toString());
 			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
-		}		
+		}
 	}
 	private class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evt) {
