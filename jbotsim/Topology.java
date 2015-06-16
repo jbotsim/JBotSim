@@ -307,9 +307,9 @@ public class Topology extends _Properties{
     public void addNode(double x, double y, Node n){
         pause();
         if (x == -1)
-            x = (new Random()).nextDouble() * (dimensions.width - 12) + 6;
+            x = Math.random() * (dimensions.width - 12) + 6;
         if (y == -1)
-            y = (new Random()).nextDouble() * (dimensions.height - 12) + 6;
+            y = Math.random() * (dimensions.height - 12) + 6;
         if (n.getX()==0 && n.getY()==0)
             n.setLocation(x, y);
 
