@@ -55,6 +55,7 @@ public class JTopology extends JPanel implements ActionListener{
     	topo.addConnectivityListener(handler);
     	topo.addTopologyListener(handler);
     	topo.addMovementListener(handler);
+        topo.addClockListener(handler);
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
@@ -159,7 +160,7 @@ public class JTopology extends JPanel implements ActionListener{
 	}
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-			PropertyListener, MouseListener, ActionListener{
+			PropertyListener, ClockListener, MouseListener, ActionListener{
 	    public void onNodeAdded(Node n){
             JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
@@ -201,6 +202,9 @@ public class JTopology extends JPanel implements ActionListener{
 				updateUI();
 	    	}
 		}
+        @Override
+        public void onClock() {
+        }
 	    public void mousePressed(MouseEvent e) {
 	    	if ((Boolean)topo.getProperty("popupRunning")==true){
 	    		topo.setProperty("popupRunning", false);

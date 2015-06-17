@@ -19,7 +19,7 @@ import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
 
-public class Topology extends _Properties{
+public class Topology extends _Properties implements ClockListener{
     Clock clock = new Clock();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
@@ -40,6 +40,8 @@ public class Topology extends _Properties{
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     int nbPauses = 0;
+    ArrayList<Node> toBeUpdated = new ArrayList<Node>();
+    boolean periodicUpdate = false;
 
     /**
      * Creates a topology.
@@ -69,6 +71,7 @@ public class Topology extends _Properties{
         }
         setMessageEngine(new MessageEngine());
         setDimensions(width, height);
+        addClockListener(this);
     }
     /**
     * Returns the node class corresponding to that name.
@@ -123,7 +126,13 @@ public class Topology extends _Properties{
         }
         return new Node();
     }
-
+    /**
+     * Sets the updates (links, sensed objects, etc.) to be periodic (true) or event-based (false).
+     * The periodic option is generally less time-consuming.
+     */
+    public void setPeriodicUpdate(boolean periodic){
+        periodicUpdate = periodic;
+    }
     /**
      * Enables this node's wireless capabilities.
      */
@@ -346,7 +355,7 @@ public class Topology extends _Properties{
         notifyNodeAdded(n);
         clock.addClockListener(n, n.clockSpeed);
         n.onStart();
-        updateWirelessLinksFor(n);
+        update(n);
         resume();
     }
     /**
@@ -712,6 +721,18 @@ public class Topology extends _Properties{
     protected void notifyNodeSelected(Node node){
         for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
             tl.onSelection(node);
+    }
+    @Override
+    public void onClock() {
+        for (Node node : toBeUpdated)
+            updateWirelessLinksFor(node);
+        toBeUpdated.clear();
+    }
+    void update(Node n){
+        if (periodicUpdate)
+            toBeUpdated.add(n);
+        else
+            updateWirelessLinksFor(n);
     }
     void updateWirelessLinksFor(Node n){
         for (Node n2 : nodes)
