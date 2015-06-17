@@ -12,6 +12,7 @@
 package jbotsim;
 
 import jbotsim.event.ClockListener;
+import jbotsim.ui.JTopology;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -45,28 +46,37 @@ class Clock {
 				return 1;
 			if (arg0 instanceof Node && arg1 instanceof Node)
 				return (new Integer(arg0.hashCode())).compareTo(arg1.hashCode());
+            if (arg0 instanceof Topology && !(arg1 instanceof Topology))
+                return -1;
+            if (!(arg0 instanceof Topology) && arg1 instanceof Topology)
+                return 1;
 			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
 		}
 	}
 	private class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evt) {
 			time++;
-			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())){
-				Integer I=countdown.get(cl);
-				if(I!=null) {
-					if (I == 1) {
-						try {
-							if (((Node) cl).topo != null)
-								cl.onClock();
-						} catch (Exception e) {
-							cl.onClock();
-						}
-						countdown.put(cl, listeners.get(cl));
-					} else {
-						countdown.put(cl, I - 1);
-					}
-				}
-			}	
+            ArrayList<ClockListener> expiredListeners = new ArrayList<ClockListener>();
+            ArrayList<ClockListener> expiredNodes = new ArrayList<ClockListener>();
+			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())) {
+                Integer I = countdown.get(cl);
+                if (I != null) {
+                    if (I == 1) {
+                        expiredListeners.add(cl);
+                        if (cl instanceof Node)
+                            expiredNodes.add(cl);
+                        countdown.put(cl, listeners.get(cl));
+                    } else {
+                        countdown.put(cl, I - 1);
+                    }
+                }
+            }
+            for (ClockListener cl : expiredNodes)
+                ((Node) cl).onPreClock();
+            for (ClockListener cl : expiredListeners)
+                cl.onClock();
+            for (ClockListener cl : expiredNodes)
+                ((Node) cl).onPostClock();
 		}
 	}
 	/**

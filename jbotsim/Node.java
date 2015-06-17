@@ -91,9 +91,19 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void onStart(){
     }
     /**
+     * Override this method to perform some action just before clock pulse.
+     */
+    public void onPreClock(){
+    }
+    /**
      * Override this method to perform some action upon clock pulse.
      */
     public void onClock(){
+    }
+    /**
+     * Override this method to perform some action just after clock pulse.
+     */
+    public void onPostClock(){
     }
     /**
      * Override this method to perform some action when the node moves.
