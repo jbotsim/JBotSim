@@ -5,7 +5,7 @@ package jbotsim.event;
  */
 public interface StartListener {
     /**
-     * Notifies that a reset was requested on this topology.
+     * Notifies that a restart was requested on this topology.
      */
     public void onStart();
 }

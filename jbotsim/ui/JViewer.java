@@ -192,7 +192,7 @@ public class JViewer{
                 else
                     jtp.topo.resume();
             }else if (cmd.equals("Reset nodes")){
-                jtp.topo.reset();
+                jtp.topo.restart();
 			}else if (cmd.equals("Export topology")){
 				System.out.println(Tikz.exportTopology(jtp.topo));
             }

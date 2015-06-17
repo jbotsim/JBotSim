@@ -277,6 +277,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void setSensingRange(double range) {
         sensingRange = range;
+        notifyNodeMoved(); // for GUI refresh FIXME
     }
     /**
      * Returns the location of this node (as a 2D point).

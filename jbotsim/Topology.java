@@ -45,18 +45,34 @@ public class Topology extends _Properties{
      * Creates a topology.
      */
     public Topology(){
-        this(600, 400);
+        this(600, 400, true);
+    }
+    /**
+     * Creates a topology and sets its running status (running/paused).
+     */
+    public Topology(boolean isRunning){
+        this(600, 400, isRunning);
     }
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
+        this(width, height, true);
+    }
+    /**
+     * Creates a topology of given dimensions.
+     */
+    public Topology(int width, int height, boolean isRunning){
+        if (! isRunning){
+            pause();
+            clock.reset();
+        }
         setMessageEngine(new MessageEngine());
         setDimensions(width, height);
     }
     /**
-     * Returns the node class corresponding to that name.
-     */
+    * Returns the node class corresponding to that name.
+    */
     public Class<? extends Node> getNodeModel(String modelName){
         return nodeModels.get(modelName);
     }
@@ -252,18 +268,24 @@ public class Topology extends _Properties{
      * Reset the color and width of nodes and links, then calls the
      * onStart() method on each node.
      */
-    public void reset(){
+    public void start(){
+        restart();
+        if (nbPauses > 0)
+            resume();
+    }
+    /**
+     * Reset the color and width of nodes and links, then calls the
+     * onStart() method on each node.
+     */
+    public void restart(){
+        pause();
+        resetTime();
         clearMessages();
-        for (Link link : edges) {
-            link.setWidth(1);
-            link.setColor(Color.black);
-        }
-        for (Node node : nodes)
-            node.setColor(null);
-        for (StartListener listener : startListeners)
-            listener.onStart();
         for (Node n : nodes)
             n.onStart();
+        for (StartListener listener : startListeners)
+            listener.onStart();
+        resume();
     }
     /**
      * Removes all the nodes (and links) of this topology.
@@ -615,8 +637,8 @@ public class Topology extends _Properties{
         selectionListeners.remove(listener);
     }
     /**
-     * Registers the specified reset listener to this topology. The listener
-     * will be notified every time a reset is requested on the topology.
+     * Registers the specified start listener to this topology. The listener
+     * will be notified every time a (re)start is requested on the topology.
      * @param listener The start listener.
      */
     public void addStartListener(StartListener listener){
