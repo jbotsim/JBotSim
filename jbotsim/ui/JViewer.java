@@ -182,7 +182,7 @@ public class JViewer implements CommandListener, ChangeListener{
 				jtp.topo.pause();
 			else
 				jtp.topo.resume();
-		}else if (command.equals("Reset nodes")){
+		}else if (command.equals("Restart nodes")){
 			jtp.topo.restart();
 		}else if (command.equals("Export topology")){
 			System.out.println(Tikz.exportTopology(jtp.topo));

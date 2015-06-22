@@ -10,5 +10,5 @@ public interface SurfacePainter {
      * Provides a way to draw things on the background.
      * @param g The background graphics.
      */
-    public void onPaint(Graphics g);
+    void onPaint(Graphics g);
 }

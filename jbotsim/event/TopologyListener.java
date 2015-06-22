@@ -19,11 +19,11 @@ public interface TopologyListener{
      * topology.
      * @param node The added node.
      */
-    public void onNodeAdded(Node node);
+    void onNodeAdded(Node node);
     /**
      * Notifies the underlying listener that a node has been removed to the 
      * topology.
      * @param node The removed node.
      */
-    public void onNodeRemoved(Node node);
+    void onNodeRemoved(Node node);
 }

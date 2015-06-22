@@ -19,5 +19,5 @@ public interface PropertyListener {
      * @param o The object.
      * @param key The name of the changed property.
      */
-    public void propertyChanged(_Properties o, String key);
+    void propertyChanged(_Properties o, String key);
 }

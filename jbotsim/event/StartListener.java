@@ -7,5 +7,5 @@ public interface StartListener {
     /**
      * Notifies that a restart was requested on this topology.
      */
-    public void onStart();
+    void onStart();
 }

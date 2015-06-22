@@ -18,5 +18,5 @@ public interface MessageListener {
 	 * Notifies the underlying MessageListener that a message has arrived.
 	 * @param msg The incoming message.
 	 */
-	public void onMessage(Message msg);
+	void onMessage(Message msg);
 }

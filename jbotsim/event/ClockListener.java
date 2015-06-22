@@ -15,5 +15,5 @@ public interface ClockListener {
 	/**
 	 * Called periodically by the central scheduler.
 	 */
-	public void onClock();
+	void onClock();
 }

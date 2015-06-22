@@ -18,5 +18,5 @@ public interface MovementListener{
      * Notifies the underlying listener that a node has moved.
      * @param node The node.
      */
-    public void onMove(Node node);
+    void onMove(Node node);
 }

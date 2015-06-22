@@ -18,5 +18,5 @@ public interface SelectionListener{
      * Notifies the underlying listener that a node has selected.
      * @param node The selected node.
      */
-    public void onSelection(Node node);
+    void onSelection(Node node);
 }
