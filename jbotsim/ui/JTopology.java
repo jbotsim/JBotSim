@@ -30,10 +30,11 @@ import jbotsim.event.*;
 
 
 @SuppressWarnings("serial")
-public class JTopology extends JPanel {
+public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<SurfacePainter> surfacePainters=new ArrayList<SurfacePainter>();
     protected ArrayList<ActionListener> actionListeners=new ArrayList<ActionListener>();
-    protected ArrayList<String> actionCommands=new ArrayList<String>();
+    protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
+    protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
@@ -80,29 +81,36 @@ public class JTopology extends JPanel {
      * Registers the specified action listener to this JTopology.
      * @param al The listener to add.
      */
-    public void addActionListener(ActionListener al){
-    	actionListeners.add(al);
+    public void addCommandListener(CommandListener al){
+    	commandListeners.add(al);
     }
     /**
      * Unregisters the specified action listener to this JTopology.
      * @param al The listener to remove.
      */
-    public void removeActionListener(ActionListener al){
-    	actionListeners.remove(al);
+    public void removeCommandListener(CommandListener al){
+    	commandListeners.remove(al);
     }
     /**
      * Adds the specified action command to this JTopology.
      * @param command The command name to add.
      */
-    public void addActionCommand(String command){
-    	actionCommands.add(command);
+    public void addCommand(String command){
+    	commands.add(command);
     }
     /**
      * Removes the specified action command from this JTopology.
      * @param command The command name to remove.
      */
-    public void removeActionCommand(String command){
-    	actionCommands.remove(command);
+    public void removeCommand(String command){
+        commands.remove(command);
+    }
+    /**
+     * Removes the specified action command from this JTopology.
+     * @param command The command name to remove.
+     */
+    public void removeAllCommands(String command){
+        commands.clear();
     }
     /**
      * Disables the drawing of links and sensing radius (if any).
@@ -147,6 +155,9 @@ public class JTopology extends JPanel {
 			g2d.drawOval(x,y,4,4);
 		}
     }
+	public void actionPerformed(ActionEvent arg0) {
+		String cmd = ((JMenuItem) arg0.getSource()).getText();
+	}
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
 			PropertyListener, MouseListener, ActionListener{
@@ -215,10 +226,8 @@ public class JTopology extends JPanel {
 	        	}
 	        }else if (e.getButton()==MouseEvent.BUTTON3){
 	        	JPopupMenu popup=new JPopupMenu();
-	        	for (String command : actionCommands){
+	        	for (String command : commands){
 	        		JMenuItem jitem=new JMenuItem(command);
-	        		for (ActionListener al : actionListeners)
-	        			jitem.addActionListener(al);
 	        		jitem.addActionListener(this);
 	        		popup.add(jitem);
 	        	}
@@ -234,7 +243,10 @@ public class JTopology extends JPanel {
 				int x=Integer.parseInt(args[2]);
 				int y=Integer.parseInt(args[3]);
 				topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
-			}
+			}else{
+                for (CommandListener cl : commandListeners)
+                    cl.onCommand(arg0.getActionCommand());
+            }
 		}
 	    public void mouseClicked(MouseEvent e){}
 	    public void mouseEntered(MouseEvent e){}

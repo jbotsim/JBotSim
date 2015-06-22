@@ -23,6 +23,7 @@ import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import javafx.collections.ListChangeListener;
 import jbotsim.Topology;
 import jbotsimx.Tikz;
 
@@ -32,14 +33,14 @@ import jbotsimx.Tikz;
  * remove a communication range or sensing range tuners (slider bars), or to 
  * pause/resume the system clock.
  */
-public class JViewer{
+public class JViewer implements CommandListener, ChangeListener{
 	protected JTopology jtp;
     protected int width=600;
     protected JSlider slideBar = new JSlider(0, width);
-	protected enum BarType {COMMUNICATION, SENSING, SPEED};
+
+    protected enum BarType {COMMUNICATION, SENSING, SPEED};
 	protected BarType slideBarType = null;
 	protected JFrame window = null;
-	protected EventHandler handler=new EventHandler();
 	/**
 	 * Creates a windowed viewer for a default topology. 
 	 */
@@ -87,13 +88,13 @@ public class JViewer{
 	 */
     public JViewer(JTopology jtopo, boolean windowed){
     	jtp=jtopo;
-   		jtp.addActionCommand("Set communication range");
-   		jtp.addActionCommand("Set sensing range");
-   		jtp.addActionCommand("Set clock speed");
-        jtp.addActionCommand("Pause or resume execution");
-        jtp.addActionCommand("Reset nodes");
-		jtp.addActionCommand("Export topology");
-   		jtp.addActionListener(handler);
+   		jtp.addCommand("Set communication range");
+   		jtp.addCommand("Set sensing range");
+   		jtp.addCommand("Set clock speed");
+        jtp.addCommand("Pause or resume execution");
+        jtp.addCommand("Reset nodes");
+		jtp.addCommand("Export topology");
+   		jtp.addCommandListener(this);
     	if (windowed){ // This JViewer creates its own window
 	   		window=new JFrame();
 	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -106,7 +107,7 @@ public class JViewer{
 	            }
 	        });        
     	}
-    	slideBar.addChangeListener(handler);
+    	slideBar.addChangeListener(this);
     }
     /**
      * Returns the jtopology attached to this viewer. Obtaining the reference 
@@ -153,49 +154,50 @@ public class JViewer{
  			slideBarType=null;
  		}
     }
-	class EventHandler implements ChangeListener, ActionListener{		
-		public void stateChanged(ChangeEvent arg0) {
-			if (slideBarType==BarType.COMMUNICATION){
-				jtp.topo.setCommunicationRange(slideBar.getValue());
-			}else if (slideBarType==BarType.SENSING){
-				jtp.topo.setSensingRange(slideBar.getValue());
-			}else if (slideBarType==BarType.SPEED){
-				jtp.topo.setClockSpeed((width-slideBar.getValue())/40+1);
-			}
+
+	@Override
+	public void onCommand(String command) {
+		if (command.equals("Set communication range")){
+			if (slideBarType != BarType.COMMUNICATION)
+				addSlideBar(BarType.COMMUNICATION,
+						(int)jtp.topo.getCommunicationRange());
+			else
+				removeSlideBar();
 			jtp.updateUI();
-		}
-		public void actionPerformed(ActionEvent arg0) {
-			String cmd=((JMenuItem)arg0.getSource()).getText();
-			if (cmd.equals("Set communication range")){
-				if (slideBarType != BarType.COMMUNICATION) 
-					addSlideBar(BarType.COMMUNICATION, 
-							(int)jtp.topo.getCommunicationRange());
-				else 
-					removeSlideBar();
-				jtp.updateUI();
-			}else if (cmd.equals("Set sensing range")){
-				if (slideBarType != BarType.SENSING) 
-					addSlideBar(BarType.SENSING, 
-							(int)jtp.topo.getSensingRange());
-				else
-					removeSlideBar();
-				jtp.updateUI();
-			}else if (cmd.equals("Set clock speed")){
-				if (slideBarType != BarType.SPEED) 
-					addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
-				else
-					removeSlideBar();
-				jtp.updateUI();
-            }else if (cmd.equals("Pause or resume execution")){
-                if (jtp.topo.isRunning())
-                    jtp.topo.pause();
-                else
-                    jtp.topo.resume();
-            }else if (cmd.equals("Reset nodes")){
-                jtp.topo.restart();
-			}else if (cmd.equals("Export topology")){
-				System.out.println(Tikz.exportTopology(jtp.topo));
-            }
+		}else if (command.equals("Set sensing range")){
+			if (slideBarType != BarType.SENSING)
+				addSlideBar(BarType.SENSING,
+						(int)jtp.topo.getSensingRange());
+			else
+				removeSlideBar();
+			jtp.updateUI();
+		}else if (command.equals("Set clock speed")){
+			if (slideBarType != BarType.SPEED)
+				addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
+			else
+				removeSlideBar();
+			jtp.updateUI();
+		}else if (command.equals("Pause or resume execution")){
+			if (jtp.topo.isRunning())
+				jtp.topo.pause();
+			else
+				jtp.topo.resume();
+		}else if (command.equals("Reset nodes")){
+			jtp.topo.restart();
+		}else if (command.equals("Export topology")){
+			System.out.println(Tikz.exportTopology(jtp.topo));
 		}
 	}
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if (slideBarType==BarType.COMMUNICATION){
+            jtp.topo.setCommunicationRange(slideBar.getValue());
+        }else if (slideBarType==BarType.SENSING){
+            jtp.topo.setSensingRange(slideBar.getValue());
+        }else if (slideBarType==BarType.SPEED){
+            jtp.topo.setClockSpeed((width-slideBar.getValue())/40+1);
+        }
+        jtp.updateUI();
+    }
 }
