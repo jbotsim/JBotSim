@@ -12,18 +12,14 @@
 package jbotsim.ui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import javafx.collections.ListChangeListener;
 import jbotsim.Topology;
 import jbotsimx.Tikz;
 
