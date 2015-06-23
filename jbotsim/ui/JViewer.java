@@ -82,7 +82,7 @@ public class JViewer implements CommandListener, ChangeListener{
    		jtp.addCommand("Set sensing range");
    		jtp.addCommand("Set clock speed");
         jtp.addCommand("Pause or resume execution");
-        jtp.addCommand("Reset nodes");
+        jtp.addCommand("Restart nodes");
 		jtp.addCommand("Export topology");
    		jtp.addCommandListener(this);
     	if (windowed){ // This JViewer creates its own window

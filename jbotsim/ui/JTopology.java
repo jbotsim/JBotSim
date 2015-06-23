@@ -106,10 +106,9 @@ public class JTopology extends JPanel implements ActionListener{
         commands.remove(command);
     }
     /**
-     * Removes the specified action command from this JTopology.
-     * @param command The command name to remove.
+     * Removes all commands from this JTopology.
      */
-    public void removeAllCommands(String command){
+    public void removeAllCommands(){
         commands.clear();
     }
     /**
