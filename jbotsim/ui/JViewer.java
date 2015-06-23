@@ -38,12 +38,6 @@ public class JViewer implements CommandListener, ChangeListener{
 	protected BarType slideBarType = null;
 	protected JFrame window = null;
 	/**
-	 * Creates a windowed viewer for a default topology. 
-	 */
-    public JViewer(){
-    	this(new Topology(), true);
-    }
-	/**
      * Creates a windowed viewer for the specified topology.
      * @param topo The topology to be drawn and/or manipulated.
 	 */
