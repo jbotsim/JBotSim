@@ -41,7 +41,8 @@ public class Topology extends _Properties implements ClockListener{
     Node selectedNode = null;
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
-    boolean periodicUpdate = false;
+    public static enum RefreshMode {CLOCKBASED, EVENTBASED};
+    RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
     /**
      * Creates a topology.
@@ -127,11 +128,17 @@ public class Topology extends _Properties implements ClockListener{
         return new Node();
     }
     /**
-     * Sets the updates (links, sensed objects, etc.) to be periodic (true) or event-based (false).
-     * The periodic option is generally less time-consuming.
+     * Sets the updates (links, sensed objects, etc.) to be instantaneous (EVENTBASED),
+     * or periodic after each round (CLOCKBASED).
      */
-    public void setPeriodicUpdate(boolean periodic){
-        periodicUpdate = periodic;
+    public void setRefreshMode(RefreshMode refreshMode){
+        this.refreshMode = refreshMode;
+    }
+    /**
+     * Returns the current refresh mode (CLOCKBASED or EVENTBASED).
+     */
+    public RefreshMode getRefreshMode(){
+        return refreshMode;
     }
     /**
      * Enables this node's wireless capabilities.
@@ -355,7 +362,7 @@ public class Topology extends _Properties implements ClockListener{
         notifyNodeAdded(n);
         clock.addClockListener(n, n.clockSpeed);
         n.onStart();
-        update(n);
+        touch(n);
         resume();
     }
     /**
@@ -724,17 +731,20 @@ public class Topology extends _Properties implements ClockListener{
     }
     @Override
     public void onClock() {
-        for (Node node : toBeUpdated)
-            updateWirelessLinksFor(node);
-        toBeUpdated.clear();
+        if (refreshMode == RefreshMode.CLOCKBASED) {
+            //System.out.println("update");
+            for (Node node : toBeUpdated)
+                update(node);
+            toBeUpdated.clear();
+        }
     }
-    void update(Node n){
-        if (periodicUpdate)
+    void touch(Node n){
+        if (refreshMode == RefreshMode.CLOCKBASED)
             toBeUpdated.add(n);
         else
-            updateWirelessLinksFor(n);
+            update(n);
     }
-    void updateWirelessLinksFor(Node n){
+    void update(Node n){
         for (Node n2 : nodes)
             if (n2!=n){
                 updateWirelessLink(n, n2);
