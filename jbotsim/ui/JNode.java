@@ -28,6 +28,7 @@ import javax.swing.JButton;
 
 import jbotsim.Link;
 import jbotsim.Node;
+import jbotsim.Topology;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener{
@@ -93,6 +94,9 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     // EVENTS
     public void mousePressed(MouseEvent e) {
         currentButton = e.getButton();
+        Topology tp = node.getTopology();
+        tp.setProperty("refreshMode", tp.getRefreshMode());
+        tp.setRefreshMode(Topology.RefreshMode.EVENTBASED);
     }
     public void mouseDragged(MouseEvent e){
         if (currentButton==1)
@@ -108,13 +112,16 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         destination = null;
     }
     public void mouseReleased(MouseEvent e){
+        Topology tp = node.getTopology();
+        if (tp.hasProperty("refreshMode"))
+            tp.setRefreshMode((Topology.RefreshMode)tp.getProperty("refreshMode"));
         if (destination != null) {
             node.getTopology().addLink(new Link(node, destination));
             destination = null;
         }else {
-            if (e.getButton() == MouseEvent.BUTTON3) {
+            if (e.getButton() == MouseEvent.BUTTON3)
                 node.getTopology().removeNode(node);
-            } else if (e.getButton() == MouseEvent.BUTTON2)
+            else if (e.getButton() == MouseEvent.BUTTON2)
                 node.getTopology().selectNode(node);
         }
         currentButton=1;

@@ -18,9 +18,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
+import javax.swing.*;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -55,6 +53,7 @@ public class JTopology extends JPanel implements ActionListener{
     	topo.addConnectivityListener(handler);
     	topo.addTopologyListener(handler);
     	topo.addMovementListener(handler);
+        topo.addClockListener(handler);
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
@@ -64,7 +63,7 @@ public class JTopology extends JPanel implements ActionListener{
         for (Link l : topo.getLinks())
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
-    }
+	}
     public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
             addMouseListener(handler);
@@ -124,7 +123,7 @@ public class JTopology extends JPanel implements ActionListener{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         for (SurfacePainter painter : surfacePainters)
-            painter.onPaint(g);
+			painter.onPaint(g);
         if (showDrawings){
             Graphics2D g2d=(Graphics2D)g;
             for(Link l : topo.getLinks(topo.hasDirectedLinks()))
@@ -138,6 +137,8 @@ public class JTopology extends JPanel implements ActionListener{
             	}
             }
         }
+		if ( ! surfacePainters.isEmpty() )
+			updateUI();
     }
     protected void paintLink(Graphics2D g2d, Link l){
         Integer width=l.getWidth();
@@ -159,7 +160,7 @@ public class JTopology extends JPanel implements ActionListener{
 	}
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-			PropertyListener, MouseListener, ActionListener{
+			PropertyListener, ClockListener, MouseListener, ActionListener{
 	    public void onNodeAdded(Node n){
             JNode jv=new JNode(n);
 	        n.setProperty("jnode", jv);
@@ -201,6 +202,9 @@ public class JTopology extends JPanel implements ActionListener{
 				updateUI();
 	    	}
 		}
+        @Override
+        public void onClock() {
+        }
 	    public void mousePressed(MouseEvent e) {
 	    	if ((Boolean)topo.getProperty("popupRunning")==true){
 	    		topo.setProperty("popupRunning", false);

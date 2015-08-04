@@ -242,7 +242,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setCommunicationRange(double range) {
         communicationRange = range;
         if (topo!=null)
-            topo.updateWirelessLinksFor(this);
+            topo.touch(this);
     }
     /**
      * Indicates whether this node has wireless capabilities enabled.
@@ -256,7 +256,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void enableWireless(){
         isWirelessEnabled = true;
         if (topo!=null)
-            topo.updateWirelessLinksFor(this);
+            topo.touch(this);
     }
     /**
      * Disables this node's wireless capabilities.
@@ -264,7 +264,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void disableWireless(){
         isWirelessEnabled = false;
         if (topo!=null)
-            topo.updateWirelessLinksFor(this);
+            topo.touch(this);
     }
     /**
      * Returns the sensing range of this node (as a radius).
@@ -299,7 +299,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setLocation(double x, double y){
         coords = new Point3D(x, y, 0);
         if (topo!=null)
-            topo.updateWirelessLinksFor(this);
+            topo.touch(this);
         notifyNodeMoved();
     }
     /**
@@ -311,7 +311,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setLocation(double x, double y, double z){
         coords = new Point3D(x, y, z);
         if (topo!=null)
-            topo.updateWirelessLinksFor(this);
+            topo.touch(this);
         notifyNodeMoved();
     }
     /**

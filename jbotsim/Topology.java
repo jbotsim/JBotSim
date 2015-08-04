@@ -19,7 +19,7 @@ import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
 
-public class Topology extends _Properties{
+public class Topology extends _Properties implements ClockListener{
     Clock clock = new Clock();
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
@@ -40,6 +40,9 @@ public class Topology extends _Properties{
     WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
     Node selectedNode = null;
     int nbPauses = 0;
+    ArrayList<Node> toBeUpdated = new ArrayList<Node>();
+    public static enum RefreshMode {CLOCKBASED, EVENTBASED};
+    RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
     /**
      * Creates a topology.
@@ -69,6 +72,7 @@ public class Topology extends _Properties{
         }
         setMessageEngine(new MessageEngine());
         setDimensions(width, height);
+        addClockListener(this);
     }
     /**
     * Returns the node class corresponding to that name.
@@ -123,7 +127,19 @@ public class Topology extends _Properties{
         }
         return new Node();
     }
-
+    /**
+     * Sets the updates (links, sensed objects, etc.) to be instantaneous (EVENTBASED),
+     * or periodic after each round (CLOCKBASED).
+     */
+    public void setRefreshMode(RefreshMode refreshMode){
+        this.refreshMode = refreshMode;
+    }
+    /**
+     * Returns the current refresh mode (CLOCKBASED or EVENTBASED).
+     */
+    public RefreshMode getRefreshMode(){
+        return refreshMode;
+    }
     /**
      * Enables this node's wireless capabilities.
      */
@@ -346,7 +362,7 @@ public class Topology extends _Properties{
         notifyNodeAdded(n);
         clock.addClockListener(n, n.clockSpeed);
         n.onStart();
-        updateWirelessLinksFor(n);
+        touch(n);
         resume();
     }
     /**
@@ -713,7 +729,22 @@ public class Topology extends _Properties{
         for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
             tl.onSelection(node);
     }
-    void updateWirelessLinksFor(Node n){
+    @Override
+    public void onClock() {
+        if (refreshMode == RefreshMode.CLOCKBASED) {
+            //System.out.println("update");
+            for (Node node : toBeUpdated)
+                update(node);
+            toBeUpdated.clear();
+        }
+    }
+    void touch(Node n){
+        if (refreshMode == RefreshMode.CLOCKBASED)
+            toBeUpdated.add(n);
+        else
+            update(n);
+    }
+    void update(Node n){
         for (Node n2 : nodes)
             if (n2!=n){
                 updateWirelessLink(n, n2);
