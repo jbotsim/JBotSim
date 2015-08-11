@@ -497,7 +497,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * The returned list can be modified without side effect.
      * @return A list containing all nodes within sensing range
      */
-    public List<Node> getSensedObjects(){
+    public List<Node> getSensedNodes(){
         ArrayList<Node> sensedNodes=new ArrayList<Node>();
         for (Node n : topo.getNodes())
             if (distance(n) < sensingRange && n!=this)

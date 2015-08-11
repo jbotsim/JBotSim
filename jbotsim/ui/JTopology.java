@@ -30,7 +30,6 @@ import jbotsim.event.*;
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<SurfacePainter> surfacePainters=new ArrayList<SurfacePainter>();
-    protected ArrayList<ActionListener> actionListeners=new ArrayList<ActionListener>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
