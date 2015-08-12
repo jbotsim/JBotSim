@@ -583,14 +583,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return coords.distance(n.coords);
     }
     /**
-     * Returns the distance between this node and the specified location.
+     * Returns the distance between this node and the specified 2D location.
      * @param p The location (as a point).
      */
     public double distance(Point2D p){
         return coords.distance(p.getX(), p.getY(), 0);
     }
     /**
-     * Returns the distance between this node and the specified point.
+     * Returns the distance between this node and the specified 2D location.
      * @param x The abscissa of the point to which the distance is measured.
      * @param y The ordinate of the point to which the distance is measured.
      */
@@ -598,7 +598,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return coords.distance(x, y, 0);
     }
     /**
-     * Returns the distance between this node and the specified point.
+     * Returns the distance between this node and the specified 3D location.
+     * @param p The location (as a 3D point).
+     */
+    public double distance(Point3D p){
+        return coords.distance(p.getX(), p.getY(), p.getZ());
+    }
+    /**
+     * Returns the distance between this node and the specified 3D location.
      * @param x The abscissa of the point to which the distance is measured.
      * @param y The ordinate of the point to which the distance is measured.
      */
