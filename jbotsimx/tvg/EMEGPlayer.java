@@ -12,7 +12,7 @@ public class EMEGPlayer implements ClockListener{
 	protected Topology tp;
 	protected double birthRate, deathRate, steadyProb;
 	/**
-	 * Plays the specified tvg as an EMEG on the specified topology.
+	 * Plays the specified _demo.J_tvg as an EMEG on the specified topology.
 	 * @param tvg the time-varying graph
 	 * @param tp the target topology
 	 * @param birthRate the desired birth rate

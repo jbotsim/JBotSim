@@ -55,7 +55,6 @@ class Clock {
 	}
 	private class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evt) {
-			time++;
             ArrayList<ClockListener> expiredListeners = new ArrayList<ClockListener>();
             ArrayList<ClockListener> expiredNodes = new ArrayList<ClockListener>();
 			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())) {
@@ -77,6 +76,7 @@ class Clock {
                 cl.onClock();
             for (ClockListener cl : expiredNodes)
                 ((Node) cl).onPostClock();
+			time++;
 		}
 	}
 	/**

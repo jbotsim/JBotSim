@@ -41,6 +41,7 @@ public class Topology extends _Properties implements ClockListener{
     Node selectedNode = null;
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
+
     public static enum RefreshMode {CLOCKBASED, EVENTBASED};
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
@@ -484,6 +485,16 @@ public class Topology extends _Properties implements ClockListener{
     public List<Node> getNodes(){
         return new ArrayList<Node>(nodes);
     }
+    /**
+     * Returns the first node found with this ID.
+     */
+    public Node findNodeById(int id) {
+        for (Node node : nodes)
+            if (node.getID() == id)
+                return node;
+        return null;
+    }
+
     /**
      * Returns a list containing all undirected links in this topology. The 
      * returned ArrayList can be subsequently modified without effect on the

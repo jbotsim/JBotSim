@@ -56,4 +56,12 @@ public class TopologyGenerator {
 		for (int j=0; j<order; j++)
 			tp.addLink(new Link(matrix[0][j], matrix[order-1][j]));
 	}
+	public static void generateKN(Topology topology, int nbNodes){
+		double angle=Math.PI*2.0/nbNodes;
+		int scale=100;
+		for (int i=0; i<nbNodes; i++)
+			topology.addNode(50 + scale + Math.cos(angle*i)*scale,
+					50 + scale + Math.sin(angle*i)*scale,topology.newInstanceOfModel("default"));
+		topology.setCommunicationRange(250);
+	}
 }
