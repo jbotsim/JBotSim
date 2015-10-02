@@ -552,6 +552,15 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         sendQueue.add(m);
     }
     /**
+     * Same as <tt>send()</tt>, but the content is directly given as parameter
+     * (a message will be created to contain it).
+     * @param destination The non-null destination.
+     * @param content The object to be sent.
+     */
+    public void send(Node destination, Object content) {
+        send(destination, new Message(content));
+    }
+    /**
      * Same method as <tt>send()</tt>, but retries to send the message later
      * if the link to the destination disappeared during transmission.
      * (Does not work for <tt>null</tt> destinations.)
@@ -564,6 +573,15 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         send(destination, message);
     }
     /**
+     * Same as <tt>sendRetry()</tt>, but the content is directly given as parameter
+     * (a message will be created to contain it).
+     * @param destination The non-null destination.
+     * @param content The object to be sent.
+     */
+    public void sendRetry(Node destination, Object content){
+        sendRetry(destination, new Message(content));
+    }
+    /**
      * Sends a message to all neighbors. The content of the
      * message is specified as an object reference, to be passed 'as is' to the
      * destination(s). The effective transmission will occur at the
@@ -574,6 +592,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void sendAll(Message message){
         send(null, message);
+    }
+    /**
+     * Same as <tt>sendAll()</tt>, but the content is directly given as parameter
+     * (a message will be created to contain it).
+     * @param content The object to be sent.
+     */
+    public void sendAll(Object content){
+        send(null, new Message(content));
     }
     /**
      * Returns the distance between this node and the specified node.
