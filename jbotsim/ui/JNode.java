@@ -43,7 +43,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
 
     public JNode(Node node){
         this.node=node;
-        this.setToolTipText(node.toString());
+        this.setToolTipText(Integer.toString(node.getID()));
         addMouseListener(this);
         addMouseMotionListener(this);
         addMouseWheelListener(this);
