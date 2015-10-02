@@ -62,6 +62,7 @@ public class JTopology extends JPanel implements ActionListener{
         for (Link l : topo.getLinks())
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
+		ToolTipManager.sharedInstance().setInitialDelay(0);
 	}
     public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
@@ -190,8 +191,6 @@ public class JTopology extends JPanel implements ActionListener{
 	    		JNode jn = (JNode)((Node)o).getProperty("jnode");
 	    		if (property.equals("color")){
 	    			jn.updateUI();
-	    		}else if (property.equals("state")){
-		    		jn.setToolTipText(o.toString());
 	    		}else if (property.equals("icon")){
                     jn.updateIcon();
                 }else if (property.equals("size")){

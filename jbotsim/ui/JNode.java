@@ -23,8 +23,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import javax.swing.*;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -135,5 +134,11 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         if (z < 0)
             z = 0;
         node.setLocation(node.getX(), node.getY(), z);
+    }
+
+    @Override
+    public JToolTip createToolTip() {
+        setToolTipText(node.toString());
+        return super.createToolTip();
     }
 }
