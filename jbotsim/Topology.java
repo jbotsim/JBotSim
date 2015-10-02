@@ -41,6 +41,7 @@ public class Topology extends _Properties implements ClockListener{
     Node selectedNode = null;
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
+    private boolean step = false;
 
     public static enum RefreshMode {CLOCKBASED, EVENTBASED};
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
@@ -319,6 +320,14 @@ public class Topology extends _Properties implements ClockListener{
             n.sendQueue.clear();
             n.mailBox.clear();
         }
+    }
+    /**
+     * Performs a single round, then switch to pause state.
+     */
+    public void step(){
+        if (nbPauses > 0)
+            resume();
+        step = true;
     }
     /**
      * Adds the specified node to this topology. The location of the node
@@ -742,6 +751,10 @@ public class Topology extends _Properties implements ClockListener{
     }
     @Override
     public void onClock() {
+        if (step){
+            pause();
+            step = false;
+        }
         if (refreshMode == RefreshMode.CLOCKBASED) {
             //System.out.println("update");
             for (Node node : toBeUpdated)

@@ -81,7 +81,8 @@ public class JViewer implements CommandListener, ChangeListener{
    		jtp.addCommand("Set communication range");
    		jtp.addCommand("Set sensing range");
    		jtp.addCommand("Set clock speed");
-        jtp.addCommand("Pause or resume execution");
+		jtp.addCommand("Pause or resume execution");
+		jtp.addCommand("Execute a single step");
         jtp.addCommand("Restart nodes");
 		jtp.addCommand("Export topology");
    		jtp.addCommandListener(this);
@@ -174,6 +175,8 @@ public class JViewer implements CommandListener, ChangeListener{
 				jtp.topo.resume();
 		}else if (command.equals("Restart nodes")){
 			jtp.topo.restart();
+		}else if (command.equals("Execute a single step")){
+			jtp.topo.step();
 		}else if (command.equals("Export topology")){
 			System.out.println(Tikz.exportTopology(jtp.topo));
 		}
