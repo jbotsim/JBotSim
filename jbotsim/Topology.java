@@ -371,7 +371,8 @@ public class Topology extends _Properties implements ClockListener{
         n.topo=this;
         notifyNodeAdded(n);
         clock.addClockListener(n, n.clockSpeed);
-        n.onStart();
+        if (nbPauses <= 1) // FIXME
+            n.onStart();
         touch(n);
         resume();
     }
