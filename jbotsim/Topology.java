@@ -503,7 +503,17 @@ public class Topology extends _Properties implements ClockListener{
                 return node;
         return null;
     }
-
+    /**
+     * Shuffles the IDs of the nodes in this topology.
+     */
+    public void shuffleNodeIds(){
+        List<Integer> Ids = new ArrayList<Integer>();
+        for (Node node : nodes)
+            Ids.add(node.getID());
+        Collections.shuffle(Ids);
+        for (int i = 0; i < nodes.size(); i++)
+            nodes.get(i).setID(Ids.get(i));
+    }
     /**
      * Returns a list containing all undirected links in this topology. The 
      * returned ArrayList can be subsequently modified without effect on the
