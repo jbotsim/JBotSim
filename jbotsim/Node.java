@@ -36,6 +36,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Integer ID;
     static Integer maxID=0;
     int size = 8;
+    static ArrayList<Color> basicColors = new ArrayList<Color>(Arrays.asList(
+            Color.red,Color.green,Color.blue,Color.yellow,
+            Color.pink,Color.black,Color.white,Color.gray,
+            Color.orange,Color.cyan,Color.magenta));
 
     /**
      * Creates a new node.
@@ -179,6 +183,21 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         setProperty("color", color); // Used for property notification
     }
     /**
+     * Sets the color of this node.
+     */
+    public int getIntColor(){
+        return basicColors.indexOf(color);
+    }
+    /**
+     * Sets the color of this node.
+     */
+    public void setIntColor(Integer color){
+        Random r = new Random();
+        while (basicColors.size() <= color)
+            basicColors.add(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
+        setColor(basicColors.get(color));
+    }
+    /**
      * Assign a random color to this node.
      */
     public void setRandomColor(){
@@ -186,10 +205,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
     public static Color[] getBasicColors(){
-        return new Color[]{Color.red,Color.green,Color.blue,Color.yellow,Color.pink,
-                Color.black,Color.white,Color.gray,Color.darkGray,Color.lightGray,
-                Color.orange,Color.cyan,Color.magenta};
-
+        return (Color[]) basicColors.toArray();
     }
     /**
      * Sets the icon of this node.
