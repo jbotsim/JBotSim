@@ -30,6 +30,7 @@ import jbotsim.event.*;
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<SurfacePainter> surfacePainters=new ArrayList<SurfacePainter>();
+	protected ArrayList<LinkPainter> linkPainters = new ArrayList<LinkPainter>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
@@ -76,6 +77,12 @@ public class JTopology extends JPanel implements ActionListener{
     public void removeSurfacePainter(SurfacePainter painter){
         surfacePainters.remove(painter);
     }
+    public void addLinkPainter(LinkPainter painter){
+		linkPainters.add(painter);
+	}
+    public void removeLinkPainter(LinkPainter painter){
+		linkPainters.remove(painter);
+	}
     /**
      * Registers the specified action listener to this JTopology.
      * @param al The listener to add.
@@ -154,7 +161,9 @@ public class JTopology extends JPanel implements ActionListener{
 			int y=srcY+4*(destY-srcY)/5-2;
 			g2d.drawOval(x,y,4,4);
 		}
-    }
+		for (LinkPainter painter : linkPainters)
+			painter.onLinkPaint(g2d, l);
+	}
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = ((JMenuItem) arg0.getSource()).getText();
 	}
