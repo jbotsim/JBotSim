@@ -29,7 +29,7 @@ import jbotsim.event.*;
 
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
-    protected ArrayList<SurfacePainter> surfacePainters=new ArrayList<SurfacePainter>();
+    protected ArrayList<BackgroundPainter> backgroundPainters =new ArrayList<BackgroundPainter>();
 	protected ArrayList<LinkPainter> linkPainters = new ArrayList<LinkPainter>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
@@ -65,6 +65,7 @@ public class JTopology extends JPanel implements ActionListener{
         topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
 		linkPainters.add(new DefaultLinkPainter());
+		backgroundPainters.add(new DefaultBackgroundPainter());
 	}
     public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
@@ -72,11 +73,15 @@ public class JTopology extends JPanel implements ActionListener{
         if (!interactive && isInteractive)
             removeMouseListener(handler);
     }
-    public void addSurfacePainter(SurfacePainter painter){
-        surfacePainters.add(painter);
+    public void addBackgroundPainter(BackgroundPainter painter){
+        backgroundPainters.add(0, painter);
     }
-    public void removeSurfacePainter(SurfacePainter painter){
-        surfacePainters.remove(painter);
+	public void setDefaultBackgroundPainter(BackgroundPainter painter){
+		backgroundPainters.clear();
+		addBackgroundPainter(painter);
+	}
+    public void removeBackgroundPainter(BackgroundPainter painter){
+        backgroundPainters.remove(painter);
     }
 	public void addLinkPainter(LinkPainter painter){
 		linkPainters.add(painter);
@@ -134,23 +139,15 @@ public class JTopology extends JPanel implements ActionListener{
      */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-        for (SurfacePainter painter : surfacePainters)
-			painter.onPaint(g);
+		Graphics2D g2d=(Graphics2D)g;
+        for (BackgroundPainter painter : backgroundPainters)
+			painter.paintBackground(g2d, topo);
         if (showDrawings){
-            Graphics2D g2d=(Graphics2D)g;
 			for (LinkPainter painter : linkPainters)
 				for(Link l : topo.getLinks(topo.hasDirectedLinks()))
 					painter.paintLink(g2d, l);
-            g2d.setStroke(new BasicStroke(1));
-            for(Node n : topo.getNodes()){
-            	double sR=n.getSensingRange();
-            	if(sR>0){
-            		g2d.setColor(Color.gray);
-            		g2d.drawOval((int)n.getX()-(int)sR, (int)n.getY()-(int)sR, 2*(int)sR, 2*(int)sR);
-            	}
-            }
         }
-		if ( ! surfacePainters.isEmpty() )
+		if ( ! backgroundPainters.isEmpty() )
 			updateUI();
     }
 	public void actionPerformed(ActionEvent arg0) {
