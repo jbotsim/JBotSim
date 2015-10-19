@@ -1,4 +1,4 @@
-package jbotsim.ui;
+package jbotsim.ui.painting;
 
 import jbotsim.Topology;
 

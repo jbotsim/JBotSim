@@ -25,6 +25,10 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
+import jbotsim.ui.painting.BackgroundPainter;
+import jbotsim.ui.painting.DefaultBackgroundPainter;
+import jbotsim.ui.painting.DefaultLinkPainter;
+import jbotsim.ui.painting.LinkPainter;
 
 
 @SuppressWarnings("serial")
