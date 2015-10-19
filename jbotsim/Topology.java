@@ -20,7 +20,7 @@ import jbotsim.Link.Type;
 import jbotsim.event.*;
 
 public class Topology extends _Properties implements ClockListener{
-    Clock clock = new Clock();
+    Clock clock;
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
@@ -29,6 +29,7 @@ public class Topology extends _Properties implements ClockListener{
     List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
     List<StartListener> startListeners =new ArrayList<StartListener>();
     MessageEngine messageEngine=null;
+    NodeScheduler nodeScheduler;
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
@@ -68,13 +69,14 @@ public class Topology extends _Properties implements ClockListener{
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height, boolean isRunning){
+        setMessageEngine(new MessageEngine());
+        setNodeScheduler(new DefaultNodeScheduler());
+        setDimensions(width, height);
+        clock = new Clock(this);
         if (! isRunning){
             pause();
             clock.reset();
         }
-        setMessageEngine(new MessageEngine());
-        setDimensions(width, height);
-        addClockListener(this);
     }
     /**
     * Returns the node class corresponding to that name.
@@ -206,11 +208,21 @@ public class Topology extends _Properties implements ClockListener{
      * Sets the message engine of this topology.
      */
     public void setMessageEngine(MessageEngine messageEngine) {
-        if (messageEngine != null)
-            clock.removeClockListener(this.messageEngine);
         this.messageEngine = messageEngine;
         messageEngine.setTopology(this);
-        clock.addClockListener(messageEngine, 1);
+    }
+
+    /**
+     * Gets a reference on the node scheduler.
+     */
+    public NodeScheduler getNodeScheduler() {
+        return nodeScheduler;
+    }
+    /**
+     * Sets the message engine of this topology.
+     */
+    public void setNodeScheduler(NodeScheduler nodeScheduler) {
+        this.nodeScheduler = nodeScheduler;
     }
 
     /**
@@ -370,7 +382,6 @@ public class Topology extends _Properties implements ClockListener{
         nodes.add(n);
         n.topo=this;
         notifyNodeAdded(n);
-        clock.addClockListener(n, n.clockSpeed);
         if (nbPauses <= 1) // FIXME
             n.onStart();
         touch(n);

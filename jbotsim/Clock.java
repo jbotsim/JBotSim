@@ -24,61 +24,44 @@ import java.util.TreeMap;
 
 
 class Clock {
-	TreeMap<ClockListener, Integer> listeners;
+    Topology tp;
+	HashMap<ClockListener, Integer> listeners=new HashMap<ClockListener, Integer>();
 	HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
 	Timer timer=new Timer(10, new ActionHandler());
 	Integer time=0;
 
-	Clock(){
-        listeners = new TreeMap<ClockListener, Integer>(new ListenerComparator());
+	Clock(Topology topology){
+        this.tp = topology;
 		timer.start();
 		try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
 	}
-	private class ListenerComparator implements Comparator<ClockListener>{
-		public int compare(ClockListener arg0, ClockListener arg1) {
-			if (arg0 instanceof MessageEngine && !(arg1 instanceof MessageEngine))
-				return -1;
-			if (!(arg0 instanceof MessageEngine) && arg1 instanceof MessageEngine)
-				return 1;
-			if (arg0 instanceof Node && !(arg1 instanceof Node))
-				return -1;
-			if (!(arg0 instanceof Node) && arg1 instanceof Node)
-				return 1;
-			if (arg0 instanceof Node && arg1 instanceof Node)
-				return (new Integer(arg0.hashCode())).compareTo(arg1.hashCode());
-            if (arg0 instanceof Topology && !(arg1 instanceof Topology))
-                return -1;
-            if (!(arg0 instanceof Topology) && arg1 instanceof Topology)
-                return 1;
-			return (((Integer)arg0.hashCode()).compareTo(arg1.hashCode()));
-		}
-	}
 	private class ActionHandler implements ActionListener{
 		public void actionPerformed(ActionEvent evt) {
-            ArrayList<ClockListener> expiredListeners = new ArrayList<ClockListener>();
-            ArrayList<ClockListener> expiredNodes = new ArrayList<ClockListener>();
-			for(ClockListener cl : new ArrayList<ClockListener>(listeners.keySet())) {
-                Integer I = countdown.get(cl);
-                if (I != null) {
-                    if (I == 1) {
-                        expiredListeners.add(cl);
-                        if (cl instanceof Node)
-                            expiredNodes.add(cl);
-                        countdown.put(cl, listeners.get(cl));
-                    } else {
-                        countdown.put(cl, I - 1);
-                    }
-                }
-            }
-            for (ClockListener cl : expiredNodes)
-                ((Node) cl).onPreClock();
-            for (ClockListener cl : expiredListeners)
+            // Delivers messages first
+            tp.getMessageEngine().onClock();
+            // Then give the hand to the nodes
+            tp.getNodeScheduler().onClock(tp);
+            // Then to the topology itself
+            tp.onClock();
+            // Finally, to all other listeners whose countdown has expired
+            for (ClockListener cl : getExpiredListeners()) {
                 cl.onClock();
-            for (ClockListener cl : expiredNodes)
-                ((Node) cl).onPostClock();
+                countdown.put(cl, listeners.get(cl)); // reset countdown
+            }
 			time++;
 		}
 	}
+    protected ArrayList<ClockListener> getExpiredListeners(){
+        ArrayList<ClockListener> expiredListeners = new ArrayList<ClockListener>();
+        for(ClockListener cl : listeners.keySet()) {
+            Integer count = countdown.get(cl);
+            if (count == 1)
+                expiredListeners.add(cl);
+            else
+                countdown.put(cl, count - 1);
+        }
+        return expiredListeners;
+    }
 	/**
 	 * Registers the specified listener to the events of the clock.
 	 * @param listener The listener to register.

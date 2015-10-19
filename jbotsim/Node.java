@@ -29,7 +29,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Double sensingRange = null;
     List<Node> sensedNodes=new ArrayList<Node>();
     boolean isWirelessEnabled = true;
-    int clockSpeed = 1;
     Topology topo;
     Color color = null;
     Object state=null;
@@ -60,22 +59,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void setID(int ID) {
         this.ID = ID;
-    }
-    /**
-     * Returns the period in-between two onClock() events in this node.
-     */
-    public int getClockSpeed() {
-        return clockSpeed;
-    }
-    /**
-     * Sets the period in-between two onClock() events in this node.
-     */
-    public void setClockSpeed(int period) {
-        this.clockSpeed = period;
-        if (topo != null) {
-            topo.removeClockListener(this);
-            topo.addClockListener(this, clockSpeed);
-        }
     }
     /**
      * Returns the parent topology of this node, if any.
