@@ -37,7 +37,7 @@ public class Topology extends _Properties implements ClockListener{
     double communicationRange = 100;
     double sensingRange = 0;
     Dimension dimensions;
-    WLinkCalculator wlinkcalc = new BasicWLinkCalculator();
+    WLinkResolver wLinkResolver = new DefaultWLinkResolver();
     Node selectedNode = null;
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
@@ -574,11 +574,11 @@ public class Topology extends _Properties implements ClockListener{
         }
     }
     /**
-     * Replaces the default Wireless Link Calculator by a custom one.
-     * @param wlinkcalc An object that implements WLinkCalculator.
+     * Replaces the default Wireless Link Resolver by a custom one.
+     * @param wLinkResolver An object that implements WLinkResolver.
      */
-    public void setWLinkCalculator(WLinkCalculator wlinkcalc){
-        this.wlinkcalc = wlinkcalc;
+    public void setWLinkResolver(WLinkResolver wLinkResolver){
+        this.wLinkResolver = wLinkResolver;
     }
     /**
      * Registers the specified topology listener to this topology. The listener
@@ -795,7 +795,7 @@ public class Topology extends _Properties implements ClockListener{
     void updateWirelessLink(Node n1, Node n2){
         Link l = n1.getOutLinkTo(n2);
         boolean linkExisted = (l==null)?false:true;
-        boolean linkExists = wlinkcalc.isHeardBy(n1, n2);
+        boolean linkExists = wLinkResolver.isHeardBy(n1, n2);
         if (!linkExisted && linkExists)
             addLink(new Link(n1,n2,Type.DIRECTED,Mode.WIRELESS));
         else if (linkExisted && l.isWireless() && !linkExists)

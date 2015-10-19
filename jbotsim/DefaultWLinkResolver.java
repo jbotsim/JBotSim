@@ -1,7 +1,7 @@
 package jbotsim;
 
 
-public class BasicWLinkCalculator implements WLinkCalculator{
+public class DefaultWLinkResolver implements WLinkResolver {
 
 	@Override
 	public boolean isHeardBy(Node n1, Node n2) {
