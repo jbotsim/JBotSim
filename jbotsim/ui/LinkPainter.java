@@ -12,5 +12,5 @@ public interface LinkPainter {
      * Provides a way to add extra drawing to the Links.
      * @param g2d The graphics object.
      */
-    void onLinkPaint(Graphics2D g2d, Link link);
+    void paintLink(Graphics2D g2d, Link link);
 }

@@ -64,6 +64,7 @@ public class JTopology extends JPanel implements ActionListener{
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
+		linkPainters.add(new DefaultLinkPainter());
 	}
     public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
@@ -77,8 +78,12 @@ public class JTopology extends JPanel implements ActionListener{
     public void removeSurfacePainter(SurfacePainter painter){
         surfacePainters.remove(painter);
     }
-    public void addLinkPainter(LinkPainter painter){
+	public void addLinkPainter(LinkPainter painter){
 		linkPainters.add(painter);
+	}
+	public void setDefaultLinkPainter(LinkPainter painter){
+		linkPainters.clear();
+		addLinkPainter(painter);
 	}
     public void removeLinkPainter(LinkPainter painter){
 		linkPainters.remove(painter);
@@ -133,8 +138,9 @@ public class JTopology extends JPanel implements ActionListener{
 			painter.onPaint(g);
         if (showDrawings){
             Graphics2D g2d=(Graphics2D)g;
-            for(Link l : topo.getLinks(topo.hasDirectedLinks()))
-                paintLink(g2d, l);
+			for (LinkPainter painter : linkPainters)
+				for(Link l : topo.getLinks(topo.hasDirectedLinks()))
+					painter.paintLink(g2d, l);
             g2d.setStroke(new BasicStroke(1));
             for(Node n : topo.getNodes()){
             	double sR=n.getSensingRange();
@@ -147,23 +153,6 @@ public class JTopology extends JPanel implements ActionListener{
 		if ( ! surfacePainters.isEmpty() )
 			updateUI();
     }
-    protected void paintLink(Graphics2D g2d, Link l){
-        Integer width=l.getWidth();
-    	if (width==0)
-    		return;
-   		g2d.setColor(l.getColor());
-    	g2d.setStroke(new BasicStroke(width));
-        int srcX=(int)l.source.getX(), srcY=(int)l.source.getY();
-        int destX=(int)l.destination.getX(), destY=(int)l.destination.getY();
-        g2d.drawLine(srcX, srcY, (int)(srcX+(destX-srcX)), (int)(srcY+(destY-srcY)));
-		if (topo.hasDirectedLinks()) {
-			int x=srcX+4*(destX-srcX)/5-2;
-			int y=srcY+4*(destY-srcY)/5-2;
-			g2d.drawOval(x,y,4,4);
-		}
-		for (LinkPainter painter : linkPainters)
-			painter.onLinkPaint(g2d, l);
-	}
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = ((JMenuItem) arg0.getSource()).getText();
 	}
