@@ -25,16 +25,14 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
-import jbotsim.ui.painting.BackgroundPainter;
-import jbotsim.ui.painting.DefaultBackgroundPainter;
-import jbotsim.ui.painting.DefaultLinkPainter;
-import jbotsim.ui.painting.LinkPainter;
+import jbotsim.ui.painting.*;
 
 
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<BackgroundPainter> backgroundPainters =new ArrayList<BackgroundPainter>();
 	protected ArrayList<LinkPainter> linkPainters = new ArrayList<LinkPainter>();
+	protected ArrayList<NodePainter> nodePainters = new ArrayList<NodePainter>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
@@ -69,6 +67,7 @@ public class JTopology extends JPanel implements ActionListener{
         topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
 		linkPainters.add(new DefaultLinkPainter());
+		nodePainters.add(new DefaultNodePainter());
 		backgroundPainters.add(new DefaultBackgroundPainter());
 	}
     public void setInteractive(boolean interactive){
@@ -94,8 +93,18 @@ public class JTopology extends JPanel implements ActionListener{
 		linkPainters.clear();
 		addLinkPainter(painter);
 	}
-    public void removeLinkPainter(LinkPainter painter){
+	public void removeLinkPainter(LinkPainter painter){
 		linkPainters.remove(painter);
+	}
+	public void addNodePainter(NodePainter painter){
+		nodePainters.add(painter);
+	}
+	public void setDefaultNodePainter(NodePainter painter){
+		nodePainters.clear();
+		addNodePainter(painter);
+	}
+	public void removeNodePainter(NodePainter painter){
+		nodePainters.remove(painter);
 	}
     /**
      * Registers the specified action listener to this JTopology.

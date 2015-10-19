@@ -28,6 +28,7 @@ import javax.swing.*;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsim.ui.painting.NodePainter;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener{
@@ -85,10 +86,9 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     		g2d.setTransform(newXform);
     	}
         g2d.drawImage(scaledIcon, 0, 0, null);
-        if (node.getColor() != null){
-    		g2d.setColor(node.getColor());
-    		g2d.fillOval(drawSize/2, drawSize/2, drawSize, drawSize);
-    	}
+        JTopology jTopology = (JTopology) this.getParent();
+        for (NodePainter painter : jTopology.nodePainters)
+            painter.paintNode(g2d, node);
     }
     // EVENTS
     public void mousePressed(MouseEvent e) {
