@@ -397,7 +397,6 @@ public class Topology extends _Properties implements ClockListener{
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
-        removeClockListener(n);
         nodes.remove(n);
         for (Node n2 : nodes){
             if (n2.sensedNodes.contains(n)){
