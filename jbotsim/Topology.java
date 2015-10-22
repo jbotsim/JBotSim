@@ -379,6 +379,8 @@ public class Topology extends _Properties implements ClockListener{
             n.setSensingRange(sensingRange);
         if (isWirelessEnabled == false)
             n.disableWireless();
+        if (n.getID()==-1)
+            n.setID(nodes.size());
         nodes.add(n);
         n.topo=this;
         notifyNodeAdded(n);

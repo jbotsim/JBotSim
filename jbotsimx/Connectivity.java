@@ -147,6 +147,7 @@ public class Connectivity {
     	} while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
     	for (Node n:tmp.getNodes())
     		tp.addNode(n.getX(), n.getY(), tp.newInstanceOfModel("default"));
+        tp.resume();
     }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
 	int size = getOptimalTopologySize(nbNodes, cRange, ratio);

@@ -32,20 +32,13 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Topology topo;
     Color color = null;
     Object state=null;
-    Integer ID;
-    static Integer maxID=0;
+    Integer ID = -1;
     int size = 8;
     static ArrayList<Color> basicColors = new ArrayList<Color>(Arrays.asList(
             Color.red,Color.green,Color.blue,Color.yellow,
             Color.pink,Color.black,Color.white,Color.gray,
             Color.orange,Color.cyan,Color.magenta));
 
-    /**
-     * Creates a new node.
-     */
-    public Node() {
-        ID = maxID++;
-    }
     /**
      * Returns the identifier of this node.
      * @return The identifier as an integer.
