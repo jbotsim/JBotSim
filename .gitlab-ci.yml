@@ -8,8 +8,6 @@ jbotsim:
   script:
     - $JAVA_HOME/bin/java -version
     - make
-  only:
-    - ci
   artifacts:
     paths:
       - jbotsim.jar
