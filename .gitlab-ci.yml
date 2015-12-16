@@ -1,0 +1,16 @@
+# Only one runner
+variables:
+   JAVA_HOME: "/usr/lib/jvm/java-7-openjdk-amd64/"
+
+# default build 
+jbotsim:
+  stage: build
+  script:
+    - $JAVA_HOME/bin/java -version
+    - make
+  only:
+    - ci
+  artifacts:
+    paths:
+      - jbotsim.jar
+
