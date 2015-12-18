@@ -43,6 +43,7 @@ public class Topology extends _Properties implements ClockListener{
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
     private boolean step = false;
+    private boolean isStarted = false;
 
     public static enum RefreshMode {CLOCKBASED, EVENTBASED};
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
@@ -56,8 +57,8 @@ public class Topology extends _Properties implements ClockListener{
     /**
      * Creates a topology and sets its running status (running/paused).
      */
-    public Topology(boolean isRunning){
-        this(600, 400, isRunning);
+    public Topology(boolean toBeStarted){
+        this(600, 400, toBeStarted);
     }
     /**
      * Creates a topology of given dimensions.
@@ -68,15 +69,15 @@ public class Topology extends _Properties implements ClockListener{
     /**
      * Creates a topology of given dimensions.
      */
-    public Topology(int width, int height, boolean isRunning){
+    public Topology(int width, int height, boolean toBeStarted){
         setMessageEngine(new MessageEngine());
         setNodeScheduler(new DefaultNodeScheduler());
         setDimensions(width, height);
         clock = new Clock(this);
-        if (! isRunning){
-            pause();
-            clock.reset();
-        }
+        if (! toBeStarted)
+            clock.pause();
+        isStarted = toBeStarted;
+        resetTime();
     }
     /**
     * Returns the node class corresponding to that name.
@@ -263,19 +264,23 @@ public class Topology extends _Properties implements ClockListener{
      * Pauses the clock (or increments the pause counter).
      */
     public void pause(){
-        if (nbPauses == 0)
-            clock.pause();
-        nbPauses++;
+        if (isStarted) {
+            if (nbPauses == 0)
+                clock.pause();
+            nbPauses++;
+        }
     }
 
     /**
      * Resumes the clock (or decrements the pause counter).
      */
     public void resume(){
-        assert(nbPauses > 0);
-        nbPauses--;
-        if (nbPauses == 0)
-            clock.resume();
+        if (isStarted) {
+            assert (nbPauses > 0);
+            nbPauses--;
+            if (nbPauses == 0)
+                clock.resume();
+        }
     }
 
     /**
@@ -299,13 +304,14 @@ public class Topology extends _Properties implements ClockListener{
      * onStart() method on each node.
      */
     public void start(){
-        restart();
-        if (nbPauses > 0)
-            resume();
+        if (! isStarted) {
+            isStarted = true;
+            clock.resume();
+            restart();
+        }
     }
     /**
-     * Reset the color and width of nodes and links, then calls the
-     * onStart() method on each node.
+     * Causes the onStart() method to be called again on each node (and each StartListener)
      */
     public void restart(){
         pause();
@@ -384,7 +390,7 @@ public class Topology extends _Properties implements ClockListener{
         nodes.add(n);
         n.topo=this;
         notifyNodeAdded(n);
-        if (nbPauses <= 1) // FIXME
+        if (isStarted)
             n.onStart();
         touch(n);
         resume();
@@ -779,7 +785,6 @@ public class Topology extends _Properties implements ClockListener{
             step = false;
         }
         if (refreshMode == RefreshMode.CLOCKBASED) {
-            //System.out.println("update");
             for (Node node : toBeUpdated)
                 update(node);
             toBeUpdated.clear();
