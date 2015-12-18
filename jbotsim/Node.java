@@ -180,8 +180,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         Random r = new Random();
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
     }
-    public static Color[] getBasicColors(){
-        return (Color[]) basicColors.toArray();
+    public static List<Color> getBasicColors(){
+        return basicColors;
     }
     /**
      * Sets the icon of this node.
@@ -370,7 +370,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param p The reference point.
      */
     public void setDirection(Point2D p){
-        setDirection(Math.atan2(p.getX() - coords.getX(), -(p.getY() - coords.getY())) - Math.PI / 2);
+        setDirection(Math.atan2(p.getY() - coords.getY(), (p.getX() - coords.getX())));
     }
     /**
      * Sets the direction angle of this node using the specified reference
