@@ -71,7 +71,12 @@ public class JTopology extends JPanel implements ActionListener{
 		nodePainters.add(new DefaultNodePainter());
 		backgroundPainters.add(new DefaultBackgroundPainter());
 	}
-    public void setInteractive(boolean interactive){
+	
+	public Topology getTopology() {
+		return topo;
+	}
+
+	public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
             addMouseListener(handler);
         if (!interactive && isInteractive)

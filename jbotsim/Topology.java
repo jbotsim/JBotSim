@@ -132,6 +132,11 @@ public class Topology extends _Properties implements ClockListener{
         }
         return new Node();
     }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
     /**
      * Sets the updates (links, sensed objects, etc.) to be instantaneous (EVENTBASED),
      * or periodic after each round (CLOCKBASED).
