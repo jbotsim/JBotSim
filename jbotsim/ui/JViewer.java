@@ -131,10 +131,10 @@ public class JViewer implements CommandListener, ChangeListener{
      * Adds a slide bar at the top of the topology.
      */
     public void addSlideBar(BarType type, int value){
-    	removeSlideBar();
-    	slideBarType = type;
-    	slideBar.setValue(value);
-		jtp.getParent().add(slideBar,BorderLayout.NORTH);
+        removeSlideBar();
+        slideBarType = type;
+        slideBar.setValue(value);
+        jtp.getParent().add(slideBar,BorderLayout.NORTH);
     }
     /**
      * Removes the slide bar, if any.

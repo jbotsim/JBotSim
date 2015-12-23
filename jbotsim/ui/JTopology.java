@@ -71,7 +71,7 @@ public class JTopology extends JPanel implements ActionListener{
 		nodePainters.add(new DefaultNodePainter());
 		backgroundPainters.add(new DefaultBackgroundPainter());
 	}
-	
+
 	public Topology getTopology() {
 		return topo;
 	}
@@ -166,7 +166,7 @@ public class JTopology extends JPanel implements ActionListener{
 				for(Link l : topo.getLinks(topo.hasDirectedLinks()))
 					painter.paintLink(g2d, l);
         }
-		if ( ! backgroundPainters.isEmpty() )
+		if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
 			updateUI();
     }
 	public void actionPerformed(ActionEvent arg0) {
