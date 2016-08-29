@@ -408,10 +408,10 @@ public class Topology extends _Properties implements ClockListener{
      */
     public void removeNode(Node n){
         pause();
+        n.onStop();
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
-        n.onStop();
         nodes.remove(n);
         for (Node n2 : nodes){
             if (n2.sensedNodes.contains(n)){
