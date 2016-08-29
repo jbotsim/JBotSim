@@ -12,6 +12,7 @@
 package jbotsim;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
@@ -410,6 +411,7 @@ public class Topology extends _Properties implements ClockListener{
         for (Link l : n.getLinks(true))
             removeLink(l);
         notifyNodeRemoved(n);
+        n.onStop();
         nodes.remove(n);
         for (Node n2 : nodes){
             if (n2.sensedNodes.contains(n)){
@@ -842,8 +844,11 @@ public class Topology extends _Properties implements ClockListener{
      */
     public String toString(){
         StringBuffer res = new StringBuffer();
-        for (Node n : nodes)
-            res.append(n.toString() + " " + n.coords.toString().substring(14) + "\n");
+        for (Node n : nodes) {
+            Point2D p2d = new Point2D.Double();
+            p2d.setLocation(n.coords.getX(), n.coords.getY());
+            res.append(n.toString() + " " + p2d.toString().substring(14) + "\n");
+        }
         for (Link l : getLinks())
             if (!l.isWireless())
                 res.append(l.toString()+ "\n");

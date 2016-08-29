@@ -66,9 +66,17 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void onSelection(){
     }
     /**
-     * Override this method to reset this node's state
+     * Override this method to reset this node's state.
+     * This method is also called just after the node is added to the topology
+     * (if the topology is in a running state).
      */
     public void onStart(){
+    }
+    /**
+     * This method is to be called just before
+     * the node is removed from the topology.
+     */
+    public void onStop(){
     }
     /**
      * Override this method to perform some action just before clock pulse.
