@@ -166,8 +166,8 @@ public class JTopology extends JPanel implements ActionListener{
 				for(Link l : topo.getLinks(topo.hasDirectedLinks()))
 					painter.paintLink(g2d, l);
         }
-		if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
-			updateUI();
+		//if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
+		//	updateUI();
     }
 	public void actionPerformed(ActionEvent arg0) {
 		String cmd = ((JMenuItem) arg0.getSource()).getText();
