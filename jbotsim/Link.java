@@ -18,7 +18,7 @@ import java.util.List;
 public class Link extends _Properties implements Comparable<Link>{
 	Integer width=1;
 	Color color = Color.darkGray;
-	
+
 	/**
 	 * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
 	 * <tt>Type.UNDIRECTED</tt>.
@@ -109,7 +109,7 @@ public class Link extends _Properties implements Comparable<Link>{
     }
     /**
      * Returns the requested endpoint node of this link
-     * @param The endpoint index (0 or 1).
+     * @param index The endpoint index (0 or 1).
      * @return The endpoint.
      */
     public Node endpoint(int index){
@@ -124,6 +124,13 @@ public class Link extends _Properties implements Comparable<Link>{
      */
     public Node getOtherEndpoint(Node n){
         return (n==source)?destination:source;
+    }
+    /**
+     * Returns the parent topology of this link, if any.
+     * @return The parent topology, or <tt>null</tt> if the link has none.
+     */
+    public Topology getTopology(){
+        return source.getTopology();
     }
     /**
      * Returns the color of this link as a string.
