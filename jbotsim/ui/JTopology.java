@@ -67,7 +67,7 @@ public class JTopology extends JPanel implements ActionListener{
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
-		linkPainters.add(new DefaultLinkPainter());
+		linkPainters.add(new LinkPainter());
 		nodePainters.add(new DefaultNodePainter());
 		backgroundPainters.add(new DefaultBackgroundPainter());
 	}

@@ -39,7 +39,7 @@ public class Topology extends _Properties implements ClockListener{
     double communicationRange = 100;
     double sensingRange = 0;
     Dimension dimensions;
-    LinkResolver linkResolver = new DefaultLinkResolver();
+    LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
     int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();

@@ -1,6 +1,9 @@
 package jbotsim;
 
-public interface LinkResolver {
-	/** Returns true if node n1 can be heard by node n2 */
-	boolean isHeardBy(Node n1, Node n2);
+
+public class LinkResolver {
+	public boolean isHeardBy(Node n1, Node n2) {
+		return (n1.isWirelessEnabled() && n2.isWirelessEnabled()
+				&& n1.distance(n2) < n1.getCommunicationRange());
+	}
 }
