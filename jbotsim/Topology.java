@@ -306,6 +306,18 @@ public class Topology extends _Properties implements ClockListener{
         return new Dimension(dimensions);
     }
     /**
+     * Returns the width of this topology.
+     */
+    public int getWidth(){
+        return dimensions.width;
+    }
+    /**
+     * Returns the height of this topology.
+     */
+    public int getHeight(){
+        return dimensions.height;
+    }
+    /**
      * Reset the color and width of nodes and links, then calls the
      * onStart() method on each node.
      */
