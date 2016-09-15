@@ -31,7 +31,7 @@ import jbotsim.ui.painting.*;
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<BackgroundPainter> backgroundPainters =new ArrayList<BackgroundPainter>();
-	protected ArrayList<LinkPainter> linkPainters = new ArrayList<LinkPainter>();
+	protected LinkPainter linkPainter;
 	protected ArrayList<NodePainter> nodePainters = new ArrayList<NodePainter>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
@@ -44,7 +44,7 @@ public class JTopology extends JPanel implements ActionListener{
      * Creates a new JTopology with default topology.
      */
     public JTopology(){
-    	this(new Topology());
+       this(new Topology());
     }
     /**
      * Creates a new JTopology for the specified topology.
@@ -67,7 +67,7 @@ public class JTopology extends JPanel implements ActionListener{
         	handler.onLinkAdded(l);
         topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
-		linkPainters.add(new LinkPainter());
+		linkPainter = new LinkPainter();
 		nodePainters.add(new DefaultNodePainter());
 		backgroundPainters.add(new DefaultBackgroundPainter());
 	}
@@ -92,15 +92,8 @@ public class JTopology extends JPanel implements ActionListener{
     public void removeBackgroundPainter(BackgroundPainter painter){
         backgroundPainters.remove(painter);
     }
-	public void addLinkPainter(LinkPainter painter){
-		linkPainters.add(painter);
-	}
-	public void setDefaultLinkPainter(LinkPainter painter){
-		linkPainters.clear();
-		addLinkPainter(painter);
-	}
-	public void removeLinkPainter(LinkPainter painter){
-		linkPainters.remove(painter);
+	public void setLinkPainter(LinkPainter painter){
+		linkPainter = painter;
 	}
 	public void addNodePainter(NodePainter painter){
 		nodePainters.add(painter);
@@ -162,9 +155,8 @@ public class JTopology extends JPanel implements ActionListener{
         for (BackgroundPainter painter : backgroundPainters)
 			painter.paintBackground(g2d, topo);
         if (showDrawings){
-			for (LinkPainter painter : linkPainters)
-				for(Link l : topo.getLinks(topo.hasDirectedLinks()))
-					painter.paintLink(g2d, l);
+			for(Link l : topo.getLinks(topo.hasDirectedLinks()))
+				linkPainter.paintLink(g2d, l);
         }
 		//if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
 		//	updateUI();

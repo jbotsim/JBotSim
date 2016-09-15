@@ -24,7 +24,7 @@ public class LinkPainter {
         int destX=(int)link.destination.getX(), destY=(int)link.destination.getY();
         g2d.drawLine(srcX, srcY, (srcX+(destX-srcX)), (srcY+(destY-srcY)));
         Topology topology = link.source.getTopology();
-        if (topology.hasDirectedLinks()) {
+        if (topology.hasDirectedLinks()) { // FIXME sometimes topology is null here
             int x=srcX+4*(destX-srcX)/5-2;
             int y=srcY+4*(destY-srcY)/5-2;
             g2d.drawOval(x,y,4,4);
