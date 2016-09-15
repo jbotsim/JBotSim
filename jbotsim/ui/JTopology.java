@@ -253,6 +253,7 @@ public class JTopology extends JPanel implements ActionListener{
 			}else{
                 for (CommandListener cl : commandListeners)
                     cl.onCommand(arg0.getActionCommand());
+				updateUI();
             }
 		}
 	    public void mouseClicked(MouseEvent e){}
