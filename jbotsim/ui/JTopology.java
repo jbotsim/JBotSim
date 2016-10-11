@@ -41,12 +41,6 @@ public class JTopology extends JPanel implements ActionListener{
 	protected boolean showDrawings=true;
     protected boolean isInteractive=true;
     /**
-     * Creates a new JTopology with default topology.
-     */
-    public JTopology(){
-       this(new Topology());
-    }
-    /**
      * Creates a new JTopology for the specified topology.
      * @param topo The topology to encapsulate.
      */
