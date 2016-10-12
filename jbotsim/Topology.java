@@ -345,8 +345,8 @@ public class Topology extends _Properties implements ClockListener{
      * Removes all the nodes (and links) of this topology.
      */
     public void clear(){
-        for (Node n : new ArrayList<Node>(nodes))
-            removeNode(n);
+        nodes.clear();
+        edges.clear();
     }
     /**
      * Removes all the ongoing messages in this topology.
