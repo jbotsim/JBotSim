@@ -19,6 +19,7 @@ import java.util.List;
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
+import jbotsim.ui.JTopology;
 
 public class Topology extends _Properties implements ClockListener{
     Clock clock;
@@ -217,6 +218,13 @@ public class Topology extends _Properties implements ClockListener{
     public void setMessageEngine(MessageEngine messageEngine) {
         this.messageEngine = messageEngine;
         messageEngine.setTopology(this);
+    }
+
+    /**
+     * Gets a reference on the associated JTopology (if any, null otherwise).
+     */
+    public JTopology getJTopology() {
+        return (JTopology) getProperty("jtopology");
     }
 
     /**
