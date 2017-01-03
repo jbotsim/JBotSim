@@ -44,6 +44,13 @@ public abstract class _Properties {
 	        pl.propertyChanged(this, key);
 	}
 	/**
+	 * Removes the specified property.
+	 * @param key The property key.
+	 */
+	public void removeProperty(String key){
+		properties.remove(key);
+	}
+	/**
 	 * Returns the property stored under the specified key.
 	 * @param key The property key.
 	 */
