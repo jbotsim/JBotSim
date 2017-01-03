@@ -38,6 +38,7 @@ public class JTopology extends JPanel implements ActionListener{
     protected Topology topo;
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
+	protected boolean popupRunning = false;
 	protected boolean showDrawings=true;
     protected boolean isInteractive=true;
     /**
@@ -45,21 +46,11 @@ public class JTopology extends JPanel implements ActionListener{
      * @param topo The topology to encapsulate.
      */
     public JTopology(Topology topo){
-    	this.topo=topo;
-		topo.setProperty("jtopology", this);
-    	topo.addConnectivityListener(handler);
-    	topo.addTopologyListener(handler);
-    	topo.addMovementListener(handler);
-        topo.addClockListener(handler);
+        setTopology(topo);
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
         super.setPreferredSize(topo.getDimensions());
-        for (Node n : topo.getNodes())
-        	handler.onNodeAdded(n);
-        for (Link l : topo.getLinks())
-        	handler.onLinkAdded(l);
-        topo.setProperty("popupRunning", false);
 		ToolTipManager.sharedInstance().setInitialDelay(0);
 		linkPainter = new LinkPainter();
 		nodePainters.add(new DefaultNodePainter());
@@ -68,6 +59,34 @@ public class JTopology extends JPanel implements ActionListener{
 
 	public Topology getTopology() {
 		return topo;
+	}
+
+	public void setTopology(Topology topology) {
+		unsetTopology();
+        this.topo = topology;
+        topo.setProperty("jtopology", this);
+        topo.addConnectivityListener(handler);
+        topo.addTopologyListener(handler);
+        topo.addMovementListener(handler);
+        topo.addClockListener(handler);
+        for (Node n : topo.getNodes())
+            handler.onNodeAdded(n);
+        for (Link l : topo.getLinks())
+            handler.onLinkAdded(l);
+	}
+
+	public void unsetTopology(){
+        if (topo != null) {
+            topo.removeProperty("jtopology");
+            topo.removeConnectivityListener(handler);
+            topo.removeTopologyListener(handler);
+            topo.removeMovementListener(handler);
+            topo.removeClockListener(handler);
+            for (Link l : topo.getLinks())
+                handler.onLinkRemoved(l);
+            for (Node n : topo.getNodes())
+        	    handler.onNodeRemoved(n);
+        }
 	}
 
 	public void setInteractive(boolean interactive){
@@ -204,8 +223,8 @@ public class JTopology extends JPanel implements ActionListener{
         public void onClock() {
         }
 	    public void mousePressed(MouseEvent e) {
-	    	if ((Boolean)topo.getProperty("popupRunning")==true){
-	    		topo.setProperty("popupRunning", false);
+	    	if (popupRunning){
+	    		popupRunning = false;
 	    		return;
 	    	}
 	    	if (e.getButton()==MouseEvent.BUTTON1){
@@ -217,7 +236,7 @@ public class JTopology extends JPanel implements ActionListener{
 	        		popup.add(jitem);
 	        	}
 	        	if (popup.getComponentCount()>1){
-	            	topo.setProperty("popupRunning", true);
+	            	popupRunning = true;
 	        		popup.show(jtopo,e.getX(),e.getY());
 	        	}else{
                     String modelName = "default";
@@ -232,13 +251,13 @@ public class JTopology extends JPanel implements ActionListener{
 	        		jitem.addActionListener(this);
 	        		popup.add(jitem);
 	        	}
-	        	topo.setProperty("popupRunning", true);
+	        	popupRunning = true;
 	    		popup.show(jtopo,e.getX(),e.getY());
 	        }
 	    }
 
 		public void actionPerformed(ActionEvent arg0) {
-			topo.setProperty("popupRunning", false);
+			popupRunning = false;
 			String[] args=arg0.getActionCommand().split(" ");
 			if (args[0].equals("addNode")){
 				int x=Integer.parseInt(args[2]);
