@@ -20,11 +20,7 @@
  *******************************************************************************/
 package jbotsimx;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -86,7 +82,7 @@ public class Connectivity {
         else
             return !isConnectedWithout(kneighbors, n);
     }
-    public static boolean isConnectedWithout(List<Node> Vset, Node n){
+    public static boolean isConnectedWithout(Collection<Node> Vset, Node n){
         Set<Node> Vtmp=new HashSet<Node>(Vset);
         Vtmp.remove(n);
         return isConnected(new ArrayList<Node>(Vtmp));
