@@ -51,7 +51,7 @@ public class Tikz {
 	public static String exportTopology(Topology tp){
 		return exportTopology(tp,50);
 	}
-	public static String exportTopology(Topology tp, int scale){
+	public static String exportTopology(Topology tp, double scale){
 		String delim="\n";
 		String s="\\begin{tikzpicture}[xscale=1,yscale=1]"+delim;
 		Integer sr=(int)tp.getSensingRange();
