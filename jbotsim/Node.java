@@ -536,6 +536,12 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return mailBox;
     }
     /**
+     * Returns a list of the messages that this node is about to send.
+     */
+    public List<Message> getOutbox(){
+        return new ArrayList<Message>(sendQueue);
+    }
+    /**
      * Sends a message from this node to the specified destination node.
      * The content of the
      * message is specified as an object reference, to be passed 'as is' to the
