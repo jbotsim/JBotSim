@@ -189,7 +189,8 @@ public class JTopology extends JPanel implements ActionListener{
 	    }
 	    public void onNodeRemoved(Node n){
 	    	JNode jn=(JNode)n.getProperty("jnode");
-	        remove(jn);
+			if (jn != null)
+		        remove(jn);
 	        updateUI();
 	    }
 	    public void onLinkAdded(Link l){
