@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts        <casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
 package jbotsim.ui;
 
