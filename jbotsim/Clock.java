@@ -22,7 +22,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-
 class Clock {
     Topology tp;
     HashMap<ClockListener, Integer> listeners=new HashMap<ClockListener, Integer>();

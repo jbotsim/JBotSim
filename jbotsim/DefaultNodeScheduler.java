@@ -11,11 +11,6 @@
  */
 package jbotsim;
 
-import jbotsim.event.ClockListener;
-import jbotsim.ui.painting.NodePainter;
-
-import java.util.HashMap;
-
 public class DefaultNodeScheduler implements NodeScheduler {
 
     @Override

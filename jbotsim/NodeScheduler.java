@@ -11,9 +11,6 @@
  */
 package jbotsim;
 
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-
 public interface NodeScheduler {
     void onClock(Topology tp);
 }
