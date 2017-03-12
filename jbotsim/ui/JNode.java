@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.ui;
 
@@ -32,8 +32,8 @@ import jbotsim.ui.painting.NodePainter;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener{
-	protected Image icon;
-	protected Image scaledIcon;
+    protected Image icon;
+    protected Image scaledIcon;
     protected Integer drawSize;
     protected double zcoord = -1;
     protected Node node;
@@ -71,20 +71,20 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         setIcon(new ImageIcon(scaledIcon));
     }
     public void update(){
-    	if (node.getZ() != zcoord){
-    		zcoord = node.getZ();
+        if (node.getZ() != zcoord){
+            zcoord = node.getZ();
             updateIconSize();
         }
         setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize*2, drawSize*2);
     }
     public void paint(Graphics g){
-    	Graphics2D g2d = (Graphics2D) g;
-    	double direction=this.node.getDirection();
-    	if(direction!=Math.PI/2){
-    		AffineTransform newXform = g2d.getTransform();
-    		newXform.rotate(direction+Math.PI/2, drawSize, drawSize);
-    		g2d.setTransform(newXform);
-    	}
+        Graphics2D g2d = (Graphics2D) g;
+        double direction=this.node.getDirection();
+        if(direction!=Math.PI/2){
+            AffineTransform newXform = g2d.getTransform();
+            newXform.rotate(direction+Math.PI/2, drawSize, drawSize);
+            g2d.setTransform(newXform);
+        }
         g2d.drawImage(scaledIcon, 0, 0, null);
         JTopology jTopology = (JTopology) this.getParent();
         for (NodePainter painter : jTopology.nodePainters)

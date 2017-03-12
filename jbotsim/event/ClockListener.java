@@ -7,13 +7,13 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.event;
 
 public interface ClockListener {
-	/**
-	 * Called periodically by the central scheduler.
-	 */
-	void onClock();
+    /**
+     * Called periodically by the central scheduler.
+     */
+    void onClock();
 }

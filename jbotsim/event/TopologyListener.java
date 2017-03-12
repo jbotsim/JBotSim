@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.event;
 

@@ -7,16 +7,16 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.event;
 
 import jbotsim.Message;
 
 public interface MessageListener {
-	/**
-	 * Notifies the underlying MessageListener that a message has arrived.
-	 * @param msg The incoming message.
-	 */
-	void onMessage(Message msg);
+    /**
+     * Notifies the underlying MessageListener that a message has arrived.
+     * @param msg The incoming message.
+     */
+    void onMessage(Message msg);
 }

@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim;
 
@@ -16,18 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Link extends _Properties implements Comparable<Link>{
-	Integer width=1;
-	Color color = Color.darkGray;
+    Integer width=1;
+    Color color = Color.darkGray;
 
-	/**
-	 * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
-	 * <tt>Type.UNDIRECTED</tt>.
-	 */
+    /**
+     * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
+     * <tt>Type.UNDIRECTED</tt>.
+     */
     public static enum Type{DIRECTED, UNDIRECTED};
-	/**
-	 * Enumerates the two possible modes of a link: <tt>Mode.WIRED</tt> and
-	 * <tt>Mode.WIRELESS</tt>.
-	 */
+    /**
+     * Enumerates the two possible modes of a link: <tt>Mode.WIRED</tt> and
+     * <tt>Mode.WIRELESS</tt>.
+     */
     public static enum Mode{WIRED, WIRELESS};
     /**
      * The source node of this link (if directed),
@@ -103,9 +103,9 @@ public class Link extends _Properties implements Comparable<Link>{
      * @return The endpoints.
      */
     public List<Node> endpoints(){
-    	List<Node> tmp = new ArrayList<Node>();
-    	tmp.add(source); tmp.add(destination);
-    	return tmp;
+        List<Node> tmp = new ArrayList<Node>();
+        tmp.add(source); tmp.add(destination);
+        return tmp;
     }
     /**
      * Returns the requested endpoint node of this link
@@ -113,8 +113,8 @@ public class Link extends _Properties implements Comparable<Link>{
      * @return The endpoint.
      */
     public Node endpoint(int index){
-    	assert (index==0 || index==1);
-    	return (index==0)?source:destination;
+        assert (index==0 || index==1);
+        return (index==0)?source:destination;
     }
     /**
      * Returns the node located at the opposite of the specified node 
@@ -136,40 +136,40 @@ public class Link extends _Properties implements Comparable<Link>{
      * Returns the color of this link as a string.
      */
     public Color getColor(){
-    	return color;
+        return color;
     }
     /**
      * Sets the color of this link as a string.
      */
     public void setColor(Color color){
-    	this.color = color;
-    	setProperty("color", color); // Used for property notification
+        this.color = color;
+        setProperty("color", color); // Used for property notification
     }
     /**
      * Returns the width of this link.
      */
     public Integer getWidth(){
-    	return width;
+        return width;
     }
     /**
      * Sets the width of this link.
      */
     public void setWidth(Integer width){
-    	this.width=width;
-    	setProperty("width", width); // Used for property notification
+        this.width=width;
+        setProperty("width", width); // Used for property notification
     }
     /**
      * Returns the euclidean distance between this link endpoints.
      */
     public Double getLength(){
-    	return source.distance(destination);
+        return source.distance(destination);
     }
     /**
      * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless, 
      * <tt>false</tt> otherwise.
      */
     public boolean isWireless() {
-    	return mode==Mode.WIRELESS;
+        return mode==Mode.WIRELESS;
     }
     /**
      * Returns <tt>true</tt> if the link <tt>type</tt> is directed, 
@@ -187,19 +187,19 @@ public class Link extends _Properties implements Comparable<Link>{
     public boolean equals(Object o){
         Link l=(Link)o;
         if (this.type != l.type)
-        	return false;
+            return false;
         else if (this.type == Type.DIRECTED)
-        	return (l.source==this.source && l.destination==this.destination);
+            return (l.source==this.source && l.destination==this.destination);
         else
-        	return (l.source==this.source && l.destination==this.destination) ||
-        			(l.source==this.destination && l.destination==this.source);
+            return (l.source==this.source && l.destination==this.destination) ||
+                    (l.source==this.destination && l.destination==this.source);
     }
     /**
      * Compares the specified link to this link in terms of length.
      */
-	public int compareTo(Link l) {
-		return getLength().compareTo(l.getLength());
-	}
+    public int compareTo(Link l) {
+        return getLength().compareTo(l.getLength());
+    }
     /**
      * Returns a string representation of this link.
      */

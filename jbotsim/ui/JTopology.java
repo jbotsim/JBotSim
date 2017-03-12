@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.ui;
 
@@ -31,15 +31,15 @@ import jbotsim.ui.painting.*;
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
     protected ArrayList<BackgroundPainter> backgroundPainters =new ArrayList<BackgroundPainter>();
-	protected LinkPainter linkPainter;
-	protected ArrayList<NodePainter> nodePainters = new ArrayList<NodePainter>();
+    protected LinkPainter linkPainter;
+    protected ArrayList<NodePainter> nodePainters = new ArrayList<NodePainter>();
     protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
     protected JTopology jtopo=this;
     protected EventHandler handler=new EventHandler();
-	protected boolean popupRunning = false;
-	protected boolean showDrawings=true;
+    protected boolean popupRunning = false;
+    protected boolean showDrawings=true;
     protected boolean isInteractive=true;
     /**
      * Creates a new JTopology for the specified topology.
@@ -51,18 +51,18 @@ public class JTopology extends JPanel implements ActionListener{
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
         super.setPreferredSize(topo.getDimensions());
-		ToolTipManager.sharedInstance().setInitialDelay(0);
-		linkPainter = new LinkPainter();
-		nodePainters.add(new DefaultNodePainter());
-		backgroundPainters.add(new DefaultBackgroundPainter());
-	}
+        ToolTipManager.sharedInstance().setInitialDelay(0);
+        linkPainter = new LinkPainter();
+        nodePainters.add(new DefaultNodePainter());
+        backgroundPainters.add(new DefaultBackgroundPainter());
+    }
 
-	public Topology getTopology() {
-		return topo;
-	}
+    public Topology getTopology() {
+        return topo;
+    }
 
-	public void setTopology(Topology topology) {
-		unsetTopology();
+    public void setTopology(Topology topology) {
+        unsetTopology();
         this.topo = topology;
         topo.setProperty("jtopology", this);
         topo.addConnectivityListener(handler);
@@ -73,9 +73,9 @@ public class JTopology extends JPanel implements ActionListener{
             handler.onNodeAdded(n);
         for (Link l : topo.getLinks())
             handler.onLinkAdded(l);
-	}
+    }
 
-	public void unsetTopology(){
+    public void unsetTopology(){
         if (topo != null) {
             topo.removeProperty("jtopology");
             topo.removeConnectivityListener(handler);
@@ -85,11 +85,11 @@ public class JTopology extends JPanel implements ActionListener{
             for (Link l : topo.getLinks())
                 handler.onLinkRemoved(l);
             for (Node n : topo.getNodes())
-        	    handler.onNodeRemoved(n);
+                handler.onNodeRemoved(n);
         }
-	}
+    }
 
-	public void setInteractive(boolean interactive){
+    public void setInteractive(boolean interactive){
         if (interactive && !isInteractive)
             addMouseListener(handler);
         if (!interactive && isInteractive)
@@ -98,46 +98,46 @@ public class JTopology extends JPanel implements ActionListener{
     public void addBackgroundPainter(BackgroundPainter painter){
         backgroundPainters.add(0, painter);
     }
-	public void setDefaultBackgroundPainter(BackgroundPainter painter){
-		backgroundPainters.clear();
-		addBackgroundPainter(painter);
-	}
+    public void setDefaultBackgroundPainter(BackgroundPainter painter){
+        backgroundPainters.clear();
+        addBackgroundPainter(painter);
+    }
     public void removeBackgroundPainter(BackgroundPainter painter){
         backgroundPainters.remove(painter);
     }
-	public void setLinkPainter(LinkPainter painter){
-		linkPainter = painter;
-	}
-	public void addNodePainter(NodePainter painter){
-		nodePainters.add(painter);
-	}
-	public void setDefaultNodePainter(NodePainter painter){
-		nodePainters.clear();
-		addNodePainter(painter);
-	}
-	public void removeNodePainter(NodePainter painter){
-		nodePainters.remove(painter);
-	}
+    public void setLinkPainter(LinkPainter painter){
+        linkPainter = painter;
+    }
+    public void addNodePainter(NodePainter painter){
+        nodePainters.add(painter);
+    }
+    public void setDefaultNodePainter(NodePainter painter){
+        nodePainters.clear();
+        addNodePainter(painter);
+    }
+    public void removeNodePainter(NodePainter painter){
+        nodePainters.remove(painter);
+    }
     /**
      * Registers the specified action listener to this JTopology.
      * @param al The listener to add.
      */
     public void addCommandListener(CommandListener al){
-    	commandListeners.add(al);
+        commandListeners.add(al);
     }
     /**
      * Unregisters the specified action listener to this JTopology.
      * @param al The listener to remove.
      */
     public void removeCommandListener(CommandListener al){
-    	commandListeners.remove(al);
+        commandListeners.remove(al);
     }
     /**
      * Adds the specified action command to this JTopology.
      * @param command The command name to add.
      */
     public void addCommand(String command){
-    	commands.add(command);
+        commands.add(command);
     }
     /**
      * Removes the specified action command from this JTopology.
@@ -164,115 +164,115 @@ public class JTopology extends JPanel implements ActionListener{
      */
     public void paintComponent(Graphics g){
         super.paintComponent(g);
-		Graphics2D g2d=(Graphics2D)g;
+        Graphics2D g2d=(Graphics2D)g;
         for (BackgroundPainter painter : backgroundPainters)
-			painter.paintBackground(g2d, topo);
+            painter.paintBackground(g2d, topo);
         if (showDrawings){
-			for(Link l : topo.getLinks(topo.hasDirectedLinks()))
-				linkPainter.paintLink(g2d, l);
+            for(Link l : topo.getLinks(topo.hasDirectedLinks()))
+                linkPainter.paintLink(g2d, l);
         }
-		//if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
-		//	updateUI();
+        //if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
+        //    updateUI();
     }
-	public void actionPerformed(ActionEvent arg0) {
-		String cmd = ((JMenuItem) arg0.getSource()).getText();
-	}
+    public void actionPerformed(ActionEvent arg0) {
+        String cmd = ((JMenuItem) arg0.getSource()).getText();
+    }
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-			PropertyListener, ClockListener, MouseListener, ActionListener{
-	    public void onNodeAdded(Node n){
+            PropertyListener, ClockListener, MouseListener, ActionListener{
+        public void onNodeAdded(Node n){
             JNode jv=new JNode(n);
-	        n.setProperty("jnode", jv);
-	        n.addPropertyListener(this);
-	        add(jv);
-	        updateUI();
-	    }
-	    public void onNodeRemoved(Node n){
-	    	JNode jn=(JNode)n.getProperty("jnode");
-			if (jn != null)
-		        remove(jn);
-	        updateUI();
-	    }
-	    public void onLinkAdded(Link l){
-	    	l.addPropertyListener(this);
-	    	updateUI();
-	    }
-	    public void onLinkRemoved(Link l){
-	    	updateUI();
-	    }
-	    public void onMove(Node n) {
-			Toolkit.getDefaultToolkit().sync();
-			updateUI();
+            n.setProperty("jnode", jv);
+            n.addPropertyListener(this);
+            add(jv);
+            updateUI();
+        }
+        public void onNodeRemoved(Node n){
+            JNode jn=(JNode)n.getProperty("jnode");
+            if (jn != null)
+                remove(jn);
+            updateUI();
+        }
+        public void onLinkAdded(Link l){
+            l.addPropertyListener(this);
+            updateUI();
+        }
+        public void onLinkRemoved(Link l){
+            updateUI();
+        }
+        public void onMove(Node n) {
+            Toolkit.getDefaultToolkit().sync();
+            updateUI();
             if (n.hasProperty("jnode"))
-    	    	((JNode)n.getProperty("jnode")).update();
-	    }
-		public void propertyChanged(_Properties o, String property){
-			if (o instanceof Node){ // Node
-	    		JNode jn = (JNode)((Node)o).getProperty("jnode");
-	    		if (property.equals("color")){
-	    			jn.updateUI();
-	    		}else if (property.equals("icon")){
+                ((JNode)n.getProperty("jnode")).update();
+        }
+        public void propertyChanged(_Properties o, String property){
+            if (o instanceof Node){ // Node
+                JNode jn = (JNode)((Node)o).getProperty("jnode");
+                if (property.equals("color")){
+                    jn.updateUI();
+                }else if (property.equals("icon")){
                     jn.updateIcon();
                 }else if (property.equals("size")){
                     jn.updateIcon();
                 }
-	    	}else if (property.equals("width") || property.equals("color")){
-				updateUI();
-	    	}
-		}
+            }else if (property.equals("width") || property.equals("color")){
+                updateUI();
+            }
+        }
         @Override
         public void onClock() {
         }
-	    public void mousePressed(MouseEvent e) {
-	    	if (popupRunning){
-	    		popupRunning = false;
-	    		return;
-	    	}
-	    	if (e.getButton()==MouseEvent.BUTTON1){
-	        	JPopupMenu popup=new JPopupMenu();
-	        	for (String type : topo.getModelsNames()){
-	        		JMenuItem jitem=new JMenuItem(type);
-	        		jitem.setActionCommand("addNode "+type+" "+e.getX()+" "+e.getY());
-	        		jitem.addActionListener(this);
-	        		popup.add(jitem);
-	        	}
-	        	if (popup.getComponentCount()>1){
-	            	popupRunning = true;
-	        		popup.show(jtopo,e.getX(),e.getY());
-	        	}else{
+        public void mousePressed(MouseEvent e) {
+            if (popupRunning){
+                popupRunning = false;
+                return;
+            }
+            if (e.getButton()==MouseEvent.BUTTON1){
+                JPopupMenu popup=new JPopupMenu();
+                for (String type : topo.getModelsNames()){
+                    JMenuItem jitem=new JMenuItem(type);
+                    jitem.setActionCommand("addNode "+type+" "+e.getX()+" "+e.getY());
+                    jitem.addActionListener(this);
+                    popup.add(jitem);
+                }
+                if (popup.getComponentCount()>1){
+                    popupRunning = true;
+                    popup.show(jtopo,e.getX(),e.getY());
+                }else{
                     String modelName = "default";
                     if (topo.getModelsNames().size()>0)
                         modelName = topo.getModelsNames().iterator().next();
-	        		topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel(modelName));
-	        	}
-	        }else if (e.getButton()==MouseEvent.BUTTON3){
-	        	JPopupMenu popup=new JPopupMenu();
-	        	for (String command : commands){
-	        		JMenuItem jitem=new JMenuItem(command);
-	        		jitem.addActionListener(this);
-	        		popup.add(jitem);
-	        	}
-	        	popupRunning = true;
-	    		popup.show(jtopo,e.getX(),e.getY());
-	        }
-	    }
+                    topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel(modelName));
+                }
+            }else if (e.getButton()==MouseEvent.BUTTON3){
+                JPopupMenu popup=new JPopupMenu();
+                for (String command : commands){
+                    JMenuItem jitem=new JMenuItem(command);
+                    jitem.addActionListener(this);
+                    popup.add(jitem);
+                }
+                popupRunning = true;
+                popup.show(jtopo,e.getX(),e.getY());
+            }
+        }
 
-		public void actionPerformed(ActionEvent arg0) {
-			popupRunning = false;
-			String[] args=arg0.getActionCommand().split(" ");
-			if (args[0].equals("addNode")){
-				int x=Integer.parseInt(args[2]);
-				int y=Integer.parseInt(args[3]);
-				topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
-			}else{
+        public void actionPerformed(ActionEvent arg0) {
+            popupRunning = false;
+            String[] args=arg0.getActionCommand().split(" ");
+            if (args[0].equals("addNode")){
+                int x=Integer.parseInt(args[2]);
+                int y=Integer.parseInt(args[3]);
+                topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
+            }else{
                 for (CommandListener cl : commandListeners)
                     cl.onCommand(arg0.getActionCommand());
-				updateUI();
+                updateUI();
             }
-		}
-	    public void mouseClicked(MouseEvent e){}
-	    public void mouseEntered(MouseEvent e){}
-	    public void mouseExited(MouseEvent e){}
-	    public void mouseReleased(MouseEvent e){}
-	}
+        }
+        public void mouseClicked(MouseEvent e){}
+        public void mouseEntered(MouseEvent e){}
+        public void mouseExited(MouseEvent e){}
+        public void mouseReleased(MouseEvent e){}
+    }
 }

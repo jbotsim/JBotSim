@@ -61,7 +61,7 @@ public class Algorithms {
 
         ArrayList<Node> Vmst=new ArrayList<Node>();
         ArrayList<Link> Emst=new ArrayList<Link>();
-		
+        
         Vmst.add(Vset.get(0));
 
         while(Vmst.size()!=Vset.size()){
@@ -89,14 +89,14 @@ public class Algorithms {
     }
     // Returns between 0 and 2*PI
     public static double getAngle(Node n1, Node n2, Node n3){
-	    double slope1=getAngle(n2,n1);
-	    double slope2=getAngle(n2,n3);
-	    double angle=(slope2-slope1);
-	    if (angle<0) angle+=PI*2.0;
-	    return angle;
-	}
+        double slope1=getAngle(n2,n1);
+        double slope2=getAngle(n2,n3);
+        double angle=(slope2-slope1);
+        if (angle<0) angle+=PI*2.0;
+        return angle;
+    }
     // Returns between 0 and PI (abs value of the shortest side)
-	public static double getAngleAbs(Node n1, Node n2, Node n3){
+    public static double getAngleAbs(Node n1, Node n2, Node n3){
         double slope1=getAngle(n1,n2);
         double slope2=getAngle(n3,n2);
         double angle=abs(slope1-slope2);
@@ -115,18 +115,18 @@ public class Algorithms {
         return result;
     }
     public static double getRelativeCoverage(Topology topo){
-    	double maximum=0.0;
-    	for (Node n : topo.getNodes())
-    		maximum+=PI*pow(n.getSensingRange(), 2);
-    	return getCoverage(topo)/maximum;
+        double maximum=0.0;
+        for (Node n : topo.getNodes())
+            maximum+=PI*pow(n.getSensingRange(), 2);
+        return getCoverage(topo)/maximum;
     }
     public static double getCoverage(Topology topo){
         int left=0, right=0, top=0, bottom=0, maxSR=0;
         for (Node n : topo.getNodes()){
-        	int x=(int)n.getX(); int y=(int)n.getY();
-        	left=min(left,x); top=min(top,y);
-        	right=max(right,x); bottom=max(bottom,y);
-        	maxSR=max(maxSR, (int)n.getSensingRange());
+            int x=(int)n.getX(); int y=(int)n.getY();
+            left=min(left,x); top=min(top,y);
+            right=max(right,x); bottom=max(bottom,y);
+            maxSR=max(maxSR, (int)n.getSensingRange());
         }
         double coverage = 0;
         for (int i=left-maxSR; i<right+maxSR; i++){

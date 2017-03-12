@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim;
 
@@ -583,11 +583,11 @@ public class Topology extends _Properties implements ClockListener{
         List<Link> allLinks=(directed)?arcs:edges;
         for(Link l : allLinks)
             switch(pos){
-                case 0:	if(l.source==n || l.destination==n)
+                case 0:    if(l.source==n || l.destination==n)
                     result.add(l); break;
-                case 1:	if(l.source==n)
+                case 1:    if(l.source==n)
                     result.add(l); break;
-                case 2:	if(l.destination==n)
+                case 2:    if(l.destination==n)
                     result.add(l); break;
             }
         return result;

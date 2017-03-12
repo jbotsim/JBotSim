@@ -7,52 +7,52 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim;
 
 
 public final class Message extends _Properties{
-	protected Node sender;
-	protected Node destination;
-	protected Object content;
-	protected boolean retryMode;
+    protected Node sender;
+    protected Node destination;
+    protected Object content;
+    protected boolean retryMode;
 
-	public Message(){
-		this(null, null, "");
-	}
-	/**
-	 * @param content The content of this message. It may be an object of any class, whose
-	 *                reference is going to be shared between sender and destination (no copy).
-	 */
-	public Message(Object content){
-		this(null, null, content);
-	}
-	Message(Node sender, Node destination, Object content){
-		assert(destination!=null);
-		this.sender = sender;
-		this.destination=destination;
-		this.content=content;
-	}
-	/**
-	 * The sender of this message.
-	 */
-	public Node getSender(){
-		return sender;
-	}
-	/**
-	 * The destination of this message.
-	 */
-	public Node getDestination(){
-		return destination;
-	}
-	/**
-	 * The content of this message, which may be an object of any class.
-	 */
-	public Object getContent(){
-		return content;
-	}
-	public String toString(){
-		return sender + " -> " + destination+ ": " + content;
-	}
+    public Message(){
+        this(null, null, "");
+    }
+    /**
+     * @param content The content of this message. It may be an object of any class, whose
+     *                reference is going to be shared between sender and destination (no copy).
+     */
+    public Message(Object content){
+        this(null, null, content);
+    }
+    Message(Node sender, Node destination, Object content){
+        assert(destination!=null);
+        this.sender = sender;
+        this.destination=destination;
+        this.content=content;
+    }
+    /**
+     * The sender of this message.
+     */
+    public Node getSender(){
+        return sender;
+    }
+    /**
+     * The destination of this message.
+     */
+    public Node getDestination(){
+        return destination;
+    }
+    /**
+     * The content of this message, which may be an object of any class.
+     */
+    public Object getContent(){
+        return content;
+    }
+    public String toString(){
+        return sender + " -> " + destination+ ": " + content;
+    }
 }

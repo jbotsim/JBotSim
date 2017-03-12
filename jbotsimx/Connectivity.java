@@ -100,12 +100,12 @@ public class Connectivity {
         return vertices.isEmpty();
     }
     public static int getNbConnectedComponents(Topology t){
-    	ArrayList<Node> vertices=new ArrayList<Node>(t.getNodes());
-    	int nbComp=0;
-    	while (vertices.size()>0){
-    		removeConnectedNodes(vertices,vertices.get(0));
-    		nbComp++;
-    	}
+        ArrayList<Node> vertices=new ArrayList<Node>(t.getNodes());
+        int nbComp=0;
+        while (vertices.size()>0){
+            removeConnectedNodes(vertices,vertices.get(0));
+            nbComp++;
+        }
         return nbComp;
     }
     private static void removeConnectedNodes(ArrayList<Node> Vtmp, Node v){
@@ -117,48 +117,48 @@ public class Connectivity {
         }
     }
     public static int getOptimalTopologySize(int nbNodes, double cRange, double ratio){
-	double d = 0, pCo, pBico;
-	do{ d+=0.000001;
-	    pCo=1-(Math.exp(-d*Math.PI*Math.pow(cRange, 2)))*(1+d*Math.PI*Math.pow(cRange,2));
-	    pBico=1-(Math.exp(-d*Math.PI*Math.pow(cRange, 2)))*(1+d*Math.PI*Math.pow(cRange,2)+Math.pow(d*Math.PI*cRange*cRange, 2)/2);
-	} while (Math.pow(pCo/pBico,nbNodes)>ratio);
-	if (d==0.000001){
-	    System.err.println("In Connectivity.getOptimalSize : not enough precision!");
-	    System.exit(1);
-	}
-	return (int)Math.round(Math.sqrt(nbNodes/d));
+    double d = 0, pCo, pBico;
+    do{ d+=0.000001;
+        pCo=1-(Math.exp(-d*Math.PI*Math.pow(cRange, 2)))*(1+d*Math.PI*Math.pow(cRange,2));
+        pBico=1-(Math.exp(-d*Math.PI*Math.pow(cRange, 2)))*(1+d*Math.PI*Math.pow(cRange,2)+Math.pow(d*Math.PI*cRange*cRange, 2)/2);
+    } while (Math.pow(pCo/pBico,nbNodes)>ratio);
+    if (d==0.000001){
+        System.err.println("In Connectivity.getOptimalSize : not enough precision!");
+        System.exit(1);
+    }
+    return (int)Math.round(Math.sqrt(nbNodes/d));
     }
     public static void addRandomConnectedNodes(Topology tp, int nbNodes){
-    	double Cr=tp.getCommunicationRange();
-    	double Sr=tp.getSensingRange();
-    	int size = getOptimalTopologySize(nbNodes, Cr, 100);
-    	int bordure = new Double(4*Sr).intValue();
-    	Random rand = new Random();
-    	Topology tmp=new Topology();
-    	tp.pause();
-    	do{
-    		tmp.clear();
-    	    for (int i=0; i<nbNodes; i++)
-    	    	tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, tp.newInstanceOfModel("default"));
-    	} while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
-    	for (Node n:tmp.getNodes())
-    		tp.addNode(n.getX(), n.getY(), tp.newInstanceOfModel("default"));
+        double Cr=tp.getCommunicationRange();
+        double Sr=tp.getSensingRange();
+        int size = getOptimalTopologySize(nbNodes, Cr, 100);
+        int bordure = new Double(4*Sr).intValue();
+        Random rand = new Random();
+        Topology tmp=new Topology();
+        tp.pause();
+        do{
+            tmp.clear();
+            for (int i=0; i<nbNodes; i++)
+                tmp.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, tp.newInstanceOfModel("default"));
+        } while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
+        for (Node n:tmp.getNodes())
+            tp.addNode(n.getX(), n.getY(), tp.newInstanceOfModel("default"));
         tp.resume();
     }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
-	int size = getOptimalTopologySize(nbNodes, cRange, ratio);
-	int bordure = new Double(4*sRange).intValue();
-	int attempts = 0;
-	Random rand = new Random();
-	Topology topo = new Topology();
-	topo.setSensingRange(sRange);
-	topo.setCommunicationRange(cRange);
-	do{ attempts++;
-	    topo.clear();
-	    for (int i=0; i<nbNodes; i++)
-		topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, topo.newInstanceOfModel("default"));
-	} while (!Connectivity.isConnected(topo) || Connectivity.isBiconnected(topo));
-	topo.setProperty("attempts", attempts);
-	return topo;
+    int size = getOptimalTopologySize(nbNodes, cRange, ratio);
+    int bordure = new Double(4*sRange).intValue();
+    int attempts = 0;
+    Random rand = new Random();
+    Topology topo = new Topology();
+    topo.setSensingRange(sRange);
+    topo.setCommunicationRange(cRange);
+    do{ attempts++;
+        topo.clear();
+        for (int i=0; i<nbNodes; i++)
+        topo.addNode(rand.nextInt(size)+2*bordure, rand.nextInt(size)+1.5*bordure, topo.newInstanceOfModel("default"));
+    } while (!Connectivity.isConnected(topo) || Connectivity.isBiconnected(topo));
+    topo.setProperty("attempts", attempts);
+    return topo;
     }
 }

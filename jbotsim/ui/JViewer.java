@@ -7,7 +7,7 @@
  *    (at your option) any later version.
  *  
  *    Authors:
- *    Arnaud Casteigts		<casteig@site.uottawa.ca>
+ *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
 package jbotsim.ui;
 
@@ -30,75 +30,75 @@ import jbotsimx.Tikz;
  * pause/resume the system clock.
  */
 public class JViewer implements CommandListener, ChangeListener{
-	protected JTopology jtp;
+    protected JTopology jtp;
     protected int width=600;
     protected JSlider slideBar = new JSlider(0, width);
 
     protected enum BarType {COMMUNICATION, SENSING, SPEED};
-	protected BarType slideBarType = null;
-	protected JFrame window = null;
-	/**
+    protected BarType slideBarType = null;
+    protected JFrame window = null;
+    /**
      * Creates a windowed viewer for the specified topology.
      * @param topo The topology to be drawn and/or manipulated.
-	 */
+     */
     public JViewer(Topology topo){
-    	this(topo, true);
+        this(topo, true);
     }
-	/**
-	 * Creates a viewer for the specified topology. If <tt>selfContained</tt>
-	 * is <tt>true</tt>, a new window will be created to contain the viewer
-	 * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>, 
-	 * no window will be created and the viewer can be subsequently
-	 * integrated to another swing container (e.g. another <tt>JFrame</tt> 
-	 * or a <tt>JApplet</tt>).
+    /**
+     * Creates a viewer for the specified topology. If <tt>selfContained</tt>
+     * is <tt>true</tt>, a new window will be created to contain the viewer
+     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>, 
+     * no window will be created and the viewer can be subsequently
+     * integrated to another swing container (e.g. another <tt>JFrame</tt> 
+     * or a <tt>JApplet</tt>).
      * @param topo The topology to be drawn and/or manipulated.
      * @param selfContained Set this to false to avoid creating a JFrame
      *                      (e.g. for embedding the JViewer in your own frame).
-	 */
+     */
     public JViewer(Topology topo, boolean selfContained){
-    	this(new JTopology(topo), selfContained);
+        this(new JTopology(topo), selfContained);
     }
-	/**
-	 * Creates a windowed viewer encapsulating the specified jtopology.
+    /**
+     * Creates a windowed viewer encapsulating the specified jtopology.
      * @param jtopo The jtopology to be encapsulated.
-	 */
+     */
     public JViewer(JTopology jtopo){
-    	this(jtopo, true);
+        this(jtopo, true);
     }
-	/**
-	 * Creates a viewer encapsulating the specified jtopology. If 
-	 * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created 
-	 * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it 
-	 * is <tt>false</tt>, no window will be created and the viewer can be 
-	 * subsequently integrated to another swing container (e.g. another 
-	 * <tt>JFrame</tt> or a <tt>JApplet</tt>).
+    /**
+     * Creates a viewer encapsulating the specified jtopology. If 
+     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created 
+     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it 
+     * is <tt>false</tt>, no window will be created and the viewer can be 
+     * subsequently integrated to another swing container (e.g. another 
+     * <tt>JFrame</tt> or a <tt>JApplet</tt>).
      * @param jtopo The JTopology to be encapsulated.
      * @param windowed Set this to false to avoid creating a JFrame
      *                 (e.g. for embedding the JViewer in your own frame).
-	 */
+     */
     public JViewer(JTopology jtopo, boolean windowed){
-    	jtp=jtopo;
-   		jtp.addCommand("Set communication range");
-   		jtp.addCommand("Set sensing range");
-   		jtp.addCommand("Set clock speed");
-		jtp.addCommand("Pause or resume execution");
-		jtp.addCommand("Execute a single step");
+        jtp=jtopo;
+           jtp.addCommand("Set communication range");
+           jtp.addCommand("Set sensing range");
+           jtp.addCommand("Set clock speed");
+        jtp.addCommand("Pause or resume execution");
+        jtp.addCommand("Execute a single step");
         jtp.addCommand("Restart nodes");
-		jtp.addCommand("Export topology");
-   		jtp.addCommandListener(this);
-    	if (windowed){ // This JViewer creates its own window
-	   		window=new JFrame();
-	   		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	   		window.add(jtp);
-    		window.pack();
-	   		window.setVisible(true);
-	        window.addComponentListener(new ComponentAdapter() {
-	            public void componentResized(ComponentEvent e) {
-	            	jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
-	            }
-	        });        
-    	}
-    	slideBar.addChangeListener(this);
+        jtp.addCommand("Export topology");
+           jtp.addCommandListener(this);
+        if (windowed){ // This JViewer creates its own window
+               window=new JFrame();
+               window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+               window.add(jtp);
+            window.pack();
+               window.setVisible(true);
+            window.addComponentListener(new ComponentAdapter() {
+                public void componentResized(ComponentEvent e) {
+                    jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
+                }
+            });        
+        }
+        slideBar.addChangeListener(this);
     }
     /**
      * Returns the jtopology attached to this viewer. Obtaining the reference 
@@ -107,7 +107,7 @@ public class JViewer implements CommandListener, ChangeListener{
      * @return The jtopology reference.
      */
     public JTopology getJTopology(){
-    	return jtp;
+        return jtp;
     }
     /**
      * Sets the size of the inner jtopology to the specified dimension.
@@ -115,14 +115,14 @@ public class JViewer implements CommandListener, ChangeListener{
      * @param height The desired height, in pixels.
      */
     public void setSize(int width, int height){
-    	jtp.topo.setDimensions(width, height);
-		jtp.setPreferredSize(jtp.topo.getDimensions());
-    	if (window!=null)
-    		window.pack();
+        jtp.topo.setDimensions(width, height);
+        jtp.setPreferredSize(jtp.topo.getDimensions());
+        if (window!=null)
+            window.pack();
     }
-	/**
-	 * Sets the title of the corresponding window
-	 */
+    /**
+     * Sets the title of the corresponding window
+     */
     public void setTitle(String title){
         if (window != null)
             window.setTitle(title);
@@ -140,47 +140,47 @@ public class JViewer implements CommandListener, ChangeListener{
      * Removes the slide bar, if any.
      */
     public void removeSlideBar(){
- 		if (slideBarType!=null){
- 			jtp.getParent().remove(slideBar);
- 			slideBarType=null;
- 		}
+         if (slideBarType!=null){
+             jtp.getParent().remove(slideBar);
+             slideBarType=null;
+         }
     }
 
-	@Override
-	public void onCommand(String command) {
-		if (command.equals("Set communication range")){
-			if (slideBarType != BarType.COMMUNICATION)
-				addSlideBar(BarType.COMMUNICATION,
-						(int)jtp.topo.getCommunicationRange());
-			else
-				removeSlideBar();
-			jtp.updateUI();
-		}else if (command.equals("Set sensing range")){
-			if (slideBarType != BarType.SENSING)
-				addSlideBar(BarType.SENSING,
-						(int)jtp.topo.getSensingRange());
-			else
-				removeSlideBar();
-			jtp.updateUI();
-		}else if (command.equals("Set clock speed")){
-			if (slideBarType != BarType.SPEED)
-				addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
-			else
-				removeSlideBar();
-			jtp.updateUI();
-		}else if (command.equals("Pause or resume execution")){
-			if (jtp.topo.isRunning())
-				jtp.topo.pause();
-			else
-				jtp.topo.resume();
-		}else if (command.equals("Restart nodes")){
-			jtp.topo.restart();
-		}else if (command.equals("Execute a single step")){
-			jtp.topo.step();
-		}else if (command.equals("Export topology")){
-			System.out.println(Tikz.exportTopology(jtp.topo));
-		}
-	}
+    @Override
+    public void onCommand(String command) {
+        if (command.equals("Set communication range")){
+            if (slideBarType != BarType.COMMUNICATION)
+                addSlideBar(BarType.COMMUNICATION,
+                        (int)jtp.topo.getCommunicationRange());
+            else
+                removeSlideBar();
+            jtp.updateUI();
+        }else if (command.equals("Set sensing range")){
+            if (slideBarType != BarType.SENSING)
+                addSlideBar(BarType.SENSING,
+                        (int)jtp.topo.getSensingRange());
+            else
+                removeSlideBar();
+            jtp.updateUI();
+        }else if (command.equals("Set clock speed")){
+            if (slideBarType != BarType.SPEED)
+                addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
+            else
+                removeSlideBar();
+            jtp.updateUI();
+        }else if (command.equals("Pause or resume execution")){
+            if (jtp.topo.isRunning())
+                jtp.topo.pause();
+            else
+                jtp.topo.resume();
+        }else if (command.equals("Restart nodes")){
+            jtp.topo.restart();
+        }else if (command.equals("Execute a single step")){
+            jtp.topo.step();
+        }else if (command.equals("Export topology")){
+            System.out.println(Tikz.exportTopology(jtp.topo));
+        }
+    }
 
     @Override
     public void stateChanged(ChangeEvent e) {
