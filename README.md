@@ -1,6 +1,6 @@
 # The JBotSim Library
 
-![Build Status](https://api.travis-ci.org/acasteigts/JBotSim.svg?branch=master)
+[![Build Status](https://travis-ci.org/acasteigts/JBotSim.svg?branch=master)](https://travis-ci.org/acasteigts/JBotSim)
 
 We are migrating to GitHub.
 Please keep referring to http://jbotsim.sourceforge.net/ for the moment.
