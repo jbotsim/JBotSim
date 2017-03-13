@@ -1,4 +1,5 @@
 language: java
+script: make
 jdk:
   - openjdk7
   - oraclejdk7
