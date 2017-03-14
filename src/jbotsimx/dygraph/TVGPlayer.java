@@ -1,4 +1,4 @@
-package jbotsimx.tvg;
+package jbotsimx.dygraph;
 
 import jbotsim.Node;
 import jbotsim.Topology;
