@@ -1,4 +1,4 @@
-package jbotsimx.dot;
+package jbotsimx.format.dot;
 
 import jbotsim.Link;
 import jbotsim.Node;
@@ -91,10 +91,11 @@ public class Import {
         for (Node node : tp.getNodes())
             node.setLocation(node.getX(), height - node.getY());
     }
-    public static void main(String[] args) {
-        Topology tp = new Topology();
-        tp.disableWireless();
-        importGraph(tp, "/home/acasteig/test.dot", 2);
-        new JViewer(tp);
-    }
+//    public static void main(String[] args) {
+//        Topology tp = new Topology();
+//        tp.disableWireless();
+//        String filename = "/home/acasteig/test.dot"; // to be updated
+//        importGraph(tp, filename, 2);
+//        new JViewer(tp);
+//    }
 }
