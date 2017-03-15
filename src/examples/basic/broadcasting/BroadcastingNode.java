@@ -14,7 +14,7 @@ public class BroadcastingNode extends Node{
     @Override
     public void onStart() {
         informed = false;
-        setColor(null);
+        setColor(null); // optional (for restart only)
     }
 
     @Override
