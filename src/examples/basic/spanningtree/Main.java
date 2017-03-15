@@ -10,7 +10,7 @@ import jbotsim.ui.JViewer;
  */
 public class Main {
     public static void main(String[] args) {
-        Topology tp = new Topology();
+        final Topology tp = new Topology();
         tp.setDefaultNodeModel(SpanningTreeNode.class);
         tp.addStartListener(new StartListener() { // optional
             // reset links upon restart
