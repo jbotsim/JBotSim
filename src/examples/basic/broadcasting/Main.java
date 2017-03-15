@@ -1,4 +1,4 @@
-package examples.basic.broadcastnode;
+package examples.basic.broadcasting;
 
 import jbotsim.Topology;
 import jbotsim.ui.JViewer;
@@ -9,7 +9,7 @@ import jbotsim.ui.JViewer;
 public class Main {
     public static void main(String[] args) {
         Topology tp = new Topology();
-        tp.setDefaultNodeModel(BroadcastNode.class);
+        tp.setDefaultNodeModel(BroadcastingNode.class);
         tp.setClockSpeed(500); // slow on purpose (500 ms per round)
         deployNodes(tp); // optional
         new JViewer(tp);

@@ -1,4 +1,4 @@
-package examples.basic.movingnode;
+package examples.basic.moving;
 
 import jbotsim.Node;
 

@@ -1,4 +1,4 @@
-package examples.basic.broadcastnode;
+package examples.basic.broadcasting;
 
 import jbotsim.Message;
 import jbotsim.Node;
@@ -8,7 +8,7 @@ import java.awt.Color;
 /**
  * Created by acasteig on 10/03/15.
  */
-public class BroadcastNode extends Node{
+public class BroadcastingNode extends Node{
     boolean informed;
 
     @Override
