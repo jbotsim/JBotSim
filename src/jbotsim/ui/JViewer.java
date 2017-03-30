@@ -21,7 +21,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import jbotsim.Topology;
-import jbotsimx.Tikz;
+import jbotsimx.format.tikz.Tikz;
 
 /**
  * The viewer includes a central jtopology which will draw the attached 
