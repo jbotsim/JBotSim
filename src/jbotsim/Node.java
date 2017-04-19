@@ -13,6 +13,7 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.List;
 
@@ -192,11 +193,18 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return basicColors;
     }
     /**
-     * Sets the icon of this node.
+     * Sets the icon of this node. The image should be in a resource of the application
      */
     public void setIcon(String fileName){
         setProperty("icon", fileName);
     }
+    /**
+     * Sets the icon of this node.
+     */
+     public void setIcon(Path fileName){
+        setProperty("icon", fileName);
+     }
+
 
     /**
      * Returns the size of this node.

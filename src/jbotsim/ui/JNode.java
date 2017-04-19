@@ -21,7 +21,9 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.nio.file.Path;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import jbotsim.Link;
@@ -54,13 +56,21 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     }
     public void updateIcon(){
         Toolkit tk = Toolkit.getDefaultToolkit();
-        String filename;
-        if (node.hasProperty("icon"))
-            filename = (String) node.getProperty("icon");
-        else
-            filename = "/jbotsim/ui/circle.png";
-
-        icon = tk.getImage(getClass().getResource(filename));
+        try {
+            Object iconProperty = node.getProperty("icon");
+            if(iconProperty instanceof Path) {
+                icon = ImageIO.read(((Path) iconProperty).toUri().toURL());
+            } else {
+                icon = tk.getImage(getClass().getResource((String)iconProperty));
+            }
+        }
+        catch(Exception e) {
+            if(node.hasProperty("icon")){
+                System.err.println("Unable to set icon: "+node.getProperty("icon"));
+                System.err.println(e.getMessage());
+            }
+            icon = tk.getImage(getClass().getResource("/jbotsim/ui/circle.png"));
+        }
         updateIconSize();
         setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize*2, drawSize*2);
     }
