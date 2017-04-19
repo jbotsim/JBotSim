@@ -193,13 +193,19 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         return basicColors;
     }
     /**
-     * Sets the icon of this node. The image should be in a resource of the application
+     * Sets the icon of this node, the image should be in a resource of the application
      */
     public void setIcon(String fileName){
         setProperty("icon", fileName);
     }
     /**
      * Sets the icon of this node.
+     * example:
+     * <pre>
+     * {@code
+     *     node.setIcon(Paths.get("/absolute/path/to/image"));
+     * }
+     * </pre>
      */
      public void setIcon(Path fileName){
         setProperty("icon", fileName);
