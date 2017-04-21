@@ -685,7 +685,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Registers the specified topology listener to this topology. The listener
-     * will be notified whenever the a node is added or removed.
+     * will be notified whenever a node is added or removed.
      * @param listener The listener to register.
      */
     public void addTopologyListener(TopologyListener listener){

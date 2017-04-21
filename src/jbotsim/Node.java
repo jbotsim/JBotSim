@@ -167,7 +167,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
         setProperty("color", color); // Used for property notification
     }
     /**
-     * Sets the color of this node.
+     * Returns the color of this node.
      */
     public int getIntColor(){
         return basicColors.indexOf(color);
