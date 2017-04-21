@@ -94,6 +94,7 @@ public class JTopology extends JPanel implements ActionListener{
             addMouseListener(handler);
         if (!interactive && isInteractive)
             removeMouseListener(handler);
+        isInteractive = interactive;
     }
     public void addBackgroundPainter(BackgroundPainter painter){
         backgroundPainters.add(0, painter);
