@@ -5,10 +5,13 @@ variables:
 # default build 
 jbotsim:
   stage: build
+  tags:
+    - ubuntu1404
   script:
     - $JAVA_HOME/bin/java -version
-    - make
+    - cd src && make
   artifacts:
     paths:
-      - jbotsim.jar
+      - src/jbotsim.jar
+    name: jbotsim
 
