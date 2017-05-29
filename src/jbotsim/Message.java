@@ -12,15 +12,21 @@
 package jbotsim;
 
 
+import java.util.HashMap;
+
 public final class Message extends _Properties{
     protected Node sender;
     protected Node destination;
     protected Object content;
     protected boolean retryMode;
 
+    /**
+     * Default constructor with empty content
+     */
     public Message(){
         this(null, null, "");
     }
+
     /**
      * @param content The content of this message. It may be an object of any class, whose
      *                reference is going to be shared between sender and destination (no copy).
@@ -28,11 +34,46 @@ public final class Message extends _Properties{
     public Message(Object content){
         this(null, null, content);
     }
+
+    /**
+     * Custom constructor
+     * @param sender The sender of the message
+     * @param destination The destination of the message
+     * @param content The content of this message. It may be an object of any class, whose
+     *                reference is going to be shared between sender and destination (no copy).
+     */
     Message(Node sender, Node destination, Object content){
-        assert(destination!=null);
-        this.sender = sender;
-        this.destination=destination;
-        this.content=content;
+        this.sender      = sender;
+        this.destination = destination;
+        this.content     = content;
+    }
+    /** Copy constructor
+     * @param message The original message to be copied.
+     */
+    public Message(Message message){
+        this(message.getSender(), message.getDestination(), message);
+    }
+
+    /**
+     * Copy constructor with custom sender and destination
+     * @param sender The new sender of the message
+     * @param destination The new destination of the message
+     * @param message The original message to be copied.
+     */
+    Message(Node sender, Node destination, Message message){
+        this.sender      = sender;
+        this.destination = destination;
+        this.content     = message.content;
+        this.retryMode   = message.retryMode;
+        this.properties = new HashMap<>(message.properties);
+    }
+
+    /**
+     * Copy the current message, changing only the destination
+     * @param newDestination The new destination of the message
+     */
+    public Message withDestination(Node newDestination) {
+        return new Message(this.getSender(), newDestination, this);
     }
     /**
      * The sender of this message.

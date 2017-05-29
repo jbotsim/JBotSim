@@ -553,8 +553,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param message The message to be sent.
      */
     public void send(Node destination, Message message){
-        Message m = new Message(this, destination, message.content);
-        m.retryMode = message.retryMode;
+        Message m = new Message(this, destination, message);
         sendQueue.add(m);
     }
     /**
@@ -575,8 +574,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      */
     public void sendRetry(Node destination, Message message){
         assert(destination!=null);
-        message.retryMode=true;
-        send(destination, message);
+        Message m = new Message(message);
+        m.retryMode=true;
+        send(destination, m);
     }
     /**
      * Same as <tt>sendRetry()</tt>, but the content is directly given as parameter
