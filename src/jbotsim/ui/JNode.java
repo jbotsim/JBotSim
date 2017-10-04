@@ -57,30 +57,18 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         updateIcon();
         update();
     }
-    private void setIcon(Path path) throws IOException {
-        icon = ImageIO.read(path.toUri().toURL());
-    }
-    private void setIcon(String path) throws IOException {
-        URL iconUrl = getClass().getResource(path);
-        if(iconUrl == null) {
-            setIcon(Paths.get(path));
-        } else {
-            Toolkit tk = Toolkit.getDefaultToolkit();
-            icon = tk.getImage(iconUrl);
-        }
-    }
     public void updateIcon() {
+        String path = (String)node.getProperty("icon");
         try {
-            Object iconProperty = node.getProperty("icon");
-            if(iconProperty instanceof Path) {
-                setIcon((Path)iconProperty);
-            } else {
-               setIcon((String)iconProperty);
-            }
+            URL iconUrl = getClass().getResource(path);
+            if(iconUrl != null)
+                icon = Toolkit.getDefaultToolkit().getImage(iconUrl);
+            else
+                icon = ImageIO.read(Paths.get(path).toUri().toURL());
         }
         catch(Exception e) {
             if(node.hasProperty("icon")){
-                System.err.println("Unable to set icon: "+node.getProperty("icon"));
+                System.err.println("Unable to set icon: "+path);
                 System.err.println(e.getMessage());
             }
             setDefaultIcon();
