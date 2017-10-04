@@ -21,7 +21,12 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import jbotsim.Link;
@@ -52,22 +57,47 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         updateIcon();
         update();
     }
-    public void updateIcon(){
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        String filename;
-        if (node.hasProperty("icon"))
-            filename = (String) node.getProperty("icon");
-        else
-            filename = "/jbotsim/ui/circle.png";
-
-        icon = tk.getImage(getClass().getResource(filename));
+    private void setIcon(Path path) throws IOException {
+        icon = ImageIO.read(path.toUri().toURL());
+    }
+    private void setIcon(String path) throws IOException {
+        URL iconUrl = getClass().getResource(path);
+        if(iconUrl == null) {
+            setIcon(Paths.get(path));
+        } else {
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            icon = tk.getImage(iconUrl);
+        }
+    }
+    public void updateIcon() {
+        try {
+            Object iconProperty = node.getProperty("icon");
+            if(iconProperty instanceof Path) {
+                setIcon((Path)iconProperty);
+            } else {
+               setIcon((String)iconProperty);
+            }
+        }
+        catch(Exception e) {
+            if(node.hasProperty("icon")){
+                System.err.println("Unable to set icon: "+node.getProperty("icon"));
+                System.err.println(e.getMessage());
+            }
+            setDefaultIcon();
+            return;
+        }
         updateIconSize();
-        setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize*2, drawSize*2);
+    }
+    private void setDefaultIcon() {
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        icon = tk.getImage(getClass().getResource("/jbotsim/ui/circle.png"));
+        updateIconSize();
     }
     public void updateIconSize(){
         drawSize = (int)(node.getSize() * camheight/(camheight-node.getZ()));
         scaledIcon = icon.getScaledInstance(drawSize*2, drawSize*2, Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(scaledIcon));
+        setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize*2, drawSize*2);
     }
     public void update(){
         if (node.getZ() != zcoord){
