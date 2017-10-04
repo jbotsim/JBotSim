@@ -36,7 +36,7 @@ public class MessageEngine implements ClockListener {
             for (Message m : n.sendQueue) {
                 if (m.destination == null)
                     for (Node ng : m.sender.getOutNeighbors())
-                        messages.add(new Message(n, ng, m.content));
+                        messages.add(m.withDestination(ng));
                 else
                     messages.add(m);
             }
