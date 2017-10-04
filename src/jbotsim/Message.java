@@ -19,6 +19,7 @@ public final class Message extends _Properties{
     protected Node destination;
     protected Object content;
     protected boolean retryMode;
+    protected String flag;
 
     /**
      * Default constructor with empty content
@@ -36,6 +37,15 @@ public final class Message extends _Properties{
     }
 
     /**
+     * @param content The content of this message. It may be an object of any class, whose
+     *                reference is going to be shared between sender and destination (no copy).
+     * @param flag A custom flag for this message
+     */
+    public Message(Object content, String flag){
+        this(null, null, content, flag);
+    }
+
+    /**
      * Custom constructor
      * @param sender The sender of the message
      * @param destination The destination of the message
@@ -46,6 +56,21 @@ public final class Message extends _Properties{
         this.sender      = sender;
         this.destination = destination;
         this.content     = content;
+        this.flag        = content.getClass().toString();
+    }
+    /**
+     * Custom constructor
+     * @param sender The sender of the message
+     * @param destination The destination of the message
+     * @param content The content of this message. It may be an object of any class, whose
+     *                reference is going to be shared between sender and destination (no copy).
+     * @param flag A custom flag for this message
+     */
+    Message(Node sender, Node destination, Object content, String flag){
+        this.sender      = sender;
+        this.destination = destination;
+        this.content     = content;
+        this.flag        = flag;
     }
     /** Copy constructor
      * @param message The original message to be copied.
@@ -65,6 +90,7 @@ public final class Message extends _Properties{
         this.destination = destination;
         this.content     = message.content;
         this.retryMode   = message.retryMode;
+        this.flag        = message.flag;
         this.properties = new HashMap<>(message.properties);
     }
 
@@ -92,6 +118,12 @@ public final class Message extends _Properties{
      */
     public Object getContent(){
         return content;
+    }
+    /**
+     * Returns the flag of this message.
+     */
+    public String getFlag(){
+        return flag;
     }
     public String toString(){
         return sender + " -> " + destination+ ": " + content;
