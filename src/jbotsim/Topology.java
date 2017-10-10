@@ -264,12 +264,15 @@ public class Topology extends _Properties implements ClockListener{
      * Causes the onStart() method to be called again on each node (and each StartListener)
      */
     public void restart(){
-        resetTime();
-        clearMessages();
-        for (Node n : nodes)
-            n.onStart();
-        for (StartListener listener : startListeners)
-            listener.onStart();
+      // restart only at the end of the round
+      clock.runNext(() -> {
+            clock.reset();
+            clearMessages();
+            for (Node n : nodes)
+                n.onStart();
+            for (StartListener listener : startListeners)
+                listener.onStart();
+        });
     }
     /**
      * Removes all the nodes (and links) of this topology.
@@ -293,6 +296,16 @@ public class Topology extends _Properties implements ClockListener{
     public void step(){
         clock.step();
     }
+    
+    /**
+    * Performs infinitly many steps
+    */
+    public void runForever(){
+      while(true) {
+        step();
+      }
+    }
+
     /**
      * Adds the specified node to this topology. The location of the node
      * in the topology will be its current inherent location (or <tt>(0,0)</tt>

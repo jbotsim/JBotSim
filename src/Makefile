@@ -17,13 +17,15 @@ JAR=${JAVA_HOME}/bin/jar
 JARFILE=jbotsim.jar
 build:
 	mkdir -p classes_tmp
-	find . -name "*.java" | xargs	${JC} ${JFLAGS} -d classes_tmp 
+	find . -name "*.java" | xargs	${JC} ${JFLAGS} -d classes_tmp
 	cp jbotsim/ui/circle.png classes_tmp/jbotsim/ui/
 	${JAR} cf ${JARFILE} -C classes_tmp/ jbotsim/ -C classes_tmp/ jbotsimx/
 	rm -fr classes_tmp
 
 # get git tag
 TAG=`git describe --dirty --abbrev --always --tags`
-release: 
+release:
 	make build JARFILE=jbotsim-${TAG}.jar
 
+doc:
+	javadoc -d doc -sourcepath . -subpackages jbotsim:jbotsimx

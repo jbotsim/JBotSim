@@ -18,16 +18,20 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.TreeMap;
+import java.util.Queue;
+import java.util.LinkedList;
 
 class Clock {
     Topology tp;
     HashMap<ClockListener, Integer> listeners=new HashMap<ClockListener, Integer>();
     HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
+    Queue<Runnable> toBeRun = new LinkedList<Runnable>();
     Integer time=0;
+    private boolean insideRound;
 
     Clock(Topology topology){
         this.tp = topology;
-
+        insideRound = false;
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
     }
 
@@ -35,6 +39,10 @@ class Clock {
      * Performs a single round
      */
     public void step() {
+      if(insideRound) {
+        throw new RuntimeException("You cannot call step() inside a round");
+      }
+      insideRound = true;
       // Delivers messages first
       tp.getMessageEngine().onClock();
       // Then give the hand to the nodes
@@ -46,7 +54,11 @@ class Clock {
           cl.onClock();
           countdown.put(cl, listeners.get(cl)); // reset countdown
       }
+      while(!toBeRun.isEmpty()){
+        toBeRun.poll().run();
+      }
       time++;
+      insideRound = false;
     }
 
     protected ArrayList<ClockListener> getExpiredListeners(){
@@ -65,27 +77,47 @@ class Clock {
      * @param listener The listener to register.
      * @param period The desired period between consecutive onClock() events,
      * in time units.
+     * @remark It will take effect at the end of the current round (or now if we are not
+     * inside a rount)
      */
     public void addClockListener(ClockListener listener, int period){
-        listeners.put(listener, period);
-        countdown.put(listener, period);
+        runNext(() -> {
+            listeners.put(listener, period);
+            countdown.put(listener, period);
+        });
     }
     /**
      * Registers the specified listener to every pulse of the clock.
      * @param listener The listener to register.
      */
     public void addClockListener(ClockListener listener){
-        listeners.put(listener, 1);
-        countdown.put(listener, 1);
+        addClockListener(listener, 1);
+    }
+    /**
+     * Registers the specified runnable to be run at the end of the round, or
+     * now if we are not inside a round.
+     * @param listener The listener to register.
+     */
+    public void runNext(Runnable r){
+        // if we are in a middle of a round save the runnable to run it
+        // at the end of the round, otherwise run it now.
+        if(insideRound)
+            toBeRun.add(r);
+        else
+            r.run();
     }
     /**
      * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
      * listener will not longer be called.)
      * @param listener The listener to unregister.
+     * @remark It will take effect at the end of the current round (or now if we are not
+     * inside a rount)
      */
     public void removeClockListener(ClockListener listener){
-        listeners.remove(listener);
-        countdown.remove(listener);
+        runNext(() -> {
+            listeners.remove(listener);
+            countdown.remove(listener);
+        });
     }
 
     /**
@@ -96,8 +128,12 @@ class Clock {
     }
     /**
      * Sets the clock time to 0.
+     * @remark It will take effect at the end of the current round (or now if we are not
+     * inside a rount)
      */
     public void reset(){
-        time=0;
+        runNext(() -> {
+            time=0;
+        });
     }
 }
