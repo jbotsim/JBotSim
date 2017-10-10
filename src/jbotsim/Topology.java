@@ -329,8 +329,10 @@ public class Topology extends _Properties implements ClockListener{
      * @param y The ordinate of the location.
      * @param n The node to be added.
      */
-    public void addNode(double x, double y, Node n){
+    public void addNode(final double x_in, final double y_in, Node n){
         clock.runNext(() -> {
+            double x = x_in;
+            double y = y_in;
             if (x == -1)
                 x = Math.random() * dimensions.width;
             if (y == -1)
