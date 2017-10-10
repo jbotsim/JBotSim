@@ -296,7 +296,7 @@ public class Topology extends _Properties implements ClockListener{
     public void step(){
         clock.step();
     }
-    
+
     /**
     * Performs infinitly many steps
     */
@@ -330,25 +330,27 @@ public class Topology extends _Properties implements ClockListener{
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
-        if (x == -1)
-            x = Math.random() * dimensions.width;
-        if (y == -1)
-            y = Math.random() * dimensions.height;
-        if (n.getX()==0 && n.getY()==0)
-            n.setLocation(x, y);
+        clock.runNext(() -> {
+            if (x == -1)
+                x = Math.random() * dimensions.width;
+            if (y == -1)
+                y = Math.random() * dimensions.height;
+            if (n.getX()==0 && n.getY()==0)
+                n.setLocation(x, y);
 
-        if (n.communicationRange == null)
-            n.setCommunicationRange(communicationRange);
-        if (n.sensingRange == null)
-            n.setSensingRange(sensingRange);
-        if (isWirelessEnabled == false)
-            n.disableWireless();
-        if (n.getID()==-1)
-            n.setID(nodes.size());
-        nodes.add(n);
-        n.topo=this;
-        notifyNodeAdded(n);
-        touch(n);
+            if (n.communicationRange == null)
+                n.setCommunicationRange(communicationRange);
+            if (n.sensingRange == null)
+                n.setSensingRange(sensingRange);
+            if (isWirelessEnabled == false)
+                n.disableWireless();
+            if (n.getID()==-1)
+                n.setID(nodes.size());
+            nodes.add(n);
+            n.topo=this;
+            notifyNodeAdded(n);
+            touch(n);
+        });
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -356,18 +358,20 @@ public class Topology extends _Properties implements ClockListener{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
-        n.onStop();
-        for (Link l : n.getLinks(true))
-            removeLink(l);
-        notifyNodeRemoved(n);
-        nodes.remove(n);
-        for (Node n2 : nodes){
-            if (n2.sensedNodes.contains(n)){
-                n2.sensedNodes.remove(n);
-                n2.onSensingOut(n);
+        clock.runNext(() -> {
+            n.onStop();
+            for (Link l : n.getLinks(true))
+                removeLink(l);
+            notifyNodeRemoved(n);
+            nodes.remove(n);
+            for (Node n2 : nodes){
+                if (n2.sensedNodes.contains(n)){
+                    n2.sensedNodes.remove(n);
+                    n2.onSensingOut(n);
+                }
             }
-        }
-        n.topo=null;
+            n.topo=null;
+        });
     }
     public void selectNode(Node n){
         selectedNode = n;
