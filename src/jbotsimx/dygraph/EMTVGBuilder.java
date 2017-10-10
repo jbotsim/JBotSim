@@ -30,7 +30,7 @@ public class EMTVGBuilder {
                 if (r.nextDouble()<steadyProb)
                     l.appearanceDates.add(0);
             }
-        }        
+        }
     }
     private static void createNextEdges(TVG tvg, int date, double birthRate, double deathRate){
         Random r=new Random();
@@ -58,8 +58,8 @@ public class EMTVGBuilder {
         TVG tvg=EMTVGBuilder.createGraph(nodes, 0.1, 0.1, 20);
         System.out.println(tvg);
         jbotsim.Topology tp=new jbotsim.Topology();
-        tp.setClockSpeed(100);
-        new jbotsim.ui.JViewer(tp);
+        jbotsim.ui.JViewer viewer = new jbotsim.ui.JViewer(tp);
+        viewer.setTimeUnit(100);
         TVGPlayer player=new TVGPlayer(tvg, tp, 20);
         player.start();
     }

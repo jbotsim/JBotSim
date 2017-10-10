@@ -9,7 +9,7 @@ public class TVGRandomPlayer extends TVGPlayer{
     int timeBound;
     int presenceBound;
     Random rand=new Random();
-    
+
     public TVGRandomPlayer(TVG tvg, Topology tp) {
         this(tvg, tp, 50);
     }
@@ -44,12 +44,9 @@ public class TVGRandomPlayer extends TVGPlayer{
         TVG tvg=new TVG();
         tvg.buildFromFile("/home/arnaud/workspace/code/jbotsim/_testing/dtn/star.tvg");
         Topology tp=new Topology();
-        new JViewer(tp);
-        tp.resetTime();
-        tp.pause();
-        tp.setClockSpeed(50);
+        JViewer viewer = new JViewer(tp);
+        viewer.setTimeUnit(50);
         TVGRandomPlayer player = new TVGRandomPlayer(tvg, tp, 100);
         player.start();
-        tp.resume();
     }
 }

@@ -45,15 +45,15 @@ public class EMEGPlayer implements ClockListener{
                 tp.removeLink(l);
             else if (!tp.getLinks().contains(l) && r.nextDouble() < birthRate)
                 tp.addLink(l);
-        }        
+        }
     }
     public static void main(String args[]){
         Topology tp=new Topology(400, 400);
-        new JViewer(tp);
+        JViewer viewer = new JViewer(tp);
         TVG tvg=new TVG();
         tvg.buildCompleteGraph(30);
         (new EMEGPlayer(tvg, tp, .2, .4)).start();
         //new TopologyObserver(tp);
-        tp.setClockSpeed(10);
+        viewer.setTimeUnit(10);
     }
 }

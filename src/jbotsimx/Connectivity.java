@@ -1,19 +1,19 @@
 /*******************************************************************************
  * This file is part of JBotSim.
- * 
+ *
  *     JBotSim is free software: you can redistribute it and/or modify
  *     it under the terms of the GNU Lesser General Public License as published by
  *     the Free Software Foundation, either version 3 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     JBotSim is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU Lesser General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU Lesser General Public License
  *     along with JBotSim.  If not, see <http://www.gnu.org/licenses/>.
- * 
+ *
  *     contributors:
  *     Arnaud Casteigts
  *     Jeremie Albert
@@ -135,7 +135,6 @@ public class Connectivity {
         int bordure = new Double(4*Sr).intValue();
         Random rand = new Random();
         Topology tmp=new Topology();
-        tp.pause();
         do{
             tmp.clear();
             for (int i=0; i<nbNodes; i++)
@@ -143,7 +142,6 @@ public class Connectivity {
         } while (!Connectivity.isConnected(tmp) || Connectivity.isBiconnected(tmp));
         for (Node n:tmp.getNodes())
             tp.addNode(n.getX(), n.getY(), tp.newInstanceOfModel("default"));
-        tp.resume();
     }
     public static Topology createTopology(int nbNodes, double cRange, double sRange, double ratio){
     int size = getOptimalTopologySize(nbNodes, cRange, ratio);
