@@ -23,11 +23,15 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Topology;
 import jbotsimx.format.tikz.Tikz;
 
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
- * The viewer includes a central jtopology which will draw the attached 
+ * The viewer includes a central jtopology which will draw the attached
  * topology and offer interaction, as well as contextual commands to add or
- * remove a communication range or sensing range tuners (slider bars), or to 
- * pause/resume the system clock.
+ * remove a communication range or sensing range tuners (slider bars), or to
+ * pause/resume the system clock.getTopology()
  */
 public class JViewer implements CommandListener, ChangeListener{
     protected JTopology jtp;
@@ -37,6 +41,19 @@ public class JViewer implements CommandListener, ChangeListener{
     protected enum BarType {COMMUNICATION, SENSING, SPEED};
     protected BarType slideBarType = null;
     protected JFrame window = null;
+
+    protected int nbPauses = 0;
+    protected boolean isStarted = false;
+
+    protected Timer timer = new Timer(10, new ActionHandler());
+
+
+    private class ActionHandler implements ActionListener{
+        public void actionPerformed(ActionEvent evt) {
+            jtp.topo.step();
+        }
+    }
+
     /**
      * Creates a windowed viewer for the specified topology.
      * @param topo The topology to be drawn and/or manipulated.
@@ -47,9 +64,9 @@ public class JViewer implements CommandListener, ChangeListener{
     /**
      * Creates a viewer for the specified topology. If <tt>selfContained</tt>
      * is <tt>true</tt>, a new window will be created to contain the viewer
-     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>, 
+     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>,
      * no window will be created and the viewer can be subsequently
-     * integrated to another swing container (e.g. another <tt>JFrame</tt> 
+     * integrated to another swing container (e.g. another <tt>JFrame</tt>
      * or a <tt>JApplet</tt>).
      * @param topo The topology to be drawn and/or manipulated.
      * @param selfContained Set this to false to avoid creating a JFrame
@@ -66,11 +83,11 @@ public class JViewer implements CommandListener, ChangeListener{
         this(jtopo, true);
     }
     /**
-     * Creates a viewer encapsulating the specified jtopology. If 
-     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created 
-     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it 
-     * is <tt>false</tt>, no window will be created and the viewer can be 
-     * subsequently integrated to another swing container (e.g. another 
+     * Creates a viewer encapsulating the specified jtopology. If
+     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created
+     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it
+     * is <tt>false</tt>, no window will be created and the viewer can be
+     * subsequently integrated to another swing container (e.g. another
      * <tt>JFrame</tt> or a <tt>JApplet</tt>).
      * @param jtopo The JTopology to be encapsulated.
      * @param windowed Set this to false to avoid creating a JFrame
@@ -78,9 +95,9 @@ public class JViewer implements CommandListener, ChangeListener{
      */
     public JViewer(JTopology jtopo, boolean windowed){
         jtp=jtopo;
-           jtp.addCommand("Set communication range");
-           jtp.addCommand("Set sensing range");
-           jtp.addCommand("Set clock speed");
+        jtp.addCommand("Set communication range");
+        jtp.addCommand("Set sensing range");
+        jtp.addCommand("Set clock speed");
         jtp.addCommand("Pause or resume execution");
         jtp.addCommand("Execute a single step");
         jtp.addCommand("Restart nodes");
@@ -96,13 +113,14 @@ public class JViewer implements CommandListener, ChangeListener{
                 public void componentResized(ComponentEvent e) {
                     jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
                 }
-            });        
+            });
         }
         slideBar.addChangeListener(this);
+        start();
     }
     /**
-     * Returns the jtopology attached to this viewer. Obtaining the reference 
-     * can be useful for example to add or remove action commands or action 
+     * Returns the jtopology attached to this viewer. Obtaining the reference
+     * can be useful for example to add or remove action commands or action
      * listeners to the jtopology.
      * @return The jtopology reference.
      */
@@ -164,15 +182,15 @@ public class JViewer implements CommandListener, ChangeListener{
             jtp.updateUI();
         }else if (command.equals("Set clock speed")){
             if (slideBarType != BarType.SPEED)
-                addSlideBar(BarType.SPEED, (width-jtp.topo.getClockSpeed()*40));
+                addSlideBar(BarType.SPEED, (width-getTimeUnit()*40));
             else
                 removeSlideBar();
             jtp.updateUI();
         }else if (command.equals("Pause or resume execution")){
-            if (jtp.topo.isRunning())
-                jtp.topo.pause();
+            if (isRunning())
+                pause();
             else
-                jtp.topo.resume();
+                resume();
         }else if (command.equals("Restart nodes")){
             jtp.topo.restart();
         }else if (command.equals("Execute a single step")){
@@ -189,8 +207,77 @@ public class JViewer implements CommandListener, ChangeListener{
         }else if (slideBarType==BarType.SENSING){
             jtp.topo.setSensingRange(slideBar.getValue());
         }else if (slideBarType==BarType.SPEED){
-            jtp.topo.setClockSpeed((width-slideBar.getValue())/40+1);
+            setTimeUnit((width-slideBar.getValue())/40+1);
         }
         jtp.updateUI();
+    }
+
+
+    /**
+     * Reset the color and width of nodes and links, then calls the
+     * onStart() method on each node.
+     */
+    public void start(){
+        if (! isStarted) {
+            isStarted = true;
+            restart();
+        }
+    }
+    /**
+     * Causes the onStart() method to be called again on each node (and each StartListener)
+     */
+    public void restart(){
+        pause();
+        jtp.topo.restart();
+        resume();
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    /**
+     * Pauses the clock (or increments the pause counter).
+     */
+    public void pause(){
+        if (isStarted) {
+            if (nbPauses == 0)
+                timer.stop();
+            nbPauses++;
+        }
+    }
+
+    /**
+     * Resumes the clock (or decrements the pause counter).
+     */
+    public void resume(){
+        if (isStarted) {
+            assert (nbPauses > 0);
+            nbPauses--;
+            if (nbPauses == 0)
+                timer.start();
+        }
+    }
+    /**
+     * Returns the time unit of the clock, in milliseconds.
+     */
+    public int getTimeUnit(){
+        return timer.getDelay();
+    }
+
+    /**
+     * Sets the time unit of the clock to the specified value in millisecond.
+     * @param delay The desired time unit (1 corresponds to the fastest rate)
+     */
+    public void setTimeUnit(int delay){
+        timer.setDelay(delay);
+    }
+
+    /**
+     * Indicates whether the clock is currently running or paused.
+     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
+     */
+    public boolean isRunning(){
+        return timer.isRunning();
     }
 }
