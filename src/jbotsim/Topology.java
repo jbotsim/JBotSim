@@ -42,10 +42,8 @@ public class Topology extends _Properties implements ClockListener{
     Dimension dimensions;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
-    int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<Node>();
     private boolean step = false;
-    private boolean isStarted = false;
 
     public static enum RefreshMode {CLOCKBASED, EVENTBASED};
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
@@ -54,31 +52,16 @@ public class Topology extends _Properties implements ClockListener{
      * Creates a topology.
      */
     public Topology(){
-        this(600, 400, true);
-    }
-    /**
-     * Creates a topology and sets its running status (running/paused).
-     */
-    public Topology(boolean toBeStarted){
-        this(600, 400, toBeStarted);
+        this(600, 400);
     }
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height){
-        this(width, height, true);
-    }
-    /**
-     * Creates a topology of given dimensions.
-     */
-    public Topology(int width, int height, boolean toBeStarted){
         setMessageEngine(new MessageEngine());
         setNodeScheduler(new DefaultNodeScheduler());
         setDimensions(width, height);
         clock = new Clock(this);
-        if (! toBeStarted)
-            clock.pause();
-        isStarted = toBeStarted;
         resetTime();
     }
     /**
@@ -135,9 +118,6 @@ public class Topology extends _Properties implements ClockListener{
         return new Node();
     }
 
-    public boolean isStarted() {
-        return isStarted;
-    }
 
     /**
      * Sets the updates (links, sensed objects, etc.) to be instantaneous (EVENTBASED),
@@ -241,19 +221,17 @@ public class Topology extends _Properties implements ClockListener{
     }
 
     /**
-     * Returns the global duration of a round in this topology (in millisecond).
-     * @return The duration
+     * Returns true if we are in a middle of a round
      */
-    public int getClockSpeed(){
-        return clock.getTimeUnit();
+    public boolean isInsideRound(){
+        return clock.isInsideRound();
     }
 
     /**
-     * Sets the global duration of a round in this topology (in millisecond).
-     * @param period The desired duration
+     * Returns true if we are in a middle of a round
      */
-    public void setClockSpeed(int period){
-        clock.setTimeUnit(period);
+    public void runAfter(Runnable r){
+        clock.runAfter(r);
     }
 
     /**
@@ -262,40 +240,7 @@ public class Topology extends _Properties implements ClockListener{
     public int getTime(){
         return clock.currentTime();
     }
-    /**
-     * Sets the topology dimensions as indicated.
-     */
 
-    /**
-     * Indicates whether the internal clock is currently running or in pause.
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
-     */
-    public boolean isRunning(){
-        return clock.isRunning();
-    }
-
-    /**
-     * Pauses the clock (or increments the pause counter).
-     */
-    public void pause(){
-        if (isStarted) {
-            if (nbPauses == 0)
-                clock.pause();
-            nbPauses++;
-        }
-    }
-
-    /**
-     * Resumes the clock (or decrements the pause counter).
-     */
-    public void resume(){
-        if (isStarted) {
-            assert (nbPauses > 0);
-            nbPauses--;
-            if (nbPauses == 0)
-                clock.resume();
-        }
-    }
 
     /**
      * Reset the round number to 0.
@@ -304,6 +249,9 @@ public class Topology extends _Properties implements ClockListener{
         clock.reset();
     }
 
+    /**
+     * Sets the topology dimensions as indicated.
+     */
     public void setDimensions(int width, int height){
         dimensions = new Dimension(width,height);
     }
@@ -325,29 +273,21 @@ public class Topology extends _Properties implements ClockListener{
     public int getHeight(){
         return dimensions.height;
     }
+
     /**
-     * Reset the color and width of nodes and links, then calls the
-     * onStart() method on each node.
-     */
-    public void start(){
-        if (! isStarted) {
-            isStarted = true;
-            clock.resume();
-            restart();
-        }
-    }
-    /**
-     * Causes the onStart() method to be called again on each node (and each StartListener)
+     * Resets the time and causes the onStart() method to be called
+     * again on each node (and each StartListener)
      */
     public void restart(){
-        pause();
-        resetTime();
-        clearMessages();
-        for (Node n : nodes)
-            n.onStart();
-        for (StartListener listener : startListeners)
-            listener.onStart();
-        resume();
+      // restart only at the end of the round
+      clock.runAfter(() -> {
+            clock.reset();
+            clearMessages();
+            for (Node n : nodes)
+                n.onStart();
+            for (StartListener listener : startListeners)
+                listener.onStart();
+        });
     }
     /**
      * Removes all the nodes (and links) of this topology.
@@ -366,13 +306,21 @@ public class Topology extends _Properties implements ClockListener{
         }
     }
     /**
-     * Performs a single round, then switch to pause state.
+     * Performs a single round
      */
     public void step(){
-        if (nbPauses > 0)
-            resume();
-        step = true;
+        clock.step();
     }
+
+    /**
+    * Performs infinitly many steps
+    */
+    public void runForever(){
+      while(true) {
+        step();
+      }
+    }
+
     /**
      * Adds the specified node to this topology. The location of the node
      * in the topology will be its current inherent location (or <tt>(0,0)</tt>
@@ -391,13 +339,22 @@ public class Topology extends _Properties implements ClockListener{
         addNode(x, y, newInstanceOfModel("default"));
     }
     /**
+    * throws a runtime exception if we are in a middle of a round
+    */
+    private void abortIfInsideRound() {
+        if(clock.isInsideRound()) {
+            throw new RuntimeException("You cannot modify the topology in a middle of a round");
+        }
+    }
+    /**
      * Adds the specified node to this topology at the specified location.
      * @param x The abscissa of the location.
      * @param y The ordinate of the location.
      * @param n The node to be added.
      */
     public void addNode(double x, double y, Node n){
-        pause();
+        abortIfInsideRound();
+
         if (x == -1)
             x = Math.random() * dimensions.width;
         if (y == -1)
@@ -416,10 +373,7 @@ public class Topology extends _Properties implements ClockListener{
         nodes.add(n);
         n.topo=this;
         notifyNodeAdded(n);
-        if (isStarted)
-            n.onStart();
         touch(n);
-        resume();
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -427,7 +381,7 @@ public class Topology extends _Properties implements ClockListener{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
-        pause();
+        abortIfInsideRound();
         n.onStop();
         for (Link l : n.getLinks(true))
             removeLink(l);
@@ -440,7 +394,6 @@ public class Topology extends _Properties implements ClockListener{
             }
         }
         n.topo=null;
-        resume();
     }
     public void selectNode(Node n){
         selectedNode = n;
@@ -458,7 +411,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Adds the specified link to this topology without notifying the listeners
-     * (if silent is true). Calling this method makes sense only for wired 
+     * (if silent is true). Calling this method makes sense only for wired
      * links, since wireless links are automatically managed as per the nodes'
      * communication ranges.
      * @param l The link to be added.
@@ -561,7 +514,7 @@ public class Topology extends _Properties implements ClockListener{
             nodes.get(i).setID(Ids.get(i));
     }
     /**
-     * Returns a list containing all undirected links in this topology. The 
+     * Returns a list containing all undirected links in this topology. The
      * returned ArrayList can be subsequently modified without effect on the
      * topology.
      */
@@ -594,7 +547,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Returns the undirected link shared the specified nodes, if any.
-     * @return The requested link, if such a link exists, <tt>null</tt> 
+     * @return The requested link, if such a link exists, <tt>null</tt>
      * otherwise.
      */
     public Link getLink(Node n1, Node n2){
@@ -603,7 +556,7 @@ public class Topology extends _Properties implements ClockListener{
     /**
      * Returns the link of the specified type between the specified nodes, if
      * any.
-     * @return The requested link, if such a link exists, <tt>null</tt> 
+     * @return The requested link, if such a link exists, <tt>null</tt>
      * otherwise.
      */
     public Link getLink(Node from, Node to, boolean directed){
@@ -634,11 +587,11 @@ public class Topology extends _Properties implements ClockListener{
         cxUndirectedListeners.add(listener);
     }
     /**
-     * Registers the specified connectivity listener to this topology. The 
-     * listener will be notified whenever a link of the specified type is 
+     * Registers the specified connectivity listener to this topology. The
+     * listener will be notified whenever a link of the specified type is
      * added or removed.
      * @param listener The listener to register.
-     * @param directed The type of links to be listened (<tt>true</tt> for 
+     * @param directed The type of links to be listened (<tt>true</tt> for
      * directed, <tt>false</tt> for undirected).
      */
     public void addConnectivityListener(ConnectivityListener listener, boolean directed){
@@ -648,7 +601,7 @@ public class Topology extends _Properties implements ClockListener{
             cxUndirectedListeners.add(listener);
     }
     /**
-     * Unregisters the specified connectivity listener from the 'undirected' 
+     * Unregisters the specified connectivity listener from the 'undirected'
      * listeners.
      * @param listener The listener to unregister.
      */
@@ -656,10 +609,10 @@ public class Topology extends _Properties implements ClockListener{
         cxUndirectedListeners.remove(listener);
     }
     /**
-     * Unregisters the specified connectivity listener from the listeners 
+     * Unregisters the specified connectivity listener from the listeners
      * of the specified type.
      * @param listener The listener to unregister.
-     * @param directed The type of links that this listener was listening 
+     * @param directed The type of links that this listener was listening
      * (<tt>true</tt> for directed, <tt>false</tt> for undirected).
      */
     public void removeConnectivityListener(ConnectivityListener listener, boolean directed){
@@ -670,7 +623,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Registers the specified movement listener to this topology. The
-     * listener will be notified every time the location of a node changes. 
+     * listener will be notified every time the location of a node changes.
      * @param listener The movement listener.
      */
     public void addMovementListener(MovementListener listener){
@@ -678,7 +631,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Unregisters the specified movement listener for this topology.
-     * @param listener The movement listener. 
+     * @param listener The movement listener.
      */
     public void removeMovementListener(MovementListener listener){
         movementListeners.remove(listener);
@@ -700,7 +653,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Registers the specified message listener to this topology. The listener
-     * will be notified every time a message is received at any node. 
+     * will be notified every time a message is received at any node.
      * @param listener The message listener.
      */
     public void addMessageListener(MessageListener listener){
@@ -708,14 +661,14 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Unregisters the specified message listener for this topology.
-     * @param listener The message listener. 
+     * @param listener The message listener.
      */
     public void removeMessageListener(MessageListener listener){
         messageListeners.remove(listener);
     }
     /**
      * Registers the specified selection listener to this topology. The listener
-     * will be notified every time a node is selected. 
+     * will be notified every time a node is selected.
      * @param listener The selection listener.
      */
     public void addSelectionListener(SelectionListener listener){
@@ -723,7 +676,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Unregisters the specified selection listener for this topology.
-     * @param listener The selection listener. 
+     * @param listener The selection listener.
      */
     public void removeSelectionListener(SelectionListener listener){
         selectionListeners.remove(listener);
@@ -807,10 +760,6 @@ public class Topology extends _Properties implements ClockListener{
     }
     @Override
     public void onClock() {
-        if (step){
-            pause();
-            step = false;
-        }
         if (refreshMode == RefreshMode.CLOCKBASED) {
             for (Node node : toBeUpdated)
                 update(node);
@@ -858,7 +807,7 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Returns a string representation of this topology. The output of this
-     * method can be subsequently used to reconstruct a topology with the 
+     * method can be subsequently used to reconstruct a topology with the
      * <tt>fromString</tt> method. Only the nodes and wired links are exported
      * here (not the topology's properties).
      */
@@ -875,7 +824,7 @@ public class Topology extends _Properties implements ClockListener{
         return res.toString();
     }
     /**
-     * Imports nodes and wired links from the specified string representation of a 
+     * Imports nodes and wired links from the specified string representation of a
      * topology.
      * @param s The string representation.
      */

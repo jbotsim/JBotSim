@@ -40,12 +40,10 @@ public class Main {
         co = new CircleObstacle(new Point2D.Double(600, 200), 80);
         ObstacleManager.addObstacle(co, tp);
 
-        tp.pause();
         tp.setDefaultNodeModel(ObstacleNode.class);
         tp.addNode(400, 500);
         tp.addNode(200, 500);
         tp.addNode(400, 300);
-        tp.resume();
         new JViewer(jtp);
     }
 
