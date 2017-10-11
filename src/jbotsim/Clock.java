@@ -43,6 +43,7 @@ class Clock {
         throw new RuntimeException("You cannot call step() inside a round");
       }
       insideRound = true;
+      time++;
       // Delivers messages first
       tp.getMessageEngine().onClock();
       // Then give the hand to the nodes
@@ -54,11 +55,10 @@ class Clock {
           cl.onClock();
           countdown.put(cl, listeners.get(cl)); // reset countdown
       }
+      insideRound = false;
       while(!toBeRun.isEmpty()){
         toBeRun.poll().run();
       }
-      time++;
-      insideRound = false;
     }
 
     protected ArrayList<ClockListener> getExpiredListeners(){
@@ -81,7 +81,7 @@ class Clock {
      * inside a rount)
      */
     public void addClockListener(ClockListener listener, int period){
-        runNext(() -> {
+        runAfter(() -> {
             listeners.put(listener, period);
             countdown.put(listener, period);
         });
@@ -93,12 +93,20 @@ class Clock {
     public void addClockListener(ClockListener listener){
         addClockListener(listener, 1);
     }
+
+    /**
+     * Returns true if we are in a middle of a round
+     */
+    public boolean isInsideRound(){
+        return insideRound;
+    }
+
     /**
      * Registers the specified runnable to be run at the end of the round, or
      * now if we are not inside a round.
      * @param listener The listener to register.
      */
-    public void runNext(Runnable r){
+    public void runAfter(Runnable r){
         // if we are in a middle of a round save the runnable to run it
         // at the end of the round, otherwise run it now.
         if(insideRound)
@@ -106,6 +114,7 @@ class Clock {
         else
             r.run();
     }
+
     /**
      * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
      * listener will not longer be called.)
@@ -114,7 +123,7 @@ class Clock {
      * inside a rount)
      */
     public void removeClockListener(ClockListener listener){
-        runNext(() -> {
+        runAfter(() -> {
             listeners.remove(listener);
             countdown.remove(listener);
         });
@@ -132,7 +141,7 @@ class Clock {
      * inside a rount)
      */
     public void reset(){
-        runNext(() -> {
+        runAfter(() -> {
             time=0;
         });
     }

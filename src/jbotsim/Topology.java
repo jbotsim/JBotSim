@@ -221,6 +221,20 @@ public class Topology extends _Properties implements ClockListener{
     }
 
     /**
+     * Returns true if we are in a middle of a round
+     */
+    public boolean isInsideRound(){
+        return clock.isInsideRound();
+    }
+
+    /**
+     * Returns true if we are in a middle of a round
+     */
+    public void runAfter(Runnable r){
+        clock.runAfter(r);
+    }
+
+    /**
      * Returns the current time (current round number)
      */
     public int getTime(){
@@ -261,11 +275,12 @@ public class Topology extends _Properties implements ClockListener{
     }
 
     /**
-     * Causes the onStart() method to be called again on each node (and each StartListener)
+     * Resets the time and causes the onStart() method to be called
+     * again on each node (and each StartListener)
      */
     public void restart(){
       // restart only at the end of the round
-      clock.runNext(() -> {
+      clock.runAfter(() -> {
             clock.reset();
             clearMessages();
             for (Node n : nodes)
@@ -324,35 +339,41 @@ public class Topology extends _Properties implements ClockListener{
         addNode(x, y, newInstanceOfModel("default"));
     }
     /**
+    * throws a runtime exception if we are in a middle of a round
+    */
+    private void abortIfInsideRound() {
+        if(clock.isInsideRound()) {
+            throw new RuntimeException("You cannot modify the topology in a middle of a round");
+        }
+    }
+    /**
      * Adds the specified node to this topology at the specified location.
      * @param x The abscissa of the location.
      * @param y The ordinate of the location.
      * @param n The node to be added.
      */
-    public void addNode(final double x_in, final double y_in, Node n){
-        clock.runNext(() -> {
-            double x = x_in;
-            double y = y_in;
-            if (x == -1)
-                x = Math.random() * dimensions.width;
-            if (y == -1)
-                y = Math.random() * dimensions.height;
-            if (n.getX()==0 && n.getY()==0)
-                n.setLocation(x, y);
+    public void addNode(double x, double y, Node n){
+        abortIfInsideRound();
 
-            if (n.communicationRange == null)
-                n.setCommunicationRange(communicationRange);
-            if (n.sensingRange == null)
-                n.setSensingRange(sensingRange);
-            if (isWirelessEnabled == false)
-                n.disableWireless();
-            if (n.getID()==-1)
-                n.setID(nodes.size());
-            nodes.add(n);
-            n.topo=this;
-            notifyNodeAdded(n);
-            touch(n);
-        });
+        if (x == -1)
+            x = Math.random() * dimensions.width;
+        if (y == -1)
+            y = Math.random() * dimensions.height;
+        if (n.getX()==0 && n.getY()==0)
+            n.setLocation(x, y);
+
+        if (n.communicationRange == null)
+            n.setCommunicationRange(communicationRange);
+        if (n.sensingRange == null)
+            n.setSensingRange(sensingRange);
+        if (isWirelessEnabled == false)
+            n.disableWireless();
+        if (n.getID()==-1)
+            n.setID(nodes.size());
+        nodes.add(n);
+        n.topo=this;
+        notifyNodeAdded(n);
+        touch(n);
     }
     /**
      * Removes the specified node from this topology. All adjacent links will
@@ -360,20 +381,19 @@ public class Topology extends _Properties implements ClockListener{
      * @param n The node to be removed.
      */
     public void removeNode(Node n){
-        clock.runNext(() -> {
-            n.onStop();
-            for (Link l : n.getLinks(true))
-                removeLink(l);
-            notifyNodeRemoved(n);
-            nodes.remove(n);
-            for (Node n2 : nodes){
-                if (n2.sensedNodes.contains(n)){
-                    n2.sensedNodes.remove(n);
-                    n2.onSensingOut(n);
-                }
+        abortIfInsideRound();
+        n.onStop();
+        for (Link l : n.getLinks(true))
+            removeLink(l);
+        notifyNodeRemoved(n);
+        nodes.remove(n);
+        for (Node n2 : nodes){
+            if (n2.sensedNodes.contains(n)){
+                n2.sensedNodes.remove(n);
+                n2.onSensingOut(n);
             }
-            n.topo=null;
-        });
+        }
+        n.topo=null;
     }
     public void selectNode(Node n){
         selectedNode = n;
