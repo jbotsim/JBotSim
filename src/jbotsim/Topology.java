@@ -77,7 +77,7 @@ public class Topology extends _Properties implements ClockListener{
         setDimensions(width, height);
         clockManager = new ClockManager(this);
         if (! toBeStarted)
-            clockManager.pause();
+            clockManager.getClock().pause();
         isStarted = toBeStarted;
         resetTime();
     }
@@ -246,7 +246,7 @@ public class Topology extends _Properties implements ClockListener{
      * @return The duration
      */
     public int getClockSpeed(){
-        return clockManager.getTimeUnit();
+        return clockManager.getClock().getTimeUnit();
     }
 
     /**
@@ -254,7 +254,7 @@ public class Topology extends _Properties implements ClockListener{
      * @param period The desired duration
      */
     public void setClockSpeed(int period){
-        clockManager.setTimeUnit(period);
+        clockManager.getClock().setTimeUnit(period);
     }
 
     /**
@@ -272,7 +272,7 @@ public class Topology extends _Properties implements ClockListener{
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public boolean isRunning(){
-        return clockManager.isRunning();
+        return clockManager.getClock().isRunning();
     }
 
     /**
@@ -281,7 +281,7 @@ public class Topology extends _Properties implements ClockListener{
     public void pause(){
         if (isStarted) {
             if (nbPauses == 0)
-                clockManager.pause();
+                clockManager.getClock().pause();
             nbPauses++;
         }
     }
@@ -294,7 +294,7 @@ public class Topology extends _Properties implements ClockListener{
             assert (nbPauses > 0);
             nbPauses--;
             if (nbPauses == 0)
-                clockManager.resume();
+                clockManager.getClock().resume();
         }
     }
 
@@ -333,7 +333,7 @@ public class Topology extends _Properties implements ClockListener{
     public void start(){
         if (! isStarted) {
             isStarted = true;
-            clockManager.resume();
+            clockManager.getClock().resume();
             restart();
         }
     }
