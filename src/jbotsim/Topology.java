@@ -22,7 +22,7 @@ import jbotsim.event.*;
 import jbotsim.ui.JTopology;
 
 public class Topology extends _Properties implements ClockListener{
-    Clock clock;
+    ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
     List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
     List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
@@ -75,9 +75,9 @@ public class Topology extends _Properties implements ClockListener{
         setMessageEngine(new MessageEngine());
         setScheduler(new DefaultScheduler());
         setDimensions(width, height);
-        clock = new Clock(this);
+        clockManager = new ClockManager(this);
         if (! toBeStarted)
-            clock.pause();
+            clockManager.pause();
         isStarted = toBeStarted;
         resetTime();
     }
@@ -246,7 +246,7 @@ public class Topology extends _Properties implements ClockListener{
      * @return The duration
      */
     public int getClockSpeed(){
-        return clock.getTimeUnit();
+        return clockManager.getTimeUnit();
     }
 
     /**
@@ -254,14 +254,14 @@ public class Topology extends _Properties implements ClockListener{
      * @param period The desired duration
      */
     public void setClockSpeed(int period){
-        clock.setTimeUnit(period);
+        clockManager.setTimeUnit(period);
     }
 
     /**
      * Returns the current time (current round number)
      */
     public int getTime(){
-        return clock.currentTime();
+        return clockManager.currentTime();
     }
     /**
      * Sets the topology dimensions as indicated.
@@ -272,7 +272,7 @@ public class Topology extends _Properties implements ClockListener{
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public boolean isRunning(){
-        return clock.isRunning();
+        return clockManager.isRunning();
     }
 
     /**
@@ -281,7 +281,7 @@ public class Topology extends _Properties implements ClockListener{
     public void pause(){
         if (isStarted) {
             if (nbPauses == 0)
-                clock.pause();
+                clockManager.pause();
             nbPauses++;
         }
     }
@@ -294,7 +294,7 @@ public class Topology extends _Properties implements ClockListener{
             assert (nbPauses > 0);
             nbPauses--;
             if (nbPauses == 0)
-                clock.resume();
+                clockManager.resume();
         }
     }
 
@@ -302,7 +302,7 @@ public class Topology extends _Properties implements ClockListener{
      * Reset the round number to 0.
      */
     public void resetTime(){
-        clock.reset();
+        clockManager.reset();
     }
 
     public void setDimensions(int width, int height){
@@ -333,7 +333,7 @@ public class Topology extends _Properties implements ClockListener{
     public void start(){
         if (! isStarted) {
             isStarted = true;
-            clock.resume();
+            clockManager.resume();
             restart();
         }
     }
@@ -745,20 +745,20 @@ public class Topology extends _Properties implements ClockListener{
         startListeners.remove(listener);
     }
     /**
-     * Registers the specified listener to the events of the topology clock.
+     * Registers the specified listener to the events of the clock.
      * @param listener The listener to register.
      * @param period The number of rounds between consecutive onClock() events,
      * in time units.
      */
     public void addClockListener(ClockListener listener, int period){
-        clock.addClockListener(listener, period);
+        clockManager.addClockListener(listener, period);
     }
     /**
-     * Registers the specified listener to the events of the topology clock.
+     * Registers the specified listener to the events of the clock.
      * @param listener The listener to register.
      */
     public void addClockListener(ClockListener listener){
-        clock.addClockListener(listener);
+        clockManager.addClockListener(listener);
     }
     /**
      * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
@@ -766,7 +766,7 @@ public class Topology extends _Properties implements ClockListener{
      * @param listener The listener to unregister.
      */
     public void removeClockListener(ClockListener listener){
-        clock.removeClockListener(listener);
+        clockManager.removeClockListener(listener);
     }
     protected void notifyLinkAdded(Link l){
         if (l.type==Type.DIRECTED) {

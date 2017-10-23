@@ -20,14 +20,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-class Clock {
+class ClockManager {
     Topology tp;
     HashMap<ClockListener, Integer> listeners=new HashMap<ClockListener, Integer>();
     HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
     Timer timer=new Timer(10, new ActionHandler());
     Integer time=0;
 
-    Clock(Topology topology){
+    ClockManager(Topology topology){
         this.tp = topology;
         timer.start();
         try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
