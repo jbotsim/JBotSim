@@ -358,6 +358,13 @@ public class Topology extends _Properties implements ClockListener{
             removeNode(nodes.get(nodes.size()-1));
     }
     /**
+     * Removes all the links of this topology.
+     */
+    public void clearLinks(){
+        while(!edges.isEmpty())
+            removeLink(edges.get(edges.size()-1));
+    }
+    /**
      * Removes all the ongoing messages in this topology.
      */
     public void clearMessages(){
