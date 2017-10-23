@@ -12,15 +12,13 @@
 package jbotsim;
 
 import jbotsim.event.ClockListener;
-import jbotsim.ui.JTopology;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.List;
 
 class Clock {
     Topology tp;
@@ -36,17 +34,10 @@ class Clock {
     }
     private class ActionHandler implements ActionListener{
         public void actionPerformed(ActionEvent evt) {
-            // Delivers messages first
-            tp.getMessageEngine().onClock();
-            // Then give the hand to the nodes
-            tp.getNodeScheduler().onClock(tp);
-            // Then to the topology itself
-            tp.onClock();
-            // Finally, to all other listeners whose countdown has expired
-            for (ClockListener cl : getExpiredListeners()) {
-                cl.onClock();
+            List<ClockListener> expiredListeners = getExpiredListeners();
+            tp.getScheduler().onClock(tp, expiredListeners);
+            for (ClockListener cl : expiredListeners)
                 countdown.put(cl, listeners.get(cl)); // reset countdown
-            }
             time++;
         }
     }

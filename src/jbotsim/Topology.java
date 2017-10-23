@@ -31,7 +31,7 @@ public class Topology extends _Properties implements ClockListener{
     List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
     List<StartListener> startListeners =new ArrayList<StartListener>();
     MessageEngine messageEngine=null;
-    NodeScheduler nodeScheduler;
+    Scheduler scheduler;
     List<Node> nodes=new ArrayList<Node>();
     List<Link> arcs=new ArrayList<Link>();
     List<Link> edges=new ArrayList<Link>();
@@ -73,7 +73,7 @@ public class Topology extends _Properties implements ClockListener{
      */
     public Topology(int width, int height, boolean toBeStarted){
         setMessageEngine(new MessageEngine());
-        setNodeScheduler(new DefaultNodeScheduler());
+        setScheduler(new DefaultScheduler());
         setDimensions(width, height);
         clock = new Clock(this);
         if (! toBeStarted)
@@ -228,16 +228,17 @@ public class Topology extends _Properties implements ClockListener{
     }
 
     /**
-     * Gets a reference on the node scheduler.
+     * Gets a reference on the scheduler.
      */
-    public NodeScheduler getNodeScheduler() {
-        return nodeScheduler;
+    public Scheduler getScheduler() {
+        return scheduler;
     }
+
     /**
-     * Sets the message engine of this topology.
+     * Sets the scheduler of this topology.
      */
-    public void setNodeScheduler(NodeScheduler nodeScheduler) {
-        this.nodeScheduler = nodeScheduler;
+    public void setScheduler(Scheduler scheduler) {
+        this.scheduler = scheduler;
     }
 
     /**

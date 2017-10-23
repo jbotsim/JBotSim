@@ -11,15 +11,10 @@
  */
 package jbotsim;
 
-public class DefaultNodeScheduler implements NodeScheduler {
+import jbotsim.event.ClockListener;
 
-    @Override
-    public void onClock(Topology tp) {
-        for (Node node : tp.getNodes())
-            node.onPreClock();
-        for (Node node : tp.getNodes())
-            node.onClock();
-        for (Node node : tp.getNodes())
-            node.onPostClock();
-    }
+import java.util.List;
+
+public interface Scheduler {
+    void onClock(Topology tp, List<ClockListener> expiredListeners);
 }
