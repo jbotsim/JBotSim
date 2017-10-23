@@ -11,8 +11,6 @@
  */
 package jbotsim;
 
-import jbotsim.ClockManager;
-
 import javax.swing.Timer;
 
 public class Clock {

@@ -34,15 +34,13 @@ public class ClockManager{
     public void onClock(){
         List<ClockListener> expiredListeners = new ArrayList<>();
         for(ClockListener cl : listeners.keySet()) {
-            Integer count = countdown.get(cl);
-            if (count == 1)
+            countdown.put(cl, countdown.get(cl) - 1);
+            if (countdown.get(cl) == 0) {
                 expiredListeners.add(cl);
-            else
-                countdown.put(cl, count - 1);
+                countdown.put(cl, listeners.get(cl));
+            }
         }
         tp.getScheduler().onClock(tp, expiredListeners);
-        for (ClockListener cl : expiredListeners)
-            countdown.put(cl, listeners.get(cl)); // reset countdown
         time++;
     }
 
