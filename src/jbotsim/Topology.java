@@ -13,6 +13,7 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.List;
 
@@ -255,6 +256,14 @@ public class Topology extends _Properties implements ClockListener{
      */
     public void setClockSpeed(int period){
         clockManager.getClock().setTimeUnit(period);
+    }
+
+    /**
+     * Sets the clock model (to be instantiated automatically).
+     * @param clockModel A class that extends JBotSim's abstract Clock
+     */
+    public void setClockModel(Class<? extends Clock> clockModel){
+        clockManager.setClockModel(clockModel);
     }
 
     /**

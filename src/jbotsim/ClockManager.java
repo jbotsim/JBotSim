@@ -13,6 +13,7 @@ package jbotsim;
 
 import jbotsim.event.ClockListener;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,13 +53,21 @@ public class ClockManager{
     }
 
     /**
-     * Sets the Clock.
-     * @param clock The Clock to be used.
+     * Sets the clock model (to be instantiated automatically).
+     * @param clockModel A class that extends JBotSim's abstract Clock
      */
-    public void setClock(Clock clock) {
-        if (this.clock != null)
-            this.clock.pause();
-        this.clock = clock;
+    public void setClockModel(Class<? extends Clock> clockModel) {
+        boolean wasRunning = false;
+        if (clock != null && clock.isRunning()) {
+            wasRunning = true;
+            clock.pause();
+        }
+        try {
+            Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
+            clock = c.newInstance(this);
+            if (wasRunning)
+                clock.resume();
+        } catch (Exception e) {e.printStackTrace();}
     }
 
     /**
