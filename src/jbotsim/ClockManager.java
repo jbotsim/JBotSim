@@ -20,8 +20,8 @@ import java.util.List;
 
 public class ClockManager{
     Topology tp;
-    HashMap<ClockListener, Integer> listeners=new HashMap<ClockListener, Integer>();
-    HashMap<ClockListener, Integer> countdown=new HashMap<ClockListener, Integer>();
+    HashMap<ClockListener, Integer> listeners = new HashMap<>();
+    HashMap<ClockListener, Integer> countdown = new HashMap<>();
     Clock clock;
     Integer time = 0;
 

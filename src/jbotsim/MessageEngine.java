@@ -31,7 +31,7 @@ public class MessageEngine implements ClockListener {
         processMessages(collectMessages());
     }
     protected ArrayList<Message> collectMessages(){
-        ArrayList<Message> messages = new ArrayList<Message>();
+        ArrayList<Message> messages = new ArrayList<>();
         for (Node n : topology.getNodes()) {
             for (Message m : n.sendQueue) {
                 if (m.destination == null)

@@ -22,24 +22,24 @@ import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node>{
-    List<Message> mailBox=new ArrayList<Message>();
-    List<Message> sendQueue=new ArrayList<Message>();
-    HashMap<Node,Link> outLinks=new HashMap<Node,Link>();
-    Point3D coords=new Point3D(0, 0, 0);
-    double direction=Math.PI/2;
+    List<Message> mailBox = new ArrayList<>();
+    List<Message> sendQueue = new ArrayList<>();
+    HashMap<Node,Link> outLinks = new HashMap<>();
+    Point3D coords = new Point3D(0, 0, 0);
+    double direction = Math.PI/2;
     Double communicationRange = null;
     Double sensingRange = null;
-    List<Node> sensedNodes=new ArrayList<Node>();
+    List<Node> sensedNodes = new ArrayList<>();
     boolean isWirelessEnabled = true;
     Topology topo;
     Color color = null;
     Object state=null;
     Integer ID = -1;
     int size = 8;
-    static ArrayList<Color> basicColors = new ArrayList<Color>(Arrays.asList(
-            Color.red,Color.green,Color.blue,Color.yellow,
-            Color.pink,Color.black,Color.white,Color.gray,
-            Color.orange,Color.cyan,Color.magenta));
+    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
+            Color.red, Color.green, Color.blue, Color.yellow,
+            Color.pink, Color.black, Color.white, Color.gray,
+            Color.orange, Color.cyan, Color.magenta));
 
     /**
      * Returns the identifier of this node.
@@ -484,7 +484,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * when several links come from a same neighbor.
      */
     public List<Node> getInNeighbors(){
-        ArrayList<Node> neighbors=new ArrayList<Node>();
+        List<Node> neighbors = new ArrayList<>();
         for (Link l : getInLinks())
             neighbors.add(l.source);
         return neighbors;
@@ -497,7 +497,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * when several links go towards a same neighbor.
      */
     public List<Node> getOutNeighbors(){
-        ArrayList<Node> neighbors=new ArrayList<Node>();
+        ArrayList<Node> neighbors = new ArrayList<>();
         for (Link l : getOutLinks())
             neighbors.add(l.destination);
         return neighbors;
@@ -508,7 +508,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @return A list containing all nodes within sensing range
      */
     public List<Node> getSensedNodes(){
-        ArrayList<Node> sensedNodes=new ArrayList<Node>();
+        ArrayList<Node> sensedNodes = new ArrayList<>();
         for (Node n : topo.getNodes())
             if (distance(n) < sensingRange && n!=this)
                 sensedNodes.add(n);
@@ -529,10 +529,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * when several links are shared with a same neighbor.
      */
     public List<Node> getNeighbors(){
-        LinkedHashSet<Node> neighbors=new LinkedHashSet<Node>();
+        LinkedHashSet<Node> neighbors= new LinkedHashSet<>();
         for (Link l : getLinks())
             neighbors.add(l.getOtherEndpoint(this));
-        return new ArrayList<Node>(neighbors);
+        return new ArrayList<>(neighbors);
     }
     /**
      * Returns a list of messages representing the mailbox of this node.
@@ -549,7 +549,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns a list of the messages that this node is about to send.
      */
     public List<Message> getOutbox(){
-        return new ArrayList<Message>(sendQueue);
+        return new ArrayList<>(sendQueue);
     }
     /**
      * Sends a message from this node to the specified destination node.
@@ -657,7 +657,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     protected void notifyNodeMoved(){
         onMove();
         if (topo!=null)
-            for (MovementListener ml : new ArrayList<MovementListener>(topo.movementListeners))
+            for (MovementListener ml : new ArrayList<>(topo.movementListeners))
                 ml.onMove(this);
     }
     public int compareTo(Node o){

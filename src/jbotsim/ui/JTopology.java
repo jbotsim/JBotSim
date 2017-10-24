@@ -30,10 +30,10 @@ import jbotsim.ui.painting.*;
 
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener{
-    protected ArrayList<BackgroundPainter> backgroundPainters =new ArrayList<BackgroundPainter>();
+    protected ArrayList<BackgroundPainter> backgroundPainters = new ArrayList<>();
     protected LinkPainter linkPainter;
-    protected ArrayList<NodePainter> nodePainters = new ArrayList<NodePainter>();
-    protected ArrayList<CommandListener> commandListeners=new ArrayList<CommandListener>();
+    protected ArrayList<NodePainter> nodePainters = new ArrayList<>();
+    protected ArrayList<CommandListener> commandListeners = new ArrayList<>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
     protected JTopology jtopo=this;

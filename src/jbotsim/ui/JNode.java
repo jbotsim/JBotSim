@@ -41,8 +41,8 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     protected Integer drawSize;
     protected double zcoord = -1;
     protected Node node;
-    public static double camheight=200;
-    protected static Node destination=null;
+    public static double camheight = 200;
+    protected static Node destination = null;
     protected static Integer currentButton = 1;
 
 
@@ -116,7 +116,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     }
     public void mouseDragged(MouseEvent e){
         if (currentButton==1)
-            node.translate((int) e.getX() - drawSize, (int) e.getY() - drawSize);
+            node.translate(e.getX() - drawSize, (int) e.getY() - drawSize);
     }
     public void mouseClicked(MouseEvent e){}
     public void mouseEntered(MouseEvent e){

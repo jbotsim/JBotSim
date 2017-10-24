@@ -24,18 +24,18 @@ import jbotsim.ui.JTopology;
 
 public class Topology extends _Properties implements ClockListener{
     ClockManager clockManager;
-    List<ConnectivityListener> cxUndirectedListeners=new ArrayList<ConnectivityListener>();
-    List<ConnectivityListener> cxDirectedListeners=new ArrayList<ConnectivityListener>();
-    List<TopologyListener> topologyListeners=new ArrayList<TopologyListener>();
-    List<MovementListener> movementListeners=new ArrayList<MovementListener>();
-    List<MessageListener> messageListeners=new ArrayList<MessageListener>();
-    List<SelectionListener> selectionListeners=new ArrayList<SelectionListener>();
-    List<StartListener> startListeners =new ArrayList<StartListener>();
+    List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
+    List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
+    List<TopologyListener> topologyListeners = new ArrayList<>();
+    List<MovementListener> movementListeners = new ArrayList<>();
+    List<MessageListener> messageListeners = new ArrayList<>();
+    List<SelectionListener> selectionListeners = new ArrayList<>();
+    List<StartListener> startListeners = new ArrayList<>();
     MessageEngine messageEngine=null;
     Scheduler scheduler;
-    List<Node> nodes=new ArrayList<Node>();
-    List<Link> arcs=new ArrayList<Link>();
-    List<Link> edges=new ArrayList<Link>();
+    List<Node> nodes = new ArrayList<>();
+    List<Link> arcs = new ArrayList<>();
+    List<Link> edges = new ArrayList<>();
     HashMap<String,Class<? extends Node>> nodeModels=new HashMap<String,Class<? extends Node>>();
     boolean isWirelessEnabled = true;
     double communicationRange = 100;
@@ -44,11 +44,11 @@ public class Topology extends _Properties implements ClockListener{
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
     int nbPauses = 0;
-    ArrayList<Node> toBeUpdated = new ArrayList<Node>();
+    ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
     private boolean isStarted = false;
 
-    public static enum RefreshMode {CLOCKBASED, EVENTBASED};
+    public enum RefreshMode {CLOCKBASED, EVENTBASED};
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
     /**
@@ -125,7 +125,7 @@ public class Topology extends _Properties implements ClockListener{
      */
     public Node newInstanceOfModel(String modelName){
         try {
-            return (Node) getNodeModel(modelName).newInstance();
+            return getNodeModel(modelName).newInstance();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
             System.err.println("(is your class of node public?)");
@@ -555,7 +555,7 @@ public class Topology extends _Properties implements ClockListener{
      * ArrayList can be subsequently modified without effect on the topology.
      */
     public List<Node> getNodes(){
-        return new ArrayList<Node>(nodes);
+        return new ArrayList<>(nodes);
     }
     /**
      * Returns the first node found with this ID.
@@ -570,7 +570,7 @@ public class Topology extends _Properties implements ClockListener{
      * Shuffles the IDs of the nodes in this topology.
      */
     public void shuffleNodeIds(){
-        List<Integer> Ids = new ArrayList<Integer>();
+        List<Integer> Ids = new ArrayList<>();
         for (Node node : nodes)
             Ids.add(node.getID());
         Collections.shuffle(Ids);
@@ -593,10 +593,10 @@ public class Topology extends _Properties implements ClockListener{
      * undirected links.
      */
     public List<Link> getLinks(boolean directed){
-        return (directed)?new ArrayList<Link>(arcs):new ArrayList<Link>(edges);
+        return new ArrayList<>(directed ? arcs : edges);
     }
     List<Link> getLinks(boolean directed, Node n, int pos){
-        List<Link> result=new ArrayList<Link>();
+        List<Link> result= new ArrayList<>();
         List<Link> allLinks=(directed)?arcs:edges;
         for(Link l : allLinks)
             switch(pos){
@@ -811,15 +811,15 @@ public class Topology extends _Properties implements ClockListener{
         }
     }
     protected void notifyNodeAdded(Node node){
-        for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
+        for (TopologyListener tl : new ArrayList<>(topologyListeners))
             tl.onNodeAdded(node);
     }
     protected void notifyNodeRemoved(Node node){
-        for (TopologyListener tl : new ArrayList<TopologyListener>(topologyListeners))
+        for (TopologyListener tl : new ArrayList<>(topologyListeners))
             tl.onNodeRemoved(node);
     }
     protected void notifyNodeSelected(Node node){
-        for (SelectionListener tl : new ArrayList<SelectionListener>(selectionListeners))
+        for (SelectionListener tl : new ArrayList<>(selectionListeners))
             tl.onSelection(node);
     }
     @Override
@@ -846,7 +846,7 @@ public class Topology extends _Properties implements ClockListener{
                 updateWirelessLink(n, n2);
                 updateWirelessLink(n2, n);
             }
-        for (Node n2 : new ArrayList<Node>(nodes)) {
+        for (Node n2 : new ArrayList<>(nodes)) {
             if (n2 != n) {
                 updateSensedNodes(n, n2);
                 updateSensedNodes(n2, n);

@@ -103,7 +103,7 @@ public class Link extends _Properties implements Comparable<Link>{
      * @return The endpoints.
      */
     public List<Node> endpoints(){
-        List<Node> tmp = new ArrayList<Node>();
+        List<Node> tmp = new ArrayList<>();
         tmp.add(source); tmp.add(destination);
         return tmp;
     }
