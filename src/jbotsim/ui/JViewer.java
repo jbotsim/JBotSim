@@ -90,6 +90,7 @@ public class JViewer implements CommandListener, ChangeListener{
             window=new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             window.add(jtp);
+            window.addKeyListener(jtp.handler);
             window.pack();
             window.setVisible(true);
             window.addComponentListener(new ComponentAdapter() {

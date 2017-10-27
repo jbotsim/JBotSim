@@ -109,10 +109,15 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     }
     // EVENTS
     public void mousePressed(MouseEvent e) {
-        currentButton = e.getButton();
         Topology tp = node.getTopology();
-        tp.setProperty("refreshMode", tp.getRefreshMode());
-        tp.setRefreshMode(Topology.RefreshMode.EVENTBASED);
+        if (((JTopology) getParent()).handler.ctrlPressed) {
+            if (e.getButton()==1)
+                tp.selectNode(node);
+        }else {
+            currentButton = e.getButton();
+            tp.setProperty("refreshMode", tp.getRefreshMode());
+            tp.setRefreshMode(Topology.RefreshMode.EVENTBASED);
+        }
     }
     public void mouseDragged(MouseEvent e){
         if (currentButton==1)

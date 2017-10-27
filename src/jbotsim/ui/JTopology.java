@@ -12,10 +12,7 @@
 package jbotsim.ui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -50,6 +47,7 @@ public class JTopology extends JPanel implements ActionListener{
         super.setLayout(null);
         super.setBackground(new Color(180,180,180));
         super.addMouseListener(handler);
+        super.addKeyListener(handler);
         super.setPreferredSize(topo.getDimensions());
         ToolTipManager.sharedInstance().setInitialDelay(0);
         linkPainter = new LinkPainter();
@@ -181,11 +179,13 @@ public class JTopology extends JPanel implements ActionListener{
     }
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-            PropertyListener, ClockListener, MouseListener, ActionListener{
+            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener{
+        boolean ctrlPressed = false;
         public void onNodeAdded(Node n){
             JNode jv=new JNode(n);
             n.setProperty("jnode", jv);
             n.addPropertyListener(this);
+            jv.addKeyListener(this);
             add(jv);
             updateUI();
         }
@@ -276,5 +276,24 @@ public class JTopology extends JPanel implements ActionListener{
         public void mouseEntered(MouseEvent e){}
         public void mouseExited(MouseEvent e){}
         public void mouseReleased(MouseEvent e){}
+
+        @Override
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if ((e.getModifiers() & KeyEvent.CTRL_MASK) != 0)
+                ctrlPressed = true;
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            ctrlPressed = false;
+        }
+    }
+
+    public static void main(String[] args) {
+        new JViewer(new Topology());
     }
 }
