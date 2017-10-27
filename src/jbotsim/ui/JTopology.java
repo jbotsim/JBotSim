@@ -65,6 +65,7 @@ public class JTopology extends JPanel implements ActionListener{
         unsetTopology();
         this.topo = topology;
         topo.setProperty("jtopology", this);
+        topo.setClockModel(JClock.class);
         topo.addConnectivityListener(handler);
         topo.addTopologyListener(handler);
         topo.addMovementListener(handler);

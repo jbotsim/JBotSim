@@ -99,7 +99,6 @@ public class JViewer implements CommandListener, ChangeListener{
             });
         }
         slideBar.addChangeListener(this);
-        jtopo.topo.setClockModel(JClock.class);
     }
     /**
      * Returns the jtopology attached to this viewer. Obtaining the reference
