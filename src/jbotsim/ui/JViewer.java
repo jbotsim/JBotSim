@@ -78,20 +78,20 @@ public class JViewer implements CommandListener, ChangeListener{
      */
     public JViewer(JTopology jtopo, boolean windowed){
         jtp=jtopo;
-           jtp.addCommand("Set communication range");
-           jtp.addCommand("Set sensing range");
-           jtp.addCommand("Set clock speed");
+        jtp.addCommand("Set communication range");
+        jtp.addCommand("Set sensing range");
+        jtp.addCommand("Set clock speed");
         jtp.addCommand("Pause or resume execution");
         jtp.addCommand("Execute a single step");
         jtp.addCommand("Restart nodes");
         jtp.addCommand("Export topology");
-           jtp.addCommandListener(this);
+        jtp.addCommandListener(this);
         if (windowed){ // This JViewer creates its own window
-               window=new JFrame();
-               window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-               window.add(jtp);
+            window=new JFrame();
+            window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            window.add(jtp);
             window.pack();
-               window.setVisible(true);
+            window.setVisible(true);
             window.addComponentListener(new ComponentAdapter() {
                 public void componentResized(ComponentEvent e) {
                     jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
