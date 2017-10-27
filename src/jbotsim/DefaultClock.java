@@ -43,11 +43,6 @@ public class DefaultClock extends Clock {
     * The task just call the onClock method of the ClockManager
     */
     private class DefaultTask extends TimerTask {
-
-        ClockManager manager;
-        DefaultTask(ClockManager manager) {
-          this.manager = manager;
-        }
         @Override
         public void run() {
             manager.onClock();
@@ -114,7 +109,7 @@ public class DefaultClock extends Clock {
             return;
 
         running = true;
-        task = new DefaultTask(manager);
+        task = new DefaultTask();
         timer.scheduleAtFixedRate(task, period, period);
     }
 }
