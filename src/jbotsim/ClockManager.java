@@ -58,13 +58,16 @@ public class ClockManager{
      */
     public void setClockModel(Class<? extends Clock> clockModel) {
         boolean wasRunning = false;
-        if (clock != null && clock.isRunning()) {
-            wasRunning = true;
+        int timeUnit = 10;
+        if (clock != null) {
+            timeUnit = clock.getTimeUnit();
+            wasRunning = clock.isRunning();
             clock.pause();
         }
         try {
             Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
             clock = c.newInstance(this);
+            clock.setTimeUnit(timeUnit);
             if (wasRunning)
                 clock.resume();
         } catch (Exception e) {e.printStackTrace();}
@@ -91,8 +94,8 @@ public class ClockManager{
     }
 
     /**
-     * Unregisters the specified listener. (The <tt>onClock()</tt> method of this 
-     * listener will not longer be called.) 
+     * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
+     * listener will not longer be called.)
      * @param listener The listener to unregister.
      */
     public void removeClockListener(ClockListener listener){

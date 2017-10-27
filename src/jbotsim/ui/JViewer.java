@@ -24,9 +24,9 @@ import jbotsim.Topology;
 import jbotsimx.format.tikz.Tikz;
 
 /**
- * The viewer includes a central jtopology which will draw the attached 
+ * The viewer includes a central jtopology which will draw the attached
  * topology and offer interaction, as well as contextual commands to add or
- * remove a communication range or sensing range tuners (slider bars), or to 
+ * remove a communication range or sensing range tuners (slider bars), or to
  * pause/resume the system clock.
  */
 public class JViewer implements CommandListener, ChangeListener{
@@ -47,9 +47,9 @@ public class JViewer implements CommandListener, ChangeListener{
     /**
      * Creates a viewer for the specified topology. If <tt>selfContained</tt>
      * is <tt>true</tt>, a new window will be created to contain the viewer
-     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>, 
+     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>,
      * no window will be created and the viewer can be subsequently
-     * integrated to another swing container (e.g. another <tt>JFrame</tt> 
+     * integrated to another swing container (e.g. another <tt>JFrame</tt>
      * or a <tt>JApplet</tt>).
      * @param topo The topology to be drawn and/or manipulated.
      * @param selfContained Set this to false to avoid creating a JFrame
@@ -66,11 +66,11 @@ public class JViewer implements CommandListener, ChangeListener{
         this(jtopo, true);
     }
     /**
-     * Creates a viewer encapsulating the specified jtopology. If 
-     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created 
-     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it 
-     * is <tt>false</tt>, no window will be created and the viewer can be 
-     * subsequently integrated to another swing container (e.g. another 
+     * Creates a viewer encapsulating the specified jtopology. If
+     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created
+     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it
+     * is <tt>false</tt>, no window will be created and the viewer can be
+     * subsequently integrated to another swing container (e.g. another
      * <tt>JFrame</tt> or a <tt>JApplet</tt>).
      * @param jtopo The JTopology to be encapsulated.
      * @param windowed Set this to false to avoid creating a JFrame
@@ -96,13 +96,14 @@ public class JViewer implements CommandListener, ChangeListener{
                 public void componentResized(ComponentEvent e) {
                     jtp.topo.setDimensions(jtp.getWidth(), jtp.getHeight());
                 }
-            });        
+            });
         }
         slideBar.addChangeListener(this);
+        jtopo.topo.setClockModel(JClock.class);
     }
     /**
-     * Returns the jtopology attached to this viewer. Obtaining the reference 
-     * can be useful for example to add or remove action commands or action 
+     * Returns the jtopology attached to this viewer. Obtaining the reference
+     * can be useful for example to add or remove action commands or action
      * listeners to the jtopology.
      * @return The jtopology reference.
      */

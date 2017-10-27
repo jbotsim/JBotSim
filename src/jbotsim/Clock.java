@@ -21,32 +21,32 @@ public abstract class Clock {
     /**
      * Returns the time unit of the clock, in milliseconds.
      */
-    abstract int getTimeUnit();
+    abstract public int getTimeUnit();
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
      * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
-    abstract void setTimeUnit(int delay);
+    abstract public void setTimeUnit(int delay);
 
     /**
      * Indicates whether the clock is currently running or paused.
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
-    abstract boolean isRunning();
+    abstract public boolean isRunning();
 
     /**
      * Starts the clock.
      */
-    abstract void start();
+    abstract public void start();
 
     /**
      * Pauses the clock.
      */
-    abstract void pause();
+    abstract public void pause();
 
     /**
      * Resumes the clock if it was paused.
      */
-    abstract void resume();
+    abstract public void resume();
 }

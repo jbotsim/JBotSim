@@ -9,59 +9,112 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
+
+/**
+ * Default Clock is a simple clock implementation using a simple timer to
+ * schedule onClock at a fixed rate.
+ * This class is not thread-safe
+ *
+ * Authors:
+ * Quentin Bramas <bramas@unistra.fr>
+ */
+
 package jbotsim;
 
-import javax.swing.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class DefaultClock extends Clock {
     Timer timer;
+    long period;
+    boolean running;
+    DefaultTask task;
 
     public DefaultClock(ClockManager manager) {
         super(manager);
-        timer = new Timer(10, e -> manager.onClock());
+        period  = 10;
+        running = false;
+        task    = null;
+        timer   = new Timer("Default Clock Timer");
+    }
+
+    /**
+    * TimerTask called by our timer.
+    * The task just call the onClock method of the ClockManager
+    */
+    private class DefaultTask extends TimerTask {
+
+        ClockManager manager;
+        DefaultTask(ClockManager manager) {
+          this.manager = manager;
+        }
+        @Override
+        public void run() {
+            manager.onClock();
+        }
     }
 
     /**
      * Returns the time unit of the clock, in milliseconds.
      */
+    @Override
     public int getTimeUnit(){
-        return timer.getDelay();
+        return (int)period;
     }
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
      * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
+    @Override
     public void setTimeUnit(int delay){
-        timer.setDelay(delay);
+        period = delay;
+        if(running) {
+            pause();
+            resume();
+        }
     }
 
     /**
      * Indicates whether the clock is currently running or paused.
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
+    @Override
     public boolean isRunning(){
-        return timer.isRunning();
+        return running;
     }
 
     /**
      * Starts the clock.
      */
+    @Override
     public void start(){
-        timer.start();
+        resume();
     }
 
     /**
      * Pauses the clock.
      */
+    @Override
     public void pause(){
-        timer.stop();
+        if(!running)
+            return;
+
+        running = false;
+        task.cancel();
+        task = null;
     }
 
     /**
      * Resumes the clock if it was paused.
      */
+    @Override
     public void resume(){
-        timer.start();
+        if(running)
+            return;
+
+        running = true;
+        task = new DefaultTask(manager);
+        timer.scheduleAtFixedRate(task, period, period);
     }
 }
