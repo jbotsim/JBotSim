@@ -259,6 +259,13 @@ public class Topology extends _Properties implements ClockListener{
     }
 
     /**
+     * Returns the clock model currently in use.
+     */
+    public Class<? extends Clock> getClockModel(){
+        return clockManager.getClockModel();
+    }
+
+    /**
      * Sets the clock model (to be instantiated automatically).
      * @param clockModel A class that extends JBotSim's abstract Clock
      */
