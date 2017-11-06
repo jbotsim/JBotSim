@@ -14,9 +14,14 @@ package jbotsim.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
-import javax.swing.JFrame;
-import javax.swing.JSlider;
+import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -86,7 +91,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         jtp.addCommand("Pause or resume execution");
         jtp.addCommand("Execute a single step");
         jtp.addCommand("Restart nodes");
-        jtp.addCommand("Export topology");
+        jtp.addCommand("Load topology");
+        jtp.addCommand("Save topology");
         jtp.addCommandListener(this);
         jtp.topo.addPropertyListener(this);
         if (windowed){ // This JViewer creates its own window
@@ -181,8 +187,26 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             jtp.topo.restart();
         }else if (command.equals("Execute a single step")){
             jtp.topo.step();
-        }else if (command.equals("Export topology")){
-            System.out.println(Tikz.exportTopology(jtp.topo));
+        }else if (command.equals("Load topology")){
+            JFileChooser fc = new JFileChooser();
+            fc.showOpenDialog(jtp.getParent());
+            File file = fc.getSelectedFile();
+            String s;
+            try {
+                s = new String(Files.readAllBytes(Paths.get(file.toString())));
+                jtp.topo.fromString(s);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else if (command.equals("Save topology")){
+            JFileChooser fc = new JFileChooser();
+            fc.showSaveDialog(jtp.getParent());
+            File file = fc.getSelectedFile();
+            try(PrintWriter out = new PrintWriter(file.toString())) {
+                out.print(jtp.topo.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
