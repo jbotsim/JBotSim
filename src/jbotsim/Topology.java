@@ -13,14 +13,12 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.List;
 
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
-import jbotsim.ui.JTopology;
 
 public class Topology extends _Properties implements ClockListener{
     ClockManager clockManager;
@@ -223,9 +221,12 @@ public class Topology extends _Properties implements ClockListener{
 
     /**
      * Gets a reference on the associated JTopology (if any, null otherwise).
+     * @deprecated was indirectly a dependency to Swing (through JTopology);
+     * The method still returns it, but only as an "Object" for this reason.
      */
-    public JTopology getJTopology() {
-        return (JTopology) getProperty("jtopology");
+    @Deprecated
+    public Object getJTopology() {
+        return getProperty("jtopology");
     }
 
     /**
