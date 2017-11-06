@@ -885,12 +885,14 @@ public class Topology extends _Properties implements ClockListener{
     }
     /**
      * Returns a string representation of this topology. The output of this
-     * method can be subsequently used to reconstruct a topology with the 
+     * method can be subsequently used to reconstruct a topology with the
      * <tt>fromString</tt> method. Only the nodes and wired links are exported
      * here (not the topology's properties).
      */
-    public String toString(){
+    public String toString() {
         StringBuffer res = new StringBuffer();
+        res.append("cR "+communicationRange+"\n");
+        res.append("sR "+sensingRange+"\n");
         for (Node n : nodes) {
             Point2D p2d = new Point2D.Double();
             p2d.setLocation(n.coords.getX(), n.coords.getY());
@@ -898,30 +900,36 @@ public class Topology extends _Properties implements ClockListener{
         }
         for (Link l : getLinks())
             if (!l.isWireless())
-                res.append(l.toString()+ "\n");
+                res.append(l.toString() + "\n");
         return res.toString();
     }
     /**
-     * Imports nodes and wired links from the specified string representation of a 
+     * Imports nodes and wired links from the specified string representation of a
      * topology.
      * @param s The string representation.
      */
-    public void fromString(String s){
-        HashMap<String,Node> nodeTable=new HashMap<String,Node>();
-        while(s.indexOf("[")>0){
-            Node n=new Node();
-            String id=s.substring(0, s.indexOf(" "));
+    public void fromString(String s) {
+        clear();
+        setCommunicationRange(Double.parseDouble(s.substring(s.indexOf(" ")+1, s.indexOf("\n"))));
+        s = s.substring(s.indexOf("\n") + 1);
+        setSensingRange(Double.parseDouble(s.substring(s.indexOf(" ")+1, s.indexOf("\n"))));
+        s = s.substring(s.indexOf("\n") + 1);
+        HashMap<String, Node> nodeTable = new HashMap<>();
+        while (s.indexOf("[") > 0) {
+            addNode(new Double(s.substring(s.indexOf("[") + 1, s.indexOf(","))),
+                    new Double(s.substring(s.indexOf(",") + 2, s.indexOf("]"))));
+            Node n = nodes.get(nodes.size()-1);
+            String id = s.substring(0, s.indexOf(" "));
             n.setProperty("id", id);
             nodeTable.put(id, n);
-            addNode(new Double(s.substring(s.indexOf("[")+1,s.indexOf(","))),new Double(s.substring(s.indexOf(",")+2,s.indexOf("]"))),n);
-            s=s.substring(s.indexOf("\n")+1);
+            s = s.substring(s.indexOf("\n") + 1);
         }
-        while(s.indexOf("--")>0){
-            Node n1=nodeTable.get(s.substring(0,s.indexOf(" ")));
-            Node n2=nodeTable.get(s.substring(s.indexOf(">")+2,s.indexOf("\n")));
-            Type type=(s.indexOf("<")>0 && s.indexOf("<")<s.indexOf("\n"))?Type.UNDIRECTED:Type.DIRECTED;
-            addLink(new Link(n1,n2,type,Link.Mode.WIRED));
-            s=s.substring(s.indexOf("\n")+1);
+        while (s.indexOf("--") > 0) {
+            Node n1 = nodeTable.get(s.substring(0, s.indexOf(" ")));
+            Node n2 = nodeTable.get(s.substring(s.indexOf(">") + 2, s.indexOf("\n")));
+            Type type = (s.indexOf("<") > 0 && s.indexOf("<") < s.indexOf("\n")) ? Type.UNDIRECTED : Type.DIRECTED;
+            addLink(new Link(n1, n2, type, Link.Mode.WIRED));
+            s = s.substring(s.indexOf("\n") + 1);
         }
     }
 }
