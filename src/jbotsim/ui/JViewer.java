@@ -21,6 +21,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import jbotsim.Topology;
+import jbotsim._Properties;
+import jbotsim.event.PropertyListener;
 import jbotsimx.format.tikz.Tikz;
 
 /**
@@ -29,7 +31,7 @@ import jbotsimx.format.tikz.Tikz;
  * remove a communication range or sensing range tuners (slider bars), or to
  * pause/resume the system clock.
  */
-public class JViewer implements CommandListener, ChangeListener{
+public class JViewer implements CommandListener, ChangeListener, PropertyListener {
     protected JTopology jtp;
     protected int width=600;
     protected JSlider slideBar = new JSlider(0, width);
@@ -86,6 +88,7 @@ public class JViewer implements CommandListener, ChangeListener{
         jtp.addCommand("Restart nodes");
         jtp.addCommand("Export topology");
         jtp.addCommandListener(this);
+        jtp.topo.addPropertyListener(this);
         if (windowed){ // This JViewer creates its own window
             window=new JFrame();
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -134,8 +137,8 @@ public class JViewer implements CommandListener, ChangeListener{
     public void addSlideBar(BarType type, int value){
         removeSlideBar();
         slideBarType = type;
-        slideBar.setValue(value);
         jtp.getParent().add(slideBar,BorderLayout.NORTH);
+        slideBar.setValue(value);
     }
     /**
      * Removes the slide bar, if any.
@@ -180,6 +183,16 @@ public class JViewer implements CommandListener, ChangeListener{
             jtp.topo.step();
         }else if (command.equals("Export topology")){
             System.out.println(Tikz.exportTopology(jtp.topo));
+        }
+    }
+
+    @Override
+    public void propertyChanged(_Properties o, String p) {
+        if (slideBarType != null) {
+            if (p.equals("communicationRange") && slideBarType == BarType.COMMUNICATION)
+                slideBar.setValue((int) jtp.topo.getCommunicationRange());
+            else if (p.equals("sensingRange") && slideBarType == BarType.SENSING)
+                slideBar.setValue((int) jtp.topo.getSensingRange());
         }
     }
 

@@ -184,6 +184,7 @@ public class Topology extends _Properties implements ClockListener{
         this.communicationRange = communicationRange;
         for (Node node : nodes)
             node.setCommunicationRange(communicationRange);
+        setProperty("communicationRange", communicationRange); // for notification purpose
     }
 
     /**
@@ -203,6 +204,7 @@ public class Topology extends _Properties implements ClockListener{
         this.sensingRange = sensingRange;
         for (Node node : nodes)
             node.setSensingRange(sensingRange);
+        setProperty("sensingRange", sensingRange); // for notification purpose
     }
 
     /**
