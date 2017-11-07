@@ -13,8 +13,6 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     boolean isWirelessEnabled = true;
     Topology topo;
     Color color = null;
-    Object state=null;
+    Object label = null;
     Integer ID = -1;
     int size = 8;
     static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
@@ -68,14 +66,14 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void onSelection(){
     }
     /**
-     * Override this method to reset this node's state.
-     * This method is also called just after the node is added to the topology
-     * (if the topology is in a running state).
+     * Override this method to re-initialise your node (e.g. your variables).
+     * This method is also called when a node is added to the topology
+     * (or when the topology starts, if not yet started).
      */
     public void onStart(){
     }
     /**
-     * This method is to be called just before
+     * This method is called just before
      * the node is removed from the topology.
      */
     public void onStop(){
@@ -224,18 +222,36 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Returns the state of this node.
+     * Returns the label of this node.
+     * @deprecated Use setLabel() instead.
      */
+    @Deprecated
     public Object getState(){
-        return state;
+        return label;
     }
     /**
-     * Sets the state of this node. This text will appear as a tooltip 
+     * Sets the label of this node. This text will appear as a tooltip
+     * when the mouse cursor is held some time over the node.
+     * @deprecated Use setLabel() instead.
+     */
+    @Deprecated
+    public void setState(Object state) {
+        this.label = state;
+        setProperty("label", label); // Used for property notification
+    }
+    /**
+     * Returns the label of this node.
+     */
+    public Object getLabel(){
+        return label;
+    }
+    /**
+     * Sets the label of this node. Default GUI shows it as tooltip
      * when the mouse cursor is held some time over the node.
      */
-    public void setState(Object state){
-        this.state=state;
-        setProperty("state", state); // Used for property notification
+    public void setLabel(Object label) {
+        this.label = label;
+        setProperty("label", label); // Used for property notification
     }
     /**
      * Returns the communication range of this node (as a radius).
@@ -654,9 +670,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public double distance(double x, double y, double z){
         return coords.distance(x, y, z);
     }
-    protected void notifyNodeMoved(){
+    protected void notifyNodeMoved() {
         onMove();
-        if (topo!=null)
+        if (topo != null)
             for (MovementListener ml : new ArrayList<>(topo.movementListeners))
                 ml.onMove(this);
     }
@@ -666,10 +682,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     /**
      * Returns a string representation of this node.
      */
-    public String toString(){
-        if (state==null)
+    public String toString() {
+        if (label == null)
             return ID.toString();
         else
-            return state.toString();
+            return label.toString();
     }
 }
