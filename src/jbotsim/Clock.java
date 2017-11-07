@@ -25,12 +25,14 @@ public abstract class Clock {
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
+     *
      * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
     public abstract void setTimeUnit(int delay);
 
     /**
      * Indicates whether the clock is currently running or paused.
+     *
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public abstract boolean isRunning();

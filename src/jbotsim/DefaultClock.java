@@ -32,16 +32,16 @@ public class DefaultClock extends Clock {
 
     public DefaultClock(ClockManager manager) {
         super(manager);
-        period  = 10;
+        period = 10;
         running = false;
-        task    = null;
-        timer   = new Timer("Default Clock Timer");
+        task = null;
+        timer = new Timer("Default Clock Timer");
     }
 
     /**
-    * TimerTask called by our timer.
-    * The task just call the onClock method of the ClockManager
-    */
+     * TimerTask called by our timer.
+     * The task just call the onClock method of the ClockManager
+     */
     private class DefaultTask extends TimerTask {
         @Override
         public void run() {
@@ -53,18 +53,19 @@ public class DefaultClock extends Clock {
      * Returns the time unit of the clock, in milliseconds.
      */
     @Override
-    public int getTimeUnit(){
-        return (int)period;
+    public int getTimeUnit() {
+        return (int) period;
     }
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
+     *
      * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
     @Override
-    public void setTimeUnit(int delay){
+    public void setTimeUnit(int delay) {
         period = delay;
-        if(running) {
+        if (running) {
             pause();
             resume();
         }
@@ -72,10 +73,11 @@ public class DefaultClock extends Clock {
 
     /**
      * Indicates whether the clock is currently running or paused.
+     *
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     @Override
-    public boolean isRunning(){
+    public boolean isRunning() {
         return running;
     }
 
@@ -83,7 +85,7 @@ public class DefaultClock extends Clock {
      * Starts the clock.
      */
     @Override
-    public void start(){
+    public void start() {
         resume();
     }
 
@@ -91,8 +93,8 @@ public class DefaultClock extends Clock {
      * Pauses the clock.
      */
     @Override
-    public void pause(){
-        if(!running)
+    public void pause() {
+        if (!running)
             return;
 
         running = false;
@@ -104,8 +106,8 @@ public class DefaultClock extends Clock {
      * Resumes the clock if it was paused.
      */
     @Override
-    public void resume(){
-        if(running)
+    public void resume() {
+        if (running)
             return;
 
         running = true;

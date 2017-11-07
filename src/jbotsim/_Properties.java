@@ -18,54 +18,65 @@ import java.util.List;
 import jbotsim.event.PropertyListener;
 
 public abstract class _Properties {
-    protected HashMap<String,Object> properties = new HashMap<>();
-    List<PropertyListener> propertyListeners= new ArrayList<>();
-    
+    protected HashMap<String, Object> properties = new HashMap<>();
+    List<PropertyListener> propertyListeners = new ArrayList<>();
+
     /**
      * Registers the specified property listener to this node. The listener
-     * will be notified every time a property of this node changes. 
+     * will be notified every time a property of this node changes.
+     *
      * @param listener The movement listener.
      */
-    public void addPropertyListener(PropertyListener listener){
+    public void addPropertyListener(PropertyListener listener) {
         propertyListeners.add(listener);
     }
+
     /**
      * Unregisters the specified property listener for this node.
-     * @param listener The property listener. 
+     *
+     * @param listener The property listener.
      */
-    public void removePropertyListener(PropertyListener listener){
+    public void removePropertyListener(PropertyListener listener) {
         propertyListeners.remove(listener);
     }
+
     /**
      * Returns the property stored under the specified key.
+     *
      * @param key The property key.
      */
-    public Object getProperty(String key){
+    public Object getProperty(String key) {
         return properties.get(key);
     }
+
     /**
      * Stores the specified property (<tt>value</tt>) under the specified name
-     * (<tt>key</tt>). 
-     * @param key The property name.
+     * (<tt>key</tt>).
+     *
+     * @param key   The property name.
      * @param value The property value.
      */
-    public void setProperty(String key, Object value){
+    public void setProperty(String key, Object value) {
         properties.put(key, value);
         for (PropertyListener pl : new ArrayList<>(propertyListeners))
             pl.propertyChanged(this, key);
     }
+
     /**
      * Removes the specified property.
+     *
      * @param key The property key.
      */
-    public void removeProperty(String key){
+    public void removeProperty(String key) {
         properties.remove(key);
     }
+
     /**
      * Returns the property stored under the specified key.
+     *
      * @param key The property key.
      */
-    public boolean hasProperty(String key){
+    public boolean hasProperty(String key) {
         return properties.containsKey(key);
     }
 

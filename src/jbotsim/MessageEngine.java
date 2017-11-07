@@ -18,16 +18,18 @@ import java.util.ArrayList;
 
 public class MessageEngine implements ClockListener {
     protected Topology topology;
-    protected boolean debug=false;
+    protected boolean debug = false;
 
-    public void setTopology(Topology topology){
+    public void setTopology(Topology topology) {
         this.topology = topology;
     }
-    public void setSpeed(int speed){
+
+    public void setSpeed(int speed) {
         topology.removeClockListener(this);
         topology.addClockListener(this, speed);
     }
-    public void onClock(){
+
+    public void onClock() {
         clearMailboxes();
         processMessages(collectMessages());
     }
@@ -37,7 +39,7 @@ public class MessageEngine implements ClockListener {
             node.getMailbox().clear();
     }
 
-    protected ArrayList<Message> collectMessages(){
+    protected ArrayList<Message> collectMessages() {
         ArrayList<Message> messages = new ArrayList<>();
         for (Node n : topology.getNodes()) {
             for (Message m : n.sendQueue) {
@@ -51,22 +53,25 @@ public class MessageEngine implements ClockListener {
         }
         return messages;
     }
-    protected void processMessages(ArrayList<Message> messages){
+
+    protected void processMessages(ArrayList<Message> messages) {
         for (Message m : messages)
             if (m.sender.getOutLinkTo(m.destination) != null)
                 deliverMessage(m);
             else if (m.retryMode)
                 m.sender.sendQueue.add(m);
     }
-    protected void deliverMessage(Message m){
+
+    protected void deliverMessage(Message m) {
         m.destination.getMailbox().add(m);
         m.destination.onMessage(m);
         for (MessageListener ml : topology.messageListeners)
             ml.onMessage(m);
         if (debug)
-            System.err.println(topology.getTime()+": " + m);
+            System.err.println(topology.getTime() + ": " + m);
     }
-    public void setDebug(boolean debug){
-        this.debug=debug;
+
+    public void setDebug(boolean debug) {
+        this.debug = debug;
     }
 }

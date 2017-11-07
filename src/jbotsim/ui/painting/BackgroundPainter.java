@@ -21,6 +21,7 @@ import java.awt.*;
 public interface BackgroundPainter {
     /**
      * Provides a way to draw things on the background.
+     *
      * @param g2d The background graphics.
      */
     void paintBackground(Graphics2D g2d, Topology tp);

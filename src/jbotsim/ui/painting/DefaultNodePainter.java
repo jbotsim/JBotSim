@@ -19,11 +19,11 @@ import java.awt.*;
 public class DefaultNodePainter implements NodePainter {
     @Override
     public void paintNode(Graphics2D g2d, Node node) {
-        JNode jn=(JNode)node.getProperty("jnode");
-        int drawSize = jn.getWidth()/2;
-        if (node.getColor() != null){
+        JNode jn = (JNode) node.getProperty("jnode");
+        int drawSize = jn.getWidth() / 2;
+        if (node.getColor() != null) {
             g2d.setColor(node.getColor());
-            g2d.fillOval(drawSize/2, drawSize/2, drawSize, drawSize);
+            g2d.fillOval(drawSize / 2, drawSize / 2, drawSize, drawSize);
         }
     }
 }

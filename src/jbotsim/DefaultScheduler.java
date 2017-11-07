@@ -4,7 +4,7 @@ import jbotsim.event.ClockListener;
 
 import java.util.List;
 
-public class DefaultScheduler implements Scheduler{
+public class DefaultScheduler implements Scheduler {
 
     @Override
     public void onClock(Topology tp, List<ClockListener> expiredListeners) {

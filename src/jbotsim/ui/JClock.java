@@ -28,25 +28,27 @@ public class JClock extends Clock {
      * Returns the time unit of the clock, in milliseconds.
      */
     @Override
-    public int getTimeUnit(){
+    public int getTimeUnit() {
         return timer.getDelay();
     }
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
+     *
      * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
     @Override
-    public void setTimeUnit(int delay){
+    public void setTimeUnit(int delay) {
         timer.setDelay(delay);
     }
 
     /**
      * Indicates whether the clock is currently running or paused.
+     *
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     @Override
-    public boolean isRunning(){
+    public boolean isRunning() {
         return timer.isRunning();
     }
 
@@ -54,7 +56,7 @@ public class JClock extends Clock {
      * Starts the clock.
      */
     @Override
-    public void start(){
+    public void start() {
         timer.start();
     }
 
@@ -62,7 +64,7 @@ public class JClock extends Clock {
      * Pauses the clock.
      */
     @Override
-    public void pause(){
+    public void pause() {
         timer.stop();
     }
 
@@ -70,7 +72,7 @@ public class JClock extends Clock {
      * Resumes the clock if it was paused.
      */
     @Override
-    public void resume(){
+    public void resume() {
         timer.start();
     }
 }

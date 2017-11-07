@@ -18,23 +18,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ClockManager{
+public class ClockManager {
     Topology tp;
     HashMap<ClockListener, Integer> listeners = new HashMap<>();
     HashMap<ClockListener, Integer> countdown = new HashMap<>();
     Clock clock;
     Integer time = 0;
 
-    ClockManager(Topology topology){
+    ClockManager(Topology topology) {
         this.tp = topology;
         clock = new DefaultClock(this);
         clock.start();
-        try {Thread.sleep(100);} catch (InterruptedException e) {e.printStackTrace();}
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void onClock(){
+    public void onClock() {
         List<ClockListener> expiredListeners = new ArrayList<>();
-        for(ClockListener cl : listeners.keySet()) {
+        for (ClockListener cl : listeners.keySet()) {
             countdown.put(cl, countdown.get(cl) - 1);
             if (countdown.get(cl) == 0) {
                 expiredListeners.add(cl);
@@ -61,6 +65,7 @@ public class ClockManager{
 
     /**
      * Sets the clock model (to be instantiated automatically).
+     *
      * @param clockModel A class that extends JBotSim's abstract Clock
      */
     public void setClockModel(Class<? extends Clock> clockModel) {
@@ -77,25 +82,29 @@ public class ClockManager{
             clock.setTimeUnit(timeUnit);
             if (wasRunning)
                 clock.resume();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Registers the specified listener to the events of the clock.
+     *
      * @param listener The listener to register.
-     * @param period The desired period between consecutive onClock() events,
-     * in time units.
+     * @param period   The desired period between consecutive onClock() events,
+     *                 in time units.
      */
-    public void addClockListener(ClockListener listener, int period){
+    public void addClockListener(ClockListener listener, int period) {
         listeners.put(listener, period);
         countdown.put(listener, period);
     }
 
     /**
      * Registers the specified listener to every pulse of the clock.
+     *
      * @param listener The listener to register.
      */
-    public void addClockListener(ClockListener listener){
+    public void addClockListener(ClockListener listener) {
         listeners.put(listener, 1);
         countdown.put(listener, 1);
     }
@@ -103,9 +112,10 @@ public class ClockManager{
     /**
      * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
      * listener will not longer be called.)
+     *
      * @param listener The listener to unregister.
      */
-    public void removeClockListener(ClockListener listener){
+    public void removeClockListener(ClockListener listener) {
         listeners.remove(listener);
         countdown.remove(listener);
     }
@@ -113,14 +123,14 @@ public class ClockManager{
     /**
      * Returns the current round number.
      */
-    public Integer currentTime(){
+    public Integer currentTime() {
         return time;
     }
 
     /**
      * Sets the clock time to 0.
      */
-    public void reset(){
+    public void reset() {
         time = 0;
     }
 }

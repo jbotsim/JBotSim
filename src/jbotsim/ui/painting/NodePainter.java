@@ -19,7 +19,8 @@ import java.awt.*;
 public interface NodePainter {
     /**
      * Provides a way to redefine the drawing of a node.
-     * @param g2d This node graphics object
+     *
+     * @param g2d  This node graphics object
      * @param node This node
      */
     void paintNode(Graphics2D g2d, Node node);

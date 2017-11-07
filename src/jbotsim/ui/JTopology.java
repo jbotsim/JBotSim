@@ -26,26 +26,28 @@ import jbotsim.ui.painting.*;
 
 
 @SuppressWarnings("serial")
-public class JTopology extends JPanel implements ActionListener{
+public class JTopology extends JPanel implements ActionListener {
     protected ArrayList<BackgroundPainter> backgroundPainters = new ArrayList<>();
     protected LinkPainter linkPainter;
     protected ArrayList<NodePainter> nodePainters = new ArrayList<>();
     protected ArrayList<CommandListener> commandListeners = new ArrayList<>();
     protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
-    protected JTopology jtopo=this;
-    protected EventHandler handler=new EventHandler();
+    protected JTopology jtopo = this;
+    protected EventHandler handler = new EventHandler();
     protected boolean popupRunning = false;
-    protected boolean showDrawings=true;
-    protected boolean isInteractive=true;
+    protected boolean showDrawings = true;
+    protected boolean isInteractive = true;
+
     /**
      * Creates a new JTopology for the specified topology.
+     *
      * @param topo The topology to encapsulate.
      */
-    public JTopology(Topology topo){
+    public JTopology(Topology topo) {
         setTopology(topo);
         super.setLayout(null);
-        super.setBackground(new Color(180,180,180));
+        super.setBackground(new Color(180, 180, 180));
         super.addMouseListener(handler);
         super.addKeyListener(handler);
         super.setPreferredSize(topo.getDimensions());
@@ -74,7 +76,7 @@ public class JTopology extends JPanel implements ActionListener{
             handler.onLinkAdded(l);
     }
 
-    public void unsetTopology(){
+    public void unsetTopology() {
         if (topo != null) {
             topo.removeProperty("jtopology");
             topo.removeConnectivityListener(handler);
@@ -88,194 +90,229 @@ public class JTopology extends JPanel implements ActionListener{
         }
     }
 
-    public void setInteractive(boolean interactive){
+    public void setInteractive(boolean interactive) {
         if (interactive && !isInteractive)
             addMouseListener(handler);
         if (!interactive && isInteractive)
             removeMouseListener(handler);
         isInteractive = interactive;
     }
-    public void addBackgroundPainter(BackgroundPainter painter){
+
+    public void addBackgroundPainter(BackgroundPainter painter) {
         backgroundPainters.add(0, painter);
     }
-    public void setDefaultBackgroundPainter(BackgroundPainter painter){
+
+    public void setDefaultBackgroundPainter(BackgroundPainter painter) {
         backgroundPainters.clear();
         addBackgroundPainter(painter);
     }
-    public void removeBackgroundPainter(BackgroundPainter painter){
+
+    public void removeBackgroundPainter(BackgroundPainter painter) {
         backgroundPainters.remove(painter);
     }
-    public void setLinkPainter(LinkPainter painter){
+
+    public void setLinkPainter(LinkPainter painter) {
         linkPainter = painter;
     }
-    public void addNodePainter(NodePainter painter){
+
+    public void addNodePainter(NodePainter painter) {
         nodePainters.add(painter);
     }
-    public void setDefaultNodePainter(NodePainter painter){
+
+    public void setDefaultNodePainter(NodePainter painter) {
         nodePainters.clear();
         addNodePainter(painter);
     }
-    public void removeNodePainter(NodePainter painter){
+
+    public void removeNodePainter(NodePainter painter) {
         nodePainters.remove(painter);
     }
+
     /**
      * Registers the specified action listener to this JTopology.
+     *
      * @param al The listener to add.
      */
-    public void addCommandListener(CommandListener al){
+    public void addCommandListener(CommandListener al) {
         commandListeners.add(al);
     }
+
     /**
      * Unregisters the specified action listener to this JTopology.
+     *
      * @param al The listener to remove.
      */
-    public void removeCommandListener(CommandListener al){
+    public void removeCommandListener(CommandListener al) {
         commandListeners.remove(al);
     }
+
     /**
      * Adds the specified action command to this JTopology.
+     *
      * @param command The command name to add.
      */
-    public void addCommand(String command){
+    public void addCommand(String command) {
         commands.add(command);
     }
+
     /**
      * Removes the specified action command from this JTopology.
+     *
      * @param command The command name to remove.
      */
-    public void removeCommand(String command){
+    public void removeCommand(String command) {
         commands.remove(command);
     }
+
     /**
      * Removes all commands from this JTopology.
      */
-    public void removeAllCommands(){
+    public void removeAllCommands() {
         commands.clear();
     }
+
     /**
      * Disables the drawing of links and sensing radius (if any).
      */
-    public void disableDrawings(){
-        showDrawings=false;
+    public void disableDrawings() {
+        showDrawings = false;
     }
+
     /**
      * Paints this JTopology on the specified graphics (not supposed to be
      * used explicitly).
      */
-    public void paintComponent(Graphics g){
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d=(Graphics2D)g;
+        Graphics2D g2d = (Graphics2D) g;
         for (BackgroundPainter painter : backgroundPainters)
             painter.paintBackground(g2d, topo);
-        if (showDrawings){
-            for(Link l : topo.getLinks(topo.hasDirectedLinks()))
+        if (showDrawings) {
+            for (Link l : topo.getLinks(topo.hasDirectedLinks()))
                 linkPainter.paintLink(g2d, l);
         }
         //if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
         //    updateUI();
     }
+
     public void actionPerformed(ActionEvent arg0) {
         String cmd = ((JMenuItem) arg0.getSource()).getText();
     }
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener{
+            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener {
         boolean ctrlPressed = false;
-        public void onNodeAdded(Node n){
-            JNode jv=new JNode(n);
+
+        public void onNodeAdded(Node n) {
+            JNode jv = new JNode(n);
             n.setProperty("jnode", jv);
             n.addPropertyListener(this);
             jv.addKeyListener(this);
             add(jv);
             updateUI();
         }
-        public void onNodeRemoved(Node n){
-            JNode jn=(JNode)n.getProperty("jnode");
+
+        public void onNodeRemoved(Node n) {
+            JNode jn = (JNode) n.getProperty("jnode");
             if (jn != null)
                 remove(jn);
             updateUI();
         }
-        public void onLinkAdded(Link l){
+
+        public void onLinkAdded(Link l) {
             l.addPropertyListener(this);
             updateUI();
         }
-        public void onLinkRemoved(Link l){
+
+        public void onLinkRemoved(Link l) {
             updateUI();
         }
+
         public void onMove(Node n) {
             Toolkit.getDefaultToolkit().sync();
             updateUI();
             if (n.hasProperty("jnode"))
-                ((JNode)n.getProperty("jnode")).update();
+                ((JNode) n.getProperty("jnode")).update();
         }
-        public void propertyChanged(_Properties o, String property){
-            if (o instanceof Node){ // Node
-                JNode jn = (JNode)((Node)o).getProperty("jnode");
-                if (property.equals("color")){
+
+        public void propertyChanged(_Properties o, String property) {
+            if (o instanceof Node) { // Node
+                JNode jn = (JNode) ((Node) o).getProperty("jnode");
+                if (property.equals("color")) {
                     jn.updateUI();
-                }else if (property.equals("icon")){
+                } else if (property.equals("icon")) {
                     jn.updateIcon();
-                }else if (property.equals("size")){
+                } else if (property.equals("size")) {
                     jn.updateIcon();
                 }
-            }else if (property.equals("width") || property.equals("color")){
+            } else if (property.equals("width") || property.equals("color")) {
                 updateUI();
             }
         }
+
         @Override
         public void onClock() {
         }
+
         public void mousePressed(MouseEvent e) {
-            if (popupRunning){
+            if (popupRunning) {
                 popupRunning = false;
                 return;
             }
-            if (e.getButton()==MouseEvent.BUTTON1){
-                JPopupMenu popup=new JPopupMenu();
-                for (String type : topo.getModelsNames()){
-                    JMenuItem jitem=new JMenuItem(type);
-                    jitem.setActionCommand("addNode "+type+" "+e.getX()+" "+e.getY());
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                JPopupMenu popup = new JPopupMenu();
+                for (String type : topo.getModelsNames()) {
+                    JMenuItem jitem = new JMenuItem(type);
+                    jitem.setActionCommand("addNode " + type + " " + e.getX() + " " + e.getY());
                     jitem.addActionListener(this);
                     popup.add(jitem);
                 }
-                if (popup.getComponentCount()>1){
+                if (popup.getComponentCount() > 1) {
                     popupRunning = true;
-                    popup.show(jtopo,e.getX(),e.getY());
-                }else{
+                    popup.show(jtopo, e.getX(), e.getY());
+                } else {
                     String modelName = "default";
-                    if (topo.getModelsNames().size()>0)
+                    if (topo.getModelsNames().size() > 0)
                         modelName = topo.getModelsNames().iterator().next();
-                    topo.addNode(e.getX(),e.getY(),topo.newInstanceOfModel(modelName));
+                    topo.addNode(e.getX(), e.getY(), topo.newInstanceOfModel(modelName));
                 }
-            }else if (e.getButton()==MouseEvent.BUTTON3){
-                JPopupMenu popup=new JPopupMenu();
-                for (String command : commands){
-                    JMenuItem jitem=new JMenuItem(command);
+            } else if (e.getButton() == MouseEvent.BUTTON3) {
+                JPopupMenu popup = new JPopupMenu();
+                for (String command : commands) {
+                    JMenuItem jitem = new JMenuItem(command);
                     jitem.addActionListener(this);
                     popup.add(jitem);
                 }
                 popupRunning = true;
-                popup.show(jtopo,e.getX(),e.getY());
+                popup.show(jtopo, e.getX(), e.getY());
             }
         }
 
         public void actionPerformed(ActionEvent arg0) {
             popupRunning = false;
-            String[] args=arg0.getActionCommand().split(" ");
-            if (args[0].equals("addNode")){
-                int x=Integer.parseInt(args[2]);
-                int y=Integer.parseInt(args[3]);
+            String[] args = arg0.getActionCommand().split(" ");
+            if (args[0].equals("addNode")) {
+                int x = Integer.parseInt(args[2]);
+                int y = Integer.parseInt(args[3]);
                 topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
-            }else{
+            } else {
                 for (CommandListener cl : commandListeners)
                     cl.onCommand(arg0.getActionCommand());
                 updateUI();
             }
         }
-        public void mouseClicked(MouseEvent e){}
-        public void mouseEntered(MouseEvent e){}
-        public void mouseExited(MouseEvent e){}
-        public void mouseReleased(MouseEvent e){}
+
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
 
         @Override
         public void keyTyped(KeyEvent e) {
