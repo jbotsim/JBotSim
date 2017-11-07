@@ -190,23 +190,13 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         }else if (command.equals("Load topology")){
             JFileChooser fc = new JFileChooser();
             fc.showOpenDialog(jtp.getParent());
-            File file = fc.getSelectedFile();
-            String s;
-            try {
-                s = new String(Files.readAllBytes(Paths.get(file.toString())));
-                jtp.topo.fromString(s);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            if (fc.getSelectedFile() != null)
+                jtp.topo.fromFile(fc.getSelectedFile().toString());
         }else if (command.equals("Save topology")){
             JFileChooser fc = new JFileChooser();
             fc.showSaveDialog(jtp.getParent());
-            File file = fc.getSelectedFile();
-            try(PrintWriter out = new PrintWriter(file.toString())) {
-                out.print(jtp.topo.toString());
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            if (fc.getSelectedFile() != null)
+                jtp.topo.toFile(fc.getSelectedFile().toString());
         }
     }
 

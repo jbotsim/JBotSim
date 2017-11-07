@@ -13,6 +13,12 @@ package jbotsim;
 
 import java.awt.*;
 import java.awt.geom.Point2D;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 
@@ -930,6 +936,29 @@ public class Topology extends _Properties implements ClockListener{
             Type type = (s.indexOf("<") > 0 && s.indexOf("<") < s.indexOf("\n")) ? Type.UNDIRECTED : Type.DIRECTED;
             addLink(new Link(n1, n2, type, Link.Mode.WIRED));
             s = s.substring(s.indexOf("\n") + 1);
+        }
+    }
+    /**
+     * Saves the current topology (nodes and links) in the given file.
+     * @param filename The absolute path to the file
+     */
+    public void toFile(String filename){
+        try(PrintWriter out = new PrintWriter(filename)) {
+            out.print(toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * Imports a topology from the given file.
+     * @param filename The absolute path to the file
+     */
+    public void fromFile(String filename){
+        try {
+            String s = new String(Files.readAllBytes(Paths.get(filename)));
+            fromString(s);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
