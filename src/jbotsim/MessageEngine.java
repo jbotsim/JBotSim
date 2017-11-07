@@ -28,8 +28,15 @@ public class MessageEngine implements ClockListener {
         topology.addClockListener(this, speed);
     }
     public void onClock(){
+        clearMailboxes();
         processMessages(collectMessages());
     }
+
+    private void clearMailboxes() {
+        for (Node node : topology.getNodes())
+            node.getMailbox().clear();
+    }
+
     protected ArrayList<Message> collectMessages(){
         ArrayList<Message> messages = new ArrayList<>();
         for (Node n : topology.getNodes()) {
@@ -52,6 +59,7 @@ public class MessageEngine implements ClockListener {
                 m.sender.sendQueue.add(m);
     }
     protected void deliverMessage(Message m){
+        m.destination.getMailbox().add(m);
         m.destination.onMessage(m);
         for (MessageListener ml : topology.messageListeners)
             ml.onMessage(m);

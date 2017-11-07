@@ -102,8 +102,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Called when this node receives a message
      */
     public void onMessage(Message message){
-        if (mailBox.size() < 100) // FIXME (arbitrary threshold)
-            mailBox.add(message);
     }
     /**
      * Called when an adjacent undirected link is added
