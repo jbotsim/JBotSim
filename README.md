@@ -11,8 +11,7 @@ mobile robots or mobility models), or by means of mouse-based
 interactions during the execution. Beyond its features, the main asset
 of JBotSim is its simplicity of use.
 
-For examples of code, refer to the `src/examples` directory or to 
-the (still official) [JBotSim's website](http://jbotsim.sourceforge.net) at sourceforge.
+For examples of code, refer to the `src/examples` directory (here), or to the example section of [JBotSim's website](http://jbotsim.io).
 
 Here is a basic HelloWorld with JBotSim:
 
