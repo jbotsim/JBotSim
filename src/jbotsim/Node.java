@@ -407,8 +407,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Changes this node's location modulo the size of topology.
      */
     public void wrapLocation() {
-        Dimension dim = topo.dimensions;
-        setLocation((coords.getX() + dim.width) % dim.width, (coords.getY() + dim.height) % dim.height);
+        setLocation((coords.getX() + topo.getWidth()) % topo.getWidth(), (coords.getY() + topo.getHeight()) % topo.getHeight());
     }
 
     /**

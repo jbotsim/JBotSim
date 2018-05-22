@@ -11,7 +11,7 @@
  */
 package jbotsim.ui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.File;
@@ -140,7 +140,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      */
     public void setSize(int width, int height) {
         jtp.topo.setDimensions(width, height);
-        jtp.setPreferredSize(jtp.topo.getDimensions());
+        jtp.setPreferredSize(new Dimension(jtp.topo.getWidth(), jtp.topo.getHeight()));
         if (window != null)
             window.pack();
     }
