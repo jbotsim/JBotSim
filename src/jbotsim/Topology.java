@@ -51,6 +51,7 @@ public class Topology extends _Properties implements ClockListener {
     ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
     private boolean isStarted = false;
+    private int nextID = 0;
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
@@ -414,6 +415,7 @@ public class Topology extends _Properties implements ClockListener {
     public void clear() {
         while (!nodes.isEmpty())
             removeNode(nodes.get(nodes.size() - 1));
+        nextID = 0;
     }
 
     /**
@@ -487,7 +489,7 @@ public class Topology extends _Properties implements ClockListener {
         if (isWirelessEnabled == false)
             n.disableWireless();
         if (n.getID() == -1)
-            n.setID(nodes.size());
+            n.setID(nextID++);
         nodes.add(n);
         n.topo = this;
         notifyNodeAdded(n);
