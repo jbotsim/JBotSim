@@ -47,7 +47,6 @@ public class Topology extends _Properties implements ClockListener {
     Dimension dimensions;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
-    int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
     private boolean isStarted = false;
@@ -61,35 +60,17 @@ public class Topology extends _Properties implements ClockListener {
      * Creates a topology.
      */
     public Topology() {
-        this(600, 400, true);
-    }
-
-    /**
-     * Creates a topology and sets its running status (running/paused).
-     */
-    public Topology(boolean toBeStarted) {
-        this(600, 400, toBeStarted);
+        this(600, 400);
     }
 
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height) {
-        this(width, height, true);
-    }
-
-    /**
-     * Creates a topology of given dimensions.
-     */
-    public Topology(int width, int height, boolean toBeStarted) {
         setMessageEngine(new MessageEngine());
         setScheduler(new DefaultScheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
-        if (!toBeStarted)
-            clockManager.getClock().pause();
-        isStarted = toBeStarted;
-        resetTime();
     }
 
     /**
@@ -331,23 +312,14 @@ public class Topology extends _Properties implements ClockListener {
      * Pauses the clock (or increments the pause counter).
      */
     public void pause() {
-        if (isStarted) {
-            if (nbPauses == 0)
-                clockManager.getClock().pause();
-            nbPauses++;
-        }
+        clockManager.pause();
     }
 
     /**
      * Resumes the clock (or decrements the pause counter).
      */
     public void resume() {
-        if (isStarted) {
-            assert (nbPauses > 0);
-            nbPauses--;
-            if (nbPauses == 0)
-                clockManager.getClock().resume();
-        }
+        clockManager.resume();
     }
 
     /**
@@ -383,19 +355,16 @@ public class Topology extends _Properties implements ClockListener {
     }
 
     /**
-     * Reset the color and width of nodes and links, then calls the
-     * onStart() method on each node.
+     * Initializes the clock.
      */
     public void start() {
-        if (!isStarted) {
-            isStarted = true;
-            clockManager.getClock().resume();
-            restart();
-        }
+        clockManager.start();
+        isStarted = true;
+        restart();
     }
 
     /**
-     * Causes the onStart() method to be called again on each node (and each StartListener)
+     * (Re)init the nodes through their onStart() method (and notifies StartListeners as well)
      */
     public void restart() {
         pause();
@@ -438,8 +407,7 @@ public class Topology extends _Properties implements ClockListener {
      * Performs a single round, then switch to pause state.
      */
     public void step() {
-        if (nbPauses > 0)
-            resume();
+        resume();
         step = true;
     }
 

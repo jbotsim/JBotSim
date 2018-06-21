@@ -22,18 +22,13 @@ public class ClockManager {
     Topology tp;
     HashMap<ClockListener, Integer> listeners = new HashMap<>();
     HashMap<ClockListener, Integer> countdown = new HashMap<>();
-    Clock clock;
+    Class<? extends Clock> clockModel = null;
+    Clock clock = null;
     Integer time = 0;
+    int nbPauses = 0;
 
     ClockManager(Topology topology) {
         this.tp = topology;
-        clock = new DefaultClock(this);
-        clock.start();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     public void onClock() {
@@ -60,7 +55,7 @@ public class ClockManager {
      * Returns the clock model currently in use.
      */
     public Class<? extends Clock> getClockModel() {
-        return clock.getClass();
+        return clockModel;
     }
 
     /**
@@ -69,22 +64,7 @@ public class ClockManager {
      * @param clockModel A class that extends JBotSim's abstract Clock
      */
     public void setClockModel(Class<? extends Clock> clockModel) {
-        boolean wasRunning = false;
-        int timeUnit = 10;
-        if (clock != null) {
-            timeUnit = clock.getTimeUnit();
-            wasRunning = clock.isRunning();
-            clock.pause();
-        }
-        try {
-            Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
-            clock = c.newInstance(this);
-            clock.setTimeUnit(timeUnit);
-            if (wasRunning)
-                clock.resume();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.clockModel = clockModel;
     }
 
     /**
@@ -125,6 +105,50 @@ public class ClockManager {
      */
     public Integer currentTime() {
         return time;
+    }
+
+    /**
+     * Starts the clock (if no model is set, DefaultClock is used).
+     */
+    public void start() {
+        if (clockModel == null) {
+            try {
+                clockModel = (Class<? extends Clock>) Class.forName("jbotsim.DefaultClock");
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
+            clock = c.newInstance(this);
+            clock.setTimeUnit(10);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Pauses the clock (or increments the pause counter).
+     */
+    public void pause() {
+        if (clock != null) {
+            if (nbPauses == 0)
+                clock.pause();
+            nbPauses++;
+        }
+    }
+
+    /**
+     * Resumes the clock (or decrements the pause counter).
+     */
+    public void resume() {
+        if (clock != null) {
+            if (nbPauses > 0) {
+                nbPauses--;
+                if (nbPauses == 0)
+                    clock.resume();
+            }
+        }
     }
 
     /**
