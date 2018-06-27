@@ -25,6 +25,7 @@ public class ClockManager {
     Class<? extends Clock> clockModel = null;
     Clock clock = null;
     Integer time = 0;
+    Integer timeUnit = 10; // duration of a round in ms
     int nbPauses = 0;
 
     ClockManager(Topology topology) {
@@ -101,6 +102,24 @@ public class ClockManager {
     }
 
     /**
+     * Returns the time unit of the clock, in milliseconds.
+     */
+    public int getTimeUnit(){
+        return timeUnit;
+    }
+
+    /**
+     * Sets the time unit of the clock to the specified value in millisecond.
+     *
+     * @param timeUnit The desired time unit
+     */
+    public void setTimeUnit(int timeUnit){
+        this.timeUnit = timeUnit;
+        if (clock != null)
+            clock.setTimeUnit(timeUnit);
+    }
+
+    /**
      * Returns the current round number.
      */
     public Integer currentTime() {
@@ -121,10 +140,22 @@ public class ClockManager {
         try {
             Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
             clock = c.newInstance(this);
-            clock.setTimeUnit(10);
+            clock.setTimeUnit(timeUnit);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Indicates whether the clock is currently running or paused.
+     *
+     * @return <tt>true</tt> if running, <tt>false</tt> if paused or not started.
+     */
+    public boolean isRunning() {
+        if (clock != null)
+            return clock.isRunning();
+        else
+            return false;
     }
 
     /**

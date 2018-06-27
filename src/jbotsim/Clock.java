@@ -26,9 +26,9 @@ public abstract class Clock {
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
      *
-     * @param delay The desired time unit (1 corresponds to the fastest rate)
+     * @param timeUnit The desired time unit
      */
-    public abstract void setTimeUnit(int delay);
+    public abstract void setTimeUnit(int timeUnit);
 
     /**
      * Indicates whether the clock is currently running or paused.

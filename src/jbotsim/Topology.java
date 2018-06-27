@@ -134,7 +134,7 @@ public class Topology extends _Properties implements ClockListener {
         return new Node();
     }
 
-    public boolean isStarted() {
+    public boolean isStarted() { // FIXME Ambiguous for the user
         return isStarted;
     }
 
@@ -261,7 +261,7 @@ public class Topology extends _Properties implements ClockListener {
      * @return The duration
      */
     public int getClockSpeed() {
-        return clockManager.getClock().getTimeUnit();
+        return clockManager.getTimeUnit();
     }
 
     /**
@@ -270,7 +270,7 @@ public class Topology extends _Properties implements ClockListener {
      * @param period The desired duration
      */
     public void setClockSpeed(int period) {
-        clockManager.getClock().setTimeUnit(period);
+        clockManager.setTimeUnit(period);
     }
 
     /**
@@ -305,7 +305,7 @@ public class Topology extends _Properties implements ClockListener {
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public boolean isRunning() {
-        return clockManager.getClock().isRunning();
+        return clockManager.isRunning();
     }
 
     /**
