@@ -19,24 +19,45 @@
  * Quentin Bramas <bramas@unistra.fr>
  */
 
-package jbotsim;
+package jbotsimx.misc;
 
-public class DefaultClock extends Clock implements Runnable{
+import jbotsim.Clock;
+import jbotsim.ClockManager;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class UtilClock extends Clock {
+    Timer timer;
+    long period;
     boolean running;
-    Thread timer;
+    DefaultTask task;
 
-    public DefaultClock(ClockManager manager) {
+    public UtilClock(ClockManager manager) {
         super(manager);
+        period = 10;
         running = false;
-        timer = new Thread(this);
+        task = null;
+        timer = new Timer("Default Clock Timer");
     }
 
     /**
-     * Returns the duration of one time unit, in milliseconds.
+     * TimerTask called by our timer.
+     * The task just call the onClock method of the ClockManager
+     */
+    private class DefaultTask extends TimerTask {
+        @Override
+        public void run() {
+            manager.onClock();
+        }
+    }
+
+    /**
+     * Returns the time unit of the clock, in milliseconds.
      */
     @Override
     public int getTimeUnit() {
-        return 0;
+        return (int) period;
     }
 
     /**
@@ -46,6 +67,11 @@ public class DefaultClock extends Clock implements Runnable{
      */
     @Override
     public void setTimeUnit(int delay) {
+        period = delay;
+        if (running) {
+            pause();
+            resume();
+        }
     }
 
     /**
@@ -63,8 +89,7 @@ public class DefaultClock extends Clock implements Runnable{
      */
     @Override
     public void start() {
-        running = true;
-        timer.start();
+        resume();
     }
 
     /**
@@ -72,7 +97,12 @@ public class DefaultClock extends Clock implements Runnable{
      */
     @Override
     public void pause() {
+        if (!running)
+            return;
+
         running = false;
+        task.cancel();
+        task = null;
     }
 
     /**
@@ -80,13 +110,11 @@ public class DefaultClock extends Clock implements Runnable{
      */
     @Override
     public void resume() {
-        running = true;
-    }
+        if (running)
+            return;
 
-    @Override
-    public void run() {
-        while (true)
-            if (running)
-                manager.onClock();
+        running = true;
+        task = new DefaultTask();
+        timer.scheduleAtFixedRate(task, period, period);
     }
 }

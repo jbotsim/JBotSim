@@ -141,6 +141,7 @@ public class ClockManager {
             Constructor<? extends Clock> c = clockModel.getConstructor(ClockManager.class);
             clock = c.newInstance(this);
             clock.setTimeUnit(timeUnit);
+            clock.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

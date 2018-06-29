@@ -12,7 +12,7 @@
 package jbotsim;
 
 public abstract class Clock {
-    ClockManager manager;
+    protected ClockManager manager;
 
     public Clock(ClockManager manager) {
         this.manager = manager;
