@@ -197,6 +197,12 @@ public class Topology extends _Properties implements ClockListener {
     }
 
     /**
+     * Returns true if wireless links are enabled.
+     */
+    public boolean getWirelessStatus() {
+        return isWirelessEnabled;
+    }
+    /**
      * Returns the default communication range.
      *
      * @return the default communication range
@@ -735,6 +741,14 @@ public class Topology extends _Properties implements ClockListener {
      */
     public void setLinkResolver(LinkResolver linkResolver) {
         this.linkResolver = linkResolver;
+    }
+
+    /**
+     * Return the current LinkResolver
+     *
+     */
+    public LinkResolver getLinkResolver() {
+        return linkResolver;
     }
 
     /**
