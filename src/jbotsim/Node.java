@@ -20,6 +20,9 @@ import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
+    public static final Color DEFAULT_COLOR = null;
+    public static final int DEFAULT_SIZE = 8;
+
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
     HashMap<Node, Link> outLinks = new HashMap<>();
@@ -33,7 +36,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Color color = null;
     Object label = null;
     Integer ID = -1;
-    int size = 8;
+    int size = DEFAULT_SIZE;
     static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
             Color.red, Color.green, Color.blue, Color.yellow,
             Color.pink, Color.black, Color.white, Color.gray,

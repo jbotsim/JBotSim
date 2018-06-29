@@ -16,8 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Link extends _Properties implements Comparable<Link> {
-    Integer width = 1;
-    Color color = Color.darkGray;
+    public static final Color DEFAULT_COLOR = Color.darkGray;
+    public static final int DEFAULT_WIDTH = 1;
+    public static final Type DEFAULT_TYPE = Type.UNDIRECTED;
+    public static final Mode DEFAULT_MODE = Mode.WIRED;
+
+    Integer width = DEFAULT_WIDTH;
+    Color color = DEFAULT_COLOR;
 
     /**
      * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
@@ -64,7 +69,7 @@ public class Link extends _Properties implements Comparable<Link> {
      * @param n2 The destination node.
      */
     public Link(Node n1, Node n2) {
-        this(n1, n2, Type.UNDIRECTED, Mode.WIRED);
+        this(n1, n2, DEFAULT_TYPE, DEFAULT_MODE);
     }
 
     /**
@@ -78,7 +83,7 @@ public class Link extends _Properties implements Comparable<Link> {
      *             <tt>Type.UNDIRECTED</tt>).
      */
     public Link(Node from, Node to, Type type) {
-        this(from, to, type, Mode.WIRED);
+        this(from, to, type, DEFAULT_MODE);
     }
 
     /**
@@ -93,7 +98,7 @@ public class Link extends _Properties implements Comparable<Link> {
      *             <tt>Mode.WIRELESS</tt>).
      */
     public Link(Node from, Node to, Mode mode) {
-        this(from, to, Type.UNDIRECTED, mode);
+        this(from, to, DEFAULT_TYPE, mode);
     }
 
     /**

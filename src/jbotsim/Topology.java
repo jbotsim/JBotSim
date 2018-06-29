@@ -27,6 +27,10 @@ import jbotsim.Link.Type;
 import jbotsim.event.*;
 
 public class Topology extends _Properties implements ClockListener {
+    public static final int DEFAULT_WIDTH = 600;
+    public static final int DEFAULT_HEIGHT = 400;
+    public static final double DEFAULT_COMMUNICATION_RANGE = 100;
+    public static final double DEFAULT_SENSING_RANGE = 0;
     ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
     List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
@@ -42,8 +46,8 @@ public class Topology extends _Properties implements ClockListener {
     List<Link> edges = new ArrayList<>();
     HashMap<String, Class<? extends Node>> nodeModels = new HashMap<String, Class<? extends Node>>();
     boolean isWirelessEnabled = true;
-    double communicationRange = 100;
-    double sensingRange = 0;
+    double communicationRange = DEFAULT_COMMUNICATION_RANGE;
+    double sensingRange = DEFAULT_SENSING_RANGE;
     Dimension dimensions;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
@@ -58,18 +62,19 @@ public class Topology extends _Properties implements ClockListener {
     ;
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
+
     /**
      * Creates a topology.
      */
     public Topology() {
-        this(600, 400, true);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
     }
 
     /**
      * Creates a topology and sets its running status (running/paused).
      */
     public Topology(boolean toBeStarted) {
-        this(600, 400, toBeStarted);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, toBeStarted);
     }
 
     /**
