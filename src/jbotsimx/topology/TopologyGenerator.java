@@ -8,7 +8,7 @@ import java.util.List;
 
 public class TopologyGenerator {
     public static void generateLine(Topology tp, int order){
-        int scale=(tp.getDimensions().width-50)/order;
+        int scale=(tp.getWidth()-50)/order;
         tp.setCommunicationRange(scale+1);
         for (int i=0; i<order; i++)
             tp.addNode(50+i*scale,100,tp.newInstanceOfModel("default"));
@@ -34,14 +34,14 @@ public class TopologyGenerator {
         generateGrid(tp, order, order);
     }
     public static void generateGrid(Topology tp, int orderX, int orderY){
-        int scale=(tp.getDimensions().width-50)/orderX;
+        int scale=(tp.getWidth()-50)/orderX;
         tp.setCommunicationRange(scale+1);
         for (int i=0; i<orderX; i++)
             for (int j=0; j<orderY; j++)
                 tp.addNode(50+i*scale,50+j*scale,tp.newInstanceOfModel("default"));
     }
     public static void generateTorus(Topology tp, int order){
-        int scale=(tp.getDimensions().width-50)/order;
+        int scale=(tp.getWidth()-50)/order;
         tp.setCommunicationRange(scale+1);
         Node[][] matrix = new Node[order][order];
         for (int i=0; i<order; i++)

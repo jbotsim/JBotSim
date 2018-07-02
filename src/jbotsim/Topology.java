@@ -44,7 +44,8 @@ public class Topology extends _Properties implements ClockListener {
     boolean isWirelessEnabled = true;
     double communicationRange = 100;
     double sensingRange = 0;
-    Dimension dimensions;
+    int width;
+    int height;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
     ArrayList<Node> toBeUpdated = new ArrayList<>();
@@ -331,28 +332,22 @@ public class Topology extends _Properties implements ClockListener {
     }
 
     public void setDimensions(int width, int height) {
-        dimensions = new Dimension(width, height);
-    }
-
-    /**
-     * Returns the topology dimensions.
-     */
-    public Dimension getDimensions() {
-        return new Dimension(dimensions);
+        this.width = width;
+        this.height = height;
     }
 
     /**
      * Returns the width of this topology.
      */
     public int getWidth() {
-        return dimensions.width;
+        return width;
     }
 
     /**
      * Returns the height of this topology.
      */
     public int getHeight() {
-        return dimensions.height;
+        return height;
     }
 
     /**
@@ -444,9 +439,9 @@ public class Topology extends _Properties implements ClockListener {
     public void addNode(double x, double y, Node n) {
         pause();
         if (x == -1)
-            x = Math.random() * dimensions.width;
+            x = Math.random() * width;
         if (y == -1)
-            y = Math.random() * dimensions.height;
+            y = Math.random() * height;
         if (n.getX() == 0 && n.getY() == 0)
             n.setLocation(x, y);
 
