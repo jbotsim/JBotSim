@@ -196,10 +196,14 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
                 removeSlideBar();
             jtp.updateUI();
         } else if (command.equals("Pause or resume execution")) {
-            if (jtp.topo.isRunning())
-                jtp.topo.pause();
-            else
-                jtp.topo.resume();
+            if (!jtp.topo.isStarted())
+                jtp.topo.start();
+            else {
+                if (jtp.topo.isRunning())
+                    jtp.topo.pause();
+                else
+                    jtp.topo.resume();
+            }
         } else if (command.equals("Restart nodes")) {
             jtp.topo.restart();
         } else if (command.equals("Execute a single step")) {
