@@ -297,9 +297,6 @@ public class Topology extends _Properties implements ClockListener {
     public int getTime() {
         return clockManager.currentTime();
     }
-    /**
-     * Sets the topology dimensions as indicated.
-     */
 
     /**
      * Indicates whether the internal clock is currently running or in pause.
@@ -331,6 +328,9 @@ public class Topology extends _Properties implements ClockListener {
         clockManager.reset();
     }
 
+    /**
+     * Sets the topology dimensions as indicated.
+     */
     public void setDimensions(int width, int height) {
         this.width = width;
         this.height = height;
