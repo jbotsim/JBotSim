@@ -22,7 +22,7 @@ public class DefaultNodePainter implements NodePainter {
         JNode jn = (JNode) node.getProperty("jnode");
         int drawSize = jn.getWidth() / 2;
         if (node.getColor() != null) {
-            g2d.setColor(node.getColor());
+            g2d.setColor(new Color(node.getColor().getRed(), node.getColor().getGreen(), node.getColor().getBlue()));
             g2d.fillOval(drawSize / 2, drawSize / 2, drawSize, drawSize);
         }
     }

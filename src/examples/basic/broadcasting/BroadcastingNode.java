@@ -1,9 +1,10 @@
 package examples.basic.broadcasting;
 
+import jbotsim.Color;
 import jbotsim.Message;
 import jbotsim.Node;
 
-import java.awt.Color;
+
 
 /**
  * Created by acasteig on 10/03/15.
