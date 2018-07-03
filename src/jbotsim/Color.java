@@ -1,7 +1,7 @@
 package jbotsim;
 
 /**
-** Original code AWT
+ * * Original code AWT
  */
 public class Color {
     public static Color white = new Color(255, 255, 255, 255);
@@ -30,10 +30,15 @@ public class Color {
     public static Color CYAN = cyan;
     public static Color blue = new Color(0, 0, 255);
     public static Color BLUE = blue;
+    int value = 0;
     private double r, g, b, a;
     private double FACTOR = 0.7;
 
     public Color(int r, int g, int b, int a) {
+        value = ((255 & 0xFF) << 24) |
+                ((r & 0xFF) << 16) |
+                ((g & 0xFF) << 8) |
+                ((b & 0xFF) << 0);
         this.r = r;
         this.g = g;
         this.b = b;
@@ -41,6 +46,10 @@ public class Color {
     }
 
     public Color(int r, int g, int b) {
+        value = ((255 & 0xFF) << 24) |
+                ((r & 0xFF) << 16) |
+                ((g & 0xFF) << 8) |
+                ((b & 0xFF) << 0);
         this.r = r;
         this.g = g;
         this.b = b;
@@ -68,7 +77,6 @@ public class Color {
 
 
     public int getRGB() {
-        int value = 0;
         return value;
     }
 

@@ -24,7 +24,7 @@ public class DefaultBackgroundPainter implements BackgroundPainter {
         for (Node n : tp.getNodes()) {
             double sR = n.getSensingRange();
             if (sR > 0) {
-                g2d.setColor(new java.awt.Color(Color.gray.getRed(), Color.gray.getGreen(), Color.gray.getBlue()));
+                g2d.setColor(Color.gray);
                 g2d.drawOval((int) n.getX() - (int) sR, (int) n.getY() - (int) sR, 2 * (int) sR, 2 * (int) sR);
             }
         }
