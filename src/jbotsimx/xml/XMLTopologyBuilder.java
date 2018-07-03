@@ -24,7 +24,7 @@ import java.util.function.BiConsumer;
 import static jbotsimx.xml.XMLTopologyKeys.*;
 
 public class XMLTopologyBuilder {
-    public static final String VERSION = "0.1";
+    public static final String VERSION = "1.0";
 
     private JTopology jtp;
     private Topology tp;
@@ -115,8 +115,6 @@ public class XMLTopologyBuilder {
     }
 
     private void addModel(Document doc, Element parent, XMLTopologyKeys key, String id, Class c, Class default_class) {
-        if (c.equals(default_class))
-            return;
         Element e = key.createElement(doc, parent);
         IDENTIFIER_ATTR.setAttribute(e, id);
         CLASS_ATTR.setAttribute(e, c.getName());
@@ -136,9 +134,7 @@ public class XMLTopologyBuilder {
     private void addNodeModels(Document doc, Element classes) {
         for (String mname : tp.getModelsNames()) {
             Class cls = tp.getNodeModel(mname);
-            Element nc = NODECLASS.createElement(doc, classes);
-            IDENTIFIER_ATTR.setAttribute(nc, mname);
-            CLASS_ATTR.setAttribute(nc, cls.getName());
+            addModel(doc, classes, NODECLASS, mname, cls, tp.getDefaultNodeModel());
         }
     }
 
