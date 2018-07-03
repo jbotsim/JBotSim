@@ -5,11 +5,19 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
 import java.awt.*;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.HashMap;
@@ -21,7 +29,9 @@ import static jbotsim.Link.Type.UNDIRECTED;
 import static jbotsimx.xml.XMLTopologyKeys.*;
 
 public class XMLTopologyParser {
-    public static final String DEFAULT_VERSION = "1.0";
+    public static final String DEFAULT_VERSION = XMLTopologyBuilder.VERSION;
+    private static final String XSD_RESOURCE_PREFIX = "topology-";
+    private static final String XSD_RESOURCE_SUFFIX = ".xsd";
 
     private DocumentBuilder builder;
     private Topology tp;
@@ -29,7 +39,8 @@ public class XMLTopologyParser {
 
     public XMLTopologyParser(Topology tp) throws ParserException {
         try {
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            builder = dbf.newDocumentBuilder();
             this.tp = tp;
         } catch (Exception e) {
             throw new ParserException(e);
@@ -73,6 +84,31 @@ public class XMLTopologyParser {
         checkElement(topo, XMLTopologyKeys.TOPOLOGY);
 
         version = VERSION_ATTR.getValueFor(topo, DEFAULT_VERSION);
+        try {
+            Schema schema = loadSchemaForVersion(version);
+            schema.newValidator().validate(new DOMSource(topo));
+        } catch (SAXParseException e) {
+            SAXParseException pe = (SAXParseException) e;
+            String msg;
+            if (pe.getPublicId() == null) {
+                msg = "XSD validation error:";
+            } else {
+                msg = pe.getPublicId()+":";
+                if (pe.getLineNumber() >= 1) {
+                    msg += pe.getLineNumber() + ":";
+                    if (pe.getColumnNumber() >= 1) {
+                        msg += pe.getColumnNumber() + ":";
+                    }
+                }
+                msg += "error: ";
+            }
+            throw new ParserException(msg + e.getMessage());
+        } catch (SAXException e) {
+            throw new ParserException("unable to validate XML topology:" + e.getMessage());
+        } catch (IOException e) {
+            throw new ParserException("some IO exception occurs while trying to validate XML topology:" +
+                    e.getMessage());
+        }
 
         if (WIRELESS_ENABLED_ATTR.isAttributeOf(topo)) {
             if (WIRELESS_ENABLED_ATTR.getValueFor(topo, Boolean::valueOf)) {
@@ -126,7 +162,6 @@ public class XMLTopologyParser {
             } else {
                 throw new ParserException("unknown model class: " + C.getNodeName());
             }
-
         } catch (ParserException e) {
             throw e;
         } catch (Exception e) {
@@ -147,7 +182,7 @@ public class XMLTopologyParser {
     private Color parseColor(Element e, Color default_color) {
         Color result = default_color;
         String color = COLOR_ATTR.getValueFor(e, (String) null);
-        if (color != null && ! color.equals("None")) {
+        if (color != null && !color.equals("None")) {
             result = new Color(Integer.parseUnsignedInt(color, 16));
         }
         return result;
@@ -159,8 +194,8 @@ public class XMLTopologyParser {
 
         try {
             if (CLASS_ATTR.isAttributeOf(ne)) {
-                    String className = CLASS_ATTR.getValueFor(ne);
-                    nodeClass = getClass().getClassLoader().loadClass(className);
+                String className = CLASS_ATTR.getValueFor(ne);
+                nodeClass = getClass().getClassLoader().loadClass(className);
             }
 
             n = (jbotsim.Node) nodeClass.getConstructor().newInstance();
@@ -190,20 +225,20 @@ public class XMLTopologyParser {
         tp.addNode(n);
     }
 
-    private void parseLink(Element e, Map<String,jbotsim.Node> nodeids) throws ParserException {
-        Link.Type type = DIRECTED_ATTR.getValueFor(e,false) ? DIRECTED : UNDIRECTED;
+    private void parseLink(Element e, Map<String, jbotsim.Node> nodeids) throws ParserException {
+        Link.Type type = DIRECTED_ATTR.getValueFor(e, false) ? DIRECTED : UNDIRECTED;
 
-        jbotsim.Node src = nodeids.get (SOURCE_ATTR.getValueFor(e));
+        jbotsim.Node src = nodeids.get(SOURCE_ATTR.getValueFor(e));
         if (src == null)
             throw new ParserException("unknown source node:" + SOURCE_ATTR.getValueFor(e));
-        jbotsim.Node dst = nodeids.get (DESTINATION_ATTR.getValueFor(e));
+        jbotsim.Node dst = nodeids.get(DESTINATION_ATTR.getValueFor(e));
         if (dst == null)
             throw new ParserException("unknown source node:" + DESTINATION_ATTR.getValueFor(e));
         Link l = new Link(src, dst, type, WIRED);
 
         l.setWidth(WIDTH_ATTR.getValueFor(e, Link.DEFAULT_WIDTH));
         l.setColor(parseColor(e, Link.DEFAULT_COLOR));
-        tp.addLink(l,true);
+        tp.addLink(l, true);
     }
 
     private void mapElementChildrenOf(Node parent, ElementVisitor v) throws ParserException {
@@ -223,6 +258,27 @@ public class XMLTopologyParser {
     private void checkElement(Element e, XMLTopologyKeys key) throws ParserException {
         if (!key.equals(e.getNodeName()))
             throw new ParserException("invalid node '" + e.getNodeName() + "' where '" + key + "' was expected");
+    }
+
+    private Schema loadSchemaForVersion(String version) throws ParserException {
+        SchemaFactory sF = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+        String xsdpath = "/" + getClass().getPackage().getName().replace('.', '/');
+        xsdpath += "/" + XSD_RESOURCE_PREFIX + version + XSD_RESOURCE_SUFFIX;
+        try {
+            InputStream is = getClass().getResourceAsStream(xsdpath);
+            return sF.newSchema(new StreamSource(is));
+        } catch (SAXException e) {
+            String msg;
+
+            if (e instanceof SAXParseException) {
+                int c = ((SAXParseException)e).getColumnNumber();
+                int l = ((SAXParseException)e).getLineNumber();
+                msg = xsdpath+":"+ l + ":"+c+": error: "+e.getMessage();
+            } else {
+                msg = "unable to load schema file (" + xsdpath + "):" + e.getMessage();
+            }
+            throw new ParserException(msg);
+        }
     }
 
     private interface ElementVisitor {
