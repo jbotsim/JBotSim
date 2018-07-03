@@ -30,9 +30,12 @@ public class Color {
     public static Color CYAN = cyan;
     public static Color blue = new Color(0, 0, 255);
     public static Color BLUE = blue;
+    private float falpha = 0;
     int value = 0;
     private double r, g, b, a;
     private double FACTOR = 0.7;
+
+    static final int ALPHA_MASK = 255 << 24;
 
     public Color(int r, int g, int b, int a) {
         value = ((255 & 0xFF) << 24) |
@@ -56,30 +59,40 @@ public class Color {
     }
 
 
+    public Color(int value) {
+        this(value, false);
+    }
+
+
+    public Color(int value, boolean hasalpha) {
+        if (hasalpha)
+            falpha = ((value & ALPHA_MASK) >> 24) / 255f;
+        else {
+            value |= ALPHA_MASK;
+            falpha = 1;
+        }
+        this.value = value;
+    }
+
     public int getRed() {
         return (int) r;
     }
-
 
     public int getGreen() {
         return (int) g;
     }
 
-
     public int getBlue() {
         return (int) b;
     }
-
 
     public int getAlpha() {
         return (int) a;
     }
 
-
     public int getRGB() {
         return value;
     }
-
 
     public void testColorValueRange(int r, int g, int b, int a) {
         boolean rangeError = false;
