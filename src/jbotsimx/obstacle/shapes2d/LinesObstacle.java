@@ -1,11 +1,11 @@
 package jbotsimx.obstacle.shapes2d;
 
 import jbotsim.Node;
+import jbotsim.Point2D;
 import jbotsim.Point3D;
 import jbotsimx.obstacle.core.Obstacle;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 

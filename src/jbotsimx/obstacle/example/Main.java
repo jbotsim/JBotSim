@@ -1,6 +1,6 @@
 package jbotsimx.obstacle.example;
 
-import jbotsim.Node;
+import jbotsim.Point2D;
 import jbotsim.Topology;
 import jbotsim.ui.JTopology;
 import jbotsim.ui.JViewer;
@@ -8,7 +8,6 @@ import jbotsimx.obstacle.core.ObstacleManager;
 import jbotsimx.obstacle.shapes2d.CircleObstacle;
 import jbotsimx.obstacle.shapes2d.LinesObstacle;
 
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 

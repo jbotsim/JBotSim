@@ -11,8 +11,6 @@
  */
 package jbotsim;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;

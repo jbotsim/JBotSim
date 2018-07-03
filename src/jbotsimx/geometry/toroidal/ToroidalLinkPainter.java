@@ -1,11 +1,11 @@
 package jbotsimx.geometry.toroidal;
 
 import jbotsim.Link;
+import jbotsim.Point2D;
 import jbotsim.Topology;
 import jbotsim.ui.painting.LinkPainter;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * A link painter that draws toroidal link in a toroidal fashion.

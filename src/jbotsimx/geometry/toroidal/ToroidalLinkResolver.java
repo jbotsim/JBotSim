@@ -3,8 +3,8 @@ package jbotsimx.geometry.toroidal;
 
 import jbotsim.LinkResolver;
 import jbotsim.Node;
+import jbotsim.Point2D;
 
-import java.awt.geom.Point2D;
 
 /**
  * A new type of link resolver based on the toroidal distance between nodes.
