@@ -14,10 +14,7 @@ package jbotsim.ui;
 import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -29,6 +26,8 @@ import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.PropertyListener;
 import jbotsimx.format.tikz.Tikz;
+import jbotsimx.xml.XMLTopologyBuilder;
+import jbotsimx.xml.XMLTopologyParser;
 
 /**
  * The viewer includes a central jtopology which will draw the attached
@@ -207,13 +206,39 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         } else if (command.equals("Load topology")) {
             JFileChooser fc = new JFileChooser();
             fc.showOpenDialog(jtp.getParent());
-            if (fc.getSelectedFile() != null)
-                jtp.topo.fromFile(fc.getSelectedFile().toString());
+            File selectedFile = fc.getSelectedFile();
+            if (selectedFile != null) {
+                if (selectedFile.toString().endsWith(".xml")) {
+                    try {
+                        XMLTopologyParser p = new XMLTopologyParser(jtp.topo);
+                        jtp.topo.clear();
+                        p.parse(selectedFile.toString());
+                    } catch (XMLTopologyParser.ParserException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    jtp.topo.fromFile(selectedFile.toString());
+                }
+            }
         } else if (command.equals("Save topology")) {
             JFileChooser fc = new JFileChooser();
             fc.showSaveDialog(jtp.getParent());
-            if (fc.getSelectedFile() != null)
-                jtp.topo.toFile(fc.getSelectedFile().toString());
+            File selectedFile = fc.getSelectedFile();
+            if (selectedFile != null) {
+                if (selectedFile.toString().endsWith(".xml")) {
+                    try {
+                        XMLTopologyBuilder builder = new XMLTopologyBuilder(jtp.topo);
+                        PrintWriter out = new PrintWriter(selectedFile);
+                        builder.write(out);
+                    } catch (XMLTopologyBuilder.BuilderException e) {
+                        e.printStackTrace();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    jtp.topo.toFile(selectedFile.toString());
+                }
+            }
         }
     }
 
