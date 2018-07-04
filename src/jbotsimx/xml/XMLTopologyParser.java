@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Class.forName;
 import static jbotsim.Link.Mode.WIRED;
 import static jbotsim.Link.Type.DIRECTED;
 import static jbotsim.Link.Type.UNDIRECTED;
@@ -35,7 +36,6 @@ public class XMLTopologyParser {
 
     private DocumentBuilder builder;
     private Topology tp;
-    private String version = DEFAULT_VERSION;
 
     public XMLTopologyParser(Topology tp) throws ParserException {
         try {
@@ -83,21 +83,20 @@ public class XMLTopologyParser {
     private void parseTopology(Element topo) throws ParserException {
         checkElement(topo, XMLTopologyKeys.TOPOLOGY);
 
-        version = VERSION_ATTR.getValueFor(topo, DEFAULT_VERSION);
+        String version = VERSION_ATTR.getValueFor(topo, DEFAULT_VERSION);
         try {
             Schema schema = loadSchemaForVersion(version);
             schema.newValidator().validate(new DOMSource(topo));
         } catch (SAXParseException e) {
-            SAXParseException pe = (SAXParseException) e;
             String msg;
-            if (pe.getPublicId() == null) {
-                msg = "XSD validation error:";
+            if (e.getPublicId() == null) {
+                msg = "XSD validation error: ";
             } else {
-                msg = pe.getPublicId()+":";
-                if (pe.getLineNumber() >= 1) {
-                    msg += pe.getLineNumber() + ":";
-                    if (pe.getColumnNumber() >= 1) {
-                        msg += pe.getColumnNumber() + ":";
+                msg = e.getPublicId()+":";
+                if (e.getLineNumber() >= 1) {
+                    msg += e.getLineNumber() + ":";
+                    if (e.getColumnNumber() >= 1) {
+                        msg += e.getColumnNumber() + ":";
                     }
                 }
                 msg += "error: ";
@@ -138,6 +137,7 @@ public class XMLTopologyParser {
         });
     }
 
+    @SuppressWarnings("unchecked")
     private void parseClass(Element C) throws ParserException {
         String ID = IDENTIFIER_ATTR.getValueFor(C, "default");
         String className = CLASS_ATTR.getValueFor(C, (String) null);
@@ -145,16 +145,20 @@ public class XMLTopologyParser {
             throw new ParserException("missing 'class' attribute in element:" + C.getNodeName());
 
         try {
-            Class c = getClass().getClassLoader().loadClass(className);
             if (LINK_RESOLVER.labelsElement(C)) {
-                tp.setLinkResolver((LinkResolver) c.getConstructor().newInstance());
+                Class<? extends LinkResolver> c = (Class<? extends LinkResolver>)forName(className);
+                tp.setLinkResolver(c.getConstructor().newInstance());
             } else if (MESSAGE_ENGINE.labelsElement(C)) {
-                tp.setMessageEngine((MessageEngine) c.getConstructor().newInstance());
+                Class<? extends MessageEngine> c = (Class<? extends MessageEngine>)forName(className);
+                tp.setMessageEngine(c.getConstructor().newInstance());
             } else if (SCHEDULER.labelsElement(C)) {
-                tp.setScheduler((Scheduler) c.getConstructor().newInstance());
+                Class<? extends Scheduler> c = (Class<? extends Scheduler>)forName(className);
+                tp.setScheduler(c.getConstructor().newInstance());
             } else if (CLOCKCLASS.labelsElement(C)) {
+                Class<? extends Clock> c = (Class<? extends Clock>)forName(className);
                 tp.setClockModel(c);
             } else if (NODECLASS.labelsElement(C)) {
+                Class<? extends jbotsim.Node> c = (Class<? extends jbotsim.Node>)forName(className);
                 if ("default".equals(ID))
                     tp.setDefaultNodeModel(c);
                 else
@@ -171,12 +175,8 @@ public class XMLTopologyParser {
 
     private void parseGraphElement(Element ge) throws ParserException {
         HashMap<String, jbotsim.Node> nodeids = new HashMap<>();
-        mapElementChildrenWithName(ge, NODE, e -> {
-            parseNode(e, nodeids);
-        });
-        mapElementChildrenWithName(ge, LINK, e -> {
-            parseLink(e, nodeids);
-        });
+        mapElementChildrenWithName(ge, NODE, e -> parseNode(e, nodeids));
+        mapElementChildrenWithName(ge, LINK, e -> parseLink(e, nodeids));
     }
 
     private Color parseColor(Element e, Color default_color) {
@@ -187,18 +187,18 @@ public class XMLTopologyParser {
         }
         return result;
     }
-
+    @SuppressWarnings("unchecked")
     private void parseNode(Element ne, Map<String, jbotsim.Node> nodeids) throws ParserException {
         jbotsim.Node n;
-        Class nodeClass = tp.getDefaultNodeModel();
+        Class<? extends jbotsim.Node> nodeClass = tp.getDefaultNodeModel();
 
         try {
             if (CLASS_ATTR.isAttributeOf(ne)) {
                 String className = CLASS_ATTR.getValueFor(ne);
-                nodeClass = getClass().getClassLoader().loadClass(className);
+                nodeClass = (Class<? extends jbotsim.Node>)Class.forName(className);
             }
 
-            n = (jbotsim.Node) nodeClass.getConstructor().newInstance();
+            n = nodeClass.getConstructor().newInstance();
         } catch (ReflectiveOperationException ex) {
             throw new ParserException(ex);
         }
@@ -287,11 +287,7 @@ public class XMLTopologyParser {
 
     public static class ParserException extends Exception {
         ParserException(Throwable cause) {
-            this("XML parser yields an exception.", cause);
-        }
-
-        ParserException(String message, Throwable cause) {
-            super(message, cause);
+            super("XML parser yields an exception.", cause);
         }
 
         ParserException(String message) {
