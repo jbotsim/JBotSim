@@ -1,6 +1,8 @@
 package jbotsimx.xml;
 
+import jbotsim.Node;
 import jbotsim.Topology;
+import org.hamcrest.core.IsNull;
 import org.hamcrest.core.IsInstanceOf;
 import org.hamcrest.core.StringContains;
 import org.junit.Rule;
@@ -41,6 +43,37 @@ public class ParserTest {
     }
 
     @Test
+    public void noDefaultConstructorTest() {
+        try {
+            loadXMLFile("no-default-constructor.xml");
+            thrown.expect(XMLTopologyParser.ParserException.class);
+        } catch (XMLTopologyParser.ParserException e) {
+            assertCauseParserExceptionIs(e, NoSuchMethodException.class);
+        }
+    }
+
+    @Test
+    public void unknownModelClass() {
+        testXSDValidationError("unknown-model-class.xml", "cvc-complex-type.2.4.a");
+    }
+
+    @Test
+    public void badSrcNodeTest() throws XMLTopologyParser.ParserException {
+        thrown.expect(XMLTopologyParser.ParserException.class);
+        thrown.expectCause(IsNull.nullValue(Throwable.class));
+        thrown.expectMessage("unknown node: 1");
+        loadXMLFile("bad-src-node.xml");
+    }
+
+    @Test
+    public void badDstNodeTest() throws XMLTopologyParser.ParserException {
+        thrown.expect(XMLTopologyParser.ParserException.class);
+        thrown.expectCause(IsNull.nullValue(Throwable.class));
+        thrown.expectMessage("unknown node: 1");
+        loadXMLFile("bad-dst-node.xml");
+    }
+
+    @Test
     public void missingSrcTest() {
         missingAttribute("missing-src.xml");
     }
@@ -66,21 +99,56 @@ public class ParserTest {
     }
 
     @Test
-    public void incompleteModel1Test() {
+    public void incompleteModelClass1Test() {
         missingAttribute("incomplete-model-class-1.xml");
     }
 
     @Test
-    public void incompleteModel2Test() {
+    public void incompleteModelClass2Test() {
         missingAttribute("incomplete-model-class-2.xml");
     }
 
     @Test
-    public void incompleteModel3Test() {
+    public void incompleteModelClass3Test() {
         try {
             loadXMLFile("incomplete-model-class-3.xml");
+            thrown.expect(XMLTopologyParser.ParserException.class);
         } catch (XMLTopologyParser.ParserException e) {
             assertCauseParserExceptionIs(e, ClassNotFoundException.class, "nosuchclass");
+        }
+    }
+
+    @Test
+    public void invalidClockClassTest() {
+        invalidClassTest("invalid-clock-class.xml");
+    }
+
+    @Test
+    public void invalidSchedulerClassTest() {
+        invalidClassTest("invalid-scheduler-class.xml");
+    }
+
+    @Test
+    public void invalidLinkResolverClassTest() {
+        invalidClassTest("invalid-link-resolver-class.xml");
+    }
+
+    @Test
+    public void invalidNodeClassTest() {
+        invalidClassTest("invalid-node-class.xml");
+    }
+
+    @Test
+    public void invalidMessageEngineClassTest() {
+        invalidClassTest("invalid-message-engine-class.xml");
+    }
+
+    private void invalidClassTest(String filename) {
+        try {
+            loadXMLFile(filename);
+            thrown.expect(XMLTopologyParser.ParserException.class);
+        } catch (XMLTopologyParser.ParserException e) {
+            assertCauseParserExceptionIs(e, ClassCastException.class, "java.lang.Object");
         }
     }
 
@@ -122,5 +190,9 @@ public class ParserTest {
         assertNotNull("This is a forwarded exception", e.getCause());
         assertCauseParserExceptionIs(e,c);
         assertThat(e.getCause().getMessage(), StringContains.containsString(error));
+    }
+
+    public static class NoDefaultConstructor extends Node {
+        NoDefaultConstructor(boolean dummy) {}
     }
 }
