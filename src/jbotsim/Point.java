@@ -2,21 +2,34 @@ package jbotsim;
 
 import java.io.Serializable;
 
-public class Point2D {
+public class Point {
     private double x;
     private double y;
+    private double z = 0;
 
-    public Point2D() {
+    public Point() {
     }
 
-    public Point2D(int x, int y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public Point2D(double x, double y) {
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
+    }
+
+    public Point(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public Point(double x, double y, double z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public static double distanceSq(double x1, double y1,
@@ -33,6 +46,16 @@ public class Point2D {
         return Math.sqrt(x1 * x1 + y1 * y1);
     }
 
+    public double distance(double paramDouble1, double paramDouble2, double paramDouble3) {
+        double d1 = getX() - paramDouble1;
+        double d2 = getY() - paramDouble2;
+        double d3 = getZ() - paramDouble3;
+        return Math.sqrt(d1 * d1 + d2 * d2 + d3 * d3);
+    }
+
+    public double getZ() {
+        return z;
+    }
 
     public double getX() {
         return x;
@@ -42,7 +65,7 @@ public class Point2D {
         return y;
     }
 
-    public void setLocation(Point2D p) {
+    public void setLocation(Point p) {
         setLocation(p.getX(), p.getY());
     }
 
@@ -57,10 +80,11 @@ public class Point2D {
         return (px * px + py * py);
     }
 
-    public double distanceSq(Point2D pt) {
+    public double distanceSq(Point pt) {
         double px = pt.getX() - this.getX();
         double py = pt.getY() - this.getY();
-        return (px * px + py * py);
+        double pz = pt.getZ() - this.getZ();
+        return (px * px + py * py + pz * pz);
     }
 
     public double distance(double px, double py) {
@@ -69,14 +93,14 @@ public class Point2D {
         return Math.sqrt(px * px + py * py);
     }
 
-    public double distance(Point2D pt) {
+    public double distance(Point pt) {
         double px = pt.getX() - this.getX();
         double py = pt.getY() - this.getY();
         return Math.sqrt(px * px + py * py);
     }
 
     public Object clone() {
-        return new Point2D(this.x, this.y);
+        return new Point(this.x, this.y);
     }
 
     public int hashCode() {
@@ -86,18 +110,19 @@ public class Point2D {
     }
 
     public boolean equals(Object obj) {
-        if (obj instanceof Point2D) {
-            Point2D p2d = (Point2D) obj;
-            return (getX() == p2d.getX()) && (getY() == p2d.getY());
+        if (obj instanceof Point) {
+            Point p2d = (Point) obj;
+            return (getX() == p2d.getX()) && (getY() == p2d.getY()) && (getZ() == p2d.getZ());
         }
         return super.equals(obj);
     }
 
-    public static class Float extends Point2D implements Serializable {
+    public static class Float extends Point implements Serializable {
 
         private static final long serialVersionUID = -2870572449815403710L;
         public float x;
         public float y;
+        public float z = 0;
 
 
         public Float() {
@@ -113,6 +138,10 @@ public class Point2D {
             return (double) x;
         }
 
+        public double getZ() {
+            return (double) z;
+        }
+
         public double getY() {
             return (double) y;
         }
@@ -126,13 +155,24 @@ public class Point2D {
             this.x = x;
             this.y = y;
         }
+        public void setLocation(double x, double y, double z) {
+            this.x = (float) x;
+            this.y = (float) y;
+            this.z = (float) z;
+        }
+
+        public void setLocation(float x, float y, float z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
 
         public String toString() {
-            return "Point2D.Float[" + x + ", " + y + "]";
+            return "Point [x = " + getX() + ", y = " + getY() + ", z = " + getZ() + "]";
         }
     }
 
-    public static class Double extends Point2D implements Serializable {
+    public static class Double extends Point implements Serializable {
 
         /*
          * JDK 1.6 serialVersionUID
@@ -140,6 +180,7 @@ public class Point2D {
         private static final long serialVersionUID = 6150783262733311327L;
         public double x;
         public double y;
+        public double z = 0;
 
 
         public Double() {
@@ -149,6 +190,15 @@ public class Point2D {
         public Double(double x, double y) {
             this.x = x;
             this.y = y;
+        }
+        public Double(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
+
+        public double getZ() {
+            return z;
         }
 
         public double getX() {
@@ -163,9 +213,14 @@ public class Point2D {
             this.x = x;
             this.y = y;
         }
+        public void setLocation(double x, double y, double z) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        }
 
         public String toString() {
-            return "Point2D.Double[" + x + ", " + y + "]";
+            return "Point [x = " + getX() + ", y = " + getY() + ", z = " + getZ() + "]";
         }
     }
 }

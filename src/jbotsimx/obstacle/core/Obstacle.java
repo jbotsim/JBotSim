@@ -1,7 +1,7 @@
 package jbotsimx.obstacle.core;
 
 import jbotsim.Node;
-import jbotsim.Point3D;
+import jbotsim.Point;
 
 import java.awt.*;
 
@@ -32,7 +32,7 @@ public interface Obstacle {
      * @param node The node which you want to know the point on the obstacle which is at the minimum distance from it
      * @return The point on the obstacle which is at the minimum distance from the node
      */
-    Point3D pointAtMinimumDistance(Node node);
+    Point pointAtMinimumDistance(Node node);
     
     /**
      * This function is automatically call by ObstaclePainter to draw the obstacle

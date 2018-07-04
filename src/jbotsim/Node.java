@@ -21,7 +21,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
     HashMap<Node, Link> outLinks = new HashMap<>();
-    Point3D coords = new Point3D(0, 0, 0);
+    Point coords = new Point(0, 0, 0);
     double direction = Math.PI / 2;
     Double communicationRange = null;
     Double sensingRange = null;
@@ -345,15 +345,15 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     /**
      * Returns the location of this node (as a 2D point).
      */
-    public Point2D getLocation() {
-        return new Point2D.Double(coords.getX(), coords.getY());
+    public Point getLocation() {
+        return new Point.Double(coords.getX(), coords.getY());
     }
 
     /**
      * Returns the location of this node (as a 3D point).
      */
-    public Point3D getLocation3D() {
-        return new Point3D(coords.getX(), coords.getY(), coords.getZ());
+    public Point getLocation3D() {
+        return new Point(coords.getX(), coords.getY(), coords.getZ());
     }
 
     /**
@@ -363,7 +363,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param y The ordinate of the new location.
      */
     public void setLocation(double x, double y) {
-        coords = new Point3D(x, y, 0);
+        coords = new Point(x, y, 0);
         if (topo != null)
             topo.touch(this);
         notifyNodeMoved();
@@ -377,7 +377,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param z The ordinate of the new location.
      */
     public void setLocation(double x, double y, double z) {
-        coords = new Point3D(x, y, z);
+        coords = new Point(x, y, z);
         if (topo != null)
             topo.touch(this);
         notifyNodeMoved();
@@ -388,16 +388,16 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param loc The new location point.
      */
-    public void setLocation(Point2D loc) {
+/*    public void setLocation(Point loc) {
         setLocation(loc.getX(), loc.getY());
-    }
+    }*/
 
     /**
      * Changes this node's location to the specified 2D point.
      *
      * @param loc The new location point.
      */
-    public void setLocation(Point3D loc) {
+    public void setLocation(Point loc) {
         setLocation(loc.getX(), loc.getY(), loc.getZ());
     }
 
@@ -459,7 +459,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The reference point.
      */
-    public void setDirection(Point2D p) {
+    public void setDirection(Point p) {
         setDirection(Math.atan2(p.getY() - coords.getY(), (p.getX() - coords.getX())));
     }
 
@@ -470,8 +470,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The reference point.
      */
-    public void setDirection(Point2D p, boolean opposite) {
-        Point2D p2 = (Point2D) p.clone();
+    public void setDirection(Point p, boolean opposite) {
+        Point p2 = (Point) p.clone();
         if (opposite)
             p2.setLocation(2 * getX() - p.getX(), 2 * getY() - p.getY());
         setDirection(p2);
@@ -743,9 +743,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The location (as a point).
      */
-    public double distance(Point2D p) {
+/*    public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), 0);
-    }
+    }*/
 
     /**
      * Returns the distance between this node and the specified 2D location.
@@ -762,7 +762,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The location (as a 3D point).
      */
-    public double distance(Point3D p) {
+    public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), p.getZ());
     }
 
