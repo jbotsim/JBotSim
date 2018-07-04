@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.lang.Class.forName;
 import static jbotsim.Link.Mode.WIRED;
 import static jbotsim.Link.Type.DIRECTED;
 import static jbotsim.Link.Type.UNDIRECTED;
@@ -137,33 +136,34 @@ public class XMLTopologyParser {
         });
     }
 
-    @SuppressWarnings("unchecked")
     private void parseClass(Element C) throws ParserException {
         String ID = IDENTIFIER_ATTR.getValueFor(C, "default");
         String className = CLASS_ATTR.getValueFor(C, (String) null);
-        if (className == null)
+        if (className == null) // this case should be handled by XSD validator
             throw new ParserException("missing 'class' attribute in element:" + C.getNodeName());
 
         try {
+            Class<?> c = Class.forName(className);
             if (LINK_RESOLVER.labelsElement(C)) {
-                Class<? extends LinkResolver> c = (Class<? extends LinkResolver>)forName(className);
-                tp.setLinkResolver(c.getConstructor().newInstance());
+                Class<? extends LinkResolver> cls = c.asSubclass(LinkResolver.class);
+                tp.setLinkResolver(cls.getConstructor().newInstance());
             } else if (MESSAGE_ENGINE.labelsElement(C)) {
-                Class<? extends MessageEngine> c = (Class<? extends MessageEngine>)forName(className);
-                tp.setMessageEngine(c.getConstructor().newInstance());
+                Class<? extends MessageEngine> cls = c.asSubclass(MessageEngine.class);
+                tp.setMessageEngine(cls.getConstructor().newInstance());
             } else if (SCHEDULER.labelsElement(C)) {
-                Class<? extends Scheduler> c = (Class<? extends Scheduler>)forName(className);
-                tp.setScheduler(c.getConstructor().newInstance());
+                Class<? extends Scheduler> cls = c.asSubclass(Scheduler.class);
+                tp.setScheduler(cls.getConstructor().newInstance());
             } else if (CLOCKCLASS.labelsElement(C)) {
-                Class<? extends Clock> c = (Class<? extends Clock>)forName(className);
-                tp.setClockModel(c);
+                Class<? extends Clock> cls = c.asSubclass(Clock.class);
+                tp.setClockModel(cls);
             } else if (NODECLASS.labelsElement(C)) {
-                Class<? extends jbotsim.Node> c = (Class<? extends jbotsim.Node>)forName(className);
+                Class<? extends jbotsim.Node> cls = c.asSubclass(jbotsim.Node.class);
                 if ("default".equals(ID))
-                    tp.setDefaultNodeModel(c);
+                    tp.setDefaultNodeModel(cls);
                 else
-                    tp.setNodeModel(ID, c);
+                    tp.setNodeModel(ID, cls);
             } else {
+                // this case should be handled by XSD validator
                 throw new ParserException("unknown model class: " + C.getNodeName());
             }
         } catch (ParserException e) {
@@ -187,7 +187,7 @@ public class XMLTopologyParser {
         }
         return result;
     }
-    @SuppressWarnings("unchecked")
+
     private void parseNode(Element ne, Map<String, jbotsim.Node> nodeids) throws ParserException {
         jbotsim.Node n;
         Class<? extends jbotsim.Node> nodeClass = tp.getDefaultNodeModel();
@@ -195,7 +195,7 @@ public class XMLTopologyParser {
         try {
             if (CLASS_ATTR.isAttributeOf(ne)) {
                 String className = CLASS_ATTR.getValueFor(ne);
-                nodeClass = (Class<? extends jbotsim.Node>)Class.forName(className);
+                nodeClass = Class.forName(className).asSubclass(jbotsim.Node.class);
             }
 
             n = nodeClass.getConstructor().newInstance();
@@ -230,10 +230,10 @@ public class XMLTopologyParser {
 
         jbotsim.Node src = nodeids.get(SOURCE_ATTR.getValueFor(e));
         if (src == null)
-            throw new ParserException("unknown source node:" + SOURCE_ATTR.getValueFor(e));
+            throw new ParserException("unknown node: " + SOURCE_ATTR.getValueFor(e));
         jbotsim.Node dst = nodeids.get(DESTINATION_ATTR.getValueFor(e));
         if (dst == null)
-            throw new ParserException("unknown source node:" + DESTINATION_ATTR.getValueFor(e));
+            throw new ParserException("unknown node: " + DESTINATION_ATTR.getValueFor(e));
         Link l = new Link(src, dst, type, WIRED);
 
         l.setWidth(WIDTH_ATTR.getValueFor(e, Link.DEFAULT_WIDTH));
