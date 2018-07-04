@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Point {
     private double x;
     private double y;
-    private double z = 0;
+    private double z;
 
     public Point() {
     }
@@ -13,11 +13,13 @@ public class Point {
     public Point(int x, int y) {
         this.x = x;
         this.y = y;
+        this.z = 0;
     }
 
     public Point(double x, double y) {
         this.x = x;
         this.y = y;
+        this.z = 0;
     }
 
     public Point(int x, int y, int z) {
@@ -30,13 +32,6 @@ public class Point {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    public static double distanceSq(double x1, double y1,
-                                    double x2, double y2) {
-        x1 -= x2;
-        y1 -= y2;
-        return (x1 * x1 + y1 * y1);
     }
 
     public static double distance(double x1, double y1,
@@ -72,19 +67,7 @@ public class Point {
     public void setLocation(double x, double y) {
         this.x = x;
         this.y = y;
-    }
-
-    public double distanceSq(double px, double py) {
-        px -= getX();
-        py -= getY();
-        return (px * px + py * py);
-    }
-
-    public double distanceSq(Point pt) {
-        double px = pt.getX() - this.getX();
-        double py = pt.getY() - this.getY();
-        double pz = pt.getZ() - this.getZ();
-        return (px * px + py * py + pz * pz);
+        this.z = 0;
     }
 
     public double distance(double px, double py) {
@@ -96,11 +79,12 @@ public class Point {
     public double distance(Point pt) {
         double px = pt.getX() - this.getX();
         double py = pt.getY() - this.getY();
-        return Math.sqrt(px * px + py * py);
+        double pz = pt.getZ() - this.getZ();
+        return Math.sqrt(px * px + py * py + pz * pz);
     }
 
     public Object clone() {
-        return new Point(this.x, this.y);
+        return new Point(this.x, this.y, this.z);
     }
 
     public int hashCode() {
@@ -122,7 +106,7 @@ public class Point {
         private static final long serialVersionUID = -2870572449815403710L;
         public float x;
         public float y;
-        public float z = 0;
+        public float z;
 
 
         public Float() {
@@ -132,6 +116,7 @@ public class Point {
         public Float(float x, float y) {
             this.x = x;
             this.y = y;
+            this.z = 0;
         }
 
         public double getX() {
@@ -149,11 +134,13 @@ public class Point {
         public void setLocation(double x, double y) {
             this.x = (float) x;
             this.y = (float) y;
+            this.z = 0f;
         }
 
         public void setLocation(float x, float y) {
             this.x = x;
             this.y = y;
+            this.z = 0f;
         }
         public void setLocation(double x, double y, double z) {
             this.x = (float) x;
@@ -180,7 +167,7 @@ public class Point {
         private static final long serialVersionUID = 6150783262733311327L;
         public double x;
         public double y;
-        public double z = 0;
+        public double z;
 
 
         public Double() {
@@ -190,6 +177,7 @@ public class Point {
         public Double(double x, double y) {
             this.x = x;
             this.y = y;
+            this.z = 0;
         }
         public Double(double x, double y, double z) {
             this.x = x;
@@ -212,6 +200,7 @@ public class Point {
         public void setLocation(double x, double y) {
             this.x = x;
             this.y = y;
+            this.z = 0;
         }
         public void setLocation(double x, double y, double z) {
             this.x = x;
