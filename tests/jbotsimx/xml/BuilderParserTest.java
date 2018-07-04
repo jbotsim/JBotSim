@@ -14,8 +14,6 @@ import java.awt.*;
 import java.io.StringReader;
 import java.util.*;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -62,7 +60,7 @@ public class BuilderParserTest {
     public static class TestNode2 extends Node { }
     public static class TestNode3 extends Node { }
 
-    private static Random rnd = new Random(0);
+    private static final Random rnd = new Random(0);
 
     private static Node getRandomNode () {
         switch (rnd.nextInt(3)){

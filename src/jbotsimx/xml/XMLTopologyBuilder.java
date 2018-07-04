@@ -26,9 +26,9 @@ import static jbotsimx.xml.XMLTopologyKeys.*;
 public class XMLTopologyBuilder {
     public static final String VERSION = "1.0";
 
-    private JTopology jtp;
-    private Topology tp;
-    private Stack<String> elements = new Stack<>();
+    private final JTopology jtp;
+    private final Topology tp;
+    private final Stack<String> elements = new Stack<>();
 
     public XMLTopologyBuilder(JTopology jtp) {
         this.jtp = jtp;
