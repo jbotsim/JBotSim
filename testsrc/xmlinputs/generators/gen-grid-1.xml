@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <topology version="1.0" wireless-enabled="true">
-<classes>
-</classes>
-<graph>
+  <classes>
+  </classes>
+  <graph>
     <generator>
-        <line order="5" x="."/>
+      <grid order="1"/>
     </generator>
-</graph>
+  </graph>
 </topology>

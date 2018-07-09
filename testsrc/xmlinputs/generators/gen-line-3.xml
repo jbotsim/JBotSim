@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<topology version="1.0" wireless-enabled="true">
+<classes>
+</classes>
+<graph>
+    <generator>
+        <line order="6" x=".1" y=".1" horizontal="true" width=".5" node-class="jbotsimx.xml.ParserTest$DummyNode1"/>
+        <line order="5" wired="true" x=".5" y=".5" horizontal="false" height=".3" node-class="jbotsimx.xml.ParserTest$DummyNode2"/>
+    </generator>
+</graph>
+</topology>

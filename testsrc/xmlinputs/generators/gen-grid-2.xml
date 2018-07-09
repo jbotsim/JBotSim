@@ -4,7 +4,7 @@
 </classes>
 <graph>
     <generator>
-        <line order="5" x="."/>
+        <grid order="2" wired="true" x="0.1" y="0.1"/>
     </generator>
 </graph>
 </topology>

@@ -13,7 +13,9 @@ import static org.junit.Assert.*;
 import org.junit.rules.ExpectedException;
 import org.xml.sax.SAXParseException;
 
+import java.awt.*;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class ParserTest {
     private static final String TEST_RC_ROOT = "/xmlinputs/";
@@ -50,6 +52,43 @@ public class ParserTest {
         } catch (XMLTopologyParser.ParserException e) {
             assertCauseParserExceptionIs(e, NoSuchMethodException.class);
         }
+    }
+
+    @Test
+    public void nodeRedeclaredTest() throws XMLTopologyParser.ParserException {
+        thrown.expect(XMLTopologyParser.ParserException.class);
+        thrown.expectCause(IsNull.nullValue(Throwable.class));
+        thrown.expectMessage("node identifier is already used: 2");
+        loadXMLFile("node-redeclared.xml");
+    }
+
+    @Test
+    public void namedNodeModelTest() throws XMLTopologyParser.ParserException {
+        Topology tp = loadXMLFile("named-node-models.xml");
+        ArrayList<Node> nodes = new ArrayList<>(tp.getNodes());
+        int nbNodes = nodes.size();
+        assertEquals(3, nbNodes);
+        Class foo = tp.getNodeModel("foo");
+        assertNotNull("model should have a class of nodes called foo", foo);
+        Class bar = tp.getNodeModel("foo");
+        assertNotNull("model should have a class of nodes called bar", bar);
+
+        for (Node n : nodes) {
+            if (n  instanceof DummyNode1) {
+                nodes.remove(n);
+                break;
+            }
+        }
+        assertEquals("should have found an instance of DummyNode1", nodes.size(), nbNodes-1);
+
+        for (Node n : nodes) {
+            if (n  instanceof DummyNode2) {
+                nodes.remove(n);
+                break;
+            }
+        }
+        assertEquals("should have found an instance of DummyNode1", nodes.size(), nbNodes-2);
+        assertEquals("should have found an instance of Node", nodes.size(), 1);
     }
 
     @Test
@@ -143,6 +182,20 @@ public class ParserTest {
         invalidClassTest("invalid-message-engine-class.xml");
     }
 
+    @Test
+    public void invalidDoubleTest() {
+        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
+    }
+
+    @Test
+    public void invalidIntegerTest() {
+        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
+    }
+
+    //
+    // Helper methods
+    //
+
     private void invalidClassTest(String filename) {
         try {
             loadXMLFile(filename);
@@ -156,11 +209,11 @@ public class ParserTest {
         testXSDValidationError(xmlFileName, "cvc-complex-type.4");
     }
 
-    private Topology loadXMLFile(String xmlFileName) throws XMLTopologyParser.ParserException {
+    public static Topology loadXMLFile(String xmlFileName) throws XMLTopologyParser.ParserException {
         Topology T = new Topology();
         XMLTopologyParser tpp = new XMLTopologyParser(T);
         String resource = TEST_RC_ROOT + xmlFileName;
-        InputStream is = getClass().getResourceAsStream(resource);
+        InputStream is = ParserTest.class.getResourceAsStream(resource);
         if (is == null) {
             throw new XMLTopologyParser.ParserException("unable to open/locate resource: " + resource);
         }
@@ -194,5 +247,21 @@ public class ParserTest {
 
     public static class NoDefaultConstructor extends Node {
         NoDefaultConstructor(boolean dummy) {}
+    }
+
+    public static class DummyNode1 extends Node {
+        @Override
+        public void onStart() {
+            super.onStart();
+            setColor(Color.BLUE);
+        }
+    }
+
+    public static class DummyNode2 extends Node {
+        @Override
+        public void onStart() {
+            super.onStart();
+            setColor(Color.RED);
+        }
     }
 }

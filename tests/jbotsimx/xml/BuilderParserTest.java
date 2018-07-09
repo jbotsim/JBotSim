@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 @RunWith(Parameterized.class)
 public class BuilderParserTest {
     interface TopologyMaker {
-        Topology make();
+        Topology make() throws XMLTopologyParser.ParserException;
     }
 
     @Before
@@ -33,7 +33,12 @@ public class BuilderParserTest {
 
     @Test
     public void builderParserTest() throws XMLTopologyParser.ParserException, XMLTopologyBuilder.BuilderException {
-        Topology T1 = maker.make();
+        runBuilderParserTest(maker);
+    }
+
+    public static void runBuilderParserTest(TopologyMaker mk)
+            throws XMLTopologyParser.ParserException, XMLTopologyBuilder.BuilderException {
+        Topology T1 = mk.make();
         XMLTopologyBuilder tg = new XMLTopologyBuilder(T1);
         String t1 = tg.writeToString();
 
