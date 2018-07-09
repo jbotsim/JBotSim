@@ -18,6 +18,13 @@ public enum XMLTopologyKeys {
     SCHEDULER("scheduler"),
     CLOCKCLASS("clock-class"),
 
+    GENERATOR("generator"),
+    LINE("line"),
+    GRID("grid"),
+    KN("KN"),
+    TORUS("torus"),
+    RING("ring"),
+
     VERSION_ATTR("version"),
     IDENTIFIER_ATTR("id"),
     DIRECTED_ATTR("directed"),
@@ -29,6 +36,17 @@ public enum XMLTopologyKeys {
     DESTINATION_ATTR("dst"),
     DIRECTION_ATTR("direction"),
     CLOCK_SPEED_ATTR("speed"),
+
+    ORDER_ATTR("order"),
+    X_ORDER_ATTR("x-order"),
+    Y_ORDER_ATTR("y-order"),
+    RADIUS_ATTR("radius"),
+    X_RADIUS_ATTR("x-radius"),
+    Y_RADIUS_ATTR("y-radius"),
+    ABSOLUTE_COORDS_ATTR("absolute-coords"),
+    WIRED_ATTR("wired"),
+    HORIZONTAL_ATTR("horizontal"),
+    NODECLASS_ATTR("node-class"),
 
     WIDTH_ATTR("width"),
     HEIGHT_ATTR("height"),

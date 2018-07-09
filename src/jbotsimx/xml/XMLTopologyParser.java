@@ -1,6 +1,7 @@
 package jbotsimx.xml;
 
 import jbotsim.*;
+import jbotsimx.topology.TopologyGeneratorFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -91,7 +92,7 @@ public class XMLTopologyParser {
             if (e.getPublicId() == null) {
                 msg = "XSD validation error: ";
             } else {
-                msg = e.getPublicId()+":";
+                msg = e.getPublicId() + ":";
                 if (e.getLineNumber() >= 1) {
                     msg += e.getLineNumber() + ":";
                     if (e.getColumnNumber() >= 1) {
@@ -175,8 +176,15 @@ public class XMLTopologyParser {
 
     private void parseGraphElement(Element ge) throws ParserException {
         HashMap<String, jbotsim.Node> nodeids = new HashMap<>();
-        mapElementChildrenWithName(ge, NODE, e -> parseNode(e, nodeids));
-        mapElementChildrenWithName(ge, LINK, e -> parseLink(e, nodeids));
+        mapElementChildrenOf(ge, e -> {
+            if (NODE.labelsElement(e))
+                parseNode(e, nodeids);
+            else if (LINK.labelsElement(e))
+                parseLink(e, nodeids);
+            else if (GENERATOR.labelsElement(e))
+                parseGenerators(e);
+            else throw new EnumConstantNotPresentException(XMLTopologyKeys.class, e.getTagName());
+        });
     }
 
     private Color parseColor(Element e, Color default_color) {
@@ -188,16 +196,38 @@ public class XMLTopologyParser {
         return result;
     }
 
-    private void parseNode(Element ne, Map<String, jbotsim.Node> nodeids) throws ParserException {
-        jbotsim.Node n;
-        Class<? extends jbotsim.Node> nodeClass = tp.getDefaultNodeModel();
-
+    private Class<? extends jbotsim.Node> getNodeClass(String className) throws ParserException {
         try {
-            if (CLASS_ATTR.isAttributeOf(ne)) {
-                String className = CLASS_ATTR.getValueFor(ne);
+            Class<? extends jbotsim.Node> nodeClass;
+            if ("default".equals(className) || className == null) {
+                nodeClass = tp.getDefaultNodeModel();
+                if (nodeClass == null) {
+                    nodeClass = jbotsim.Node.class;
+                }
+            } else {
+                nodeClass = tp.getNodeModel(className);
+            }
+            if (nodeClass == null) {
                 nodeClass = Class.forName(className).asSubclass(jbotsim.Node.class);
             }
+            return nodeClass;
+        } catch (ClassNotFoundException e) {
+            throw new ParserException(e);
+        }
+    }
 
+    private void parseNode(Element ne, Map<String, jbotsim.Node> nodeids) throws ParserException {
+        jbotsim.Node n;
+
+        try {
+            Class<? extends jbotsim.Node> nodeClass = tp.getDefaultNodeModel();
+
+            if (CLASS_ATTR.isAttributeOf(ne)) {
+                nodeClass = getNodeClass(CLASS_ATTR.getValueFor(ne));
+            }
+            if (nodeClass == null) {
+                nodeClass = jbotsim.Node.class;
+            }
             n = nodeClass.getConstructor().newInstance();
         } catch (ReflectiveOperationException ex) {
             throw new ParserException(ex);
@@ -205,7 +235,10 @@ public class XMLTopologyParser {
 
         if (!IDENTIFIER_ATTR.isAttributeOf(ne))
             throw new ParserException("node identifier is missing");
-        nodeids.put(IDENTIFIER_ATTR.getValueFor(ne), n);
+        String id = IDENTIFIER_ATTR.getValueFor(ne);
+        if (nodeids.containsKey(id))
+            throw new ParserException("node identifier is already used: " + id);
+        nodeids.put(id, n);
 
         n.setColor(parseColor(ne, jbotsim.Node.DEFAULT_COLOR));
 
@@ -241,6 +274,80 @@ public class XMLTopologyParser {
         tp.addLink(l, true);
     }
 
+    private void parseGeneratorAttributes(Element e, TopologyGeneratorFactory tgf) throws ParserException {
+        tgf.setAbsoluteCoords(ABSOLUTE_COORDS_ATTR.getValueFor(e, false));
+        tgf.setX(LOCATION_X_ATTR.getValueFor(e, 0.0));
+        tgf.setY(LOCATION_Y_ATTR.getValueFor(e, 0.0));
+        tgf.setOrder(ORDER_ATTR.getValueFor(e, 1));
+        tgf.setWidth(WIDTH_ATTR.getValueFor(e, 1.0));
+        tgf.setHeight(HEIGHT_ATTR.getValueFor(e, 1.0));
+        tgf.setWired(WIRED_ATTR.getValueFor(e, false));
+        tgf.setDirected(DIRECTED_ATTR.getValueFor(e, false));
+        tgf.setNodeClass(getNodeClass(NODECLASS_ATTR.getValueFor(e, "default")));
+    }
+
+    private void parseLineGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+        boolean horizontal = HORIZONTAL_ATTR.getValueFor(e,true);
+        tgf.newLine(horizontal).generate(tp);
+    }
+
+    private void parseRingGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+        tgf.newRing().generate(tp);
+    }
+
+    private void parseGridGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+
+        TopologyGeneratorFactory.Generator gen;
+        if (X_ORDER_ATTR.isAttributeOf(e)) {
+            gen = tgf.newGrid(X_ORDER_ATTR.getValueFor(e, 1),Y_ORDER_ATTR.getValueFor(e, 1));
+        } else {
+            gen = tgf.newSquareGrid();
+        }
+        gen.generate(tp);
+    }
+
+    private void parseTorusGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+
+        TopologyGeneratorFactory.Generator gen;
+        if (X_ORDER_ATTR.isAttributeOf(e)) {
+            gen = tgf.newTorus(X_ORDER_ATTR.getValueFor(e, 1),Y_ORDER_ATTR.getValueFor(e, 1));
+        } else {
+            gen = tgf.newTorus();
+        }
+        gen.generate(tp);
+    }
+
+    private void parseKNGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+        tgf.newKN().generate(tp);
+    }
+
+    private void parseGenerators(Element ge) throws ParserException {
+        mapElementChildrenOf(ge, e -> {
+            if (LINE.labelsElement(e))
+                parseLineGenerator(e);
+            else if (RING.labelsElement(e))
+                parseRingGenerator(e);
+            else if (GRID.labelsElement(e))
+                parseGridGenerator(e);
+            else if (TORUS.labelsElement(e))
+                parseTorusGenerator(e);
+            else if (KN.labelsElement(e))
+                parseKNGenerator(e);
+            else
+                throw new EnumConstantNotPresentException(XMLTopologyKeys.class, e.getTagName());
+        });
+    }
+
     private void mapElementChildrenOf(Node parent, ElementVisitor v) throws ParserException {
         for (Node n = parent.getFirstChild(); n != null; n = n.getNextSibling()) {
             if (n instanceof Element)
@@ -271,9 +378,9 @@ public class XMLTopologyParser {
             String msg;
 
             if (e instanceof SAXParseException) {
-                int c = ((SAXParseException)e).getColumnNumber();
-                int l = ((SAXParseException)e).getLineNumber();
-                msg = xsdpath+":"+ l + ":"+c+": error: "+e.getMessage();
+                int c = ((SAXParseException) e).getColumnNumber();
+                int l = ((SAXParseException) e).getLineNumber();
+                msg = xsdpath + ":" + l + ":" + c + ": error: " + e.getMessage();
             } else {
                 msg = "unable to load schema file (" + xsdpath + "):" + e.getMessage();
             }
