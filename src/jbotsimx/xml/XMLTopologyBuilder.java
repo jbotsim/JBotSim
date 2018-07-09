@@ -26,17 +26,10 @@ import static jbotsimx.xml.XMLTopologyKeys.*;
 public class XMLTopologyBuilder {
     public static final String VERSION = "1.0";
 
-    private final JTopology jtp;
     private final Topology tp;
     private final Stack<String> elements = new Stack<>();
 
-    public XMLTopologyBuilder(JTopology jtp) {
-        this.jtp = jtp;
-        this.tp = jtp.getTopology();
-    }
-
     public XMLTopologyBuilder(Topology tp) {
-        this.jtp = null;
         this.tp = tp;
     }
 
@@ -101,9 +94,6 @@ public class XMLTopologyBuilder {
 
         topo.appendChild(buildClasses(doc));
         topo.appendChild(buildGraph(doc));
-
-        if (jtp != null)
-            addJTopologyElement(doc, topo);
     }
 
     private void addJTopologyElement(Document doc, Element topo) {
