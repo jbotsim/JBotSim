@@ -154,7 +154,7 @@ public class XMLTopologyBuilder {
         LOCATION_X_ATTR.setAttribute(ne, n.getX());
         LOCATION_Y_ATTR.setAttribute(ne, n.getY());
         LOCATION_Z_ATTR.setNotDefaultAttribute(ne, n.getZ(), 0.0);
-        CLASS_ATTR.setNotDefaultAttribute(ne, n.getClass().getName(), tp.getDefaultNodeModel().getName());
+        CLASS_ATTR.setNotDefaultAttribute(ne, n.getClass().getName(), "default");
     }
 
     private String colorToXml(Color color) {
