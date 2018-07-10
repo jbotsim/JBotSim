@@ -11,18 +11,16 @@
  */
 package jbotsim;
 
-import java.io.File;
+import jbotsim.Link.Mode;
+import jbotsim.Link.Type;
+import jbotsim.event.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.List;
-
-import jbotsim.Link.Mode;
-import jbotsim.Link.Type;
-import jbotsim.event.*;
 
 public class Topology extends _Properties implements ClockListener {
     ClockManager clockManager;
@@ -981,7 +979,7 @@ public class Topology extends _Properties implements ClockListener {
         for (Node n : nodes) {
             Point p2d = new Point.Double();
             p2d.setLocation(n.coords.getX(), n.coords.getY());
-            res.append(n.toString() + " " + p2d.toString().substring(14) + "\n");
+            res.append(n.toString() + " " + p2d.toString().substring(p2d.toString().indexOf("[") -1) + "\n");
         }
         for (Link l : getLinks())
             if (!l.isWireless())
@@ -1003,8 +1001,12 @@ public class Topology extends _Properties implements ClockListener {
         s = s.substring(s.indexOf("\n") + 1);
         HashMap<String, Node> nodeTable = new HashMap<>();
         while (s.indexOf("[") > 0) {
-            addNode(new Double(s.substring(s.indexOf("[") + 1, s.indexOf(","))),
-                    new Double(s.substring(s.indexOf(",") + 2, s.indexOf("]"))));
+            Node node = new Node();
+            double x = new Double(s.substring(s.indexOf("x") + 3, s.indexOf(", y")));
+            double y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
+            double z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
+            node.setLocation(x, y, z );
+            addNode(node);
             Node n = nodes.get(nodes.size() - 1);
             String id = s.substring(0, s.indexOf(" "));
             n.setProperty("id", id);
