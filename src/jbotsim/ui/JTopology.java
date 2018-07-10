@@ -337,8 +337,6 @@ public class JTopology extends JPanel implements ActionListener {
             XMLTopologyParser parser = new XMLTopologyParser(tp);
             if (args.length > 0) {
                 parser.parse(args[0]);
-            } else {
-                parser.parse(System.in);
             }
             new JViewer(tp);
         } catch (XMLTopologyParser.ParserException e) {
