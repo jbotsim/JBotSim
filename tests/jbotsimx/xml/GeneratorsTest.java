@@ -1,7 +1,5 @@
 package jbotsimx.xml;
 
-import jbotsim.Topology;
-import jbotsim.ui.JViewer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

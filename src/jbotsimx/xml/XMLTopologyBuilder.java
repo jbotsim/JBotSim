@@ -1,7 +1,6 @@
 package jbotsimx.xml;
 
 import jbotsim.*;
-import jbotsim.ui.JTopology;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -94,9 +93,6 @@ public class XMLTopologyBuilder {
 
         topo.appendChild(buildClasses(doc));
         topo.appendChild(buildGraph(doc));
-    }
-
-    private void addJTopologyElement(Document doc, Element topo) {
     }
 
     private void addModel(Document doc, Element parent, XMLTopologyKeys key, String id, Object object,

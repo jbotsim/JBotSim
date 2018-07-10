@@ -1,14 +1,10 @@
 package jbotsimx.topology;
 
-import com.sun.tools.internal.xjc.reader.Ring;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.ui.JViewer;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 public class TopologyGeneratorFactory {
@@ -175,7 +171,7 @@ public class TopologyGeneratorFactory {
         return new TorusGenerator(xOrder, yOrder);
     }
 
-    public static interface Generator {
+    public interface Generator {
         void generate(Topology tp);
     }
 

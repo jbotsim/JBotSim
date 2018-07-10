@@ -364,13 +364,6 @@ public class XMLTopologyParser {
         }
     }
 
-    private void mapElementChildrenWithName(Node parent, XMLTopologyKeys name, ElementVisitor v) throws ParserException {
-        mapElementChildrenOf(parent, e -> {
-            if (name.labelsElement(e))
-                v.accept(e);
-        });
-    }
-
     private void checkElement(Element e, XMLTopologyKeys key) throws ParserException {
         if (!key.equals(e.getNodeName()))
             throw new ParserException("invalid node '" + e.getNodeName() + "' where '" + key + "' was expected");
