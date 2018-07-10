@@ -318,20 +318,26 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        if (topo != null)
-            topo.touch(this);
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
+        setWirelessStatus(false);
+    }
+
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
         if (topo != null)
             topo.touch(this);
     }
-
     /**
      * Returns the sensing range of this node (as a radius).
      */

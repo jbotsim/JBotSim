@@ -182,18 +182,25 @@ public class Topology extends _Properties implements ClockListener {
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        for (Node node : nodes)
-            node.enableWireless();
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
+        setWirelessStatus(false);
+    }
+
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
         for (Node node : nodes)
-            node.disableWireless();
+            node.setWirelessStatus(enabled);
     }
 
     /**
