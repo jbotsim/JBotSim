@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <topology version="1.0" wireless-enabled="true">
   <classes>
-    <node-class class="jbotsimx.xml.ParserTest$DummyNode1" id="foo"/>
-    <node-class class="jbotsimx.xml.ParserTest$DummyNode2" id="bar"/>
+    <node-class class="jbotsimx.format.xml.ParserTest$DummyNode1" id="foo"/>
+    <node-class class="jbotsimx.format.xml.ParserTest$DummyNode2" id="bar"/>
     <message-engine class="jbotsim.MessageEngine" id="default"/>
     <link-resolver class="jbotsim.LinkResolver" id="default"/>
     <scheduler class="jbotsim.DefaultScheduler" id="default"/>

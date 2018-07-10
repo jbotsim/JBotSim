@@ -1,4 +1,4 @@
-package jbotsimx.xml;
+package jbotsimx.format.xml;
 
 import jbotsim.*;
 import jbotsimx.topology.TopologyGeneratorFactory;
@@ -27,7 +27,7 @@ import java.util.Map;
 import static jbotsim.Link.Mode.WIRED;
 import static jbotsim.Link.Type.DIRECTED;
 import static jbotsim.Link.Type.UNDIRECTED;
-import static jbotsimx.xml.XMLTopologyKeys.*;
+import static jbotsimx.format.xml.XMLTopologyKeys.*;
 
 public class XMLTopologyParser {
     public static final String DEFAULT_VERSION = XMLTopologyBuilder.VERSION;

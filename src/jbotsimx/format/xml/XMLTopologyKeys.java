@@ -1,4 +1,4 @@
-package jbotsimx.xml;
+package jbotsimx.format.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

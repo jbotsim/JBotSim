@@ -23,7 +23,7 @@ import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
 import jbotsim.ui.painting.*;
-import jbotsimx.xml.XMLTopologyParser;
+import jbotsimx.format.xml.XMLTopologyParser;
 
 
 @SuppressWarnings("serial")

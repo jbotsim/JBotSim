@@ -19,6 +19,7 @@ build:
 	mkdir -p classes_tmp
 	find . -name "*.java" | xargs	${JC} ${JFLAGS} -d classes_tmp 
 	cp jbotsim/ui/circle.png classes_tmp/jbotsim/ui/
+	cp jbotsimx/format/xml/*.xsd classes_tmp/jbotsimx/format/xml/
 	${JAR} cf ${JARFILE} -C classes_tmp/ jbotsim/ -C classes_tmp/ jbotsimx/
 	rm -fr classes_tmp
 

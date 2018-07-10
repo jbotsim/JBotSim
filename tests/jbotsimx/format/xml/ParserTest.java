@@ -1,4 +1,4 @@
-package jbotsimx.xml;
+package jbotsimx.format.xml;
 
 import jbotsim.Node;
 import jbotsim.Topology;

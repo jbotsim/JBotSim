@@ -15,8 +15,6 @@ import java.awt.BorderLayout;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -25,9 +23,8 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.PropertyListener;
-import jbotsimx.format.tikz.Tikz;
-import jbotsimx.xml.XMLTopologyBuilder;
-import jbotsimx.xml.XMLTopologyParser;
+import jbotsimx.format.xml.XMLTopologyBuilder;
+import jbotsimx.format.xml.XMLTopologyParser;
 
 /**
  * The viewer includes a central jtopology which will draw the attached

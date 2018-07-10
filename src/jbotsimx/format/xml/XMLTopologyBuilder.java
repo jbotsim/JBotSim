@@ -1,4 +1,4 @@
-package jbotsimx.xml;
+package jbotsimx.format.xml;
 
 import jbotsim.*;
 
@@ -20,7 +20,7 @@ import java.io.Writer;
 import java.util.Stack;
 import java.util.function.BiConsumer;
 
-import static jbotsimx.xml.XMLTopologyKeys.*;
+import static jbotsimx.format.xml.XMLTopologyKeys.*;
 
 public class XMLTopologyBuilder {
     public static final String VERSION = "1.0";
