@@ -24,6 +24,7 @@ public enum XMLTopologyKeys {
     KN("KN"),
     TORUS("torus"),
     RING("ring"),
+    RANDOM_LOCATIONS("random-locations"),
 
     VERSION_ATTR("version"),
     IDENTIFIER_ATTR("id"),

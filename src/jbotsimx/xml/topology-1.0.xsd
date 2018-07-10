@@ -63,14 +63,15 @@
     </xs:complexType>
 
     <xs:attributeGroup name="generator-attributes">
-        <xs:attribute name="directed" type="xs:boolean" default="false"/>
-        <xs:attribute name="wired" type="xs:boolean" default="false"/>
-        <xs:attribute name="x" type="xs:double" default="0"/>
-        <xs:attribute name="y" type="xs:double" default="0"/>
-        <xs:attribute name="width" type="xs:double" default="1.0"/>
-        <xs:attribute name="height" type="xs:double" default="1.0"/>
-        <xs:attribute name="node-class" type="xs:token" default="default"/>
-        <xs:attribute name="absolute-coords" type="xs:boolean" default="false"/>
+        <xs:attribute name="directed" type="xs:boolean"/>
+        <xs:attribute name="wired" type="xs:boolean"/>
+        <xs:attribute name="wireless-enabled" type="xs:boolean"/>
+        <xs:attribute name="x" type="xs:double"/>
+        <xs:attribute name="y" type="xs:double"/>
+        <xs:attribute name="width" type="xs:double"/>
+        <xs:attribute name="height" type="xs:double"/>
+        <xs:attribute name="node-class" type="xs:token"/>
+        <xs:attribute name="absolute-coords" type="xs:boolean"/>
         <xs:attribute name="order" default="1">
             <xs:simpleType>
                 <xs:restriction base="xs:unsignedInt">
@@ -108,6 +109,11 @@
                 </xs:complexType>
             </xs:element>
             <xs:element name="KN">
+                <xs:complexType>
+                    <xs:attributeGroup ref="generator-attributes"/>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="random-locations">
                 <xs:complexType>
                     <xs:attributeGroup ref="generator-attributes"/>
                 </xs:complexType>

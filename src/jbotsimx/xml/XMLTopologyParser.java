@@ -282,6 +282,7 @@ public class XMLTopologyParser {
         tgf.setWidth(WIDTH_ATTR.getValueFor(e, 1.0));
         tgf.setHeight(HEIGHT_ATTR.getValueFor(e, 1.0));
         tgf.setWired(WIRED_ATTR.getValueFor(e, false));
+        tgf.setWirelessEnabled(WIRELESS_ENABLED_ATTR.getValueFor(e, true));
         tgf.setDirected(DIRECTED_ATTR.getValueFor(e, false));
         tgf.setNodeClass(getNodeClass(NODECLASS_ATTR.getValueFor(e, "default")));
     }
@@ -331,6 +332,12 @@ public class XMLTopologyParser {
         tgf.newKN().generate(tp);
     }
 
+    private void parseRndLocationsGenerator(Element e) throws ParserException {
+        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
+        parseGeneratorAttributes(e, tgf);
+        tgf.newRandomLocations().generate(tp);
+    }
+
     private void parseGenerators(Element ge) throws ParserException {
         mapElementChildrenOf(ge, e -> {
             if (LINE.labelsElement(e))
@@ -343,6 +350,8 @@ public class XMLTopologyParser {
                 parseTorusGenerator(e);
             else if (KN.labelsElement(e))
                 parseKNGenerator(e);
+            else if (RANDOM_LOCATIONS.labelsElement(e))
+                parseRndLocationsGenerator(e);
             else
                 throw new EnumConstantNotPresentException(XMLTopologyKeys.class, e.getTagName());
         });
