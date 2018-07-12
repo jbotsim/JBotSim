@@ -3,7 +3,6 @@ package jbotsimx.topology;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
 
 import java.util.Random;
 
@@ -18,14 +17,6 @@ public class TopologyGeneratorFactory {
     private Class<? extends Node> nodeClass = Node.class;
     private int order = 1;
     private boolean absoluteCoords = false;
-
-    public static void main(String[] args) {
-        Topology tp = new Topology();
-
-        TopologyGenerator.generateTorus(tp, 5);
-
-        new JViewer(tp);
-    }
 
     public boolean isWirelessEnabled() {
         return wirelessEnabled;

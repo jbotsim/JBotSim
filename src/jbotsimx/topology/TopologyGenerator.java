@@ -1,10 +1,6 @@
 package jbotsimx.topology;
 
-import jbotsim.Link;
-import jbotsim.Node;
 import jbotsim.Topology;
-
-import java.util.List;
 
 public class TopologyGenerator {
     public static void generateLine(Topology tp, int order){
