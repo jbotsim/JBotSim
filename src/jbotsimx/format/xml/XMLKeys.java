@@ -6,7 +6,8 @@ import org.w3c.dom.Element;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
-public enum XMLTopologyKeys {
+public enum XMLKeys {
+    JBOTSIM("jbotsim"),
     TOPOLOGY("topology"),
     CLASSES("classes"),
     NODECLASS("node-class"),
@@ -52,11 +53,19 @@ public enum XMLTopologyKeys {
     SIZE_ATTR("size"),
     LOCATION_X_ATTR("x"),
     LOCATION_Y_ATTR("y"),
-    LOCATION_Z_ATTR("z");
+    LOCATION_Z_ATTR("z"),
+
+    TRACE("trace"),
+    ADD_NODE("add-node"),
+    DELETE_NODE("delete-node"),
+    SELECT_NODE("select-node"),
+    MOVE_NODE("move-node"),
+    TIME_ATTR("time")
+    ;
 
     private final String key;
 
-    XMLTopologyKeys(String value) {
+    XMLKeys(String value) {
         this.key = value;
     }
 
@@ -110,8 +119,16 @@ public enum XMLTopologyKeys {
         return getValueFor(el, Integer::valueOf, default_value);
     }
 
+    public Integer getIntegerValueFor(Element el) {
+        return getValueFor(el, Integer::valueOf);
+    }
+
     public Double getValueFor(Element el, Double default_value) {
         return getValueFor(el, Double::valueOf, default_value);
+    }
+
+    public Double getDoubleValueFor(Element el) {
+        return getValueFor(el, Double::valueOf);
     }
 
     public Boolean getValueFor(Element el, Boolean default_value) {
@@ -124,7 +141,7 @@ public enum XMLTopologyKeys {
         return default_value;
     }
 
-    public <R> R getValueFor(Element el, Function<String, R> translate) throws NoSuchElementException {
+    public <R> R getValueFor(Element el, Function<String, R> translate) {
         if (!isAttributeOf(el))
             throw new NoSuchElementException(key);
         return translate.apply(el.getAttribute(key));

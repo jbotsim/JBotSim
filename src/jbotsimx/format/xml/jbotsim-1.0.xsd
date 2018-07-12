@@ -3,21 +3,28 @@
  Schema for JBotSim Topology; version 1.0
  -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:element name="topology">
+    <xs:element name="jbotsim">
         <xs:complexType>
-            <xs:sequence>
-                <xs:element name="classes" type="classes"/>
-                <xs:element name="graph" type="graph"/>
-            </xs:sequence>
+            <xs:choice>
+                <xs:element name="topology" type="topology"/>
+                <xs:element name="trace" type="trace"/>
+            </xs:choice>
             <xs:attribute name="version" type="xs:token" use="required"/>
-            <xs:attribute name="wireless-enabled" type="xs:boolean"/>
-            <xs:attribute name="speed" type="xs:unsignedInt"/>
-            <xs:attribute name="width" type="xs:unsignedInt"/>
-            <xs:attribute name="height" type="xs:unsignedInt"/>
-            <xs:attribute name="sensing-range" type="xs:double"/>
-            <xs:attribute name="communication-range" type="xs:double"/>
         </xs:complexType>
     </xs:element>
+
+    <xs:complexType name="topology">
+        <xs:sequence>
+            <xs:element name="classes" type="classes"/>
+            <xs:element name="graph" type="graph"/>
+        </xs:sequence>
+        <xs:attribute name="wireless-enabled" type="xs:boolean"/>
+        <xs:attribute name="speed" type="xs:unsignedInt"/>
+        <xs:attribute name="width" type="xs:unsignedInt"/>
+        <xs:attribute name="height" type="xs:unsignedInt"/>
+        <xs:attribute name="sensing-range" type="xs:double"/>
+        <xs:attribute name="communication-range" type="xs:double"/>
+    </xs:complexType>
 
     <xs:complexType name="classes">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -82,7 +89,7 @@
     </xs:attributeGroup>
 
     <xs:complexType name="generator">
-        <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:choice maxOccurs="unbounded">
             <xs:element name="line">
                 <xs:complexType>
                     <xs:attributeGroup ref="generator-attributes"/>
@@ -120,4 +127,38 @@
             </xs:element>
         </xs:choice>
     </xs:complexType>
+
+    <xs:complexType name="trace">
+        <xs:sequence>
+            <xs:element name="topology" type="topology"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="add-node">
+                    <xs:complexType>
+                        <xs:attributeGroup ref="trace-node-event-attr"/>
+                        <xs:attribute name="x" type="xs:double" use="required"/>
+                        <xs:attribute name="y" type="xs:double" use="required"/>
+                        <xs:attribute name="node-class" type="xs:token"/>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element name="delete-node" type="trace-node-event"/>
+                <xs:element name="select-node" type="trace-node-event"/>
+                <xs:element name="move-node">
+                    <xs:complexType>
+                        <xs:attributeGroup ref="trace-node-event-attr"/>
+                        <xs:attribute name="x" type="xs:double" use="required"/>
+                        <xs:attribute name="y" type="xs:double" use="required"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:choice>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="trace-node-event">
+        <xs:attributeGroup ref="trace-node-event-attr"/>
+    </xs:complexType>
+
+    <xs:attributeGroup name="trace-node-event-attr">
+        <xs:attribute name="time" type="xs:unsignedInt" use="required"/>
+        <xs:attribute name="id" type="xs:unsignedInt" use="required"/>
+    </xs:attributeGroup>
 </xs:schema>

@@ -224,12 +224,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             if (selectedFile != null) {
                 if (selectedFile.toString().endsWith(".xml")) {
                     try {
-                        XMLTopologyBuilder builder = new XMLTopologyBuilder(jtp.topo);
-                        PrintWriter out = new PrintWriter(selectedFile);
-                        builder.write(out);
+                        new XMLTopologyBuilder(jtp.topo).write (selectedFile);
                     } catch (XMLTopologyBuilder.BuilderException e) {
-                        e.printStackTrace();
-                    } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                 } else {

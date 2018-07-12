@@ -2,112 +2,32 @@ package jbotsimx.format.xml;
 
 import jbotsim.*;
 import jbotsimx.topology.TopologyGeneratorFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
 
-import javax.xml.XMLConstants;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
 import java.awt.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
 import static jbotsim.Link.Mode.WIRED;
 import static jbotsim.Link.Type.DIRECTED;
 import static jbotsim.Link.Type.UNDIRECTED;
-import static jbotsimx.format.xml.XMLTopologyKeys.*;
+import static jbotsimx.format.xml.XMLKeys.*;
 
-public class XMLTopologyParser {
-    public static final String DEFAULT_VERSION = XMLTopologyBuilder.VERSION;
-    private static final String XSD_RESOURCE_PREFIX = "topology-";
-    private static final String XSD_RESOURCE_SUFFIX = ".xsd";
+public class XMLTopologyParser extends XMLParser {
+    private final Topology tp;
 
-    private DocumentBuilder builder;
-    private Topology tp;
-
-    public XMLTopologyParser(Topology tp) throws ParserException {
-        try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            builder = dbf.newDocumentBuilder();
-            this.tp = tp;
-        } catch (Exception e) {
-            throw new ParserException(e);
-        }
+    public XMLTopologyParser(Topology tp) {
+        this.tp = tp;
     }
 
-    public void parse(String filename) throws ParserException {
-        try {
-            InputStream input = new FileInputStream(filename);
-            parse(input);
-            input.close();
-        } catch (ParserException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ParserException(e);
-        }
+    @Override
+    public void parseRootElement(Element element) throws ParserException {
+        parseTopologyElement(element, tp);
     }
 
-    public void parse(InputStream input) throws ParserException {
-        parse(new InputSource(input));
-    }
-
-    public void parse(Reader input) throws ParserException {
-        parse(new InputSource(input));
-    }
-
-    public void parse(InputSource input) throws ParserException {
-        try {
-            Document doc = builder.parse(input);
-            doc.normalizeDocument();
-            Element rootNode = doc.getDocumentElement();
-            parseTopology(rootNode);
-        } catch (ParserException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new ParserException(e);
-        }
-    }
-
-    private void parseTopology(Element topo) throws ParserException {
-        checkElement(topo, XMLTopologyKeys.TOPOLOGY);
-
-        String version = VERSION_ATTR.getValueFor(topo, DEFAULT_VERSION);
-        try {
-            Schema schema = loadSchemaForVersion(version);
-            schema.newValidator().validate(new DOMSource(topo));
-        } catch (SAXParseException e) {
-            String msg;
-            if (e.getPublicId() == null) {
-                msg = "XSD validation error: ";
-            } else {
-                msg = e.getPublicId() + ":";
-                if (e.getLineNumber() >= 1) {
-                    msg += e.getLineNumber() + ":";
-                    if (e.getColumnNumber() >= 1) {
-                        msg += e.getColumnNumber() + ":";
-                    }
-                }
-                msg += "error: ";
-            }
-            throw new ParserException(msg + e.getMessage());
-        } catch (SAXException e) {
-            throw new ParserException("unable to validate XML topology:" + e.getMessage());
-        } catch (IOException e) {
-            throw new ParserException("some IO exception occurs while trying to validate XML topology:" +
-                    e.getMessage());
-        }
+    public static void parseTopologyElement(Element topo, Topology tp) throws ParserException {
+        if (!TOPOLOGY.equals(topo.getNodeName()))
+            throw new ParserException("invalid node '" + topo.getNodeName() + "' where '" + TOPOLOGY + "' was expected");
 
         if (WIRELESS_ENABLED_ATTR.isAttributeOf(topo)) {
             if (WIRELESS_ENABLED_ATTR.getValueFor(topo, Boolean::valueOf)) {
@@ -131,13 +51,13 @@ public class XMLTopologyParser {
 
         mapElementChildrenOf(topo, e -> {
             if (CLASSES.labelsElement(e))
-                mapElementChildrenOf(e, this::parseClass);
+                mapElementChildrenOf(e, el -> parseClass(el,tp) );
             else if (GRAPH.labelsElement(e))
-                parseGraphElement(e);
+                parseGraphElement(e, tp);
         });
     }
 
-    private void parseClass(Element C) throws ParserException {
+    private static void parseClass(Element C, Topology tp) throws ParserException {
         String ID = IDENTIFIER_ATTR.getValueFor(C, "default");
         String className = CLASS_ATTR.getValueFor(C, (String) null);
         if (className == null) // this case should be handled by XSD validator
@@ -174,20 +94,20 @@ public class XMLTopologyParser {
         }
     }
 
-    private void parseGraphElement(Element ge) throws ParserException {
+    private static void parseGraphElement(Element ge, Topology tp) throws ParserException {
         HashMap<String, jbotsim.Node> nodeids = new HashMap<>();
         mapElementChildrenOf(ge, e -> {
             if (NODE.labelsElement(e))
-                parseNode(e, nodeids);
+                parseNode(e, tp, nodeids);
             else if (LINK.labelsElement(e))
-                parseLink(e, nodeids);
+                parseLink(e, tp, nodeids);
             else if (GENERATOR.labelsElement(e))
-                parseGenerators(e);
-            else throw new EnumConstantNotPresentException(XMLTopologyKeys.class, e.getTagName());
+                parseGenerators(e, tp);
+            else throw new EnumConstantNotPresentException(XMLKeys.class, e.getTagName());
         });
     }
 
-    private Color parseColor(Element e, Color default_color) {
+    private static Color parseColor(Element e, Color default_color) {
         Color result = default_color;
         String color = COLOR_ATTR.getValueFor(e, (String) null);
         if (color != null && !color.equals("None")) {
@@ -196,7 +116,7 @@ public class XMLTopologyParser {
         return result;
     }
 
-    private Class<? extends jbotsim.Node> getNodeClass(String className) throws ParserException {
+    public static Class<? extends jbotsim.Node> getNodeClass(Topology tp, String className) throws ParserException {
         try {
             Class<? extends jbotsim.Node> nodeClass;
             if ("default".equals(className) || className == null) {
@@ -216,14 +136,14 @@ public class XMLTopologyParser {
         }
     }
 
-    private void parseNode(Element ne, Map<String, jbotsim.Node> nodeids) throws ParserException {
+    private static void parseNode(Element ne, Topology tp, Map<String, jbotsim.Node> nodeids) throws ParserException {
         jbotsim.Node n;
 
         try {
             Class<? extends jbotsim.Node> nodeClass = tp.getDefaultNodeModel();
 
             if (CLASS_ATTR.isAttributeOf(ne)) {
-                nodeClass = getNodeClass(CLASS_ATTR.getValueFor(ne));
+                nodeClass = getNodeClass(tp, CLASS_ATTR.getValueFor(ne));
             }
             if (nodeClass == null) {
                 nodeClass = jbotsim.Node.class;
@@ -258,7 +178,7 @@ public class XMLTopologyParser {
         tp.addNode(n);
     }
 
-    private void parseLink(Element e, Map<String, jbotsim.Node> nodeids) throws ParserException {
+    private static void parseLink(Element e, Topology tp, Map<String, jbotsim.Node> nodeids) throws ParserException {
         Link.Type type = DIRECTED_ATTR.getValueFor(e, false) ? DIRECTED : UNDIRECTED;
 
         jbotsim.Node src = nodeids.get(SOURCE_ATTR.getValueFor(e));
@@ -274,7 +194,7 @@ public class XMLTopologyParser {
         tp.addLink(l, true);
     }
 
-    private void parseGeneratorAttributes(Element e, TopologyGeneratorFactory tgf) throws ParserException {
+    private static void parseGeneratorAttributes(Element e, Topology tp, TopologyGeneratorFactory tgf) throws ParserException {
         tgf.setAbsoluteCoords(ABSOLUTE_COORDS_ATTR.getValueFor(e, false));
         tgf.setX(LOCATION_X_ATTR.getValueFor(e, 0.0));
         tgf.setY(LOCATION_Y_ATTR.getValueFor(e, 0.0));
@@ -284,25 +204,25 @@ public class XMLTopologyParser {
         tgf.setWired(WIRED_ATTR.getValueFor(e, false));
         tgf.setWirelessEnabled(WIRELESS_ENABLED_ATTR.getValueFor(e, true));
         tgf.setDirected(DIRECTED_ATTR.getValueFor(e, false));
-        tgf.setNodeClass(getNodeClass(NODECLASS_ATTR.getValueFor(e, "default")));
+        tgf.setNodeClass(getNodeClass(tp, NODECLASS_ATTR.getValueFor(e, "default")));
     }
 
-    private void parseLineGenerator(Element e) throws ParserException {
+    private static void parseLineGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
         boolean horizontal = HORIZONTAL_ATTR.getValueFor(e,true);
         tgf.newLine(horizontal).generate(tp);
     }
 
-    private void parseRingGenerator(Element e) throws ParserException {
+    private static void parseRingGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
         tgf.newRing().generate(tp);
     }
 
-    private void parseGridGenerator(Element e) throws ParserException {
+    private static void parseGridGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
 
         TopologyGeneratorFactory.Generator gen;
         if (X_ORDER_ATTR.isAttributeOf(e)) {
@@ -313,9 +233,9 @@ public class XMLTopologyParser {
         gen.generate(tp);
     }
 
-    private void parseTorusGenerator(Element e) throws ParserException {
+    private static void parseTorusGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
 
         TopologyGeneratorFactory.Generator gen;
         if (X_ORDER_ATTR.isAttributeOf(e)) {
@@ -326,81 +246,34 @@ public class XMLTopologyParser {
         gen.generate(tp);
     }
 
-    private void parseKNGenerator(Element e) throws ParserException {
+    private static void parseKNGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
         tgf.newKN().generate(tp);
     }
 
-    private void parseRndLocationsGenerator(Element e) throws ParserException {
+    private static void parseRndLocationsGenerator(Element e, Topology tp) throws ParserException {
         TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tgf);
+        parseGeneratorAttributes(e, tp, tgf);
         tgf.newRandomLocations().generate(tp);
     }
 
-    private void parseGenerators(Element ge) throws ParserException {
+    private static void parseGenerators(Element ge, Topology tp) throws ParserException {
         mapElementChildrenOf(ge, e -> {
             if (LINE.labelsElement(e))
-                parseLineGenerator(e);
+                parseLineGenerator(e, tp);
             else if (RING.labelsElement(e))
-                parseRingGenerator(e);
+                parseRingGenerator(e, tp);
             else if (GRID.labelsElement(e))
-                parseGridGenerator(e);
+                parseGridGenerator(e, tp);
             else if (TORUS.labelsElement(e))
-                parseTorusGenerator(e);
+                parseTorusGenerator(e, tp);
             else if (KN.labelsElement(e))
-                parseKNGenerator(e);
+                parseKNGenerator(e, tp);
             else if (RANDOM_LOCATIONS.labelsElement(e))
-                parseRndLocationsGenerator(e);
+                parseRndLocationsGenerator(e, tp);
             else
-                throw new EnumConstantNotPresentException(XMLTopologyKeys.class, e.getTagName());
+                throw new EnumConstantNotPresentException(XMLKeys.class, e.getTagName());
         });
-    }
-
-    private void mapElementChildrenOf(Node parent, ElementVisitor v) throws ParserException {
-        for (Node n = parent.getFirstChild(); n != null; n = n.getNextSibling()) {
-            if (n instanceof Element)
-                v.accept((Element) n);
-        }
-    }
-
-    private void checkElement(Element e, XMLTopologyKeys key) throws ParserException {
-        if (!key.equals(e.getNodeName()))
-            throw new ParserException("invalid node '" + e.getNodeName() + "' where '" + key + "' was expected");
-    }
-
-    private Schema loadSchemaForVersion(String version) throws ParserException {
-        SchemaFactory sF = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        String xsdpath = "/" + getClass().getPackage().getName().replace('.', '/');
-        xsdpath += "/" + XSD_RESOURCE_PREFIX + version + XSD_RESOURCE_SUFFIX;
-        try {
-            InputStream is = getClass().getResourceAsStream(xsdpath);
-            return sF.newSchema(new StreamSource(is));
-        } catch (SAXException e) {
-            String msg;
-
-            if (e instanceof SAXParseException) {
-                int c = ((SAXParseException) e).getColumnNumber();
-                int l = ((SAXParseException) e).getLineNumber();
-                msg = xsdpath + ":" + l + ":" + c + ": error: " + e.getMessage();
-            } else {
-                msg = "unable to load schema file (" + xsdpath + "):" + e.getMessage();
-            }
-            throw new ParserException(msg);
-        }
-    }
-
-    private interface ElementVisitor {
-        void accept(Element element) throws ParserException;
-    }
-
-    public static class ParserException extends Exception {
-        ParserException(Throwable cause) {
-            super("XML parser yields an exception.", cause);
-        }
-
-        ParserException(String message) {
-            super(message);
-        }
     }
 }

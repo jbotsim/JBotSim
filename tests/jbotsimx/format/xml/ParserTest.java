@@ -11,7 +11,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import org.junit.rules.ExpectedException;
-import org.xml.sax.SAXParseException;
 
 import java.awt.*;
 import java.io.InputStream;
@@ -27,8 +26,8 @@ public class ParserTest {
     public void emptyFileTest() {
         try {
             loadXMLFile("empty-file.xml");
-        } catch (XMLTopologyParser.ParserException e) {
-            assertCauseParserExceptionIs(e, SAXParseException.class);
+        } catch (XMLParser.ParserException e) {
+            assertCauseParserExceptionIs(e, XMLIO.XMLIOException.class);
         }
     }
 
@@ -38,7 +37,7 @@ public class ParserTest {
     }
 
     @Test
-    public void twonodes() throws XMLTopologyParser.ParserException {
+    public void twonodes() throws XMLParser.ParserException {
         Topology T = loadXMLFile("twonodes.xml");
         assertEquals(T.getNodes().size(), 2);
         assertEquals(T.getLinks().size(), 1);
@@ -48,22 +47,22 @@ public class ParserTest {
     public void noDefaultConstructorTest() {
         try {
             loadXMLFile("no-default-constructor.xml");
-            thrown.expect(XMLTopologyParser.ParserException.class);
-        } catch (XMLTopologyParser.ParserException e) {
+            thrown.expect(XMLParser.ParserException.class);
+        } catch (XMLParser.ParserException e) {
             assertCauseParserExceptionIs(e, NoSuchMethodException.class);
         }
     }
 
     @Test
-    public void nodeRedeclaredTest() throws XMLTopologyParser.ParserException {
-        thrown.expect(XMLTopologyParser.ParserException.class);
+    public void nodeRedeclaredTest() throws XMLParser.ParserException {
+        thrown.expect(XMLParser.ParserException.class);
         thrown.expectCause(IsNull.nullValue(Throwable.class));
         thrown.expectMessage("node identifier is already used: 2");
         loadXMLFile("node-redeclared.xml");
     }
 
     @Test
-    public void namedNodeModelTest() throws XMLTopologyParser.ParserException {
+    public void namedNodeModelTest() throws XMLParser.ParserException {
         Topology tp = loadXMLFile("named-node-models.xml");
         ArrayList<Node> nodes = new ArrayList<>(tp.getNodes());
         int nbNodes = nodes.size();
@@ -97,16 +96,16 @@ public class ParserTest {
     }
 
     @Test
-    public void badSrcNodeTest() throws XMLTopologyParser.ParserException {
-        thrown.expect(XMLTopologyParser.ParserException.class);
+    public void badSrcNodeTest() throws XMLParser.ParserException {
+        thrown.expect(XMLParser.ParserException.class);
         thrown.expectCause(IsNull.nullValue(Throwable.class));
         thrown.expectMessage("unknown node: 1");
         loadXMLFile("bad-src-node.xml");
     }
 
     @Test
-    public void badDstNodeTest() throws XMLTopologyParser.ParserException {
-        thrown.expect(XMLTopologyParser.ParserException.class);
+    public void badDstNodeTest() throws XMLParser.ParserException {
+        thrown.expect(XMLParser.ParserException.class);
         thrown.expectCause(IsNull.nullValue(Throwable.class));
         thrown.expectMessage("unknown node: 1");
         loadXMLFile("bad-dst-node.xml");
@@ -133,7 +132,7 @@ public class ParserTest {
     }
 
     @Test
-    public void emptyGraphTest() throws XMLTopologyParser.ParserException {
+    public void emptyGraphTest() throws XMLParser.ParserException {
         loadXMLFile("empty-graph.xml");
     }
 
@@ -151,8 +150,8 @@ public class ParserTest {
     public void incompleteModelClass3Test() {
         try {
             loadXMLFile("incomplete-model-class-3.xml");
-            thrown.expect(XMLTopologyParser.ParserException.class);
-        } catch (XMLTopologyParser.ParserException e) {
+            thrown.expect(XMLParser.ParserException.class);
+        } catch (XMLParser.ParserException e) {
             assertCauseParserExceptionIs(e, ClassNotFoundException.class, "nosuchclass");
         }
     }
@@ -199,8 +198,8 @@ public class ParserTest {
     private void invalidClassTest(String filename) {
         try {
             loadXMLFile(filename);
-            thrown.expect(XMLTopologyParser.ParserException.class);
-        } catch (XMLTopologyParser.ParserException e) {
+            thrown.expect(XMLParser.ParserException.class);
+        } catch (XMLParser.ParserException e) {
             assertCauseParserExceptionIs(e, ClassCastException.class, "java.lang.Object");
         }
     }
@@ -209,13 +208,13 @@ public class ParserTest {
         testXSDValidationError(xmlFileName, "cvc-complex-type.4");
     }
 
-    public static Topology loadXMLFile(String xmlFileName) throws XMLTopologyParser.ParserException {
+    public static Topology loadXMLFile(String xmlFileName) throws XMLParser.ParserException {
         Topology T = new Topology();
         XMLTopologyParser tpp = new XMLTopologyParser(T);
         String resource = TEST_RC_ROOT + xmlFileName;
         InputStream is = ParserTest.class.getResourceAsStream(resource);
         if (is == null) {
-            throw new XMLTopologyParser.ParserException("unable to open/locate resource: " + resource);
+            throw new XMLParser.ParserException("unable to open/locate resource: " + resource);
         }
         tpp.parse(is);
 
@@ -225,21 +224,21 @@ public class ParserTest {
     private void testXSDValidationError(String filename, String error) {
         try {
             loadXMLFile(filename);
-            thrown.expect(XMLTopologyParser.ParserException.class);
-        } catch (XMLTopologyParser.ParserException e) {
+            thrown.expect(XMLParser.ParserException.class);
+        } catch (XMLParser.ParserException e) {
             assertXSDValidationError(e, error);
         }
     }
 
-    private void assertXSDValidationError(XMLTopologyParser.ParserException e, String error) {
+    private void assertXSDValidationError(XMLParser.ParserException e, String error) {
         assertThat(e.getMessage(), StringContains.containsString("XSD validation error: "+error+" :"));
     }
 
-    private void assertCauseParserExceptionIs(XMLTopologyParser.ParserException e, Class c) {
+    private void assertCauseParserExceptionIs(XMLParser.ParserException e, Class c) {
         assertThat(e.getCause(), IsInstanceOf.instanceOf(c));
     }
 
-    private void assertCauseParserExceptionIs(XMLTopologyParser.ParserException e, Class c, String error) {
+    private void assertCauseParserExceptionIs(XMLParser.ParserException e, Class c, String error) {
         assertNotNull("This is a forwarded exception", e.getCause());
         assertCauseParserExceptionIs(e,c);
         assertThat(e.getCause().getMessage(), StringContains.containsString(error));

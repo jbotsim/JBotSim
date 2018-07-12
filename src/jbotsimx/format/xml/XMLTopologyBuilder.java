@@ -5,80 +5,22 @@ import jbotsim.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 import java.awt.*;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.io.Writer;
 
-import java.util.Stack;
-import java.util.function.BiConsumer;
+import static jbotsimx.format.xml.XMLKeys.*;
 
-import static jbotsimx.format.xml.XMLTopologyKeys.*;
-
-public class XMLTopologyBuilder {
-    public static final String VERSION = "1.0";
-
-    private final Topology tp;
-    private final Stack<String> elements = new Stack<>();
-
-    public XMLTopologyBuilder(Topology tp) {
-        this.tp = tp;
+public class XMLTopologyBuilder extends XMLBuilder {
+    public XMLTopologyBuilder(Topology tp) throws BuilderException {
+        super();
+        Document doc = getDocument();
+        Element topo = buildTopologyElement(doc, tp);
+        doc.getDocumentElement().appendChild(topo);
     }
 
-    public Document buildDocument() throws BuilderException {
-        DocumentBuilder builder;
-        try {
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.newDocument();
-            addTopologyElement(doc);
-            return doc;
-        } catch (Exception e) {
-            throw new BuilderException(e);
-        }
-    }
 
-    public void write() throws BuilderException {
-        write(new PrintWriter(System.out, true));
-    }
-
-    public void write(Writer out) throws BuilderException {
-        Document doc = buildDocument();
-        try {
-            TransformerFactory tFactory =
-                    TransformerFactory.newInstance();
-            tFactory.setAttribute("indent-number", 2);
-
-            Transformer transformer =
-                    tFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-            transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
-            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-            DOMSource source = new DOMSource(doc);
-            StreamResult result = new StreamResult(out);
-            transformer.transform(source, result);
-        } catch (Exception e) {
-            throw new BuilderException("XML generator yield an exception.", e);
-        }
-    }
-
-    public String writeToString() throws BuilderException {
-        StringWriter sw = new StringWriter();
-        write(sw);
-        return sw.toString();
-    }
-
-    private void addTopologyElement(Document doc) {
+    public static Element buildTopologyElement(Document doc, Topology tp) {
         Element topo = TOPOLOGY.createElement(doc);
-        doc.appendChild(topo);
 
-        VERSION_ATTR.setAttribute(topo, VERSION);
         WIRELESS_ENABLED_ATTR.setAttribute(topo, tp.getWirelessStatus());
         CLOCK_SPEED_ATTR.setAttribute(topo, tp.getClockSpeed());
 
@@ -91,24 +33,26 @@ public class XMLTopologyBuilder {
         COMMUNICATION_RANGE_ATTR.setNotDefaultAttribute(topo, tp.getCommunicationRange(),
                 Topology.DEFAULT_COMMUNICATION_RANGE);
 
-        topo.appendChild(buildClasses(doc));
-        topo.appendChild(buildGraph(doc));
+        topo.appendChild(buildClasses(doc, tp));
+        topo.appendChild(buildGraph(doc, tp));
+
+        return topo;
     }
 
-    private void addModel(Document doc, Element parent, XMLTopologyKeys key, String id, Object object,
-                          Class default_class) {
+    private static void addModel(Document doc, Element parent, XMLKeys key, String id, Object object,
+                                 Class default_class) {
         addModel(doc, parent, key, id, object.getClass(), default_class);
     }
 
-    private void addModel(Document doc, Element parent, XMLTopologyKeys key, String id, Class c, Class default_class) {
+    private static void addModel(Document doc, Element parent, XMLKeys key, String id, Class c, Class default_class) {
         Element e = key.createElement(doc, parent);
         IDENTIFIER_ATTR.setAttribute(e, id);
         CLASS_ATTR.setAttribute(e, c.getName());
     }
 
-    private Element buildClasses(Document doc) {
+    private static Element buildClasses(Document doc, Topology tp) {
         Element classes = CLASSES.createElement(doc);
-        addNodeModels(doc, classes);
+        addNodeModels(doc, tp, classes);
         addModel(doc, classes, MESSAGE_ENGINE, "default", tp.getMessageEngine(), MessageEngine.class);
         addModel(doc, classes, LINK_RESOLVER, "default", tp.getLinkResolver(), LinkResolver.class);
         addModel(doc, classes, SCHEDULER, "default", tp.getScheduler(), DefaultScheduler.class);
@@ -117,7 +61,7 @@ public class XMLTopologyBuilder {
         return classes;
     }
 
-    private void addNodeModels(Document doc, Element classes) {
+    private static void addNodeModels(Document doc, Topology tp, Element classes) {
         for (String mname : tp.getModelsNames()) {
             Class cls = tp.getNodeModel(mname);
             addModel(doc, classes, NODECLASS, mname, cls, tp.getDefaultNodeModel());
@@ -125,10 +69,10 @@ public class XMLTopologyBuilder {
     }
 
 
-    private Element buildGraph(Document doc) {
+    private static Element buildGraph(Document doc, Topology tp) {
         Element graph = GRAPH.createElement(doc);
         for (Node n : tp.getNodes())
-            addNode(doc, graph, n);
+            addNode(doc, tp, graph, n);
         for (Link l : tp.getLinks(true))
             if (! l.isWireless())
                 addLink(doc, graph, l);
@@ -136,7 +80,7 @@ public class XMLTopologyBuilder {
         return graph;
     }
 
-    private void addNode(Document doc, Element graph, Node n) {
+    private static void addNode(Document doc, Topology tp, Element graph, Node n) {
         Element ne = NODE.createElement(doc, graph);
 
         IDENTIFIER_ATTR.setAttribute(ne, n.getID());
@@ -153,39 +97,19 @@ public class XMLTopologyBuilder {
         CLASS_ATTR.setNotDefaultAttribute(ne, n.getClass().getName(), "default");
     }
 
-    private String colorToXml(Color color) {
+    private static String colorToXml(Color color) {
         if (color == null)
             return "None";
         else
             return Integer.toHexString(color.getRGB());
     }
 
-    private void addLink(Document doc, Element graph, Link l) {
+    private static void addLink(Document doc, Element graph, Link l) {
         Element ne = LINK.createElement(doc, graph);
         DIRECTED_ATTR.setAttribute(ne, l.isDirected());
         SOURCE_ATTR.setAttribute(ne, l.endpoint(0).getID());
         DESTINATION_ATTR.setAttribute(ne, l.endpoint(1).getID());
         WIDTH_ATTR.setNotDefaultAttribute(ne, l.getWidth(), Link.DEFAULT_WIDTH);
         COLOR_ATTR.setNotDefaultAttribute(ne, colorToXml(l.getColor()), colorToXml(Link.DEFAULT_COLOR));
-    }
-
-    private void addSimpleElement(Document doc, Element parent, XMLTopologyKeys key, BiConsumer<Document, Element> c) {
-        Element e = key.createElement(doc);
-        parent.appendChild(e);
-        c.accept(doc, e);
-    }
-
-    private <T> void addSimpleElement(Document doc, Element parent, XMLTopologyKeys key, T value) {
-        addSimpleElement(doc, parent, key, (d, e) -> e.appendChild(d.createTextNode(String.valueOf(value))));
-    }
-
-    public static class BuilderException extends Exception {
-        public BuilderException(Throwable cause) {
-            this("XML generator yields an exception.", cause);
-        }
-
-        public BuilderException(String message, Throwable cause) {
-            super(message, cause);
-        }
     }
 }

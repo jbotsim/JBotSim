@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<topology version="1.0" wireless-enabled="true">
-  <classes>
-    <node-class class="java.lang.Object" id="default"/>
-    <message-engine class="jbotsim.MessageEngine" id="default"/>
-    <scheduler class="jbotsim.Node" id="default"/>
-    <clock-class class="jbotsim.ui.JClock" id="default"/>
-  </classes>
-  <graph>
-    <node color="ffff0000" id="0" x="50.0" y="50.0"/>
-    <node color="0000ffff" id="2" x="50.0" y="210.0"/>
-    <link src="0" dst="2" color="0012345678"/>
-  </graph>
-</topology>
+<jbotsim version="1.0">
+    <topology wireless-enabled="true">
+        <classes>
+            <node-class class="java.lang.Object" id="default"/>
+            <message-engine class="jbotsim.MessageEngine" id="default"/>
+            <scheduler class="jbotsim.Node" id="default"/>
+            <clock-class class="jbotsim.ui.JClock" id="default"/>
+        </classes>
+        <graph>
+            <node color="ffff0000" id="0" x="50.0" y="50.0"/>
+            <node color="0000ffff" id="2" x="50.0" y="210.0"/>
+            <link src="0" dst="2" color="0012345678"/>
+        </graph>
+    </topology>
+</jbotsim>
