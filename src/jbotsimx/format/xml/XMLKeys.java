@@ -60,6 +60,7 @@ public enum XMLKeys {
     DELETE_NODE("delete-node"),
     SELECT_NODE("select-node"),
     MOVE_NODE("move-node"),
+    START_TOPOLOGY("start-topology"),
     TIME_ATTR("time")
     ;
 

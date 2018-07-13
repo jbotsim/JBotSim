@@ -24,6 +24,10 @@ public class XMLTraceBuilder extends XMLBuilder {
         Document doc = getDocument();
         Element event = null;
         switch(e.getKind()) {
+            case START_TOPOLOGY:
+                event = START_TOPOLOGY.createElement(doc);
+                TIME_ATTR.setAttribute(event, e.getTime());
+                break;
             case ADD_NODE:
                 event = ADD_NODE.createElement(doc);
                 TIME_ATTR.setAttribute(event, e.getTime());

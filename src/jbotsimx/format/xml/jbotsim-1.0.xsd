@@ -132,6 +132,11 @@
         <xs:sequence>
             <xs:element name="topology" type="topology"/>
             <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="start-topology">
+                    <xs:complexType>
+                        <xs:attribute name="time" type="xs:unsignedInt" use="required"/>
+                    </xs:complexType>
+                </xs:element>
                 <xs:element name="add-node">
                     <xs:complexType>
                         <xs:attributeGroup ref="trace-node-event-attr"/>

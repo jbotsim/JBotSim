@@ -75,6 +75,10 @@ public class TracePlayer implements ClockListener {
             n = topology.findNodeById(id);
         }
         switch (e.getKind()) {
+            case START_TOPOLOGY:
+                topology.start();
+                break;
+
             case ADD_NODE:
                 if (n != null) {
                     System.err.println("node ID already created '" + id + "'");

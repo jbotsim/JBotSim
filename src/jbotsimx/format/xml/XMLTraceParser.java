@@ -41,6 +41,11 @@ public class XMLTraceParser extends XMLParser {
         });
     }
 
+    private static TraceEvent parseStartTopologyEvent (Element e) {
+        int time = TIME_ATTR.getIntegerValueFor(e);
+        return TraceEvent.newStartTopology(time);
+    }
+
     private static TraceEvent parseAddNodeEvent (Element e) {
         int time = TIME_ATTR.getIntegerValueFor(e);
         int id = IDENTIFIER_ATTR.getIntegerValueFor(e);

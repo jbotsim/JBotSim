@@ -2,7 +2,7 @@ package jbotsimx.replay;
 
 public class TraceEvent {
     public enum EventKind {
-        ADD_NODE, DEL_NODE, SELECT_NODE, MOVE_NODE
+        ADD_NODE, DEL_NODE, SELECT_NODE, MOVE_NODE, START_TOPOLOGY
     }
 
     private EventKind kind;
@@ -12,10 +12,18 @@ public class TraceEvent {
     private double y;
     private String nodeClass;
 
+    protected TraceEvent(int time, EventKind kind) {
+        this(time, -1, kind);
+    }
+
     protected TraceEvent(int time, int id, EventKind kind) {
         this.id = id;
         this.time = time;
         this.kind = kind;
+    }
+
+    public static TraceEvent newStartTopology(int time) {
+        return new TraceEvent(time, EventKind.START_TOPOLOGY);
     }
 
     public static TraceEvent newAddNode(int time, int id, double x, double y, String className) {

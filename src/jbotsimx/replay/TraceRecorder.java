@@ -4,10 +4,10 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.MovementListener;
 import jbotsim.event.SelectionListener;
+import jbotsim.event.StartListener;
 import jbotsim.event.TopologyListener;
 import jbotsim.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceBuilder;
-import jbotsimx.topology.TopologyGenerator;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by acasteig on 17/05/15.
  */
-public class TraceRecorder implements MovementListener, SelectionListener, TopologyListener {
+public class TraceRecorder implements MovementListener, SelectionListener, TopologyListener, StartListener {
     private XMLTraceBuilder builder;
     private Topology tp;
     private List<TraceEvent> story;
@@ -27,6 +27,12 @@ public class TraceRecorder implements MovementListener, SelectionListener, Topol
         tp.addMovementListener(this);
         tp.addSelectionListener(this);
         tp.addTopologyListener(this);
+        tp.addStartListener(this);
+    }
+
+    @Override
+    public void onStart() {
+        story.add(TraceEvent.newStartTopology(tp.getTime()));
     }
 
     @Override
