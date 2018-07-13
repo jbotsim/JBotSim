@@ -90,11 +90,12 @@ public class XMLTopologyBuilder extends XMLBuilder {
                 tp.getCommunicationRange());
         SENSING_RANGE_ATTR.setNotDefaultAttribute(ne, n.getSensingRange(),
                 tp.getSensingRange());
-        DIRECTION_ATTR.setNotDefaultAttribute(ne, n.getDirection(), 0.0);
+        DIRECTION_ATTR.setNotDefaultAttribute(ne, n.getDirection(), Node.DEFAULT_DIRECTION);
         LOCATION_X_ATTR.setAttribute(ne, n.getX());
         LOCATION_Y_ATTR.setAttribute(ne, n.getY());
         LOCATION_Z_ATTR.setNotDefaultAttribute(ne, n.getZ(), 0.0);
-        CLASS_ATTR.setNotDefaultAttribute(ne, n.getClass().getName(), "default");
+        if (! n.getClass().equals (tp.getDefaultNodeModel()))
+            CLASS_ATTR.setNotDefaultAttribute(ne, n.getClass().getName(), "default");
     }
 
     private static String colorToXml(Color color) {

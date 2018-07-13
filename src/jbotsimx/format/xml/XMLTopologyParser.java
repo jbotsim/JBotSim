@@ -168,7 +168,7 @@ public class XMLTopologyParser extends XMLParser {
         n.setCommunicationRange(cr);
         double sr = SENSING_RANGE_ATTR.getValueFor(ne, tp.getSensingRange());
         n.setSensingRange(sr);
-        double dir = DIRECTION_ATTR.getValueFor(ne, 0.0);
+        double dir = DIRECTION_ATTR.getValueFor(ne, Node.DEFAULT_DIRECTION);
         n.setDirection(dir);
         double x = LOCATION_X_ATTR.getValueFor(ne, -1.0);
         double y = LOCATION_Y_ATTR.getValueFor(ne, -1.0);
