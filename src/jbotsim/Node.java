@@ -22,12 +22,12 @@ import jbotsim.event.MovementListener;
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;
     public static final int DEFAULT_SIZE = 8;
-
+    public static final double DEFAULT_DIRECTION =  Math.PI / 2;;
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
     HashMap<Node, Link> outLinks = new HashMap<>();
     Point3D coords = new Point3D(0, 0, 0);
-    double direction = Math.PI / 2;
+    double direction = DEFAULT_DIRECTION;
     Double communicationRange = null;
     Double sensingRange = null;
     List<Node> sensedNodes = new ArrayList<>();
