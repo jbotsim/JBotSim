@@ -16,6 +16,7 @@ import jbotsim.Topology;
 
 import java.awt.*;
 
+
 public class DefaultBackgroundPainter implements BackgroundPainter {
     @Override
     public void paintBackground(Graphics2D g2d, Topology tp) {

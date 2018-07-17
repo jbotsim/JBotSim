@@ -47,7 +47,7 @@ public class JTopology extends JPanel implements ActionListener {
     public JTopology(Topology topo) {
         setTopology(topo);
         super.setLayout(null);
-        super.setBackground(new Color(180, 180, 180));
+        super.setBackground(new java.awt.Color(180, 180, 180));
         super.addMouseListener(handler);
         super.addKeyListener(handler);
         super.setPreferredSize(new Dimension(topo.getWidth(), topo.getHeight()));

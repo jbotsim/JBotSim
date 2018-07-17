@@ -16,6 +16,7 @@ import jbotsim.Topology;
 
 import java.awt.*;
 
+
 public class LinkPainter {
     /**
      * Paints the Links.
@@ -27,7 +28,7 @@ public class LinkPainter {
         Integer width = link.getWidth();
         if (width == 0)
             return;
-        g2d.setColor(link.getColor());
+        g2d.setColor(new java.awt.Color(link.getColor().getRGB()));
         g2d.setStroke(new BasicStroke(width));
         int srcX = (int) link.source.getX(), srcY = (int) link.source.getY();
         int destX = (int) link.destination.getX(), destY = (int) link.destination.getY();
