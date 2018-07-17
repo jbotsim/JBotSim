@@ -9,7 +9,7 @@ public class Point implements Serializable {
     private int nbDimensions;
 
     public Point() {
-        this(0,0);
+        this(0, 0);
     }
 
     public Point(Point p) {
@@ -98,7 +98,7 @@ public class Point implements Serializable {
 
     public String toString() {
         String s = "Point [x = " + getX() + ", y = " + getY();
-        s+= (nbDimensions==3)?", z = " + getZ() + "]":"]";
+        s += (nbDimensions == 3) ? ", z = " + getZ() + "]" : "]";
         return s;
     }
 }

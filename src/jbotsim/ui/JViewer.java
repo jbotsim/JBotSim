@@ -14,12 +14,6 @@ package jbotsim.ui;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -28,7 +22,6 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.PropertyListener;
-import jbotsimx.format.tikz.Tikz;
 
 /**
  * The viewer includes a central jtopology which will draw the attached
