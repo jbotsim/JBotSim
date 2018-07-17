@@ -1,11 +1,11 @@
 package jbotsimx.geometry.toroidal;
 
 import jbotsim.Link;
+import jbotsim.Point;
 import jbotsim.Topology;
 import jbotsim.ui.painting.LinkPainter;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 
 /**
  * A link painter that draws toroidal link in a toroidal fashion.
@@ -14,16 +14,16 @@ import java.awt.geom.Point2D;
  */
 public class ToroidalLinkPainter extends LinkPainter {
 
-    protected void drawLine(Graphics2D g2d, Point2D p1, Point2D p2) {
+    protected void drawLine(Graphics2D g2d, Point p1, Point p2) {
         int srcX=(int)p1.getX(), srcY=(int)p1.getY();
         int destX=(int)p2.getX(), destY=(int)p2.getY();
         g2d.drawLine(srcX, srcY, (srcX+(destX-srcX)), (srcY+(destY-srcY)));
     }
 
-    protected void toroidalPaint(Graphics2D g2d, Topology tp, Point2D p1, Point2D p2,
+    protected void toroidalPaint(Graphics2D g2d, Topology tp, Point p1, Point p2,
                          boolean wrapX, boolean wrapY){
-        Point2D p1b = (Point2D) p1.clone();
-        Point2D p2b = (Point2D) p2.clone();
+        Point p1b = (Point) p1.clone();
+        Point p2b = (Point) p2.clone();
         if (wrapX){
             if (p1.getX() < p2.getX()) {
                 p1b.setLocation(p1b.getX() + tp.getWidth(), p1b.getY());
@@ -48,8 +48,8 @@ public class ToroidalLinkPainter extends LinkPainter {
 
     @Override
     public void paintLink(Graphics2D g2d, Link link) {
-        Point2D p1 = link.endpoint(0).getLocation();
-        Point2D p2 = link.endpoint(1).getLocation();
+        Point p1 = link.endpoint(0).getLocation();
+        Point p2 = link.endpoint(1).getLocation();
         Topology tp = link.getTopology();
         boolean wrapX = (Math.abs((p1.getX() - p2.getX())) > tp.getWidth()/2);
         boolean wrapY = (Math.abs((p1.getY() - p2.getY())) > tp.getHeight()/2);

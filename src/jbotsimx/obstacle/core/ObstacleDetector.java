@@ -1,7 +1,7 @@
 package jbotsimx.obstacle.core;
 
 import jbotsim.Node;
-import jbotsim.Point3D;
+import jbotsim.Point;
 import jbotsim.Topology;
 import jbotsim.event.MovementListener;
 
@@ -34,7 +34,7 @@ public class ObstacleDetector implements MovementListener {
         List<ObstacleListener> obstacleListeners = (List<ObstacleListener>) topology.getProperty("obstaclelisteners");
         for(ObstacleListener listener:obstacleListeners){
             if(listener==arg0){
-                Point3D n = new Point3D(arg0.getX(),arg0.getY(),arg0.getZ());
+                Point n = new Point(arg0.getX(),arg0.getY(),arg0.getZ());
                 List<Obstacle> l= new ArrayList<>();
                 for(Obstacle o : ((List<Obstacle> )topology.getProperty("Obstacles"))){
                     
