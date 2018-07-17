@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -22,7 +22,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
-import jbotsim.ui.painting.*;
+import jbotsimx.ui.painting.*;
 
 
 @SuppressWarnings("serial")

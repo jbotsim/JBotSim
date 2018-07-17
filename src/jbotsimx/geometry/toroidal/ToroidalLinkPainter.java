@@ -3,7 +3,7 @@ package jbotsimx.geometry.toroidal;
 import jbotsim.Link;
 import jbotsim.Point;
 import jbotsim.Topology;
-import jbotsim.ui.painting.LinkPainter;
+import jbotsimx.ui.painting.LinkPainter;
 
 import java.awt.*;
 

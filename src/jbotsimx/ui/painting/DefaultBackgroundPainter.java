@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui.painting;
+package jbotsimx.ui.painting;
 
 import jbotsim.Node;
 import jbotsim.Topology;

@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui;
 
 import jbotsim.ClockManager;
 import jbotsim.Clock;

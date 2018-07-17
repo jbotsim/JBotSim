@@ -59,7 +59,7 @@ public class EMTVGBuilder {
         System.out.println(tvg);
         jbotsim.Topology tp=new jbotsim.Topology();
         tp.setClockSpeed(100);
-        new jbotsim.ui.JViewer(tp);
+        new jbotsimx.ui.JViewer(tp);
         TVGPlayer player=new TVGPlayer(tvg, tp, 20);
         player.start();
     }

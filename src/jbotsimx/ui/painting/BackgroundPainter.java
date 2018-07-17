@@ -9,8 +9,20 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui.painting;
 
-public interface CommandListener {
-    void onCommand(String command);
+import jbotsim.Topology;
+
+import java.awt.*;
+
+/**
+ * Created by acasteig on 6/9/15.
+ */
+public interface BackgroundPainter {
+    /**
+     * Provides a way to draw things on the background.
+     *
+     * @param g2d The background graphics.
+     */
+    void paintBackground(Graphics2D g2d, Topology tp);
 }

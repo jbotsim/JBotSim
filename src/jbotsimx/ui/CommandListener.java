@@ -9,19 +9,8 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui.painting;
+package jbotsimx.ui;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-
-import java.awt.*;
-
-public interface NodePainter {
-    /**
-     * Provides a way to redefine the drawing of a node.
-     *
-     * @param g2d  This node graphics object
-     * @param node This node
-     */
-    void paintNode(Graphics2D g2d, Node node);
+public interface CommandListener {
+    void onCommand(String command);
 }
