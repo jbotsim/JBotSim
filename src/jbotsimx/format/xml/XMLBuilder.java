@@ -33,6 +33,13 @@ public abstract class XMLBuilder {
         return document;
     }
 
+    /**
+     * Output the current XML document into the specified file.
+     *
+     * @param filename the targeted output file
+     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
+     *         occurs.
+     */
     public void write(String filename) throws BuilderException {
         try {
             XMLIO.write(filename, document);
