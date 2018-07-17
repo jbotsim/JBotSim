@@ -13,9 +13,23 @@ import static jbotsim.Link.Type.DIRECTED;
 import static jbotsim.Link.Type.UNDIRECTED;
 import static jbotsimx.format.xml.XMLKeys.*;
 
+/**
+ * Interpreter for an {@link org.w3c.dom.Document XML document} that represents a {@link Topology}.
+ *
+ * This class is used through its parent class {@link XMLParser}. It overrides {@link #parseRootElement(Element)} to
+ * interpret the document as a {@link Topology}.
+ *
+ * The class does not create an new topology but populates an existing one passed to the constructor. The client code
+ * is in charge of clearing the given topology.
+ */
 public class XMLTopologyParser extends XMLParser {
     private final Topology tp;
 
+    /**
+     * Construct a new topology parser.
+     *
+     * @param tp the {@link Topology} populated by the parser.
+     */
     public XMLTopologyParser(Topology tp) {
         this.tp = tp;
     }
@@ -25,6 +39,13 @@ public class XMLTopologyParser extends XMLParser {
         parseTopologyElement(element, tp);
     }
 
+    /**
+     * Interprets the root element of a topology and fulfilled the one passed as argument.
+     *
+     * @param topo the {@link Element root element} that describes the topology
+     * @param tp the {@link Topology topology} that is populated with XML data.
+     * @throws ParserException is raised if the given XML document is malformed.
+     */
     public static void parseTopologyElement(Element topo, Topology tp) throws ParserException {
         if (!TOPOLOGY.equals(topo.getNodeName()))
             throw new ParserException("invalid node '" + topo.getNodeName() + "' where '" + TOPOLOGY + "' was expected");
@@ -116,7 +137,7 @@ public class XMLTopologyParser extends XMLParser {
         return result;
     }
 
-    public static Class<? extends jbotsim.Node> getNodeClass(Topology tp, String className) throws ParserException {
+    private static Class<? extends jbotsim.Node> getNodeClass(Topology tp, String className) throws ParserException {
         try {
             Class<? extends jbotsim.Node> nodeClass;
             if ("default".equals(className) || className == null) {

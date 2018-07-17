@@ -6,9 +6,24 @@ import org.w3c.dom.Element;
 
 import static jbotsimx.format.xml.XMLKeys.*;
 
+/**
+ * Interpreter for an {@link org.w3c.dom.Document XML document} that represents a trace of execution of a
+ * {@link jbotsim.Topology}.
+ *
+ * This class is used through its parent class {@link XMLParser}. It overrides {@link #parseRootElement(Element)} to
+ * interpret the document as a {@link jbotsim.Topology topology} and a set of {@link TraceEvent events} on that
+ * topology.
+ *
+ * The class does not create an new topology. It populates a {@link TracePlayer} passed to the constructor.
+ */
 public class XMLTraceParser extends XMLParser {
     private final TracePlayer tp;
 
+    /**
+     * Creates a parser for the given {@link TracePlayer}.
+     *
+     * @param tp the {@link TracePlayer} that is populated by the parser.
+     */
     public XMLTraceParser(TracePlayer tp) {
         this.tp = tp;
     }
@@ -18,6 +33,14 @@ public class XMLTraceParser extends XMLParser {
         parseTraceElement(element, tp);
     }
 
+    /**
+     * Populates the given {@link TracePlayer} {@code tp} with the topology and events describes by
+     * {@link Element element}.
+     *
+     * @param element the root element of the XML tree describing the trace.
+     * @param tp the {@link TracePlayer} popuylated by the parser
+     * @throws ParserException is raised if the given {@link org.w3c.dom.Document document} is malformed.
+     */
     public static void parseTraceElement(Element element, TracePlayer tp) throws ParserException {
         if (!TRACE.equals(element.getNodeName()))
             throw new ParserException("invalid node '" + element.getNodeName() + "' where '" +

@@ -9,7 +9,21 @@ import java.awt.*;
 
 import static jbotsimx.format.xml.XMLKeys.*;
 
+/**
+ * Builder for {@link Topology topologies} objects.
+ *
+ * This class is used, mainly, through methods inherited from {@link XMLBuilder}. The class method
+ * {@link #buildTopologyElement} can be invoked to build the element that stores an entire
+ * {@link Topology}; for instance it is used by {@link XMLTraceBuilder}.
+ */
 public class XMLTopologyBuilder extends XMLBuilder {
+    /**
+     * This constructor add to the root element of the {@link Document document} the {@code topology} element that
+     * stores the {@link Topology topology}.
+     *
+     * @param tp the {@link Topology} for which the {@link Document} is built.
+     * @throws BuilderException is raised if an error occurs during the construction of the document.
+     */
     public XMLTopologyBuilder(Topology tp) throws BuilderException {
         super();
         Document doc = getDocument();
@@ -17,7 +31,16 @@ public class XMLTopologyBuilder extends XMLBuilder {
         doc.getDocumentElement().appendChild(topo);
     }
 
-
+    /**
+     * Method that builds the actual element (and subtrees) that stores the givent {@link Topology} {@code tp}.
+     *
+     * Note that this method does not add the generated element to the XML document. This task is devoted to client
+     * methods.
+     *
+     * @param doc the {@link Document document} for which elements are created.
+     * @param tp the {@link Topology topology} to be translated in XML.
+     * @return the {@link Element element} represetning the {@link Topology} {@code tp}
+     */
     public static Element buildTopologyElement(Document doc, Topology tp) {
         Element topo = TOPOLOGY.createElement(doc);
 
