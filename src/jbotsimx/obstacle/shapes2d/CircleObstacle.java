@@ -26,8 +26,8 @@ public class CircleObstacle implements Obstacle {
     }
     
     private boolean collisionDroite(Point a, Point b){
-        Point u=new Point.Double(b.getX()-a.getX(), b.getY()-a.getY());
-        Point ac=new Point.Double(center.getX()-a.getX(), center.getY()-a.getY());
+        Point u=new Point(b.getX()-a.getX(), b.getY()-a.getY());
+        Point ac=new Point(center.getX()-a.getX(), center.getY()-a.getY());
         double num=u.getX()*ac.getY()-u.getY()*ac.getX();
         if (num<0)
             num=-num;
@@ -44,9 +44,9 @@ public class CircleObstacle implements Obstacle {
         if(a.distance(center) <= radius && b.distance(center) <= radius )
             return false;
         if(collisionDroite(a, b)){
-            Point ab=new Point.Double(b.getX()-a.getX(), b.getY()-a.getY());
-            Point ac=new Point.Double(center.getX()-a.getX(), center.getY()-a.getY());
-            Point bc=new Point.Double(center.getX()-b.getX(), center.getY()-b.getY());
+            Point ab=new Point(b.getX()-a.getX(), b.getY()-a.getY());
+            Point ac=new Point(center.getX()-a.getX(), center.getY()-a.getY());
+            Point bc=new Point(center.getX()-b.getX(), center.getY()-b.getY());
             
             double pscal1=ab.getX()*ac.getX()+ab.getY()*ac.getY();
             double pscal2=-ab.getX()*bc.getX() - ab.getY()*bc.getY();

@@ -977,7 +977,7 @@ public class Topology extends _Properties implements ClockListener {
         res.append("cR " + communicationRange + "\n");
         res.append("sR " + sensingRange + "\n");
         for (Node n : nodes) {
-            Point p2d = new Point.Double();
+            Point p2d = new Point();
             p2d.setLocation(n.coords.getX(), n.coords.getY());
             res.append(n.toString() + " " + p2d.toString().substring(p2d.toString().indexOf("[") -1) + "\n");
         }

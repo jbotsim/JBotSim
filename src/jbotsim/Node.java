@@ -343,17 +343,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Returns the location of this node (as a 2D point).
+     * Returns the location of this node.
      */
     public Point getLocation() {
-        return new Point.Double(coords.getX(), coords.getY());
-    }
-
-    /**
-     * Returns the location of this node (as a 3D point).
-     */
-    public Point getLocation3D() {
-        return new Point(coords.getX(), coords.getY(), coords.getZ());
+        return new Point(coords);
     }
 
     /**

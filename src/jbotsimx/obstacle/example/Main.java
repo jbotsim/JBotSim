@@ -24,19 +24,19 @@ public class Main {
         ObstacleManager.init(tp, jtp);
 
         List<Point> points = new ArrayList<>();
-        points.add(new Point.Double(100, 100));
-        points.add(new Point.Double(200, 400));
-        points.add(new Point.Double(500, 500));
-        points.add(new Point.Double(600, 300));
+        points.add(new Point(100, 100));
+        points.add(new Point(200, 400));
+        points.add(new Point(500, 500));
+        points.add(new Point(600, 300));
 
         LinesObstacle lo = new LinesObstacle(points);
         ObstacleManager.addObstacle(lo, tp);
 
-        CircleObstacle co = new CircleObstacle(new Point.Double(400, 400), 10);
+        CircleObstacle co = new CircleObstacle(new Point(400, 400), 10);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point.Double(200, 200), 20);
+        co = new CircleObstacle(new Point(200, 200), 20);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point.Double(600, 200), 80);
+        co = new CircleObstacle(new Point(600, 200), 80);
         ObstacleManager.addObstacle(co, tp);
 
         tp.pause();

@@ -2,36 +2,31 @@ package jbotsim;
 
 import java.io.Serializable;
 
-public class Point {
-    private double x;
-    private double y;
-    private double z;
+public class Point implements Serializable {
+    public double x;
+    public double y;
+    public double z;
+    private int nbDimensions;
 
     public Point() {
+        this(0,0);
     }
 
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-        this.z = 0;
+    public Point(Point p) {
+        this(p.x, p.y, p.z);
+        this.nbDimensions = p.nbDimensions;
     }
 
     public Point(double x, double y) {
-        this.x = x;
-        this.y = y;
-        this.z = 0;
-    }
-
-    public Point(int x, int y, int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this(x, y, 0);
+        nbDimensions = 2;
     }
 
     public Point(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
+        nbDimensions = 3;
     }
 
     public static double distance(double x1, double y1,
@@ -41,10 +36,10 @@ public class Point {
         return Math.sqrt(x1 * x1 + y1 * y1);
     }
 
-    public double distance(double paramDouble1, double paramDouble2, double paramDouble3) {
-        double d1 = getX() - paramDouble1;
-        double d2 = getY() - paramDouble2;
-        double d3 = getZ() - paramDouble3;
+    public double distance(double x, double y, double z) {
+        double d1 = getX() - x;
+        double d2 = getY() - y;
+        double d3 = getZ() - z;
         return Math.sqrt(d1 * d1 + d2 * d2 + d3 * d3);
     }
 
@@ -101,115 +96,9 @@ public class Point {
         return super.equals(obj);
     }
 
-    public static class Float extends Point implements Serializable {
-
-        private static final long serialVersionUID = -2870572449815403710L;
-        public float x;
-        public float y;
-        public float z;
-
-
-        public Float() {
-        }
-
-
-        public Float(float x, float y) {
-            this.x = x;
-            this.y = y;
-            this.z = 0;
-        }
-
-        public double getX() {
-            return (double) x;
-        }
-
-        public double getZ() {
-            return (double) z;
-        }
-
-        public double getY() {
-            return (double) y;
-        }
-
-        public void setLocation(double x, double y) {
-            this.x = (float) x;
-            this.y = (float) y;
-            this.z = 0f;
-        }
-
-        public void setLocation(float x, float y) {
-            this.x = x;
-            this.y = y;
-            this.z = 0f;
-        }
-        public void setLocation(double x, double y, double z) {
-            this.x = (float) x;
-            this.y = (float) y;
-            this.z = (float) z;
-        }
-
-        public void setLocation(float x, float y, float z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public String toString() {
-            return "Point [x = " + getX() + ", y = " + getY() + ", z = " + getZ() + "]";
-        }
-    }
-
-    public static class Double extends Point implements Serializable {
-
-        /*
-         * JDK 1.6 serialVersionUID
-         */
-        private static final long serialVersionUID = 6150783262733311327L;
-        public double x;
-        public double y;
-        public double z;
-
-
-        public Double() {
-        }
-
-
-        public Double(double x, double y) {
-            this.x = x;
-            this.y = y;
-            this.z = 0;
-        }
-        public Double(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public double getZ() {
-            return z;
-        }
-
-        public double getX() {
-            return x;
-        }
-
-        public double getY() {
-            return y;
-        }
-
-        public void setLocation(double x, double y) {
-            this.x = x;
-            this.y = y;
-            this.z = 0;
-        }
-        public void setLocation(double x, double y, double z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public String toString() {
-            return "Point [x = " + getX() + ", y = " + getY() + ", z = " + getZ() + "]";
-        }
+    public String toString() {
+        String s = "Point [x = " + getX() + ", y = " + getY();
+        s+= (nbDimensions==3)?", z = " + getZ() + "]":"]";
+        return s;
     }
 }
