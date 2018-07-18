@@ -18,6 +18,10 @@ import jbotsim.event.*;
 import java.util.*;
 
 public class Topology extends _Properties implements ClockListener {
+    public static final int DEFAULT_WIDTH = 600;
+    public static final int DEFAULT_HEIGHT = 400;
+    public static final double DEFAULT_COMMUNICATION_RANGE = 100;
+    public static final double DEFAULT_SENSING_RANGE = 0;
     ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
     List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
@@ -33,8 +37,8 @@ public class Topology extends _Properties implements ClockListener {
     List<Link> edges = new ArrayList<>();
     HashMap<String, Class<? extends Node>> nodeModels = new HashMap<String, Class<? extends Node>>();
     boolean isWirelessEnabled = true;
-    double communicationRange = 100;
-    double sensingRange = 0;
+    double communicationRange = DEFAULT_COMMUNICATION_RANGE;
+    double sensingRange = DEFAULT_SENSING_RANGE;
     int width;
     int height;
     LinkResolver linkResolver = new LinkResolver();
@@ -53,7 +57,7 @@ public class Topology extends _Properties implements ClockListener {
      * Creates a topology.
      */
     public Topology() {
-        this(600, 400);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     /**
@@ -150,20 +154,33 @@ public class Topology extends _Properties implements ClockListener {
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        for (Node node : nodes)
-            node.enableWireless();
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
-        for (Node node : nodes)
-            node.disableWireless();
+        setWirelessStatus(false);
     }
 
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
+        for (Node node : nodes)
+            node.setWirelessStatus(enabled);
+    }
+
+    /**
+     * Returns true if wireless links are enabled.
+     */
+    public boolean getWirelessStatus() {
+        return isWirelessEnabled;
+    }
     /**
      * Returns the default communication range.
      *
@@ -684,6 +701,14 @@ public class Topology extends _Properties implements ClockListener {
      */
     public void setLinkResolver(LinkResolver linkResolver) {
         this.linkResolver = linkResolver;
+    }
+
+    /**
+     * Return the current LinkResolver
+     *
+     */
+    public LinkResolver getLinkResolver() {
+        return linkResolver;
     }
 
     /**
