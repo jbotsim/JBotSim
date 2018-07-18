@@ -9,10 +9,10 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui.painting;
+package jbotsimx.ui.painting;
 
 import jbotsim.Node;
-import jbotsim.ui.JNode;
+import jbotsimx.ui.JNode;
 
 import java.awt.*;
 
@@ -22,7 +22,7 @@ public class DefaultNodePainter implements NodePainter {
         JNode jn = (JNode) node.getProperty("jnode");
         int drawSize = jn.getWidth() / 2;
         if (node.getColor() != null) {
-            g2d.setColor(node.getColor());
+            g2d.setColor(new Color(node.getColor().getRGB()));
             g2d.fillOval(drawSize / 2, drawSize / 2, drawSize, drawSize);
         }
     }

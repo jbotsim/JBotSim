@@ -9,19 +9,47 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
 
-import jbotsim.ClockManager;
+/**
+ * Default Clock is a simple clock implementation using a simple timer to
+ * schedule onClock at a fixed rate.
+ * This class is not thread-safe
+ *
+ * Authors:
+ * Quentin Bramas <bramas@unistra.fr>
+ */
+
+package jbotsimx.misc;
+
 import jbotsim.Clock;
+import jbotsim.ClockManager;
 
-import javax.swing.Timer;
+import java.util.Timer;
+import java.util.TimerTask;
 
-public class JClock extends Clock {
+public class UtilClock extends Clock {
     Timer timer;
+    long period;
+    boolean running;
+    DefaultTask task;
 
-    public JClock(ClockManager manager) {
+    public UtilClock(ClockManager manager) {
         super(manager);
-        timer = new Timer(10, e -> manager.onClock());
+        period = 10;
+        running = false;
+        task = null;
+        timer = new Timer("Default Clock Timer");
+    }
+
+    /**
+     * TimerTask called by our timer.
+     * The task just call the onClock method of the ClockManager
+     */
+    private class DefaultTask extends TimerTask {
+        @Override
+        public void run() {
+            manager.onClock();
+        }
     }
 
     /**
@@ -29,7 +57,7 @@ public class JClock extends Clock {
      */
     @Override
     public int getTimeUnit() {
-        return timer.getDelay();
+        return (int) period;
     }
 
     /**
@@ -39,7 +67,11 @@ public class JClock extends Clock {
      */
     @Override
     public void setTimeUnit(int delay) {
-        timer.setDelay(delay);
+        period = delay;
+        if (running) {
+            pause();
+            resume();
+        }
     }
 
     /**
@@ -49,7 +81,7 @@ public class JClock extends Clock {
      */
     @Override
     public boolean isRunning() {
-        return timer.isRunning();
+        return running;
     }
 
     /**
@@ -57,7 +89,7 @@ public class JClock extends Clock {
      */
     @Override
     public void start() {
-        timer.start();
+        resume();
     }
 
     /**
@@ -65,7 +97,12 @@ public class JClock extends Clock {
      */
     @Override
     public void pause() {
-        timer.stop();
+        if (!running)
+            return;
+
+        running = false;
+        task.cancel();
+        task = null;
     }
 
     /**
@@ -73,6 +110,11 @@ public class JClock extends Clock {
      */
     @Override
     public void resume() {
-        timer.start();
+        if (running)
+            return;
+
+        running = true;
+        task = new DefaultTask();
+        timer.scheduleAtFixedRate(task, period, period);
     }
 }

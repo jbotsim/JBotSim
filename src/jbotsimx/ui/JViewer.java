@@ -9,12 +9,12 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.*;
+import java.io.File;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -136,7 +136,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      */
     public void setSize(int width, int height) {
         jtp.topo.setDimensions(width, height);
-        jtp.setPreferredSize(jtp.topo.getDimensions());
+        jtp.setPreferredSize(new Dimension(jtp.topo.getWidth(), jtp.topo.getHeight()));
         if (window != null)
             window.pack();
     }
@@ -192,10 +192,14 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
                 removeSlideBar();
             jtp.updateUI();
         } else if (command.equals("Pause or resume execution")) {
-            if (jtp.topo.isRunning())
-                jtp.topo.pause();
-            else
-                jtp.topo.resume();
+            if (!jtp.topo.isStarted())
+                jtp.topo.start();
+            else {
+                if (jtp.topo.isRunning())
+                    jtp.topo.pause();
+                else
+                    jtp.topo.resume();
+            }
         } else if (command.equals("Restart nodes")) {
             jtp.topo.restart();
         } else if (command.equals("Execute a single step")) {

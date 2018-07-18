@@ -11,11 +11,12 @@
  */
 package jbotsimx.format.tikz;
 
+import jbotsim.Color;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 
-import java.awt.*;
+
 
 public class Tikz {
     public static String getStringColor(Color color){

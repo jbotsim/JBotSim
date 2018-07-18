@@ -1,17 +1,16 @@
 package jbotsimx.obstacle.shapes2d;
 
 import jbotsim.Node;
-import jbotsim.Point3D;
+import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
 
 import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.List;
 
 
 public class LinesObstacle implements Obstacle {
 
-    private List<Point2D> points;
+    private List<Point> points;
     private double x;
     private double y;
     
@@ -19,11 +18,11 @@ public class LinesObstacle implements Obstacle {
     private double ymin;
     
 
-    public LinesObstacle(List<Point2D> points) {
+    public LinesObstacle(List<Point> points) {
         this.points = points;
     }
 
-    private boolean hasCollisionDroiteSegment(Point2D a,Point2D b,Point2D o,Point2D p){
+    private boolean hasCollisionDroiteSegment(Point a,Point b,Point o,Point p){
 
         double abX = b.getX() - a.getX();
         double abY = b.getY() - a.getY();
@@ -35,22 +34,22 @@ public class LinesObstacle implements Obstacle {
         return ((abX*apY-abY*apX)*(abX*aoY-abY*aoX) <0);
     }
 
-    private boolean hasCollisionSegSeg(Point2D a,Point2D b,Point2D o,Point2D p){
+    private boolean hasCollisionSegSeg(Point a,Point b,Point o,Point p){
         if(hasCollisionDroiteSegment(a, b, o, p))
             if(hasCollisionDroiteSegment(o, p, a, b))
                 return true;
         return false;
     }
 
-    private boolean hasCollisionAABB(Point2D a, Point2D b,Point2D o,Point2D p) {
-        Point2D opMinX;
-        Point2D opMaxX;
-        Point2D opMinY;
-        Point2D opMaxY;
-        Point2D abMinX;
-        Point2D abMaxX;
-        Point2D abMinY;
-        Point2D abMaxY;
+    private boolean hasCollisionAABB(Point a, Point b,Point o,Point p) {
+        Point opMinX;
+        Point opMaxX;
+        Point opMinY;
+        Point opMaxY;
+        Point abMinX;
+        Point abMaxX;
+        Point abMinY;
+        Point abMaxY;
 
         if(o.getX() < p.getX()){
             opMinX=o;
@@ -92,10 +91,10 @@ public class LinesObstacle implements Obstacle {
     @Override
     public boolean obstructLink(Node node1, Node node2) {
 
-        Point2D a=points.get(0);
-        Point2D b;
-        Point2D o=node1.getLocation();
-        Point2D p=node2.getLocation();
+        Point a=points.get(0);
+        Point b;
+        Point o=node1.getLocation();
+        Point p=node2.getLocation();
         for(int i=1;i<points.size();i++){
             b=points.get(i);
             if(hasCollisionAABB(a,b,o,p))
@@ -112,9 +111,9 @@ public class LinesObstacle implements Obstacle {
         Color tmp=g.getColor();
         g.setColor(Color.blue);
         
-        Point2D a=points.get(0);
+        Point a=points.get(0);
         for (int i=1;i<points.size();++i){
-            Point2D b=points.get(i);
+            Point b=points.get(i);
             
             g.drawLine((int)a.getX(), (int)a.getY(),(int) b.getX(), (int)b.getY());
             a=b;
@@ -123,11 +122,11 @@ public class LinesObstacle implements Obstacle {
         g.setColor(tmp);
     }
 
-//    public List<Point2D> getPoints() {
+//    public List<Point> getPoints() {
 //        return points;
 //    }
     
-    private double distanceMinSeg(Point2D v,Point2D w, Point2D p){
+    private double distanceMinSeg(Point v,Point w, Point p){
         double px=w.getX()-v.getX();
         double py=w.getY()-v.getY();
         double dist2=px*px +py*py;
@@ -151,11 +150,11 @@ public class LinesObstacle implements Obstacle {
 //    }
 
     @Override
-    public Point3D pointAtMinimumDistance(Node node) {
+    public Point pointAtMinimumDistance(Node node) {
 
-        Point2D p =node.getLocation();
-        Point2D a=points.get(0);
-        Point2D b;
+        Point p =node.getLocation();
+        Point a=points.get(0);
+        Point b;
         double distance=Double.POSITIVE_INFINITY;
         for(int i=1;i<points.size();i++){
             b=points.get(i);
@@ -167,6 +166,6 @@ public class LinesObstacle implements Obstacle {
             }
             a=b;
         }
-        return new Point3D(xmin, ymin, node.getZ());
+        return new Point(xmin, ymin, node.getZ());
     }
 }

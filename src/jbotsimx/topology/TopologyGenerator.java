@@ -39,8 +39,8 @@ public class TopologyGenerator {
         gf.setAbsoluteCoords(true);
         gf.setX(50);
         gf.setY(50);
-        gf.setWidth(tp.getDimensions().width-50);
-        gf.setHeight(tp.getDimensions().width-50);
+        gf.setWidth(tp.getWidth()-50);
+        gf.setHeight(tp.getWidth()-50);
         gf.setWired(false);
         gf.setNodeClass(tp.getNodeModel("default"));
         gf.newGrid(orderX, orderY).generate(tp);
@@ -51,8 +51,8 @@ public class TopologyGenerator {
         gf.setAbsoluteCoords(true);
         gf.setX(50);
         gf.setY(50);
-        gf.setWidth(tp.getDimensions().width-50);
-        gf.setHeight(tp.getDimensions().width-50);
+        gf.setWidth(tp.getWidth()-50);
+        gf.setHeight(tp.getWidth()-50);
         gf.setWired(false);
         gf.setNodeClass(tp.getNodeModel("default"));
         gf.newTorus(order, order).generate(tp);

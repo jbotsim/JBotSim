@@ -9,46 +9,70 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim;
+package jbotsimx.ui;
 
-public abstract class Clock {
-    protected ClockManager manager;
+import jbotsim.ClockManager;
+import jbotsim.Clock;
 
-    public Clock(ClockManager manager) {
-        this.manager = manager;
+import javax.swing.Timer;
+
+public class JClock extends Clock {
+    Timer timer;
+
+    public JClock(ClockManager manager) {
+        super(manager);
+        timer = new Timer(10, e -> manager.onClock());
     }
 
     /**
      * Returns the time unit of the clock, in milliseconds.
      */
-    public abstract int getTimeUnit();
+    @Override
+    public int getTimeUnit() {
+        return timer.getDelay();
+    }
 
     /**
      * Sets the time unit of the clock to the specified value in millisecond.
      *
-     * @param timeUnit The desired time unit
+     * @param delay The desired time unit (1 corresponds to the fastest rate)
      */
-    public abstract void setTimeUnit(int timeUnit);
+    @Override
+    public void setTimeUnit(int delay) {
+        timer.setDelay(delay);
+    }
 
     /**
      * Indicates whether the clock is currently running or paused.
      *
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
-    public abstract boolean isRunning();
+    @Override
+    public boolean isRunning() {
+        return timer.isRunning();
+    }
 
     /**
      * Starts the clock.
      */
-    public abstract void start();
+    @Override
+    public void start() {
+        timer.start();
+    }
 
     /**
      * Pauses the clock.
      */
-    public abstract void pause();
+    @Override
+    public void pause() {
+        timer.stop();
+    }
 
     /**
      * Resumes the clock if it was paused.
      */
-    public abstract void resume();
+    @Override
+    public void resume() {
+        timer.start();
+    }
 }

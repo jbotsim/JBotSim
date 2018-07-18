@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,9 +21,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import javax.imageio.ImageIO;
@@ -32,7 +30,7 @@ import javax.swing.*;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
-import jbotsim.ui.painting.NodePainter;
+import jbotsimx.ui.painting.NodePainter;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -79,7 +77,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
 
     private void setDefaultIcon() {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        icon = tk.getImage(getClass().getResource("/jbotsim/ui/circle.png"));
+        icon = tk.getImage(getClass().getResource("/jbotsimx/ui/circle.png"));
         updateIconSize();
     }
 

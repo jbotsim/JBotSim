@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package jbotsim.ui;
+package jbotsimx.ui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -22,7 +22,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
-import jbotsim.ui.painting.*;
+import jbotsimx.ui.painting.*;
 import jbotsimx.format.xml.XMLTopologyParser;
 
 
@@ -48,10 +48,10 @@ public class JTopology extends JPanel implements ActionListener {
     public JTopology(Topology topo) {
         setTopology(topo);
         super.setLayout(null);
-        super.setBackground(new Color(180, 180, 180));
+        super.setBackground(new java.awt.Color(180, 180, 180));
         super.addMouseListener(handler);
         super.addKeyListener(handler);
-        super.setPreferredSize(topo.getDimensions());
+        super.setPreferredSize(new Dimension(topo.getWidth(), topo.getHeight()));
         ToolTipManager.sharedInstance().setInitialDelay(0);
         linkPainter = new LinkPainter();
         nodePainters.add(new DefaultNodePainter());

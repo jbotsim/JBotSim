@@ -11,20 +11,16 @@
  */
 package jbotsim;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.io.File;
+import jbotsim.Link.Mode;
+import jbotsim.Link.Type;
+import jbotsim.event.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.List;
-
-import jbotsim.Link.Mode;
-import jbotsim.Link.Type;
-import jbotsim.event.*;
 
 public class Topology extends _Properties implements ClockListener {
     public static final int DEFAULT_WIDTH = 600;
@@ -48,10 +44,10 @@ public class Topology extends _Properties implements ClockListener {
     boolean isWirelessEnabled = true;
     double communicationRange = DEFAULT_COMMUNICATION_RANGE;
     double sensingRange = DEFAULT_SENSING_RANGE;
-    Dimension dimensions;
+    int width;
+    int height;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
-    int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
     private boolean isStarted = false;
@@ -62,40 +58,21 @@ public class Topology extends _Properties implements ClockListener {
     ;
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
-
     /**
      * Creates a topology.
      */
     public Topology() {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, true);
-    }
-
-    /**
-     * Creates a topology and sets its running status (running/paused).
-     */
-    public Topology(boolean toBeStarted) {
-        this(DEFAULT_WIDTH, DEFAULT_HEIGHT, toBeStarted);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height) {
-        this(width, height, true);
-    }
-
-    /**
-     * Creates a topology of given dimensions.
-     */
-    public Topology(int width, int height, boolean toBeStarted) {
         setMessageEngine(new MessageEngine());
         setScheduler(new DefaultScheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
-        if (!toBeStarted)
-            clockManager.getClock().pause();
-        isStarted = toBeStarted;
-        resetTime();
     }
 
     /**
@@ -159,7 +136,7 @@ public class Topology extends _Properties implements ClockListener {
         return new Node();
     }
 
-    public boolean isStarted() {
+    public boolean isStarted() { // FIXME Ambiguous for the user
         return isStarted;
     }
 
@@ -299,7 +276,7 @@ public class Topology extends _Properties implements ClockListener {
      * @return The duration
      */
     public int getClockSpeed() {
-        return clockManager.getClock().getTimeUnit();
+        return clockManager.getTimeUnit();
     }
 
     /**
@@ -308,7 +285,7 @@ public class Topology extends _Properties implements ClockListener {
      * @param period The desired duration
      */
     public void setClockSpeed(int period) {
-        clockManager.getClock().setTimeUnit(period);
+        clockManager.setTimeUnit(period);
     }
 
     /**
@@ -333,9 +310,6 @@ public class Topology extends _Properties implements ClockListener {
     public int getTime() {
         return clockManager.currentTime();
     }
-    /**
-     * Sets the topology dimensions as indicated.
-     */
 
     /**
      * Indicates whether the internal clock is currently running or in pause.
@@ -343,30 +317,21 @@ public class Topology extends _Properties implements ClockListener {
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public boolean isRunning() {
-        return clockManager.getClock().isRunning();
+        return clockManager.isRunning();
     }
 
     /**
      * Pauses the clock (or increments the pause counter).
      */
     public void pause() {
-        if (isStarted) {
-            if (nbPauses == 0)
-                clockManager.getClock().pause();
-            nbPauses++;
-        }
+        clockManager.pause();
     }
 
     /**
      * Resumes the clock (or decrements the pause counter).
      */
     public void resume() {
-        if (isStarted) {
-            assert (nbPauses > 0);
-            nbPauses--;
-            if (nbPauses == 0)
-                clockManager.getClock().resume();
-        }
+        clockManager.resume();
     }
 
     /**
@@ -376,45 +341,39 @@ public class Topology extends _Properties implements ClockListener {
         clockManager.reset();
     }
 
-    public void setDimensions(int width, int height) {
-        dimensions = new Dimension(width, height);
-    }
-
     /**
-     * Returns the topology dimensions.
+     * Sets the topology dimensions as indicated.
      */
-    public Dimension getDimensions() {
-        return new Dimension(dimensions);
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     /**
      * Returns the width of this topology.
      */
     public int getWidth() {
-        return dimensions.width;
+        return width;
     }
 
     /**
      * Returns the height of this topology.
      */
     public int getHeight() {
-        return dimensions.height;
+        return height;
     }
 
     /**
-     * Reset the color and width of nodes and links, then calls the
-     * onStart() method on each node.
+     * Initializes the clock.
      */
     public void start() {
-        if (!isStarted) {
-            isStarted = true;
-            clockManager.getClock().resume();
-            restart();
-        }
+        clockManager.start();
+        isStarted = true;
+        restart();
     }
 
     /**
-     * Causes the onStart() method to be called again on each node (and each StartListener)
+     * (Re)init the nodes through their onStart() method (and notifies StartListeners as well)
      */
     public void restart() {
         pause();
@@ -458,8 +417,7 @@ public class Topology extends _Properties implements ClockListener {
      * Performs a single round, then switch to pause state.
      */
     public void step() {
-        if (nbPauses > 0)
-            resume();
+        resume();
         step = true;
     }
 
@@ -494,9 +452,9 @@ public class Topology extends _Properties implements ClockListener {
     public void addNode(double x, double y, Node n) {
         pause();
         if (x == -1)
-            x = Math.random() * dimensions.width;
+            x = Math.random() * width;
         if (y == -1)
-            y = Math.random() * dimensions.height;
+            y = Math.random() * height;
         if (n.getX() == 0 && n.getY() == 0)
             n.setLocation(x, y);
 
@@ -1044,9 +1002,9 @@ public class Topology extends _Properties implements ClockListener {
         res.append("cR " + communicationRange + "\n");
         res.append("sR " + sensingRange + "\n");
         for (Node n : nodes) {
-            Point2D p2d = new Point2D.Double();
+            Point p2d = new Point();
             p2d.setLocation(n.coords.getX(), n.coords.getY());
-            res.append(n.toString() + " " + p2d.toString().substring(14) + "\n");
+            res.append(n.toString() + " " + p2d.toString().substring(p2d.toString().indexOf("[") -1) + "\n");
         }
         for (Link l : getLinks())
             if (!l.isWireless())
@@ -1068,8 +1026,12 @@ public class Topology extends _Properties implements ClockListener {
         s = s.substring(s.indexOf("\n") + 1);
         HashMap<String, Node> nodeTable = new HashMap<>();
         while (s.indexOf("[") > 0) {
-            addNode(new Double(s.substring(s.indexOf("[") + 1, s.indexOf(","))),
-                    new Double(s.substring(s.indexOf(",") + 2, s.indexOf("]"))));
+            Node node = new Node();
+            double x = new Double(s.substring(s.indexOf("x") + 3, s.indexOf(", y")));
+            double y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
+            double z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
+            node.setLocation(x, y, z );
+            addNode(node);
             Node n = nodes.get(nodes.size() - 1);
             String id = s.substring(0, s.indexOf(" "));
             n.setProperty("id", id);
