@@ -1,9 +1,10 @@
 package examples.basic.mobilebroadcast;
 
+import jbotsim.Color;
 import jbotsim.Message;
 import jbotsim.Node;
 
-import java.awt.*;
+
 
 /**
  * Created by acasteig on 2/20/15.

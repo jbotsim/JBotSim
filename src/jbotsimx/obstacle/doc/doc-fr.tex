@@ -81,7 +81,7 @@ Le deuxième obstacle 2D est lui une suite de segments continus défini par une 
 
 Enfin, l'obstacle 3D est une facette rectangulaire définie par trois points A, B, C de telle sorte que le segment $AB$ est perpendiculaire au segment $AC$. Cette facette est un mur de taille finie qui peut être incliné dans n'importe quel sens. Si lors de la création de l'obstacle les segments AB et AC ne sont pas perpendiculaires alors l'obstacle n'est pas généré et l'exception \textbf{NotPerpendicularException} est retournée.\medskip
 
-Attention : Pour la création des deux obstacles 2D il faut fournir des \textbf{Point2D} (classe standard de Java)  mais pour l'obstacle 3D il faut des points en trois dimensions, la classe à utiliser est donc \textbf{Point3D} (classe issue de JBotSim).\\%\todo{Est-ce que tu utilise cette classe directement ou est-ce que tu utilise une copie locale ? (réponse par mail stp)}\\
+Attention : Pour la création des deux obstacles 2D il faut fournir des \textbf{Point} (classe standard de Java)  mais pour l'obstacle 3D il faut des points en trois dimensions, la classe à utiliser est donc \textbf{Point} (classe issue de JBotSim).\\%\todo{Est-ce que tu utilise cette classe directement ou est-ce que tu utilise une copie locale ? (réponse par mail stp)}\\
 
 %L'obstacle 3D qui est une facette rectangulaire peut se représenter par un rectangle sur un plan dans l'espace à trois dimension, les points A, B, C en sont des sommets. Les segments AB et AC sont deux côtés adjacents de la facette rectangulaire. Si les segments AB et AC ne sont pas perpendiculaires alors l'obstacle n'est pas généré et l'exception \textbf{NotPerpendicularException} est retournée.\\
 %\todo{Avant de parler de l'exception, en quoi consiste (et par quoi se caractérise) un obstacle 3D ? (en langage normal)}
@@ -93,32 +93,32 @@ Voici un exemple de création d'instance de chacun des trois types d'obstacles :
 \begin{itemize}
 \item pour le cercle plein\smallskip
 \begin{lstlisting}[frame=single]
-Point2D center = new Point2D.Double(400, 400);
+Point center = new Point(400, 400);
 CircleObstacle circle=new CircleObstacle(center, 10);
 \end{lstlisting}\smallskip
 \item pour la suite de segments\smallskip
 \begin{lstlisting}[frame=single]
-List<Point2D> points = new ArrayList<Point2D>();
-points.add(new Point2D.Double(20,80));
-points.add(new Point2D.Double(200.8,600.1));
+List<Point> points = new ArrayList<Point>();
+points.add(new Point(20,80));
+points.add(new Point(200.8,600.1));
 LinesObstacle lines = new LinesObstacle(points);
 \end{lstlisting}\smallskip
 \item pour la facette rectangulaire\smallskip
 \begin{lstlisting}[frame=single]
-Point3D a = new Point3D(20, 20, 0);
-Point3D b = new Point3D(20, 200, 0);
-Point3D c = new Point3D(20, 20, 500.5);
+Point a = new Point(20, 20, 0);
+Point b = new Point(20, 200, 0);
+Point c = new Point(20, 20, 500.5);
 RectangularFacetObstacle facet = new RectangularFacetObstacle(a,b,c);
 \end{lstlisting}
 \end{itemize}
 
 %\begin{Verbatim}[frame=single]
-%Point2D center = new Point2D.Double(400, 400);
+%Point center = new Point(400, 400);
 %CircleObstacle circle=new CircleObstacle(center, 10);
 %
-%List<Point2D> points = new ArrayList<Point2D>();
-%points.add(new Point2D.Double(20,80));
-%points.add(new Point2D.Double(200.8,600.1));
+%List<Point> points = new ArrayList<Point>();
+%points.add(new Point(20,80));
+%points.add(new Point(200.8,600.1));
 %LinesObstacle lines = new LinesObstacle(points);
 %
 %NodePoint a = new NodePoint(20, 20, 0);
@@ -147,7 +147,7 @@ Il est possible de créer de nouveaux types d'obstacles en implémentant l'inter
 
 \item \texttt{boolean obstructLink(Node node1, Node node2)} qui doit retourner \emph{true} si l'obstacle se trouve entre les deux n\oe uds et empêche l'établissement d'une communication entre eux.\\
 
-\item \texttt{Point3D pointAtMinimumDistance(Node node)} qui retourne le point de l'obstacle à distance minimum du n\oe ud.\\
+\item \texttt{Point pointAtMinimumDistance(Node node)} qui retourne le point de l'obstacle à distance minimum du n\oe ud.\\
 
 \item \texttt{void paint(Graphics g)} qui contient le code pour afficher l'obstacle sur l'objet g de la classe Graphics.\\
 \end{itemize}
@@ -269,7 +269,7 @@ Cette interface définit les trois seules méthodes qu'un obstacle doit impléme
 
 \item \texttt{boolean obstructLink(Node node1, Node node2)} qui doit retourner \emph{true} si l'obstacle se trouve entre les deux n\oe uds et empêche l'établissement d'une communication entre eux.\medskip
 
-\item \texttt{Point3D pointAtMinimumDistance(Node node)} qui doit retourner le point de l'obstacle à distance minimum du n\oe ud.\medskip
+\item \texttt{Point pointAtMinimumDistance(Node node)} qui doit retourner le point de l'obstacle à distance minimum du n\oe ud.\medskip
 
 \item \texttt{void paint(Graphics g)} qui contient le code pour afficher l'obstacle sur l'objet g de la classe Graphics.
 \end{itemize}
@@ -348,7 +348,7 @@ Deux obstacles ont été implémentés, le premier est un obstacle circulaire et
 
 \paragraph{La classe CircleObstacle.}
 
-Cette classe définit l'obstacle circulaire. Pour l'instancier il faut définir son centre C par un Point2D et son rayon par un nombre réel.\medskip
+Cette classe définit l'obstacle circulaire. Pour l'instancier il faut définir son centre C par un Point et son rayon par un nombre réel.\medskip
 
 Pour tester si l'obstacle se trouve entre deux n\oe uds A et B et empêche la communication entre ces n\oe uds, on commence tout d'abord par regarder si la droite passant par A et B coupe l'obstacle. La droite coupe l'obstacle si et seulement si le produit vectoriel $ \overrightarrow{AB} \wedge \overrightarrow{AC}$ est strictement inférieur au produit du rayon du cercle par la norme du vecteur $\overrightarrow{AB}$. Si la droite coupe l'obstacle alors on cherche à déterminer si le segment coupe l'obstacle. C'est le cas si les deux produits scalaires suivants sont positifs : $\overrightarrow{AB}\cdot\overrightarrow{AC}$ et $\overrightarrow{BA}\cdot\overrightarrow{BC}$.\medskip
 
@@ -370,11 +370,11 @@ Un seul obstacle 3D a été implémenté, il s'agit d'une facette rectangulaire.
 
 \paragraph{La classe Vector3D.}
 
-Cette classe implémente des vecteurs 3D, trois constructeurs ont été créés le premier prend trois nombres réels en entrée pour créer le vecteur, le deuxième prend deux \textbf{Point3D} (classe issue de JBotSim) A et B pour créer le vecteur $\overrightarrow{AB}$ le troisième prend un \textbf{Vector3D} en entrée et crée une copie de celui-ci.\medskip
+Cette classe implémente des vecteurs 3D, trois constructeurs ont été créés le premier prend trois nombres réels en entrée pour créer le vecteur, le deuxième prend deux \textbf{Point} (classe issue de JBotSim) A et B pour créer le vecteur $\overrightarrow{AB}$ le troisième prend un \textbf{Vector3D} en entrée et crée une copie de celui-ci.\medskip
 
 Les opérations de produit vectoriel, de produit scalaire, de somme de deux vecteurs, de multiplication par un scalaire, de division par un scalaire ou de norme ont été implémentées pour faciliter les calculs.\medskip
  
-De plus la méthode \texttt{Point3D getNewPointFrom(Point3D n)} permet d'obtenir un nouveau point après application du vecteur à partir du n\oe ud n donné.
+De plus la méthode \texttt{Point getNewPointFrom(Point n)} permet d'obtenir un nouveau point après application du vecteur à partir du n\oe ud n donné.
 
 \paragraph{La classe NotPerpendicularException.}
 
@@ -418,20 +418,20 @@ public class Main {
 
         ObstacleManager.init(tp, jtp);
 
-        List<Point2D> points = new ArrayList<>();
-        points.add(new Point2D.Double(100, 100));
-        points.add(new Point2D.Double(200, 400));
-        points.add(new Point2D.Double(500, 500));
-        points.add(new Point2D.Double(600, 300));
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(100, 100));
+        points.add(new Point(200, 400));
+        points.add(new Point(500, 500));
+        points.add(new Point(600, 300));
 
         LinesObstacle lo = new LinesObstacle(points);
         ObstacleManager.addObstacle(lo, tp);
 
-        CircleObstacle co = new CircleObstacle(new Point2D.Double(400, 400), 10);
+        CircleObstacle co = new CircleObstacle(new Point(400, 400), 10);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point2D.Double(200, 200), 20);
+        co = new CircleObstacle(new Point(200, 200), 20);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point2D.Double(600, 200), 80);
+        co = new CircleObstacle(new Point(600, 200), 80);
         ObstacleManager.addObstacle(co, tp);
 
         tp.pause();
@@ -471,25 +471,25 @@ public class ObstacleNode extends Node implements ObstacleListener{
 
     @Override
     public void onDetectedObstacles(List<Obstacle> obstacles) {
-        Point3D p = obstacles.get(0).pointAtMinimumDistance(this);
-        Point3D tmp = new Point3D(this.getX()+Math.cos(this.getDirection()), this.getY() + Math.sin(this.getDirection()),0);
+        Point p = obstacles.get(0).pointAtMinimumDistance(this);
+        Point tmp = new Point(this.getX()+Math.cos(this.getDirection()), this.getY() + Math.sin(this.getDirection()),0);
         double distance = p.distance(tmp);
 
         for (Obstacle o : obstacles){
-            Point3D ptmp = o.pointAtMinimumDistance(this);
+            Point ptmp = o.pointAtMinimumDistance(this);
             if (ptmp.distance(tmp) < distance){
                 p = ptmp;
                 distance = p.distance(tmp);
             }
         }
-        Point3D tmp2;
-        Point3D n = new Point3D(this.getX(),this.getY(),this.getZ());
+        Point tmp2;
+        Point n = new Point(this.getX(),this.getY(),this.getZ());
         if(p.distance(tmp) < this.getSensingRange() && p.distance(tmp) < p.distance(n)){
             do {
                 setProperty("target", new Point(r.nextInt(800), r.nextInt(600)));
                 Point target = (Point)getProperty("target");
                 double direction = Math.atan2(target.getX() - this.getX(), - (target.getY() - this.getY())) - Math.PI/2;
-                tmp2 = new Point3D(this.getX() + Math.cos(direction), this.getY() + Math.sin(direction),0);
+                tmp2 = new Point(this.getX() + Math.cos(direction), this.getY() + Math.sin(direction),0);
             }
             while(p.distance(tmp2) < p.distance(n));
         }

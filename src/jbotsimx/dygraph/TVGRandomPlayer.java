@@ -3,7 +3,7 @@ package jbotsimx.dygraph;
 import java.util.Random;
 
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 public class TVGRandomPlayer extends TVGPlayer{
     int timeBound;

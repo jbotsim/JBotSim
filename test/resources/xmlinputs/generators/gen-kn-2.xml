@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0">
+    <topology height="600" wireless-enabled="true">
+        <classes>
+        </classes>
+        <graph>
+            <generator>
+                <KN wired="false" order="6" x=".5" y=".5" width=".5" height=".5"/>
+            </generator>
+        </graph>
+    </topology>
+</jbotsim>

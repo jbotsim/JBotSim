@@ -11,8 +11,6 @@
  */
 package jbotsim;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
 import java.util.*;
 import java.util.List;
 
@@ -20,11 +18,14 @@ import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
+    public static final Color DEFAULT_COLOR = null;
+    public static final int DEFAULT_SIZE = 8;
+    public static final double DEFAULT_DIRECTION =  Math.PI / 2;;
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
     HashMap<Node, Link> outLinks = new HashMap<>();
-    Point3D coords = new Point3D(0, 0, 0);
-    double direction = Math.PI / 2;
+    Point coords = new Point(0, 0, 0);
+    double direction = DEFAULT_DIRECTION;
     Double communicationRange = null;
     Double sensingRange = null;
     List<Node> sensedNodes = new ArrayList<>();
@@ -33,7 +34,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Color color = null;
     Object label = null;
     Integer ID = -1;
-    int size = 8;
+    int size = DEFAULT_SIZE;
     static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
             Color.red, Color.green, Color.blue, Color.yellow,
             Color.pink, Color.black, Color.white, Color.gray,
@@ -192,17 +193,17 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the color of this node.
      */
     public int getIntColor() {
-        return basicColors.indexOf(color);
+        return Color.basicColors.indexOf(color);
     }
 
     /**
      * Sets the color of this node.
      */
-    public void setIntColor(Integer color) {
+    public void setIntColor(Integer intColor) {
         Random r = new Random();
-        while (basicColors.size() <= color)
-            basicColors.add(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-        setColor(basicColors.get(color));
+        while (Color.basicColors.size() <= intColor)
+            Color.basicColors.add(Color.getRandomColor());
+        setColor(Color.basicColors.get(intColor));
     }
 
     /**
@@ -211,10 +212,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setRandomColor() {
         Random r = new Random();
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-    }
-
-    public static List<Color> getBasicColors() {
-        return basicColors;
     }
 
     /**
@@ -315,16 +312,23 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        if (topo != null)
-            topo.touch(this);
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
+        setWirelessStatus(false);
+    }
+
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
         if (topo != null)
             topo.touch(this);
     }
@@ -345,17 +349,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Returns the location of this node (as a 2D point).
+     * Returns the location of this node.
      */
-    public Point2D getLocation() {
-        return new Point2D.Double(coords.getX(), coords.getY());
-    }
-
-    /**
-     * Returns the location of this node (as a 3D point).
-     */
-    public Point3D getLocation3D() {
-        return new Point3D(coords.getX(), coords.getY(), coords.getZ());
+    public Point getLocation() {
+        return new Point(coords);
     }
 
     /**
@@ -365,7 +362,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param y The ordinate of the new location.
      */
     public void setLocation(double x, double y) {
-        coords = new Point3D(x, y, 0);
+        coords = new Point(x, y, 0);
         if (topo != null)
             topo.touch(this);
         notifyNodeMoved();
@@ -379,7 +376,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param z The ordinate of the new location.
      */
     public void setLocation(double x, double y, double z) {
-        coords = new Point3D(x, y, z);
+        coords = new Point(x, y, z);
         if (topo != null)
             topo.touch(this);
         notifyNodeMoved();
@@ -390,16 +387,16 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param loc The new location point.
      */
-    public void setLocation(Point2D loc) {
+/*    public void setLocation(Point loc) {
         setLocation(loc.getX(), loc.getY());
-    }
+    }*/
 
     /**
      * Changes this node's location to the specified 2D point.
      *
      * @param loc The new location point.
      */
-    public void setLocation(Point3D loc) {
+    public void setLocation(Point loc) {
         setLocation(loc.getX(), loc.getY(), loc.getZ());
     }
 
@@ -407,8 +404,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Changes this node's location modulo the size of topology.
      */
     public void wrapLocation() {
-        Dimension dim = topo.dimensions;
-        setLocation((coords.getX() + dim.width) % dim.width, (coords.getY() + dim.height) % dim.height);
+        setLocation((coords.getX() + topo.getWidth()) % topo.getWidth(), (coords.getY() + topo.getHeight()) % topo.getHeight());
     }
 
     /**
@@ -462,7 +458,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The reference point.
      */
-    public void setDirection(Point2D p) {
+    public void setDirection(Point p) {
         setDirection(Math.atan2(p.getY() - coords.getY(), (p.getX() - coords.getX())));
     }
 
@@ -473,8 +469,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The reference point.
      */
-    public void setDirection(Point2D p, boolean opposite) {
-        Point2D p2 = (Point2D) p.clone();
+    public void setDirection(Point p, boolean opposite) {
+        Point p2 = (Point) p.clone();
         if (opposite)
             p2.setLocation(2 * getX() - p.getX(), 2 * getY() - p.getY());
         setDirection(p2);
@@ -746,9 +742,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The location (as a point).
      */
-    public double distance(Point2D p) {
+/*    public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), 0);
-    }
+    }*/
 
     /**
      * Returns the distance between this node and the specified 2D location.
@@ -765,7 +761,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param p The location (as a 3D point).
      */
-    public double distance(Point3D p) {
+    public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), p.getZ());
     }
 

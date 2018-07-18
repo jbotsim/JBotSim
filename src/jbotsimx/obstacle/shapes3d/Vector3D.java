@@ -1,7 +1,7 @@
 package jbotsimx.obstacle.shapes3d;
 
 
-import jbotsim.Point3D;
+import jbotsim.Point;
 
 public class Vector3D{
 
@@ -9,7 +9,7 @@ public class Vector3D{
     double vy;
     double vz;
 
-    public Vector3D(Point3D p1, Point3D p2){
+    public Vector3D(Point p1, Point p2){
         vx=p2.getX()-p1.getX();
         vy=p2.getY()-p1.getY();
         vz=p2.getZ()-p1.getZ();
@@ -54,8 +54,8 @@ public class Vector3D{
         return new Vector3D(vx*val,vy*val,vz*val);
     }
 
-    public Point3D getNewPointFrom(Point3D n){
-        return new Point3D(n.getX()+vx,n.getY()+vy,n.getZ()+vz);
+    public Point getNewPointFrom(Point n){
+        return new Point(n.getX()+vx,n.getY()+vy,n.getZ()+vz);
     }
 
 }

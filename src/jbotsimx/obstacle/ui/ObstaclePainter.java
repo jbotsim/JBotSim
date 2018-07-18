@@ -1,7 +1,7 @@
 package jbotsimx.obstacle.ui;
 
 import jbotsim.Topology;
-import jbotsim.ui.painting.BackgroundPainter;
+import jbotsimx.ui.painting.BackgroundPainter;
 import jbotsimx.obstacle.core.Obstacle;
 import jbotsimx.obstacle.core.ObstacleManager;
 
