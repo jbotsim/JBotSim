@@ -1,5 +1,9 @@
 package jbotsim;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * * Original code AWT
  */
@@ -30,6 +34,11 @@ public class Color {
     public static Color CYAN = cyan;
     public static Color blue = new Color(0, 0, 255);
     public static Color BLUE = blue;
+    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
+            Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
+            Color.black, Color.white, Color.gray, Color.orange, Color.cyan,
+            Color.magenta, Color.lightGray, Color.darkGray));
+
     private float falpha = 0;
     int value = 0;
     private double r, g, b, a;
@@ -92,6 +101,10 @@ public class Color {
 
     public int getRGB() {
         return value;
+    }
+
+    public static List<Color> getBasicColors() {
+        return basicColors;
     }
 
     public void testColorValueRange(int r, int g, int b, int a) {
@@ -201,5 +214,9 @@ public class Color {
                 Math.max((int) (getGreen() * FACTOR), 0),
                 Math.max((int) (getBlue() * FACTOR), 0),
                 getAlpha());
+    }
+
+    public static Color getRandomColor() {
+        return new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
     }
 }

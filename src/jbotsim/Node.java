@@ -32,10 +32,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Object label = null;
     Integer ID = -1;
     int size = 8;
-    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
-            Color.red, Color.green, Color.blue, Color.yellow,
-            Color.pink, Color.black, Color.white, Color.gray,
-            Color.orange, Color.cyan, Color.magenta));
 
     /**
      * Returns the identifier of this node.
@@ -190,17 +186,17 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the color of this node.
      */
     public int getIntColor() {
-        return basicColors.indexOf(color);
+        return Color.basicColors.indexOf(color);
     }
 
     /**
      * Sets the color of this node.
      */
-    public void setIntColor(Integer color) {
+    public void setIntColor(Integer intColor) {
         Random r = new Random();
-        while (basicColors.size() <= color)
-            basicColors.add(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-        setColor(basicColors.get(color));
+        while (Color.basicColors.size() <= intColor)
+            Color.basicColors.add(Color.getRandomColor());
+        setColor(Color.basicColors.get(intColor));
     }
 
     /**
@@ -209,10 +205,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     public void setRandomColor() {
         Random r = new Random();
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-    }
-
-    public static List<Color> getBasicColors() {
-        return basicColors;
     }
 
     /**
