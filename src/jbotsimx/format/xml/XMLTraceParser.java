@@ -58,6 +58,8 @@ public class XMLTraceParser extends XMLParser {
                     ev = parseMoveNodeEvent(e);
                 else if (SELECT_NODE.labelsElement(e))
                     ev = parseSelectNodeEvent(e);
+                else if (START_TOPOLOGY.labelsElement(e))
+                    ev = parseStartTopologyEvent(e);
                 assert (ev != null);
                 tp.addTraceEvent(ev);
             }

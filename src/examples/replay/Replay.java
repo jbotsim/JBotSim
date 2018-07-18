@@ -1,7 +1,7 @@
 package examples.replay;
 
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceParser;
 import jbotsimx.replay.TracePlayer;
 
@@ -12,6 +12,7 @@ public class Replay {
             XMLTraceParser parser = new XMLTraceParser(tp);
             parser.parse("trace.xml");
             new JViewer(tp.getTopology());
+            tp.getTopology().start();
             tp.start();
         } catch (Exception e) {
             e.printStackTrace();

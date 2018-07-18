@@ -6,7 +6,7 @@
             <message-engine class="jbotsim.MessageEngine" id="default"/>
             <link-resolver class="jbotsim.LinkResolver" id="default"/>
             <scheduler class="jbotsim.DefaultScheduler" id="default"/>
-            <clock-class class="jbotsim.ui.JClock" id="default"/>
+            <clock-class class="jbotsimx.ui.JClock" id="default"/>
             <node-class class="jbotsimx.format.xml.ParserTest$DummyNode1" id="foo"/>
             <node-class class="jbotsimx.format.xml.ParserTest$DummyNode2" id="bar"/>
         </classes>

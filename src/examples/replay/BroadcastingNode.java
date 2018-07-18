@@ -1,9 +1,8 @@
 package examples.replay;
 
+import jbotsim.Color;
 import jbotsim.Message;
 import jbotsim.Node;
-
-import java.awt.*;
 
 /**
  * Created by acasteig on 10/03/15.

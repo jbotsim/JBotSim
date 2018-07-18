@@ -6,7 +6,7 @@ import jbotsim.event.MovementListener;
 import jbotsim.event.SelectionListener;
 import jbotsim.event.StartListener;
 import jbotsim.event.TopologyListener;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceBuilder;
 
 import java.util.LinkedList;

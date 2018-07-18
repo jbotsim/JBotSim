@@ -2,6 +2,7 @@ package jbotsimx.format.xml;
 
 import jbotsim.*;
 
+import jbotsim.Color;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -68,9 +69,11 @@ public class XMLTopologyBuilder extends XMLBuilder {
     }
 
     private static void addModel(Document doc, Element parent, XMLKeys key, String id, Class c, Class default_class) {
-        Element e = key.createElement(doc, parent);
-        IDENTIFIER_ATTR.setAttribute(e, id);
-        CLASS_ATTR.setAttribute(e, c.getName());
+        if (c != null) {
+            Element e = key.createElement(doc, parent);
+            IDENTIFIER_ATTR.setAttribute(e, id);
+            CLASS_ATTR.setAttribute(e, c.getName());
+        }
     }
 
     private static Element buildClasses(Document doc, Topology tp) {

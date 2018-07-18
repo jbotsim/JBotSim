@@ -3,7 +3,7 @@ Example of XML Topologies
 
 Theses files can be loaded invoking *main* method of JTopology as follows:
 
-`$ java -cp jbotsim.jar jbotsim.ui.JTolopogy filename.xml`
+`$ java-cp jbotsim.jar jbotsimx.ui.JTolopogy filename.xml`
 
 or if you do not use JBotSim jar file, you must specify where JBotsim class files are located. 
 

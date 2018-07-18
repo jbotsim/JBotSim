@@ -6,7 +6,7 @@
             <message-engine class="jbotsim.MessageEngine" id="default"/>
             <link-resolver class="jbotsim.LinkResolver" id="default"/>
             <scheduler class="jbotsim.DefaultScheduler" id="default"/>
-            <clock-class class="jbotsim.ui.JClock" id="default"/>
+            <clock-class class="jbotsimx.ui.JClock" id="default"/>
         </classes>
         <graph>
             <node color="ffff0000" id="0" x="50.0" y="50.0"/>

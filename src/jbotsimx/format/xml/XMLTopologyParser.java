@@ -4,7 +4,6 @@ import jbotsim.*;
 import jbotsimx.topology.TopologyGeneratorFactory;
 import org.w3c.dom.Element;
 
-import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 

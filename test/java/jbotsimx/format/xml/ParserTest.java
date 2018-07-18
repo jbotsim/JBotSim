@@ -1,5 +1,6 @@
 package jbotsimx.format.xml;
 
+import jbotsim.Color;
 import jbotsim.Node;
 import jbotsim.Topology;
 import org.hamcrest.core.IsNull;

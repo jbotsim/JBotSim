@@ -1,6 +1,6 @@
 package jbotsimx.format.xml;
 
-import com.sun.org.apache.xml.internal.security.transforms.implementations.TransformXPath2Filter;
+import jbotsim.Color;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.awt.*;
 import java.io.StringReader;
 import java.util.*;
 import java.util.List;
