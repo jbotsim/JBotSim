@@ -3,23 +3,42 @@ package jbotsimx.format.dot;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsimx.format.common.Formatter;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.StringReader;
 
 /**
  * Created by acasteig on 08/10/15.
  */
-public class Import {
-    public static void importGraph(Topology tp, String filename, double scale){
+public class DotFormatter implements Formatter{
+    double scale;
+
+    public DotFormatter() {
+        this.scale = 2;
+    }
+
+    public DotFormatter(double scale) {
+        this.scale = scale;
+    }
+
+    @Override
+    public void importTopology(Topology tp, String s) {
         tp.disableWireless();
-        parseNodes(tp, filename);
-        parseLinks(tp, filename);
+        BufferedReader input = new BufferedReader(new StringReader(s));
+        parseNodes(tp, input);
+        input = new BufferedReader((new StringReader(s)));
+        parseLinks(tp, input);
         organize(tp, scale);
     }
-    protected static void parseNodes(Topology tp, String filename){
+
+    @Override
+    public String exportTopology(Topology tp) {
+        return null;
+    }
+
+    protected static void parseNodes(Topology tp, BufferedReader input){
         try {
-            BufferedReader input = new BufferedReader(new FileReader(filename));
             String line = input.readLine();
             while (line != null){
                 if (line.contains("pos")) {
@@ -27,7 +46,7 @@ public class Import {
                     String id = line.substring(0, line.indexOf(" "));
                     String x = line.substring(line.indexOf("\"")+1, comma);
                     String y = line.substring(comma+1, line.indexOf("\"", comma));
-                    Node n1 = tp.getDefaultNodeModel().newInstance();
+                    Node n1 = tp.newInstanceOfModel("default");
                     n1.setID(Integer.parseInt(id));
                     n1.setLocation(Double.parseDouble(x), Double.parseDouble(y));
                     tp.addNode(n1);
@@ -38,9 +57,8 @@ public class Import {
             e.printStackTrace();
         }
     }
-    protected static void parseLinks(Topology tp, String filename){
+    protected static void parseLinks(Topology tp, BufferedReader input){
         try {
-            BufferedReader input = new BufferedReader(new FileReader(filename));
             String line = input.readLine();
             while (line != null){
                 if (line.contains("--")) {
@@ -90,11 +108,13 @@ public class Import {
         for (Node node : tp.getNodes())
             node.setLocation(node.getX(), height - node.getY());
     }
+
+//    // Test
 //    public static void main(String[] args) {
 //        Topology tp = new Topology();
 //        tp.disableWireless();
 //        String filename = "/home/acasteig/test.dot"; // to be updated
-//        importGraph(tp, filename, 2);
+//        Format.importFromFile(tp, filename, new DotFormatter());
 //        new JViewer(tp);
 //    }
 }

@@ -14,7 +14,6 @@ package jbotsimx.ui;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.io.File;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -23,8 +22,7 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.PropertyListener;
-import jbotsimx.format.xml.XMLTopologyBuilder;
-import jbotsimx.format.xml.XMLTopologyParser;
+import jbotsimx.format.common.Format;
 
 /**
  * The viewer includes a central jtopology which will draw the attached
@@ -207,35 +205,13 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         } else if (command.equals("Load topology")) {
             JFileChooser fc = new JFileChooser();
             fc.showOpenDialog(jtp.getParent());
-            File selectedFile = fc.getSelectedFile();
-            if (selectedFile != null) {
-                if (selectedFile.toString().endsWith(".xml")) {
-                    try {
-                        XMLTopologyParser p = new XMLTopologyParser(jtp.topo);
-                        jtp.topo.clear();
-                        p.parse(selectedFile.toString());
-                    } catch (XMLTopologyParser.ParserException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    jtp.topo.fromFile(selectedFile.toString());
-                }
-            }
+            if (fc.getSelectedFile() != null)
+                Format.importFromFile(jtp.topo, fc.getSelectedFile().toString());
         } else if (command.equals("Save topology")) {
             JFileChooser fc = new JFileChooser();
             fc.showSaveDialog(jtp.getParent());
-            File selectedFile = fc.getSelectedFile();
-            if (selectedFile != null) {
-                if (selectedFile.toString().endsWith(".xml")) {
-                    try {
-                        new XMLTopologyBuilder(jtp.topo).write (selectedFile);
-                    } catch (XMLTopologyBuilder.BuilderException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    jtp.topo.toFile(selectedFile.toString());
-                }
-            }
+            if (fc.getSelectedFile() != null)
+                Format.exportToFile(jtp.topo, fc.getSelectedFile().toString());
         }
     }
 

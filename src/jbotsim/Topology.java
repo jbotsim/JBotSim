@@ -15,11 +15,6 @@ import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class Topology extends _Properties implements ClockListener {
@@ -991,86 +986,9 @@ public class Topology extends _Properties implements ClockListener {
         }
     }
 
-    /**
-     * Returns a string representation of this topology. The output of this
-     * method can be subsequently used to reconstruct a topology with the
-     * <tt>fromString</tt> method. Only the nodes and wired links are exported
-     * here (not the topology's properties).
-     */
+    @Override
     public String toString() {
-        StringBuffer res = new StringBuffer();
-        res.append("cR " + communicationRange + "\n");
-        res.append("sR " + sensingRange + "\n");
-        for (Node n : nodes) {
-            Point p2d = new Point();
-            p2d.setLocation(n.coords.getX(), n.coords.getY());
-            res.append(n.toString() + " " + p2d.toString().substring(p2d.toString().indexOf("[") -1) + "\n");
-        }
-        for (Link l : getLinks())
-            if (!l.isWireless())
-                res.append(l.toString() + "\n");
-        return res.toString();
-    }
-
-    /**
-     * Imports nodes and wired links from the specified string representation of a
-     * topology.
-     *
-     * @param s The string representation.
-     */
-    public void fromString(String s) {
-        clear();
-        setCommunicationRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
-        setSensingRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
-        HashMap<String, Node> nodeTable = new HashMap<>();
-        while (s.indexOf("[") > 0) {
-            Node node = new Node();
-            double x = new Double(s.substring(s.indexOf("x") + 3, s.indexOf(", y")));
-            double y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
-            double z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
-            node.setLocation(x, y, z );
-            addNode(node);
-            Node n = nodes.get(nodes.size() - 1);
-            String id = s.substring(0, s.indexOf(" "));
-            n.setProperty("id", id);
-            nodeTable.put(id, n);
-            s = s.substring(s.indexOf("\n") + 1);
-        }
-        while (s.indexOf("--") > 0) {
-            Node n1 = nodeTable.get(s.substring(0, s.indexOf(" ")));
-            Node n2 = nodeTable.get(s.substring(s.indexOf(">") + 2, s.indexOf("\n")));
-            Type type = (s.indexOf("<") > 0 && s.indexOf("<") < s.indexOf("\n")) ? Type.UNDIRECTED : Type.DIRECTED;
-            addLink(new Link(n1, n2, type, Link.Mode.WIRED));
-            s = s.substring(s.indexOf("\n") + 1);
-        }
-    }
-
-    /**
-     * Saves the current topology (nodes and links) in the given file.
-     *
-     * @param filename The absolute path to the file
-     */
-    public void toFile(String filename) {
-        try (PrintWriter out = new PrintWriter(filename)) {
-            out.print(toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Imports a topology from the given file.
-     *
-     * @param filename The absolute path to the file
-     */
-    public void fromFile(String filename) {
-        try {
-            String s = new String(Files.readAllBytes(Paths.get(filename)));
-            fromString(s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.err.println("Export and Import has been removed from Topology (see format extensions)");
+        return "";
     }
 }
