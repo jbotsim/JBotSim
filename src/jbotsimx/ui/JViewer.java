@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.PropertyListener;
+import jbotsimx.format.common.Format;
 
 /**
  * The viewer includes a central jtopology which will draw the attached
@@ -205,12 +206,12 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             JFileChooser fc = new JFileChooser();
             fc.showOpenDialog(jtp.getParent());
             if (fc.getSelectedFile() != null)
-                jtp.topo.fromFile(fc.getSelectedFile().toString());
+                Format.importFromFile(jtp.topo, fc.getSelectedFile().toString());
         } else if (command.equals("Save topology")) {
             JFileChooser fc = new JFileChooser();
             fc.showSaveDialog(jtp.getParent());
             if (fc.getSelectedFile() != null)
-                jtp.topo.toFile(fc.getSelectedFile().toString());
+                Format.exportToFile(jtp.topo, fc.getSelectedFile().toString());
         }
     }
 

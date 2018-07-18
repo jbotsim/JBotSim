@@ -15,10 +15,12 @@ import jbotsim.Color;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
+import jbotsimx.format.common.Format;
+import jbotsimx.format.common.Formatter;
+import jbotsimx.ui.JViewer;
 
 
-
-public class Tikz {
+public class TikzFormatter implements Formatter{
     public static String getStringColor(Color color){
         String result = "";
         if (color == Color.black)
@@ -49,12 +51,20 @@ public class Tikz {
             result = "yellow";
         return result;
     }
-    public static String exportTopology(Topology tp){
-        return exportTopology(tp,50);
+
+    @Override
+    public void importTopology(Topology tp, String s) {
+        return;
     }
-    public static String exportTopology(Topology tp, double scale){
+
+    @Override
+    public String exportTopology(Topology tp){
+        return exportTopology(tp, 50);
+    }
+
+    public String exportTopology(Topology tp, double scale){
         String delim="\n";
-        String s="\\begin{tikzpicture}[xscale=1,yscale=1]"+delim;
+        String s="\\begin{tikzpicture}[scale=1]"+delim;
         Integer sr=(int)tp.getSensingRange();
         if (sr!=0){
             s=s+"  \\tikzstyle{every node}=[draw,circle,inner sep="+sr/5.0+", fill opacity=0.5,gray,fill=gray!40]"+delim;
@@ -84,4 +94,11 @@ public class Tikz {
         s+="\\end{tikzpicture}"+delim;
         return s;        
     }
+
+//    // Test
+//    public static void main(String[] args) {
+//        Format.setDefaultFormatter(new TikzFormatter());
+//        Topology tp = new Topology();
+//        new JViewer(tp);
+//    }
 }
