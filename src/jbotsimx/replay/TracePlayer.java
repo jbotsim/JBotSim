@@ -3,6 +3,7 @@ package jbotsimx.replay;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
+import jbotsimx.format.xml.XMLParser;
 import jbotsimx.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceParser;
 
@@ -27,13 +28,18 @@ public class TracePlayer implements ClockListener {
         topology.addClockListener(this);
     }
 
+    public void loadAndStart(String filename) throws XMLParser.ParserException {
+        XMLTraceParser parser = new XMLTraceParser(this);
+        parser.parse(filename);
+        start();
+    }
+
     public static void main(String[] args) {
         try {
-            TracePlayer tp = new TracePlayer(new Topology());
-            XMLTraceParser parser = new XMLTraceParser(tp);
-            parser.parse(args[0]);
-            new JViewer(tp.getTopology());
-            tp.start();
+            Topology topology = new Topology();
+            new JViewer(topology);
+            TracePlayer tp = new TracePlayer(topology);
+            tp.loadAndStart(args[0]);
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);

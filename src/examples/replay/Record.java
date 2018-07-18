@@ -16,7 +16,7 @@ public class Record {
                 @Override
                 public void run() {
                     try {
-                        recorder.terminate("trace.xml");
+                        recorder.stopAndWrite("trace.xml");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

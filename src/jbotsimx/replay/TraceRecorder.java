@@ -6,6 +6,7 @@ import jbotsim.event.MovementListener;
 import jbotsim.event.SelectionListener;
 import jbotsim.event.StartListener;
 import jbotsim.event.TopologyListener;
+import jbotsimx.format.xml.XMLBuilder;
 import jbotsimx.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceBuilder;
 
@@ -61,7 +62,7 @@ public class TraceRecorder implements MovementListener, SelectionListener, Topol
         story.clear();
     }
 
-    public void terminate (String filename) throws Exception {
+    public void stopAndWrite(String filename) throws XMLBuilder.BuilderException {
         for(TraceEvent e : story) {
             builder.addTraceEvent(e);
         }
@@ -78,7 +79,7 @@ public class TraceRecorder implements MovementListener, SelectionListener, Topol
                 @Override
                 public void run() {
                     try {
-                        tr.terminate(traceFileName);
+                        tr.stopAndWrite(traceFileName);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
