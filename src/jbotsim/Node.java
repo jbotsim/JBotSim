@@ -35,10 +35,6 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Object label = null;
     Integer ID = -1;
     int size = DEFAULT_SIZE;
-    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
-            Color.red, Color.green, Color.blue, Color.yellow,
-            Color.pink, Color.black, Color.white, Color.gray,
-            Color.orange, Color.cyan, Color.magenta));
 
     /**
      * Returns the identifier of this node.
