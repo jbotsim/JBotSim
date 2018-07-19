@@ -22,8 +22,8 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
+import jbotsimx.format.common.Format;
 import jbotsimx.ui.painting.*;
-import jbotsimx.format.xml.XMLTopologyParser;
 
 
 @SuppressWarnings("serial")
@@ -333,15 +333,10 @@ public class JTopology extends JPanel implements ActionListener {
 
     public static void main(String[] args) {
         Topology tp = new Topology();
-        try {
-            XMLTopologyParser parser = new XMLTopologyParser(tp);
-            if (args.length > 0) {
-                parser.parse(args[0]);
-            }
-            new JViewer(tp);
-        } catch (XMLTopologyParser.ParserException e) {
-            e.printStackTrace();
-            System.exit(1);
+        if (args.length > 0) {
+            Format.importFromFile(tp, args[0]);
         }
+        new JViewer(tp);
+        tp.start();
     }
 }
