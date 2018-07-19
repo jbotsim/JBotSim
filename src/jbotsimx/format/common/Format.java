@@ -1,13 +1,16 @@
 package jbotsimx.format.common;
 
 import jbotsim.Topology;
+import jbotsimx.format.dot.DotFormatter;
 import jbotsimx.format.plain.PlainFormatter;
+import jbotsimx.format.xml.XMLTopologyFormatter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.regex.Pattern;
 
 public class Format {
     public static Formatter defaultFormatter = new PlainFormatter();
@@ -27,7 +30,7 @@ public class Format {
      * @param filename The absolute path to the file
      */
     public static void exportToFile(Topology topology, String filename) {
-        exportToFile(topology, filename, defaultFormatter);
+        exportToFile(topology, filename, getFormatterFor(filename));
     }
 
     /**
@@ -52,7 +55,7 @@ public class Format {
      * @return A new topology object containing the corresponding nodes and links
      */
     public static Topology importFromFile(String filename) {
-        return importFromFile(filename, defaultFormatter);
+        return importFromFile(filename, getFormatterFor(filename));
     }
 
     /**
@@ -74,7 +77,7 @@ public class Format {
      * @param filename The absolute path to the file
      */
     public static void importFromFile(Topology topology, String filename) {
-        importFromFile(topology, filename, defaultFormatter);
+        importFromFile(topology, filename, getFormatterFor(filename));
     }
 
     /**
@@ -139,4 +142,29 @@ public class Format {
     public void importFromString(Topology topology, String s, Formatter formatter){
         formatter.importTopology(topology, s);
     }
+
+
+    public static Formatter getFormatterFor(String filename) {
+        for(SupportedFormat fmt : SUPPORTED_FORMATS) {
+            if (Pattern.matches(fmt.regex, filename)) {
+                return fmt.formatter;
+            }
+        }
+        return defaultFormatter;
+    }
+
+    private static class SupportedFormat {
+        String regex;
+        Formatter formatter;
+
+        public SupportedFormat(String regex, Formatter formatter) {
+            this.regex = regex;
+            this.formatter = formatter;
+        }
+    }
+
+    private static final SupportedFormat[] SUPPORTED_FORMATS = new SupportedFormat[] {
+        new SupportedFormat(".*\\.xml$", new XMLTopologyFormatter()),
+        new SupportedFormat(".*\\.x?dot$", new DotFormatter())
+    };
 }
