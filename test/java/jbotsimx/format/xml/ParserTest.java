@@ -123,13 +123,13 @@ public class ParserTest {
     }
 
     @Test
-    public void missingGraphTest() {
-        testXSDValidationError("missing-graph.xml", "cvc-complex-type.2.4.b");
+    public void missingGraphTest() throws XMLParser.ParserException {
+        loadXMLFile("missing-graph.xml");
     }
 
     @Test
-    public void missingClassesTest() {
-        testXSDValidationError("missing-classes.xml", "cvc-complex-type.2.4.a");
+    public void missingClassesTest() throws XMLParser.ParserException {
+        loadXMLFile("missing-classes.xml");
     }
 
     @Test

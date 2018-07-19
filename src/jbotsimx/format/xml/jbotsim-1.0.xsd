@@ -17,8 +17,8 @@
 
     <xs:complexType name="topology">
         <xs:sequence>
-            <xs:element name="classes" type="classes"/>
-            <xs:element name="graph" type="graph"/>
+            <xs:choice minOccurs="0" maxOccurs="1"><xs:element name="classes" type="classes"/></xs:choice>
+            <xs:choice minOccurs="0" maxOccurs="1"><xs:element name="graph" type="graph"/></xs:choice>
         </xs:sequence>
         <xs:attribute name="wireless-enabled" type="xs:boolean"/>
         <xs:attribute name="speed" type="xs:unsignedInt"/>
