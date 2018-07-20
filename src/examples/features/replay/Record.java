@@ -1,4 +1,4 @@
-package examples.replay;
+package examples.features.replay;
 
 import jbotsim.Topology;
 import jbotsimx.ui.JViewer;
@@ -10,7 +10,7 @@ public class Record {
         try {
             Topology topology = new Topology();
             XMLTopologyParser parser = new XMLTopologyParser(topology);
-            parser.parse(Record.class.getResourceAsStream("/examples/replay/network.xml"));
+            parser.parse(Record.class.getResourceAsStream("/examples/features/replay/network.xml"));
             TraceRecorder recorder = new TraceRecorder(topology);
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override

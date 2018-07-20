@@ -1,4 +1,4 @@
-package examples.replay;
+package examples.features.replay;
 
 import jbotsim.Color;
 import jbotsim.Message;

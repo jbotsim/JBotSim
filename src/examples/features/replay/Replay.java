@@ -1,8 +1,7 @@
-package examples.replay;
+package examples.features.replay;
 
 import jbotsim.Topology;
 import jbotsimx.ui.JViewer;
-import jbotsimx.format.xml.XMLTraceParser;
 import jbotsimx.replay.TracePlayer;
 
 public class Replay {
