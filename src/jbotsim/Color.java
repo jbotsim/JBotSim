@@ -160,19 +160,19 @@ public class Color {
     }
 
 
-    public Color decode(String nm) throws NumberFormatException {
+    public static Color decode(String nm) throws NumberFormatException {
         Integer intval = Integer.decode(nm);
         int i = intval.intValue();
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, i & 0xFF);
     }
 
 
-    public Color getColor(String nm) {
+    public static Color getColor(String nm) {
         return getColor(nm, null);
     }
 
 
-    public Color getColor(String nm, Color v) {
+    public static Color getColor(String nm, Color v) {
         Integer intval = Integer.parseInt(nm);
         if (intval == null) {
             return v;
@@ -182,7 +182,7 @@ public class Color {
     }
 
 
-    public Color getColor(String nm, int v) {
+    public static Color getColor(String nm, int v) {
         Integer intval = Integer.parseInt(nm);
         int i = (intval != null) ? intval.intValue() : v;
         return new Color((i >> 16) & 0xFF, (i >> 8) & 0xFF, (i >> 0) & 0xFF);

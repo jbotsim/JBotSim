@@ -22,6 +22,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
+import jbotsimx.format.common.Format;
 import jbotsimx.ui.painting.*;
 
 
@@ -331,6 +332,11 @@ public class JTopology extends JPanel implements ActionListener {
     }
 
     public static void main(String[] args) {
-        new JViewer(new Topology());
+        Topology tp = new Topology();
+        if (args.length > 0) {
+            Format.importFromFile(tp, args[0]);
+        }
+        new JViewer(tp);
+        tp.start();
     }
 }

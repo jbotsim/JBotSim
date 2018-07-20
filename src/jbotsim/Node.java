@@ -18,11 +18,14 @@ import jbotsim.event.ClockListener;
 import jbotsim.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
+    public static final Color DEFAULT_COLOR = null;
+    public static final int DEFAULT_SIZE = 8;
+    public static final double DEFAULT_DIRECTION =  Math.PI / 2;;
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
     HashMap<Node, Link> outLinks = new HashMap<>();
     Point coords = new Point(0, 0, 0);
-    double direction = Math.PI / 2;
+    double direction = DEFAULT_DIRECTION;
     Double communicationRange = null;
     Double sensingRange = null;
     List<Node> sensedNodes = new ArrayList<>();
@@ -31,7 +34,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     Color color = null;
     Object label = null;
     Integer ID = -1;
-    int size = 8;
+    int size = DEFAULT_SIZE;
 
     /**
      * Returns the identifier of this node.
@@ -305,16 +308,23 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        if (topo != null)
-            topo.touch(this);
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
+        setWirelessStatus(false);
+    }
+
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
         if (topo != null)
             topo.touch(this);
     }
