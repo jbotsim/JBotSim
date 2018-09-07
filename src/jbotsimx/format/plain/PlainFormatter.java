@@ -21,22 +21,24 @@ public class PlainFormatter implements Formatter {
         s = s.substring(s.indexOf("\n") + 1);
         HashMap<String, Node> nodeTable = new HashMap<>();
         while (s.indexOf("[") > 0) {
-            Node node = new Node();
             double x = new Double(s.substring(s.indexOf("x") + 3, s.indexOf(", y")));
+            double y = 0;
+            double z = 0;
             if (s.contains("z")) {
-                double y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
-                double z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
-                node.setLocation(x, y, z);
+                y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
+                z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
             }else{
-                double y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf("]")));
-                node.setLocation(x, y);
+                y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf("]")));
             }
-            tp.addNode(node);
-            Node n = tp.getNodes().get(tp.getNodes().size() - 1);
-            String id = s.substring(0, s.indexOf(" "));
-            n.setProperty("id", id);
-            nodeTable.put(id, n);
-            s = s.substring(s.indexOf("\n") + 1);
+            try {
+                Node node = tp.getDefaultNodeModel().newInstance();
+                node.setLocation(x, y, z);
+                tp.addNode(node);
+                String id = s.substring(0, s.indexOf(" "));
+                node.setProperty("id", id);
+                nodeTable.put(id, node);
+                s = s.substring(s.indexOf("\n") + 1);
+            } catch (Exception e) {}
         }
         while (s.indexOf("--") > 0) {
             Node n1 = nodeTable.get(s.substring(0, s.indexOf(" ")));
