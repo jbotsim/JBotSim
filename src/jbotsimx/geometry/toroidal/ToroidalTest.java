@@ -1,7 +1,7 @@
 package jbotsimx.geometry.toroidal;
 
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 /**
  * Created by acasteig on 30/08/16.

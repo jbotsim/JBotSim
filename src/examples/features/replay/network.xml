@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0">
+    <topology height="600" speed="500" wireless-enabled="true">
+        <classes>
+        </classes>
+        <graph>
+            <generator>
+                <ring wired="true" order="10" x=".5" y=".5" width="0.3" height="0.3"
+                      node-class="examples.features.replay.BroadcastingNode"/>
+                <ring wired="true" order="3" x=".5" y=".5" width="0.1" height="0.1"
+                      node-class="examples.features.replay.BroadcastingNode"/>
+                <grid wired="false" order="4" x=".1" y=".1" width="0.3" height="0.3"
+                      node-class="examples.features.replay.SpanningTreeNode"/>
+            </generator>
+        </graph>
+    </topology>
+</jbotsim>

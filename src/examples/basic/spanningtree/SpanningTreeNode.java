@@ -3,8 +3,6 @@ package examples.basic.spanningtree;
 import jbotsim.Message;
 import jbotsim.Node;
 
-import java.awt.*;
-
 /**
  * Created by acasteig on 10/03/15.
  */

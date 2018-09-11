@@ -1,22 +1,22 @@
 package jbotsimx.obstacle.shapes3d;
 
 import jbotsim.Node;
-import jbotsim.Point3D;
+import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
 
 import java.awt.*;
 
 public class RectangularFacetObstacle implements Obstacle {
 
-    private Point3D a;
-    private Point3D b;
-    private Point3D c;
+    private Point a;
+    private Point b;
+    private Point c;
 
     private Vector3D ab;
     private Vector3D ac;
     private Vector3D n;
 
-    public RectangularFacetObstacle(Point3D a, Point3D b, Point3D c)
+    public RectangularFacetObstacle(Point a, Point b, Point c)
             throws NotPerpendicularException {
         this.a = a;
         this.b = b;
@@ -38,8 +38,8 @@ public class RectangularFacetObstacle implements Obstacle {
     @Override
     public boolean obstructLink(Node node1, Node node2) {
 
-        Point3D n1 = new Point3D(node1.getX(), node1.getY(), node1.getZ());
-        Point3D n2 = new Point3D(node2.getX(), node2.getY(), node2.getZ());
+        Point n1 = new Point(node1.getX(), node1.getY(), node1.getZ());
+        Point n2 = new Point(node2.getX(), node2.getY(), node2.getZ());
 
         Vector3D u = new Vector3D(n1, n2);
         Vector3D w = new Vector3D(a, n1);
@@ -53,14 +53,14 @@ public class RectangularFacetObstacle implements Obstacle {
         if (sI < 0 || sI > 1)
             return false;
 
-        Point3D n = new Point3D(n1.getX() + u.vx * sI, n1.getY() + u.vy
+        Point n = new Point(n1.getX() + u.vx * sI, n1.getY() + u.vy
                 * sI, n1.getZ() + u.vz * sI);
 
         return checkIfInsideSurface(projectOnVertor(ab, n),
                 projectOnVertor(ac, n));
     }
 
-    private double projectOnVertor(Vector3D v, Point3D n) {
+    private double projectOnVertor(Vector3D v, Point n) {
         Vector3D an = new Vector3D(a, n);
         return an.dot(v) / v.norme();
     }
@@ -82,9 +82,9 @@ public class RectangularFacetObstacle implements Obstacle {
 //    }
 
     @Override
-    public Point3D pointAtMinimumDistance(Node node) {
+    public Point pointAtMinimumDistance(Node node) {
 
-        Point3D n = new Point3D(node.getX(), node.getY(), node.getZ());
+        Point n = new Point(node.getX(), node.getY(), node.getZ());
 
         double distanceNAB = projectOnVertor(ab, n);
         double distanceNAC = projectOnVertor(ac, n);

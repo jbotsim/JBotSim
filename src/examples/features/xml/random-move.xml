@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0"><topology wireless-enabled="true" >
+    <classes>
+    </classes>
+    <graph>
+        <generator>
+            <random-locations order="10" node-class="examples.basic.moving.MovingNode"/>
+            <random-locations order="5" node-class="examples.basic.mobilebroadcast.MobileBroadcastNode"/>
+        </generator>
+    </graph>
+</topology></jbotsim>

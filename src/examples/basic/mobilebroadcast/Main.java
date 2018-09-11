@@ -1,7 +1,7 @@
 package examples.basic.mobilebroadcast;
 
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 /**
  * Created by acasteig on 25/08/15.
