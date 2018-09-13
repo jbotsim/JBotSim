@@ -67,110 +67,110 @@ subprojects {
         delete rootProject.file("repos")
     }
 }
-
-project(':jbotsim-core') {
-    processResources {
-      from("src/main/java")
-      excludes = ["**/*.java"]
-	}
-}
-
-project(':jbotsimx') {
-
-    apply plugin: "com.github.johnrengelman.shadow"
-
-    dependencies {
-        compile project(':jbotsim-core'), 'guru.nidi:graphviz-java:0.5+'
-    }
-
-    processResources {
-      from("src/main/java")
-      excludes = ["**/*.java"]
-	}
-
-    shadowJar{
-	  baseName = "jbotsim"
-	}
-    artifacts {
-        archives shadowJar
-    }
-	build.dependsOn(shadowJar)
-}
-
-
-project(':jbotsim-examples'){
-
-    apply plugin: "com.github.johnrengelman.shadow"
-    apply plugin: "application"
-    applicationName = "jbotsim-examples"
-    mainClassName = "examples.basic.helloworld.Main"
-
-    dependencies {
-        compile project(':jbotsim-core'), project(':jbotsimx'), 'guru.nidi:graphviz-java:0.5+'
-    }
-    
-    processResources {
-      from("src/main/java")
-      excludes = ["**/*.java"]
-	}
-	
-    shadowJar{
-        baseName = "jbotsim-full"
-	}
-    artifacts {
-        archives shadowJar
-    }
-	build.dependsOn(shadowJar)
-
-    configurations.archives.with {
-        //artifacts.remove artifacts.find { it.archiveTask.is distZip }
-        //artifacts.remove artifacts.find { it.archiveTask.is distTar }
-        artifacts.remove artifacts.find { it.archiveTask.is shadowDistZip }
-        artifacts.remove artifacts.find { it.archiveTask.is shadowDistTar }
-    }
-
-	//Create a run task for each example in the examples directory:
-
-	task createAllExamplesScripts(group: "Application", description: "Create the examples binaries as scripts.") << {
-	}
-
-	def scripts = [:]
-	def srcDirectoryPath = "${projectDir}" + File.separator + "src" + File.separator + "main" + File.separator +
-            "java" + File.separator + "examples" + File.separator
-	println(srcDirectoryPath)
-  	fileTree(srcDirectoryPath).visit{
-    details -> 
-    if(details.file.isFile()){
-      if(details.file.text.contains("public static void main(")){
-         def name = details.file.getName().substring(0, details.file.getName().lastIndexOf('.'))
-         def relativePath = details.file.getPath()
-         relativePath = relativePath.replace(srcDirectoryPath, '').replace(File.separator, '.').replace('.java', '')
-         scripts.put(name, "examples." + relativePath)
-        }
-      }
-    }
-
-
-  scripts.each() { scriptName, className ->
-    def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
-        mainClassName = className
-        applicationName = scriptName
-        classpath = startScripts.classpath
-        outputDir = startScripts.outputDir
-    }
-    createAllExamplesScripts.dependsOn(t)
-    def r = tasks.create(name: 'run' + scriptName.substring(0, 1).toUpperCase() + scriptName.substring(1),
-     type: JavaExec, group: "Application", description: "Run " + scriptName + " example.") {
-      classpath sourceSets.main.runtimeClasspath
-      main = className
-    }
-    r.dependsOn(t)
-    applicationDistribution.into("bin") {
-      duplicatesStrategy= DuplicatesStrategy.EXCLUDE
-      from(t)
-      fileMode = 0755
-    }
-    }
-}
+//
+//project(':jbotsim-core') {
+//    processResources {
+//      from("src/main/java")
+//      excludes = ["**/*.java"]
+//	}
+//}
+//
+//project(':jbotsimx') {
+//
+//    apply plugin: "com.github.johnrengelman.shadow"
+//
+//    dependencies {
+//        compile project(':jbotsim-core'), 'guru.nidi:graphviz-java:0.5+'
+//    }
+//
+//    processResources {
+//      from("src/main/java")
+//      excludes = ["**/*.java"]
+//	}
+//
+//    shadowJar{
+//	  baseName = "jbotsim"
+//	}
+//    artifacts {
+//        archives shadowJar
+//    }
+//	build.dependsOn(shadowJar)
+//}
+//
+//
+//project(':jbotsim-examples'){
+//
+//    apply plugin: "com.github.johnrengelman.shadow"
+//    apply plugin: "application"
+//    applicationName = "jbotsim-examples"
+//    mainClassName = "examples.basic.helloworld.Main"
+//
+//    dependencies {
+//        compile project(':jbotsim-core'), project(':jbotsimx'), 'guru.nidi:graphviz-java:0.5+'
+//    }
+//
+//    processResources {
+//      from("src/main/java")
+//      excludes = ["**/*.java"]
+//	}
+//
+//    shadowJar{
+//        baseName = "jbotsim-full"
+//	}
+//    artifacts {
+//        archives shadowJar
+//    }
+//	build.dependsOn(shadowJar)
+//
+//    configurations.archives.with {
+//        //artifacts.remove artifacts.find { it.archiveTask.is distZip }
+//        //artifacts.remove artifacts.find { it.archiveTask.is distTar }
+//        artifacts.remove artifacts.find { it.archiveTask.is shadowDistZip }
+//        artifacts.remove artifacts.find { it.archiveTask.is shadowDistTar }
+//    }
+//
+//	//Create a run task for each example in the examples directory:
+//
+//	task createAllExamplesScripts(group: "Application", description: "Create the examples binaries as scripts.") << {
+//	}
+//
+//	def scripts = [:]
+//	def srcDirectoryPath = "${projectDir}" + File.separator + "src" + File.separator + "main" + File.separator +
+//            "java" + File.separator + "examples" + File.separator
+//	println(srcDirectoryPath)
+//  	fileTree(srcDirectoryPath).visit{
+//    details ->
+//    if(details.file.isFile()){
+//      if(details.file.text.contains("public static void main(")){
+//         def name = details.file.getName().substring(0, details.file.getName().lastIndexOf('.'))
+//         def relativePath = details.file.getPath()
+//         relativePath = relativePath.replace(srcDirectoryPath, '').replace(File.separator, '.').replace('.java', '')
+//         scripts.put(name, "examples." + relativePath)
+//        }
+//      }
+//    }
+//
+//
+//  scripts.each() { scriptName, className ->
+//    def t = tasks.create(name: scriptName+'StartScript', type: CreateStartScripts) {
+//        mainClassName = className
+//        applicationName = scriptName
+//        classpath = startScripts.classpath
+//        outputDir = startScripts.outputDir
+//    }
+//    createAllExamplesScripts.dependsOn(t)
+//    def r = tasks.create(name: 'run' + scriptName.substring(0, 1).toUpperCase() + scriptName.substring(1),
+//     type: JavaExec, group: "Application", description: "Run " + scriptName + " example.") {
+//      classpath sourceSets.main.runtimeClasspath
+//      main = className
+//    }
+//    r.dependsOn(t)
+//    applicationDistribution.into("bin") {
+//      duplicatesStrategy= DuplicatesStrategy.EXCLUDE
+//      from(t)
+//      fileMode = 0755
+//    }
+//    }
+//}
 
 
