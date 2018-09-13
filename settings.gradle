@@ -1,1 +1,1 @@
-include 'jbotsim-core', 'jbotsimx', 'examples'
+include 'jbotsim-core', 'jbotsimx', 'jbotsimx-ui-common', 'jbotsimx-ui-swing', 'examples'

@@ -6,8 +6,6 @@ import jbotsim.Point;
 import jbotsim.Topology;
 import jbotsimx.format.common.Format;
 import jbotsimx.format.common.Formatter;
-import jbotsimx.format.dot.DotFormatter;
-import jbotsimx.format.tikz.TikzFormatter;
 import jbotsimx.ui.JViewer;
 
 import java.util.HashMap;

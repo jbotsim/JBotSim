@@ -2,7 +2,6 @@ package jbotsimx.geometry.toroidal.ui;
 
 import jbotsim.Topology;
 import jbotsimx.geometry.toroidal.ToroidalLinkResolver;
-import jbotsimx.geometry.toroidal.ui.ToroidalLinkPainter;
 import jbotsimx.ui.JViewer;
 
 /**
