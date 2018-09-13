@@ -1,11 +1,10 @@
 package jbotsimx.dygraph;
 
-import java.util.Random;
-
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
+
+import java.util.Random;
 
 public class EMEGPlayer implements ClockListener{
     protected TVG tvg;
@@ -46,14 +45,5 @@ public class EMEGPlayer implements ClockListener{
             else if (!tp.getLinks().contains(l) && r.nextDouble() < birthRate)
                 tp.addLink(l);
         }        
-    }
-    public static void main(String args[]){
-        Topology tp=new Topology(400, 400);
-        new JViewer(tp);
-        TVG tvg=new TVG();
-        tvg.buildCompleteGraph(30);
-        (new EMEGPlayer(tvg, tp, .2, .4)).start();
-        //new TopologyObserver(tp);
-        tp.setClockSpeed(10);
     }
 }

@@ -16,7 +16,6 @@ import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.format.common.Formatter;
-import jbotsimx.ui.JViewer;
 
 
 public class TikzFormatter implements Formatter{
@@ -94,10 +93,4 @@ public class TikzFormatter implements Formatter{
         return s;        
     }
 
-//    // Test
-//    public static void main(String[] args) {
-//        Format.setDefaultFormatter(new TikzFormatter());
-//        Topology tp = new Topology();
-//        new JViewer(tp);
-//    }
 }

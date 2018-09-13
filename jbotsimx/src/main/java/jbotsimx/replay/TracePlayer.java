@@ -4,7 +4,6 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
 import jbotsimx.format.xml.XMLParser;
-import jbotsimx.ui.JViewer;
 import jbotsimx.format.xml.XMLTraceParser;
 
 import java.util.HashMap;
@@ -32,18 +31,6 @@ public class TracePlayer implements ClockListener {
         XMLTraceParser parser = new XMLTraceParser(this);
         parser.parse(filename);
         start();
-    }
-
-    public static void main(String[] args) {
-        try {
-            Topology topology = new Topology();
-            new JViewer(topology);
-            TracePlayer tp = new TracePlayer(topology);
-            tp.loadAndStart(args[0]);
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.exit(1);
-        }
     }
 
     public void start() {

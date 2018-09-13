@@ -1,9 +1,8 @@
 package jbotsimx.dygraph;
 
-import java.util.Random;
-
 import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+
+import java.util.Random;
 
 public class TVGRandomPlayer extends TVGPlayer{
     int timeBound;
@@ -39,17 +38,5 @@ public class TVGRandomPlayer extends TVGPlayer{
                 tp.removeLink(l);
             }
         }
-    }
-    public static void main(String args[]){
-        TVG tvg=new TVG();
-        tvg.buildFromFile("/home/arnaud/workspace/code/jbotsim/_testing/dtn/star.tvg");
-        Topology tp=new Topology();
-        new JViewer(tp);
-        tp.resetTime();
-        tp.pause();
-        tp.setClockSpeed(50);
-        TVGRandomPlayer player = new TVGRandomPlayer(tvg, tp, 100);
-        player.start();
-        tp.resume();
     }
 }
