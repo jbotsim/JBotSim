@@ -27,7 +27,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
-import jbotsimx.format.plain.PlainFormatter;
+import jbotsim.format.plain.PlainFormatter;
 import jbotsimx.format.tikz.TikzFormatter;
 
 @SuppressWarnings("serial")

@@ -1,11 +1,10 @@
-package jbotsimx.format.plain;
+package jbotsim.format.plain;
 
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Point;
 import jbotsim.Topology;
-import jbotsimx.format.common.Format;
-import jbotsimx.format.common.Formatter;
+import jbotsim.format.common.Formatter;
 import jbotsimx.ui.JViewer;
 
 import java.util.HashMap;
@@ -61,10 +60,10 @@ public class PlainFormatter implements Formatter {
         return res.toString();
     }
 
-    // Test
-    public static void main(String[] args) {
-        String filename = "/home/acasteig/test.plain"; // to be updated
-        Topology tp = Format.importFromFile(filename, new PlainFormatter());
-        new JViewer(tp);
-    }
+//    // Test
+//    public static void main(String[] args) {
+//        String filename = "/home/acasteig/test.plain"; // to be updated
+//        Topology tp = Format.importFromFile(filename, new PlainFormatter());
+//        new JViewer(tp);
+//    }
 }

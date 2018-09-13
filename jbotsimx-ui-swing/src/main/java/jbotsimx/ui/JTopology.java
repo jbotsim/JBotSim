@@ -22,7 +22,7 @@ import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim._Properties;
 import jbotsim.event.*;
-import jbotsimx.format.common.Format;
+import jbotsim.format.common.Format;
 import jbotsimx.ui.painting.*;
 
 

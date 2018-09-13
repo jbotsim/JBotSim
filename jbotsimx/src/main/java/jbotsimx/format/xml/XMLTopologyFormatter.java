@@ -1,7 +1,7 @@
 package jbotsimx.format.xml;
 
 import jbotsim.Topology;
-import jbotsimx.format.common.Formatter;
+import jbotsim.format.common.Formatter;
 
 public class XMLTopologyFormatter implements Formatter {
     @Override

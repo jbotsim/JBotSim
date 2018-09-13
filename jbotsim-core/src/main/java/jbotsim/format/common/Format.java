@@ -1,8 +1,8 @@
-package jbotsimx.format.common;
+package jbotsim.format.common;
 
 import jbotsim.Topology;
 import jbotsimx.format.dot.DotFormatter;
-import jbotsimx.format.plain.PlainFormatter;
+import jbotsim.format.plain.PlainFormatter;
 import jbotsimx.format.xml.XMLTopologyFormatter;
 
 import java.io.FileNotFoundException;

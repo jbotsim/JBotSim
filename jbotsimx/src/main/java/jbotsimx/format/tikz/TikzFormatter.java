@@ -15,7 +15,7 @@ import jbotsim.Color;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
-import jbotsimx.format.common.Formatter;
+import jbotsim.format.common.Formatter;
 import jbotsimx.ui.JViewer;
 
 

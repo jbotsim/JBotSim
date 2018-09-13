@@ -1,4 +1,4 @@
-package jbotsimx.format.common;
+package jbotsim.format.common;
 
 import jbotsim.Topology;
 

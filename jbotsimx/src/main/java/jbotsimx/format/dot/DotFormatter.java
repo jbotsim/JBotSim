@@ -3,7 +3,7 @@ package jbotsimx.format.dot;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
-import jbotsimx.format.common.Formatter;
+import jbotsim.format.common.Formatter;
 
 import java.io.BufferedReader;
 import java.io.StringReader;
