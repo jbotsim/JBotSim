@@ -1,9 +1,9 @@
-package jbotsimx.geometry.toroidal;
+package jbotsimx.geometry.toroidal.ui;
 
 import jbotsim.Link;
 import jbotsim.Point;
 import jbotsim.Topology;
-import jbotsimx.ui.painting.LinkPainter;
+import jbotsimx.ui.painting.DefaultLinkPainter;
 
 import java.awt.*;
 
@@ -12,7 +12,7 @@ import java.awt.*;
  * Each toroidal link is drawn using two lines (one for each node).
  * The tricky part is to decide when it is toroidal and over which coordinate.
  */
-public class ToroidalLinkPainter extends LinkPainter {
+public class ToroidalLinkPainter extends DefaultLinkPainter {
 
     protected void drawLine(Graphics2D g2d, Point p1, Point p2) {
         int srcX=(int)p1.getX(), srcY=(int)p1.getY();
@@ -60,4 +60,5 @@ public class ToroidalLinkPainter extends LinkPainter {
             // The link is toroidal, use special painting
             toroidalPaint(g2d, tp, p1, p2, wrapX, wrapY);
     }
+
 }
