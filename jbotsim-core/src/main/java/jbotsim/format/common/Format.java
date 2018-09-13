@@ -1,9 +1,7 @@
 package jbotsim.format.common;
 
 import jbotsim.Topology;
-import jbotsimx.format.dot.DotFormatter;
 import jbotsim.format.plain.PlainFormatter;
-import jbotsimx.format.xml.XMLTopologyFormatter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -164,7 +162,7 @@ public class Format {
     }
 
     private static final SupportedFormat[] SUPPORTED_FORMATS = new SupportedFormat[] {
-        new SupportedFormat(".*\\.xml$", new XMLTopologyFormatter()),
-        new SupportedFormat(".*\\.x?dot$", new DotFormatter())
+//        new SupportedFormat(".*\\.xml$", new XMLTopologyFormatter()),
+//        new SupportedFormat(".*\\.x?dot$", new DotFormatter())
     };
 }

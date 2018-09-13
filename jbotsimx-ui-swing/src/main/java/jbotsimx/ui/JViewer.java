@@ -11,18 +11,17 @@
  */
 package jbotsimx.ui;
 
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import jbotsim.Topology;
+import jbotsim._Properties;
+import jbotsim.event.PropertyListener;
+import jbotsim.format.common.Format;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
-import jbotsim.Topology;
-import jbotsim._Properties;
-import jbotsim.event.PropertyListener;
-import jbotsimx.format.common.Format;
+import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 /**
  * The viewer includes a central jtopology which will draw the attached

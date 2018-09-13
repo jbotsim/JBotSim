@@ -5,7 +5,6 @@ import jbotsim.Node;
 import jbotsim.Point;
 import jbotsim.Topology;
 import jbotsim.format.common.Formatter;
-import jbotsimx.ui.JViewer;
 
 import java.util.HashMap;
 
