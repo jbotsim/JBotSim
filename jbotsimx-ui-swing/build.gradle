@@ -6,3 +6,8 @@ dependencies {
     api project(':jbotsim-core'), project(':jbotsimx-ui-common')
 }
 
+processResources {
+    from("src/main/java")
+    excludes = ["**/*.java"]
+}
+
