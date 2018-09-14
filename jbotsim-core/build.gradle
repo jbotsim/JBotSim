@@ -2,8 +2,4 @@ plugins {
   id 'java-library'
 }
 
-processResources {
-  from("src/main/java")
-  excludes = ["**/*.java"]
-c}
 

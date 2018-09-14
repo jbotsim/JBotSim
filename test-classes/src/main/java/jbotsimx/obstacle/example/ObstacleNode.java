@@ -2,7 +2,6 @@ package jbotsimx.obstacle.example;
 
 import jbotsim.Node;
 import jbotsim.Point;
-import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
 import jbotsimx.obstacle.core.ObstacleListener;
 import jbotsimx.obstacle.core.ObstacleManager;

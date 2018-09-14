@@ -8,11 +8,6 @@ dependencies {
     //, 'guru.nidi:graphviz-java:0.5+'
 }
 
-processResources {
-    from("src/main/java")
-    excludes = ["**/*.java"]
-}
-
 //shadowJar{
 //    baseName = "jbotsim"
 //}
