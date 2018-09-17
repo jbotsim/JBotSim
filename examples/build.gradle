@@ -5,7 +5,7 @@ applicationName = "examples"
 mainClassName = "examples.basic.helloworld.Main"
 
 dependencies {
-    implementation project(':jbotsim-core'), project(':jbotsimx'), 'guru.nidi:graphviz-java:0.5+'
+    implementation project(':jbotsim-core'), project(':jbotsimx'), project(':jbotsimx-ui-swing'), 'guru.nidi:graphviz-java:0.5+'
 }
 
 //processResources {

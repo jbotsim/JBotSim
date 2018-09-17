@@ -8,7 +8,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.OutputStream;
-import java.io.Writer;
 
 import static jbotsimx.format.xml.XMLKeys.JBOTSIM;
 import static jbotsimx.format.xml.XMLKeys.VERSION_ATTR;

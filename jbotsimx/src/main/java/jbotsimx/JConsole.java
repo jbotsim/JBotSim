@@ -28,7 +28,7 @@ import jbotsim.Topology;
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.format.plain.PlainFormatter;
-import jbotsimx.format.tikz.TikzFormatter;
+import jbotsim.format.tikz.TikzFormatter;
 
 @SuppressWarnings("serial")
 public class JConsole extends TextArea implements TextListener{

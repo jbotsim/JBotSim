@@ -59,10 +59,4 @@ public class PlainFormatter implements Formatter {
         return res.toString();
     }
 
-//    // Test
-//    public static void main(String[] args) {
-//        String filename = "/home/acasteig/test.plain"; // to be updated
-//        Topology tp = Format.importFromFile(filename, new PlainFormatter());
-//        new JViewer(tp);
-//    }
 }

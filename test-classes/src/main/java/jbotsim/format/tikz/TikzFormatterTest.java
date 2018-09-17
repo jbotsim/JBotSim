@@ -1,4 +1,4 @@
-package jbotsimx.format.tikz;
+package jbotsim.format.tikz;
 
 import jbotsim.Topology;
 import jbotsim.format.common.Format;

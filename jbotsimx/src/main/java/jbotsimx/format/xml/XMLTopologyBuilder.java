@@ -6,8 +6,6 @@ import jbotsim.Color;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.awt.*;
-
 import static jbotsimx.format.xml.XMLKeys.*;
 
 /**

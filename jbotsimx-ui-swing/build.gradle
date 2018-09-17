@@ -3,7 +3,7 @@ plugins {
 }
 
 dependencies {
-    api project(':jbotsim-core'), project(':jbotsimx-ui-common')
+    api project(':jbotsim-core'), project(':jbotsim-format-java'), project(':jbotsimx-ui-common')
 }
 
 processResources {

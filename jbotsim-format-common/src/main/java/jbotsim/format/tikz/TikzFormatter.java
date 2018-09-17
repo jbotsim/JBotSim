@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
-package jbotsimx.format.tikz;
+package jbotsim.format.tikz;
 
 import jbotsim.Color;
 import jbotsim.Link;
