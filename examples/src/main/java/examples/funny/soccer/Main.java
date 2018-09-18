@@ -4,6 +4,7 @@ import jbotsim.Topology;
 import jbotsimx.ui.JTopology;
 import jbotsimx.ui.JViewer;
 import jbotsimx.ui.painting.BackgroundPainter;
+import jbotsimx.ui.painting.UIComponent;
 
 import java.awt.*;
 
@@ -21,7 +22,8 @@ public class Main {
         JTopology jtp = new JTopology(tp);
         jtp.addBackgroundPainter(new BackgroundPainter() {
             @Override
-            public void paintBackground(Graphics2D g2d, Topology tp) {
+            public void paintBackground(UIComponent uiComponent, Topology tp) {
+                Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
                 g2d.setColor(new Color(0, 156, 0));
                 g2d.fillRect(100,100,tp.getWidth()-200,tp.getHeight()-200);
                 g2d.setColor(Color.white);

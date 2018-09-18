@@ -11,12 +11,6 @@
  */
 package jbotsimx.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.ArrayList;
-
-import javax.swing.*;
-
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
@@ -24,6 +18,11 @@ import jbotsim._Properties;
 import jbotsim.event.*;
 import jbotsim.format.common.Format;
 import jbotsimx.ui.painting.*;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
 
 
 @SuppressWarnings("serial")
@@ -183,14 +182,14 @@ public class JTopology extends JPanel implements ActionListener {
      * Paints this JTopology on the specified graphics (not supposed to be
      * used explicitly).
      */
-    public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
+    public void paintComponent(UIComponent uiComponent) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
+        super.paintComponent(g2d);
         for (BackgroundPainter painter : backgroundPainters)
-            painter.paintBackground(g2d, topo);
+            painter.paintBackground(uiComponent, topo);
         if (showDrawings) {
             for (Link l : topo.getLinks(topo.hasDirectedLinks()))
-                linkPainter.paintLink(g2d, l);
+                linkPainter.paintLink(uiComponent, l);
         }
         //if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
         //    updateUI();

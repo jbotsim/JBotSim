@@ -5,6 +5,7 @@ import jbotsim.Topology;
 import jbotsim.event.ClockListener;
 import jbotsimx.ui.JViewer;
 import jbotsimx.ui.painting.BackgroundPainter;
+import jbotsimx.ui.painting.UIComponent;
 
 import java.awt.*;
 
@@ -34,7 +35,8 @@ public class Main implements ClockListener, BackgroundPainter {
     }
 
     @Override
-    public void paintBackground(Graphics2D g, Topology tp) {
+    public void paintBackground(UIComponent uiComponent, Topology tp) {
+        Graphics2D g = (Graphics2D) uiComponent.getComponent();
         g.drawOval(50,50,150,150);
         if (finished) {
             g.setFont(new Font("TimesRoman", Font.PLAIN, 20));

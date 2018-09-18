@@ -3,8 +3,6 @@ package jbotsimx.obstacle.core;
 import jbotsim.Node;
 import jbotsim.Point;
 
-import java.awt.*;
-
 /**
  * Interface for all the obstacles (3D obstacles and 2D obstacles)
  * @author mbarjon
@@ -33,11 +31,5 @@ public interface Obstacle {
      * @return The point on the obstacle which is at the minimum distance from the node
      */
     Point pointAtMinimumDistance(Node node);
-    
-    /**
-     * This function is automatically call by ObstaclePainter to draw the obstacle
-     * @param g The Graphics where the obstacle will be draw
-     */
-    void paint(Graphics g);
-    
+
 }

@@ -4,6 +4,7 @@ import jbotsim.Topology;
 import jbotsimx.ui.painting.BackgroundPainter;
 import jbotsimx.obstacle.core.Obstacle;
 import jbotsimx.obstacle.core.ObstacleManager;
+import jbotsimx.ui.painting.UIComponent;
 
 import java.awt.*;
 
@@ -28,9 +29,12 @@ public class ObstaclePainter implements BackgroundPainter {
      */
 
     @Override
-    public void paintBackground(Graphics2D graphics2D, Topology topology) {
+    public void paintBackground(UIComponent uiComponent, Topology topology) {
         for(Obstacle o : ObstacleManager.getObstacles(topology)){
-            o.paint(graphics2D);
+            if(o instanceof ObstacleDrawable) {
+                ObstacleDrawable drawable = (ObstacleDrawable) o;
+                drawable.paint(uiComponent);
+            }
         }
     }
 }

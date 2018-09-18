@@ -13,8 +13,6 @@ package jbotsimx.ui.painting;
 
 import jbotsim.Topology;
 
-import java.awt.*;
-
 /**
  * Created by acasteig on 6/9/15.
  */
@@ -24,5 +22,5 @@ public interface BackgroundPainter {
      *
      * @param g2d The background graphics.
      */
-    void paintBackground(Graphics2D g2d, Topology tp);
+    void paintBackground(UIComponent g2d, Topology tp);
 }

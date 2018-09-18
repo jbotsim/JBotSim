@@ -4,13 +4,12 @@ import jbotsim.Node;
 import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
 
-import java.awt.*;
 import java.util.List;
 
 
 public class LinesObstacle implements Obstacle {
 
-    private List<Point> points;
+    protected List<Point> points;
     private double x;
     private double y;
     
@@ -104,22 +103,6 @@ public class LinesObstacle implements Obstacle {
         }
 
         return false;
-    }
-    
-    public void paint(Graphics g){
-        
-        Color tmp=g.getColor();
-        g.setColor(Color.blue);
-        
-        Point a=points.get(0);
-        for (int i=1;i<points.size();++i){
-            Point b=points.get(i);
-            
-            g.drawLine((int)a.getX(), (int)a.getY(),(int) b.getX(), (int)b.getY());
-            a=b;
-        }
-        
-        g.setColor(tmp);
     }
 
 //    public List<Point> getPoints() {

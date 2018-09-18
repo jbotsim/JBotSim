@@ -7,6 +7,7 @@ import jbotsimx.ui.JViewer;
 import jbotsimx.ui.painting.BackgroundPainter;
 
 import jbotsim.Point;
+import jbotsimx.ui.painting.UIComponent;
 
 import java.awt.*;
 
@@ -54,7 +55,8 @@ public class Main implements ClockListener, BackgroundPainter{
     }
 
     @Override
-    public void paintBackground(Graphics2D g2d, Topology tp) {
+    public void paintBackground(UIComponent uiComponent, Topology tp) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         VectorNode drone = null;
         for (Node node : tp.getNodes())
             if (node instanceof VectorNode)

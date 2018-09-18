@@ -19,7 +19,8 @@ import java.awt.*;
 
 public class DefaultBackgroundPainter implements BackgroundPainter {
     @Override
-    public void paintBackground(Graphics2D g2d, Topology tp) {
+    public void paintBackground(UIComponent uiComponent, Topology tp) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         g2d.setStroke(new BasicStroke(1));
         for (Node n : tp.getNodes()) {
             double sR = n.getSensingRange();

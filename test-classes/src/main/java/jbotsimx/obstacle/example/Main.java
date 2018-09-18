@@ -5,8 +5,8 @@ import jbotsim.Topology;
 import jbotsimx.ui.JTopology;
 import jbotsimx.ui.JViewer;
 import jbotsimx.obstacle.core.ObstacleManager;
-import jbotsimx.obstacle.shapes2d.CircleObstacle;
-import jbotsimx.obstacle.shapes2d.LinesObstacle;
+import jbotsimx.obstacle.shapes2d.CircleObstacleDrawable;
+import jbotsimx.obstacle.shapes2d.LinesObstacleDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,14 +29,14 @@ public class Main {
         points.add(new Point(500, 500));
         points.add(new Point(600, 300));
 
-        LinesObstacle lo = new LinesObstacle(points);
+        LinesObstacleDrawable lo = new LinesObstacleDrawable(points);
         ObstacleManager.addObstacle(lo, tp);
 
-        CircleObstacle co = new CircleObstacle(new Point(400, 400), 10);
+        CircleObstacleDrawable co = new CircleObstacleDrawable(new Point(400, 400), 10);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point(200, 200), 20);
+        co = new CircleObstacleDrawable(new Point(200, 200), 20);
         ObstacleManager.addObstacle(co, tp);
-        co = new CircleObstacle(new Point(600, 200), 80);
+        co = new CircleObstacleDrawable(new Point(600, 200), 80);
         ObstacleManager.addObstacle(co, tp);
 
         tp.pause();

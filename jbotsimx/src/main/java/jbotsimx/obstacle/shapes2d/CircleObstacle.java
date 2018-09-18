@@ -2,16 +2,13 @@ package jbotsimx.obstacle.shapes2d;
 
 import jbotsim.Node;
 import jbotsim.Point;
-import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
-
-import java.awt.*;
 
 
 public class CircleObstacle implements Obstacle {
 
-    private Point center;
-    private double radius;
+    protected Point center;
+    protected double radius;
     
     public CircleObstacle(Point center, double radius) {
         this.center = center;
@@ -64,15 +61,6 @@ public class CircleObstacle implements Obstacle {
 //        return pointAtMinimumDistance(node).distance(n);
 //
 //    }
-
-    @Override
-    public void paint(Graphics g) {
-
-        Color c= g.getColor();
-        g.setColor(Color.BLUE);
-        g.drawOval((int) (center.getX() - radius), (int) (center.getY() - radius), (int) radius * 2, (int) radius * 2);
-        g.setColor(c);
-    }
 
     @Override
     public Point pointAtMinimumDistance(Node node) {

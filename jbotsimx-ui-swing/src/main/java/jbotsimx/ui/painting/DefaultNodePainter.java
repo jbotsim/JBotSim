@@ -18,7 +18,8 @@ import java.awt.*;
 
 public class DefaultNodePainter implements NodePainter {
     @Override
-    public void paintNode(Graphics2D g2d, Node node) {
+    public void paintNode(UIComponent uiComponent, Node node) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         JNode jn = (JNode) node.getProperty("jnode");
         int drawSize = jn.getWidth() / 2;
         if (node.getColor() != null) {

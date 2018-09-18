@@ -11,26 +11,19 @@
  */
 package jbotsimx.ui;
 
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import java.awt.geom.AffineTransform;
-import java.net.URL;
-import java.nio.file.Paths;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsimx.ui.painting.NodePainter;
+import jbotsimx.ui.painting.UIComponent;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.awt.geom.AffineTransform;
+import java.net.URL;
+import java.nio.file.Paths;
 
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener {
@@ -96,8 +89,8 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize * 2, drawSize * 2);
     }
 
-    public void paint(Graphics g) {
-        Graphics2D g2d = (Graphics2D) g;
+    public void paint(UIComponent uiComponent) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         double direction = this.node.getDirection();
         if (direction != Math.PI / 2) {
             AffineTransform newXform = g2d.getTransform();
@@ -107,7 +100,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         g2d.drawImage(scaledIcon, 0, 0, null);
         JTopology jTopology = (JTopology) this.getParent();
         for (NodePainter painter : jTopology.nodePainters)
-            painter.paintNode(g2d, node);
+            painter.paintNode(uiComponent, node);
     }
 
     // EVENTS

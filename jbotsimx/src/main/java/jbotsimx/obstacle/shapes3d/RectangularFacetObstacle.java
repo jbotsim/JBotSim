@@ -4,8 +4,6 @@ import jbotsim.Node;
 import jbotsim.Point;
 import jbotsimx.obstacle.core.Obstacle;
 
-import java.awt.*;
-
 public class RectangularFacetObstacle implements Obstacle {
 
     private Point a;
@@ -127,11 +125,6 @@ public class RectangularFacetObstacle implements Obstacle {
                 return NAB.sum(NAC).getNewPointFrom(a);
             }
         }
-    }
-
-    @Override
-    public void paint(Graphics g) {
-        // not implemented for the moment
     }
 
 }

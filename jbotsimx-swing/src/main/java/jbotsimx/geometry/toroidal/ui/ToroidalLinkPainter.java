@@ -4,6 +4,7 @@ import jbotsim.Link;
 import jbotsim.Point;
 import jbotsim.Topology;
 import jbotsimx.ui.painting.DefaultLinkPainter;
+import jbotsimx.ui.painting.UIComponent;
 
 import java.awt.*;
 
@@ -47,7 +48,8 @@ public class ToroidalLinkPainter extends DefaultLinkPainter {
     }
 
     @Override
-    public void paintLink(Graphics2D g2d, Link link) {
+    public void paintLink(UIComponent uiComponent, Link link) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         Point p1 = link.endpoint(0).getLocation();
         Point p2 = link.endpoint(1).getLocation();
         Topology tp = link.getTopology();
@@ -55,7 +57,7 @@ public class ToroidalLinkPainter extends DefaultLinkPainter {
         boolean wrapY = (Math.abs((p1.getY() - p2.getY())) > tp.getHeight()/2);
         if ( ! wrapX && ! wrapY )
             // The link is normal, use default painting
-            super.paintLink(g2d, link);
+            super.paintLink(uiComponent, link);
         else
             // The link is toroidal, use special painting
             toroidalPaint(g2d, tp, p1, p2, wrapX, wrapY);

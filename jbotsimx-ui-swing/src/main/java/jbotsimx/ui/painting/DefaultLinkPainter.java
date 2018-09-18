@@ -21,11 +21,12 @@ public class DefaultLinkPainter implements LinkPainter {
     /**
      * Paints the Links.
      *
-     * @param g2d  The graphics object
+     * @param uiComponent  The graphics object
      * @param link The link to be drawn
      */
     @Override
-    public void paintLink(Graphics2D g2d, Link link) {
+    public void paintLink(UIComponent uiComponent, Link link) {
+        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
         Integer width = link.getWidth();
         if (width == 0)
             return;

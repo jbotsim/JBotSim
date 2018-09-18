@@ -12,9 +12,6 @@
 package jbotsimx.ui.painting;
 
 import jbotsim.Node;
-import jbotsim.Topology;
-
-import java.awt.*;
 
 public interface NodePainter {
     /**
@@ -23,5 +20,5 @@ public interface NodePainter {
      * @param g2d  This node graphics object
      * @param node This node
      */
-    void paintNode(Graphics2D g2d, Node node);
+    void paintNode(UIComponent g2d, Node node);
 }
