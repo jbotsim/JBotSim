@@ -30,7 +30,7 @@ dependencies {
 
 //Create a run task for each example in the examples directory:
 
-task createAllExamplesScripts(group: "Application", description: "Create the examples binaries as scripts.") << {
+task createAllExamplesScripts(group: "Application", description: "Create the examples binaries as scripts.") doLast {
 }
 
 def scripts = [:]
