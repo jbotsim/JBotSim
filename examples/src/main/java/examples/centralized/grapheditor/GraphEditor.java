@@ -51,7 +51,7 @@ public class GraphEditor implements ActionListener{
 		mainPanel=new JPanel(new BorderLayout());
 		mainPanel.add(cmdImport, BorderLayout.EAST);
 		mainPanel.add(cmdExport, BorderLayout.WEST);
-		mainPanel.add(new jbotsimx.JConsole(topo), BorderLayout.NORTH);
+		mainPanel.add(new jbotsimx.ui.JConsole(topo), BorderLayout.NORTH);
 		win.add(mainPanel, BorderLayout.SOUTH);
 		win.setSize(800, 600);
 		win.setVisible(true);

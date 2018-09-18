@@ -17,7 +17,7 @@
  *     contributors:
  *     Arnaud Casteigts
  *******************************************************************************/
-package jbotsimx;
+package jbotsimx.ui;
 
 import java.awt.*;
 import java.awt.event.*;
