@@ -1,1 +1,1 @@
-include 'jbotsim-core', 'jbotsim-format-common', 'jbotsim-format-java', 'jbotsimx', 'jbotsimx-swing', 'jbotsimx-ui-common', 'jbotsimx-ui-swing', 'examples', 'test-classes'
+include 'jbotsim-core', 'jbotsim-format-common', 'jbotsim-format-java', 'jbotsimx-extras-common', 'jbotsimx-extras-swing', 'jbotsimx-ui-common', 'jbotsimx-ui-swing', 'examples', 'test-classes'

@@ -4,7 +4,7 @@ plugins {
 //apply plugin: "com.github.johnrengelman.shadow"
 
 dependencies {
-    api project(':jbotsimx-ui-swing'), project(':jbotsimx')
+    api project(':jbotsimx-ui-swing'), project(':jbotsimx-extras-common')
     //, 'guru.nidi:graphviz-java:0.5+'
 }
 

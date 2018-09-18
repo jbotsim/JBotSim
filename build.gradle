@@ -75,7 +75,7 @@ subprojects {
 //	}
 //}
 //
-//project(':jbotsimx') {
+//project(':jbotsimx-extras-common') {
 //
 //    apply plugin: "com.github.johnrengelman.shadow"
 //
@@ -106,7 +106,7 @@ subprojects {
 //    mainClassName = "examples.basic.helloworld.Main"
 //
 //    dependencies {
-//        compile project(':jbotsim-core'), project(':jbotsimx'), 'guru.nidi:graphviz-java:0.5+'
+//        compile project(':jbotsim-core'), project(':jbotsimx-extras-common'), 'guru.nidi:graphviz-java:0.5+'
 //    }
 //
 //    processResources {
