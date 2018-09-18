@@ -21,40 +21,22 @@
 
 package jbotsim;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class DefaultClock extends Clock {
-    Timer timer;
-    long period;
+public class DefaultClock extends Clock implements Runnable{
     boolean running;
-    DefaultTask task;
+    Thread timer;
 
     public DefaultClock(ClockManager manager) {
         super(manager);
-        period = 10;
         running = false;
-        task = null;
-        timer = new Timer("Default Clock Timer");
+        timer = new Thread(this);
     }
 
     /**
-     * TimerTask called by our timer.
-     * The task just call the onClock method of the ClockManager
-     */
-    private class DefaultTask extends TimerTask {
-        @Override
-        public void run() {
-            manager.onClock();
-        }
-    }
-
-    /**
-     * Returns the time unit of the clock, in milliseconds.
+     * Returns the duration of one time unit, in milliseconds.
      */
     @Override
     public int getTimeUnit() {
-        return (int) period;
+        return 0;
     }
 
     /**
@@ -64,11 +46,6 @@ public class DefaultClock extends Clock {
      */
     @Override
     public void setTimeUnit(int delay) {
-        period = delay;
-        if (running) {
-            pause();
-            resume();
-        }
     }
 
     /**
@@ -86,7 +63,8 @@ public class DefaultClock extends Clock {
      */
     @Override
     public void start() {
-        resume();
+        running = true;
+        timer.start();
     }
 
     /**
@@ -94,12 +72,7 @@ public class DefaultClock extends Clock {
      */
     @Override
     public void pause() {
-        if (!running)
-            return;
-
         running = false;
-        task.cancel();
-        task = null;
     }
 
     /**
@@ -107,11 +80,13 @@ public class DefaultClock extends Clock {
      */
     @Override
     public void resume() {
-        if (running)
-            return;
-
         running = true;
-        task = new DefaultTask();
-        timer.scheduleAtFixedRate(task, period, period);
+    }
+
+    @Override
+    public void run() {
+        while (true)
+            if (running)
+                manager.onClock();
     }
 }

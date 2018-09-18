@@ -17,11 +17,13 @@ Here is a basic HelloWorld with JBotSim:
 
 ```java
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 public class HelloWorld{
     public static void main(String[] args){
-        new JViewer (new Topology());
+        Topology tp = new Topology();
+        new JViewer (tp);
+	tp.start();
     }
 }
 ```

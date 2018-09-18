@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0"><topology wireless-enabled="true" speed="500">
+    <classes>
+    </classes>
+    <graph>
+        <generator>
+            <ring directed="true" order="6" wired="true" wireless-enabled="true" x=".5" y=".5" width=".33" height=".33" node-class="examples.basic.broadcasting.BroadcastingNode"/>
+            <line wired="false" order="5" x=".1" y=".3" width=".8" node-class="examples.basic.broadcasting.BroadcastingNode"/>
+        </generator>
+    </graph>
+</topology></jbotsim>

@@ -11,22 +11,17 @@
  */
 package jbotsim;
 
-import java.awt.*;
-import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.List;
-
 import jbotsim.Link.Mode;
 import jbotsim.Link.Type;
 import jbotsim.event.*;
 
+import java.util.*;
+
 public class Topology extends _Properties implements ClockListener {
+    public static final int DEFAULT_WIDTH = 600;
+    public static final int DEFAULT_HEIGHT = 400;
+    public static final double DEFAULT_COMMUNICATION_RANGE = 100;
+    public static final double DEFAULT_SENSING_RANGE = 0;
     ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
     List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
@@ -42,15 +37,16 @@ public class Topology extends _Properties implements ClockListener {
     List<Link> edges = new ArrayList<>();
     HashMap<String, Class<? extends Node>> nodeModels = new HashMap<String, Class<? extends Node>>();
     boolean isWirelessEnabled = true;
-    double communicationRange = 100;
-    double sensingRange = 0;
-    Dimension dimensions;
+    double communicationRange = DEFAULT_COMMUNICATION_RANGE;
+    double sensingRange = DEFAULT_SENSING_RANGE;
+    int width;
+    int height;
     LinkResolver linkResolver = new LinkResolver();
     Node selectedNode = null;
-    int nbPauses = 0;
     ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
     private boolean isStarted = false;
+    private int nextID = 0;
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
@@ -61,35 +57,17 @@ public class Topology extends _Properties implements ClockListener {
      * Creates a topology.
      */
     public Topology() {
-        this(600, 400, true);
-    }
-
-    /**
-     * Creates a topology and sets its running status (running/paused).
-     */
-    public Topology(boolean toBeStarted) {
-        this(600, 400, toBeStarted);
+        this(DEFAULT_WIDTH, DEFAULT_HEIGHT);
     }
 
     /**
      * Creates a topology of given dimensions.
      */
     public Topology(int width, int height) {
-        this(width, height, true);
-    }
-
-    /**
-     * Creates a topology of given dimensions.
-     */
-    public Topology(int width, int height, boolean toBeStarted) {
         setMessageEngine(new MessageEngine());
         setScheduler(new DefaultScheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
-        if (!toBeStarted)
-            clockManager.getClock().pause();
-        isStarted = toBeStarted;
-        resetTime();
     }
 
     /**
@@ -153,7 +131,7 @@ public class Topology extends _Properties implements ClockListener {
         return new Node();
     }
 
-    public boolean isStarted() {
+    public boolean isStarted() { // FIXME Ambiguous for the user
         return isStarted;
     }
 
@@ -176,20 +154,33 @@ public class Topology extends _Properties implements ClockListener {
      * Enables this node's wireless capabilities.
      */
     public void enableWireless() {
-        isWirelessEnabled = true;
-        for (Node node : nodes)
-            node.enableWireless();
+        setWirelessStatus(true);
     }
 
     /**
      * Disables this node's wireless capabilities.
      */
     public void disableWireless() {
-        isWirelessEnabled = false;
-        for (Node node : nodes)
-            node.disableWireless();
+        setWirelessStatus(false);
     }
 
+    /**
+     * Set wireless capabilities status
+     */
+    public void setWirelessStatus(boolean enabled) {
+        if (enabled == isWirelessEnabled)
+            return;
+        isWirelessEnabled = enabled;
+        for (Node node : nodes)
+            node.setWirelessStatus(enabled);
+    }
+
+    /**
+     * Returns true if wireless links are enabled.
+     */
+    public boolean getWirelessStatus() {
+        return isWirelessEnabled;
+    }
     /**
      * Returns the default communication range.
      *
@@ -280,7 +271,7 @@ public class Topology extends _Properties implements ClockListener {
      * @return The duration
      */
     public int getClockSpeed() {
-        return clockManager.getClock().getTimeUnit();
+        return clockManager.getTimeUnit();
     }
 
     /**
@@ -289,7 +280,7 @@ public class Topology extends _Properties implements ClockListener {
      * @param period The desired duration
      */
     public void setClockSpeed(int period) {
-        clockManager.getClock().setTimeUnit(period);
+        clockManager.setTimeUnit(period);
     }
 
     /**
@@ -314,9 +305,6 @@ public class Topology extends _Properties implements ClockListener {
     public int getTime() {
         return clockManager.currentTime();
     }
-    /**
-     * Sets the topology dimensions as indicated.
-     */
 
     /**
      * Indicates whether the internal clock is currently running or in pause.
@@ -324,30 +312,21 @@ public class Topology extends _Properties implements ClockListener {
      * @return <tt>true</tt> if running, <tt>false</tt> if paused.
      */
     public boolean isRunning() {
-        return clockManager.getClock().isRunning();
+        return clockManager.isRunning();
     }
 
     /**
      * Pauses the clock (or increments the pause counter).
      */
     public void pause() {
-        if (isStarted) {
-            if (nbPauses == 0)
-                clockManager.getClock().pause();
-            nbPauses++;
-        }
+        clockManager.pause();
     }
 
     /**
      * Resumes the clock (or decrements the pause counter).
      */
     public void resume() {
-        if (isStarted) {
-            assert (nbPauses > 0);
-            nbPauses--;
-            if (nbPauses == 0)
-                clockManager.getClock().resume();
-        }
+        clockManager.resume();
     }
 
     /**
@@ -357,45 +336,39 @@ public class Topology extends _Properties implements ClockListener {
         clockManager.reset();
     }
 
-    public void setDimensions(int width, int height) {
-        dimensions = new Dimension(width, height);
-    }
-
     /**
-     * Returns the topology dimensions.
+     * Sets the topology dimensions as indicated.
      */
-    public Dimension getDimensions() {
-        return new Dimension(dimensions);
+    public void setDimensions(int width, int height) {
+        this.width = width;
+        this.height = height;
     }
 
     /**
      * Returns the width of this topology.
      */
     public int getWidth() {
-        return dimensions.width;
+        return width;
     }
 
     /**
      * Returns the height of this topology.
      */
     public int getHeight() {
-        return dimensions.height;
+        return height;
     }
 
     /**
-     * Reset the color and width of nodes and links, then calls the
-     * onStart() method on each node.
+     * Initializes the clock.
      */
     public void start() {
-        if (!isStarted) {
-            isStarted = true;
-            clockManager.getClock().resume();
-            restart();
-        }
+        clockManager.start();
+        isStarted = true;
+        restart();
     }
 
     /**
-     * Causes the onStart() method to be called again on each node (and each StartListener)
+     * (Re)init the nodes through their onStart() method (and notifies StartListeners as well)
      */
     public void restart() {
         pause();
@@ -414,6 +387,7 @@ public class Topology extends _Properties implements ClockListener {
     public void clear() {
         while (!nodes.isEmpty())
             removeNode(nodes.get(nodes.size() - 1));
+        nextID = 0;
     }
 
     /**
@@ -438,8 +412,7 @@ public class Topology extends _Properties implements ClockListener {
      * Performs a single round, then switch to pause state.
      */
     public void step() {
-        if (nbPauses > 0)
-            resume();
+        resume();
         step = true;
     }
 
@@ -474,9 +447,9 @@ public class Topology extends _Properties implements ClockListener {
     public void addNode(double x, double y, Node n) {
         pause();
         if (x == -1)
-            x = Math.random() * dimensions.width;
+            x = Math.random() * width;
         if (y == -1)
-            y = Math.random() * dimensions.height;
+            y = Math.random() * height;
         if (n.getX() == 0 && n.getY() == 0)
             n.setLocation(x, y);
 
@@ -487,7 +460,7 @@ public class Topology extends _Properties implements ClockListener {
         if (isWirelessEnabled == false)
             n.disableWireless();
         if (n.getID() == -1)
-            n.setID(nodes.size());
+            n.setID(nextID++);
         nodes.add(n);
         n.topo = this;
         notifyNodeAdded(n);
@@ -728,6 +701,14 @@ public class Topology extends _Properties implements ClockListener {
      */
     public void setLinkResolver(LinkResolver linkResolver) {
         this.linkResolver = linkResolver;
+    }
+
+    /**
+     * Return the current LinkResolver
+     *
+     */
+    public LinkResolver getLinkResolver() {
+        return linkResolver;
     }
 
     /**
@@ -1005,82 +986,9 @@ public class Topology extends _Properties implements ClockListener {
         }
     }
 
-    /**
-     * Returns a string representation of this topology. The output of this
-     * method can be subsequently used to reconstruct a topology with the
-     * <tt>fromString</tt> method. Only the nodes and wired links are exported
-     * here (not the topology's properties).
-     */
+    @Override
     public String toString() {
-        StringBuffer res = new StringBuffer();
-        res.append("cR " + communicationRange + "\n");
-        res.append("sR " + sensingRange + "\n");
-        for (Node n : nodes) {
-            Point2D p2d = new Point2D.Double();
-            p2d.setLocation(n.coords.getX(), n.coords.getY());
-            res.append(n.toString() + " " + p2d.toString().substring(14) + "\n");
-        }
-        for (Link l : getLinks())
-            if (!l.isWireless())
-                res.append(l.toString() + "\n");
-        return res.toString();
-    }
-
-    /**
-     * Imports nodes and wired links from the specified string representation of a
-     * topology.
-     *
-     * @param s The string representation.
-     */
-    public void fromString(String s) {
-        clear();
-        setCommunicationRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
-        setSensingRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
-        HashMap<String, Node> nodeTable = new HashMap<>();
-        while (s.indexOf("[") > 0) {
-            addNode(new Double(s.substring(s.indexOf("[") + 1, s.indexOf(","))),
-                    new Double(s.substring(s.indexOf(",") + 2, s.indexOf("]"))));
-            Node n = nodes.get(nodes.size() - 1);
-            String id = s.substring(0, s.indexOf(" "));
-            n.setProperty("id", id);
-            nodeTable.put(id, n);
-            s = s.substring(s.indexOf("\n") + 1);
-        }
-        while (s.indexOf("--") > 0) {
-            Node n1 = nodeTable.get(s.substring(0, s.indexOf(" ")));
-            Node n2 = nodeTable.get(s.substring(s.indexOf(">") + 2, s.indexOf("\n")));
-            Type type = (s.indexOf("<") > 0 && s.indexOf("<") < s.indexOf("\n")) ? Type.UNDIRECTED : Type.DIRECTED;
-            addLink(new Link(n1, n2, type, Link.Mode.WIRED));
-            s = s.substring(s.indexOf("\n") + 1);
-        }
-    }
-
-    /**
-     * Saves the current topology (nodes and links) in the given file.
-     *
-     * @param filename The absolute path to the file
-     */
-    public void toFile(String filename) {
-        try (PrintWriter out = new PrintWriter(filename)) {
-            out.print(toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Imports a topology from the given file.
-     *
-     * @param filename The absolute path to the file
-     */
-    public void fromFile(String filename) {
-        try {
-            String s = new String(Files.readAllBytes(Paths.get(filename)));
-            fromString(s);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.err.println("Export and Import has been removed from Topology (see format extensions)");
+        return "";
     }
 }

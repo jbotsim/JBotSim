@@ -1,7 +1,7 @@
 package examples.basic.helloworld;
 
 import jbotsim.Topology;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 public class HelloWorld {
     public static void main(String[] args){

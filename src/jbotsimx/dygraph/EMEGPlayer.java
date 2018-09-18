@@ -5,7 +5,7 @@ import java.util.Random;
 import jbotsim.Node;
 import jbotsim.Topology;
 import jbotsim.event.ClockListener;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 public class EMEGPlayer implements ClockListener{
     protected TVG tvg;

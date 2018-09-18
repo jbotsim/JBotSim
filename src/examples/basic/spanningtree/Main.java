@@ -3,7 +3,7 @@ package examples.basic.spanningtree;
 import jbotsim.Link;
 import jbotsim.Topology;
 import jbotsim.event.StartListener;
-import jbotsim.ui.JViewer;
+import jbotsimx.ui.JViewer;
 
 /**
  * Created by acasteig on 25/08/15.
