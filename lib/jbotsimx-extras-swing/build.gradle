@@ -1,0 +1,11 @@
+dependencies {
+    api project(':lib:jbotsimx-ui-swing'), project(':lib:jbotsimx-extras-common')
+}
+
+publishing {
+    publications {
+        extrasSwing(MavenPublication) {
+            from components.java
+        }
+    }
+}

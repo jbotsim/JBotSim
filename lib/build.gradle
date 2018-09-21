@@ -1,0 +1,87 @@
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+}
+description = "Sub project regrouping each 'unitary' jar."
+subprojects {
+
+    apply plugin: "java-library"
+    apply plugin: "idea"
+    apply plugin: "maven-publish"
+
+    sourceCompatibility = 1.8 // java 8
+    targetCompatibility = 1.8
+
+    group = "com.github.acasteigts"
+    version = '1.0-beta01-SNAPSHOT'
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = 'TheRepo'
+                url = "file://${rootDir}/repo"
+            }
+        }
+    }
+
+    dependencies{
+        testImplementation "junit:junit:4+"
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+//    uploadArchives {
+//        repositories {
+//            flatDir {
+//                name 'fileRepo'
+//                def releasesRepoUrl = rootProject.file("repos/releases")
+//                def snapshotsRepoUrl = rootProject.file("repos/snapshots")
+//                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//                dirs "$repoUrl"
+//            }
+//        }
+//
+//    }
+
+    clean.doFirst {
+        delete rootProject.file("repos")
+    }
+}
+
+//task publishToLocalRepository {
+//    group = 'publishing'
+//    description = 'Publishes all Maven publications to the internal Maven repository.'
+//    dependsOn tasks.withType(PublishToMavenLocal)
+//    dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
+//}
+
+task publishToTestRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the test (project root) Maven repository.'
+    dependsOn tasks.withType(PublishToMavenRepository)
+    dependsOn subprojects.collect {it.tasks.withType(PublishToMavenRepository) }
+}
+
+
+

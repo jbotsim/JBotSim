@@ -1,0 +1,11 @@
+dependencies {
+  api project(':lib:jbotsim-core')
+}
+
+publishing {
+  publications {
+    formatCommon(MavenPublication) {
+      from components.java
+    }
+  }
+}

@@ -1,4 +1,4 @@
-package jbotsimx.format.dot;
+package jbotsim.format.dot;
 
 import jbotsim.Link;
 import jbotsim.Node;

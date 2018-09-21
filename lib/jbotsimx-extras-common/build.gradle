@@ -1,0 +1,11 @@
+dependencies {
+    api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-common')
+}
+
+publishing {
+    publications {
+        extrasCommon(MavenPublication) {
+            from components.java
+        }
+    }
+}

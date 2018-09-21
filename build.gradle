@@ -4,13 +4,6 @@ buildscript {
       url "https://plugins.gradle.org/m2/"
     }
   }
-  dependencies {
-    classpath "com.github.jengelman.gradle.plugins:shadow:2.0.4"
-  }
-}
-
-plugins { 
-	id "com.github.johnrengelman.shadow" version "2.0.4"
 }
 
 subprojects {
@@ -26,47 +19,68 @@ subprojects {
     version = '1.0-beta01-SNAPSHOT'
 
     repositories {
+        mavenLocal()
         jcenter()
     }
+//
+//    repositories {
+//        maven {
+//            name = 'TheRepo'
+//            url = "file://${rootDir}/repo"
+//        }
+//    }
+//
 
     dependencies{
         testImplementation "junit:junit:4+"
     }
 
+//
+//
+//    task sourcesJar(type: Jar, dependsOn: classes) {
+//        classifier = 'sources'
+//        from sourceSets.main.allSource
+//    }
+//
+//    task javadocJar(type: Jar, dependsOn: javadoc) {
+//        classifier = 'javadoc'
+//        from javadoc.destinationDir
+//    }
+//
+//    artifacts {
+//        archives sourcesJar
+//        archives javadocJar
+//    }
 
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        classifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-    }
-
-    artifacts {
-        archives sourcesJar
-        archives javadocJar
-    }
-
-    uploadArchives {
-        repositories {
-            flatDir {
-                name 'fileRepo'
-                def releasesRepoUrl = rootProject.file("repos/releases")
-                def snapshotsRepoUrl = rootProject.file("repos/snapshots")
-                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
-                dirs "$repoUrl"
-            }
-        }
-
-    }
+//    uploadArchives {
+//        repositories {
+//            flatDir {
+//                name 'fileRepo'
+//                def releasesRepoUrl = rootProject.file("repos/releases")
+//                def snapshotsRepoUrl = rootProject.file("repos/snapshots")
+//                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+//                dirs "$repoUrl"
+//            }
+//        }
+//
+//    }
 
     clean.doFirst {
         delete rootProject.file("repos")
     }
 }
+
+task publishToInternalRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the internal Maven repository.'
+    dependsOn tasks.withType(PublishToMavenLocal)
+    dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
+}
+
+//task publishMaven {
+//    dependsOn('jbotsim-core:publish', 'jbotsimx-ui-common:publish')
+//}
+
 //
 //project(':jbotsim-core') {
 //    processResources {
