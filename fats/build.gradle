@@ -1,0 +1,53 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
+description = "Sub project regrouping fat-jars generators."
+
+subprojects {
+
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "java-library"
+    apply plugin: "maven-publish"
+    apply plugin: "idea"
+
+    repositories {
+        mavenLocal()
+        jcenter()
+
+        maven {
+            name = 'TheRepo'
+            url = "file://${rootDir}/repo"
+        }
+    }
+
+    publishing {
+        repositories {
+            maven {
+                name = 'TheRepo'
+                url = "file://${rootDir}/repo"
+            }
+        }
+    }
+
+    dependencies{
+        testImplementation "junit:junit:4+"
+    }
+
+}
+
+String generateJarName (Project proj) {
+    String artifactName = proj.getName()
+    String versionStr = proj.getVersion()
+    String returnStr = artifactName + "-" + versionStr + ".jar"
+    println("Artifact name: " + returnStr)
+    return returnStr
+}
+
+
+

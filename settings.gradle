@@ -1,2 +1,3 @@
 include 'lib:jbotsim-core', 'lib:jbotsim-format-common', 'lib:jbotsim-format-java', 'lib:jbotsimx-extras-common', 'lib:jbotsimx-extras-swing', 'lib:jbotsimx-ui-common', 'lib:jbotsimx-ui-swing',
-        'apps:examples', 'apps:test-classes'
+        'apps:examples', 'apps:test-classes',
+        'fats:jbotsim-full', 'fats:jbotsim-common'

@@ -1,0 +1,28 @@
+
+description = "JBotSim No UI: generates a fat jar containing all non-specific classes from JBotSim"
+
+dependencies{
+    String depVersion = version 
+    api ("${group}:jbotsimx-extras-common:${depVersion}")
+    api ("${group}:jbotsimx-ui-common:${depVersion}")
+}
+
+task artifactJarCreator (type: Copy) {
+    String toDir = buildDir.toString() + "/shadowed"
+    from shadowJar
+    into toDir
+
+    rename '(.*)-' + shadowJar.classifier + '.jar', '$1.jar'
+
+    ext.artifact = new File(toDir + "/" + generateJarName(this.project))
+}
+
+publishing {
+    publications {
+        fatJar(MavenPublication) {
+            artifact(artifactJarCreator.artifact) {
+                builtBy artifactJarCreator
+            }
+        }
+    }
+}
