@@ -22,7 +22,7 @@
 package jbotsim;
 
 public class DefaultClock extends Clock implements Runnable{
-    boolean running;
+    volatile boolean running;
     Thread timer;
 
     public DefaultClock(ClockManager manager) {
