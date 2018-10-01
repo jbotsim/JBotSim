@@ -6,6 +6,7 @@ buildscript {
     }
 }
 
+description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
 subprojects {
 
     apply plugin: "java"
@@ -14,7 +15,6 @@ subprojects {
     sourceCompatibility = 1.8 // java 8
     targetCompatibility = 1.8
 
-    description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
     group = "com.github.acasteigts"
     version = '1.0-beta01-SNAPSHOT'
 

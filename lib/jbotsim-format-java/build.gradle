@@ -1,3 +1,5 @@
+description = "JBotSim Format Java: generates/publish a jar containing java desktop specific classes for topologies import/export."
+
 dependencies {
   api project(':lib:jbotsim-format-common')
 }

@@ -1,3 +1,5 @@
+description = "JBotSim UI Swing: generates/publish a jar containing AWT/SWING-specific classes for UI manipulation."
+
 dependencies {
     api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-java'), project(':lib:jbotsimx-ui-common')
 }

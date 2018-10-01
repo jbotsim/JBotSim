@@ -1,3 +1,5 @@
+description = "JBotSim Core: generates/publish a jar containing the core of JBotSim."
+
 publishing {
   publications {
     core(MavenPublication) {

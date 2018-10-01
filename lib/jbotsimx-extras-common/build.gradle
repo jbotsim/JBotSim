@@ -1,3 +1,5 @@
+description = "JBotSim Extras Common: generates/publish a jar containing common classes for several \"extra\" features (e.g.: Connectivity testing)."
+
 dependencies {
     api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-common')
 }

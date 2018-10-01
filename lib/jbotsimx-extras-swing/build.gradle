@@ -1,3 +1,5 @@
+description = "JBotSim Extras Swing: generates/publish a jar containing AWT/SWING-specific classes for several \"extra\" features (e.g.: Connectivity testing)."
+
 dependencies {
     api project(':lib:jbotsimx-ui-swing'), project(':lib:jbotsimx-extras-common')
 }

@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+description = "Sub project regrouping testers and examples."
+
+subprojects {
+
+    apply plugin: "java"
+    apply plugin: "idea"
+
+    sourceCompatibility = 1.8 // java 8
+    targetCompatibility = 1.8
+
+    group = "com.github.acasteigts"
+    version = '1.0-beta01-SNAPSHOT'
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    repositories {
+        maven {
+            name = 'TheRepo'
+            url = "file://${rootDir}/repo"
+        }
+    }
+
+    dependencies{
+        testImplementation "junit:junit:4+"
+    }
+
+    clean.doFirst {
+        delete rootProject.file("repos")
+    }
+}

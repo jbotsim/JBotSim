@@ -1,3 +1,5 @@
+description = "JBotSim Format Common: generates/publish a jar containing common classes for topologies import/export."
+
 dependencies {
   api project(':lib:jbotsim-core')
 }

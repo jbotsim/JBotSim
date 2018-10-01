@@ -1,3 +1,5 @@
+description = "JBotSim UI Swing: generates/publish a jar containing common classes for UI manipulation."
+
 dependencies {
     api project(':lib:jbotsim-core')
 }
