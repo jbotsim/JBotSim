@@ -1,0 +1,36 @@
+# Libraries submodule
+
+This module contains the actual JBotSim code. It is responsible for building and publishing every unitary *jars*.
+Before adding code/features, please consider the following project structure in order to put it in the right spot.
+
+## Project structure
+The submodules are listed below:
+
+* [`jbotsim-core`](./jbotsim-core/README.md): generates/publish a jar containing the core of JBotSim.
+Please only add here features that are considered central to JBotSim, avoiding adding external or platform-dependent
+dependencies.
+* [`jbotsim-format-common`](./jbotsim-format-common/README.md): generates/publish a jar containing common classes for 
+topologies import/export.
+Please only add here classes which are generically involved in formatting, avoiding adding external or 
+platform-dependent dependencies.
+* [`jbotsim-format-java`](./jbotsim-format-java/README.md): generates/publish a jar containing java desktop specific 
+classes for topologies import/export.
+You can add here classes which are involved in formatting, with potential java desktop dependencies.
+For other platforms, you might need to create a new `jbotsim-format-xxx` module.
+* [`jbotsimx-extras-common`](./jbotsimx-extras-common/README.md): generates/publish a jar containing common classes for
+ several "extra" features (e.g.: Connectivity testing).
+Here goes everything that does not (yet?) require to have its own submodule and that is not central to JBotSim.
+Please be careful not avoiding adding external or platform-dependent dependencies in this submodule.
+* [`jbotsimx-extras-swing`](./jbotsimx-extras-swing/README.md): generates/publish a jar containing AWT/SWING-specific 
+classes for several "extra" features (e.g.: Connectivity testing).
+This submodule is the AWT/SWING extension of the `jbotsimx-extras-common` submodule.
+For other platforms, you might need to create a new `jbotsimx-extras-xxx` module.
+* [`jbotsimx-ui-common`](./jbotsimx-ui-common/README.md): generates/publish a jar containing common classes for UI 
+manipulation.
+Please only add here classes which are generically involved in UI manipulation by JBotSim, avoiding adding external or 
+platform-dependent dependencies.
+* [`jbotsimx-ui-swing`](./jbotsimx-ui-swing/README.md): generates/publish a jar containing AWT/SWING-specific classes 
+for UI manipulation.
+This submodule is the AWT/SWING extension of the `jbotsimx-ui-common` submodule.
+You can add here classes which are involved in UI manipulation by JBotSIM, with potential AWT/SWING dependencies.
+For other platforms, you might need to create a new `jbotsim-ui-xxx` module.

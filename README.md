@@ -27,3 +27,11 @@ public class HelloWorld{
     }
 }
 ```
+
+## Project structure
+The project is separated in three main modules:
+* [`apps`](./apps/README.md): contains some sample apps and mains using modules from `libs`. 
+* [`libs`](./libs/README.md): contains submodules responsible for the generation and publication of unitary *jars* files.
+* [`fats`](./fats/README.md): contains submodules responsible for the generation and publication of standalone *fat jars* by using existing 
+published JBotSim jars (published by `libs`).
+ 
