@@ -16,20 +16,27 @@ subprojects {
     apply plugin: "maven-publish"
     apply plugin: "idea"
 
-    repositories {
-        mavenLocal()
-        jcenter()
-
-        maven {
-            name = 'TheRepo'
-            url = "file://${rootDir}/repo"
-        }
-    }
-
     publishing {
         repositories {
             maven {
-                name = 'TheRepo'
+                name = 'NexusDocker'
+
+                def releasesRepoUrl = "http://localhost:8081/nexus/content/repositories/releases/"
+                def snapshotsRepoUrl = "http://localhost:8081/nexus/content/repositories/snapshots/"
+
+                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = repoUrl
+
+                credentials {
+                    username "admin"
+                    password "admin123"
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'LocalRepo'
                 url = "file://${rootDir}/repo"
             }
         }
