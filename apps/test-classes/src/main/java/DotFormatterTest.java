@@ -8,7 +8,7 @@ public class DotFormatterTest {
         Topology tp = new Topology();
         tp.disableWireless();
         String filename = "/home/acasteig/test.dot"; // to be updated
-        Format.importFromFile(tp, filename, new jbotsimx.format.dot.DotFormatter());
+        Format.importFromFile(tp, filename, new jbotsim.format.dot.DotFormatter());
         new JViewer(tp);
     }
 }
