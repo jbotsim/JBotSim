@@ -68,5 +68,39 @@ subprojects {
 //    dependsOn subprojects.collect {it.tasks.withType(PublishToMavenRepository) }
 //}
 
+/**
+ * This methods helps modifying the pom for each submodule.
+ * The common part is defined here. Only the parameters are to be provided by the submodule.
+ * @param nameStr the display name of the submodule
+ * @param descriptionStr the description of the submodule
+ * @return
+ */
+Action<? super MavenPom> createConfigureActionForPom (String nameStr, String descriptionStr) {
+    return new Action() {
+        void execute(Object pom) {
+            pom.licenses {
+                license {
+                    name = 'GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0'
+                    url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                }
+            }
 
+            pom.developers {
+                developer {
+                    id = 'acasteigts'
+                    name = 'Arnaud Casteigts'
+                    email = 'acasteigts@labri.fr'
+                }
+            }
+            pom.scm {
+                connection = 'scm:git:git://github.com/acasteigts/jbotsim.git'
+                developerConnection = 'scm:git:ssh://github.com/acasteigts/jbotsim.git'
+                url = 'https://github.com/acasteigts/jbotsim/tree/master'
+            }
 
+            pom.name = nameStr
+            pom.description = descriptionStr
+            pom.url = 'https://jbotsim.io/'
+        }
+    }
+}

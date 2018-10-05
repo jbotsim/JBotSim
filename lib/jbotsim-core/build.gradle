@@ -1,11 +1,15 @@
 description = "JBotSim Core: generates/publish a jar containing the core of JBotSim."
-
+def displayName = "JBotSim Core"
 
 publishing {
     publications {
         core(MavenPublication) {
 
             from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  project.description)
         }
     }
 }
