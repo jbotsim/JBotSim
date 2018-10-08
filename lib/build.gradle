@@ -1,5 +1,9 @@
 description = "Sub project regrouping each 'unitary' jar."
 
+apply plugin: "maven-publish"
+apply plugin: "java-library"
+
+String localRepositoryName = "LocalRepo"
 subprojects {
 
     apply plugin: "java-library"
@@ -61,19 +65,16 @@ subprojects {
 
 }
 
-//task publishToLocalRepository {
-//    group = 'publishing'
-//    description = 'Publishes all Maven publications to the internal Maven repository.'
-//    dependsOn tasks.withType(PublishToMavenLocal)
-//    dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
-//}
+task publishToTestRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the test (project root) Maven repository.'
 
-//task publishToTestRepository {
-//    group = 'publishing'
-//    description = 'Publishes all Maven publications to the test (project root) Maven repository.'
-//    dependsOn tasks.withType(PublishToMavenRepository)
-//    dependsOn subprojects.collect {it.tasks.withType(PublishToMavenRepository) }
-//}
+    String bestEffortTaskName = "PublicationTo" + localRepositoryName
+    dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
+    dependsOn subprojects.collect {it.tasks
+                                        .withType(PublishToMavenRepository)
+                                        .matching {it.name.contains(bestEffortTaskName)} }
+}
 
 /**
  * This methods helps modifying the pom for each submodule.
