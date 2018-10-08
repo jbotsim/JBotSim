@@ -1,4 +1,5 @@
 description = "JBotSim Extras Swing: generates/publish a jar containing AWT/SWING-specific classes for several \"extra\" features (e.g.: Connectivity testing)."
+def displayName = "JBotSim Extras Swing"
 
 dependencies {
     api project(':lib:jbotsimx-ui-swing'), project(':lib:jbotsimx-extras-common')
@@ -7,7 +8,15 @@ dependencies {
 publishing {
     publications {
         extrasSwing(MavenPublication) {
+
             from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  project.description)
         }
+    }
+    signing {
+        sign publishing.publications.extrasSwing
     }
 }

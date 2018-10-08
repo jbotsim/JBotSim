@@ -1,4 +1,5 @@
 description = "JBotSim Extras Common: generates/publish a jar containing common classes for several \"extra\" features (e.g.: Connectivity testing)."
+def displayName = "JBotSim Extras Common"
 
 dependencies {
     api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-common')
@@ -7,7 +8,15 @@ dependencies {
 publishing {
     publications {
         extrasCommon(MavenPublication) {
+
             from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  project.description)
         }
+    }
+    signing {
+        sign publishing.publications.extrasCommon
     }
 }

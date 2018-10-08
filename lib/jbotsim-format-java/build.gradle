@@ -1,13 +1,22 @@
 description = "JBotSim Format Java: generates/publish a jar containing java desktop specific classes for topologies import/export."
+def displayName = "JBotSim Format Java"
 
 dependencies {
   api project(':lib:jbotsim-format-common')
 }
 
 publishing {
-  publications {
-    formatJava(MavenPublication) {
-      from components.java
+    publications {
+        formatJava(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  project.description)
+        }
     }
-  }
+    signing {
+        sign publishing.publications.formatJava
+    }
 }

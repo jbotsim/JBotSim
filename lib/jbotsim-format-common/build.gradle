@@ -1,4 +1,5 @@
 description = "JBotSim Format Common: generates/publish a jar containing common classes for topologies import/export."
+def displayName = "JBotSim Format Common"
 
 dependencies {
   api project(':lib:jbotsim-core')
@@ -7,7 +8,15 @@ dependencies {
 publishing {
   publications {
     formatCommon(MavenPublication) {
+
       from components.java
+      artifact javadocJar
+      artifact sourcesJar
+
+      pom createConfigureActionForPom (displayName,  project.description)
     }
+  }
+  signing {
+    sign publishing.publications.formatCommon
   }
 }
