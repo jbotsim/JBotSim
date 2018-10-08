@@ -5,6 +5,8 @@ subprojects {
     apply plugin: "java-library"
     apply plugin: "idea"
     apply plugin: "maven-publish"
+    apply plugin: 'signing'
+
 
     publishing {
 
@@ -31,6 +33,11 @@ subprojects {
                 url = "file://${rootDir}/repo"
             }
         }
+    }
+
+    signing {
+        // No need to configure signing if in snapshot
+        required { !version.endsWith('SNAPSHOT') }
     }
 
     dependencies{

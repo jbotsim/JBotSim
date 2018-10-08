@@ -12,4 +12,7 @@ publishing {
             pom createConfigureActionForPom (displayName,  project.description)
         }
     }
+    signing {
+        sign publishing.publications.core
+    }
 }
