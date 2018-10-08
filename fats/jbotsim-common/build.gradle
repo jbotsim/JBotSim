@@ -2,7 +2,6 @@
 description = "JBotSim No UI: generates a fat jar containing all non-specific classes from JBotSim"
 
 dependencies{
-    String depVersion = version 
     api ("${group}:jbotsimx-extras-common:${depVersion}")
     api ("${group}:jbotsimx-ui-common:${depVersion}")
 }

@@ -17,7 +17,9 @@ subprojects {
 
 //    group = "io.jbotsim"
     group = "com.github.acasteigts"
-    version = '1.0-beta04-SNAPSHOT'
+    version = '1.0-beta02-SNAPSHOT'
+
+    ext.depVersion = '1.0-beta02-SNAPSHOT'
 
     repositories {
         mavenLocal()
