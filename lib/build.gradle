@@ -4,6 +4,7 @@ apply plugin: "maven-publish"
 apply plugin: "java-library"
 
 String localRepositoryName = "LocalRepo"
+String remoteRepositoryName = "NexusDocker"
 subprojects {
 
     apply plugin: "java-library"
@@ -72,8 +73,19 @@ task publishToTestRepository {
     String bestEffortTaskName = "PublicationTo" + localRepositoryName
     dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
     dependsOn subprojects.collect {it.tasks
-                                        .withType(PublishToMavenRepository)
-                                        .matching {it.name.contains(bestEffortTaskName)} }
+            .withType(PublishToMavenRepository)
+            .matching {it.name.contains(bestEffortTaskName)} }
+}
+
+task publishToRemoteRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the configured remote Maven repository.'
+
+    String bestEffortTaskName = "PublicationTo" + remoteRepositoryName
+    dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
+    dependsOn subprojects.collect {it.tasks
+            .withType(PublishToMavenRepository)
+            .matching {it.name.contains(bestEffortTaskName)} }
 }
 
 /**
