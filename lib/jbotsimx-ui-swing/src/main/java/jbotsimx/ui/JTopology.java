@@ -182,9 +182,10 @@ public class JTopology extends JPanel implements ActionListener {
      * Paints this JTopology on the specified graphics (not supposed to be
      * used explicitly).
      */
-    public void paintComponent(UIComponent uiComponent) {
-        Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
+    public void paintComponent(Graphics g) {
+        Graphics2D g2d = (Graphics2D) g;
         super.paintComponent(g2d);
+        UIComponent uiComponent = new UIComponent(g2d);
         for (BackgroundPainter painter : backgroundPainters)
             painter.paintBackground(uiComponent, topo);
         if (showDrawings) {
