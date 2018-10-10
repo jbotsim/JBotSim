@@ -10,7 +10,7 @@ public class Wolf extends Node {
 
     @Override
     public void onStart() {
-        setIcon("/examples/wolfsheep/wolf.png");
+        setIcon("/examples/funny/wolfsheep/wolf.png");
         setSize(20);
         setSensingRange(50);
         setDirection(Math.random() * Math.PI * 2);

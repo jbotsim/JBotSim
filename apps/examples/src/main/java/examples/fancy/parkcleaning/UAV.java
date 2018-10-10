@@ -6,7 +6,7 @@ public class UAV extends Node{
 	public UAV(){
 		this.setCommunicationRange(100);
 		this.setSensingRange(40);
-		this.setIcon("/examples/n_parc/gmuav.png");
+		this.setIcon("/examples/fancy/parkcleaning/gmuav.png");
 		this.setSize(20);
 		this.setProperty("type", "rwp");
 		this.setDirection(2);

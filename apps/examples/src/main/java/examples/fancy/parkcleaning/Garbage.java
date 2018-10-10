@@ -5,7 +5,7 @@ import jbotsim.Node;
 public class Garbage extends Node{
 	public Garbage(){
 		disableWireless();
-		setIcon("/examples/n_parc/gmgarbage.png");
+		setIcon("/examples/fancy/parkcleaning/gmgarbage.png");
 		setSize(12);
 	}
 }
