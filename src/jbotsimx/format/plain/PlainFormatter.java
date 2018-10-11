@@ -31,7 +31,7 @@ public class PlainFormatter implements Formatter {
                 y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf("]")));
             }
             try {
-                Node node = tp.getDefaultNodeModel().newInstance();
+                Node node = tp.newInstanceOfModel("default");
                 node.setLocation(x, y, z);
                 tp.addNode(node);
                 String id = s.substring(0, s.indexOf(" "));
