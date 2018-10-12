@@ -1,13 +1,13 @@
 package examples.misc.spanningforest;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsim.event.ConnectivityListener;
-import jbotsim.event.TopologyListener;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.event.ConnectivityListener;
+import io.jbotsim.event.TopologyListener;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 import java.util.Random;
 
 public class Forest implements ClockListener, ConnectivityListener, TopologyListener{

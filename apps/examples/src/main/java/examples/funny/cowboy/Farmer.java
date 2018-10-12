@@ -1,6 +1,6 @@
 package examples.funny.cowboy;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 17/06/15.

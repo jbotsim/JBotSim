@@ -1,7 +1,7 @@
 package examples.centralized.grapheditor;
 import java.util.Comparator;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 
 public class NodeComparator implements Comparator<Node> {

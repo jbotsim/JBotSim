@@ -1,8 +1,9 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
 
 
 public class CircleMovement extends Node implements ClockListener{   
@@ -13,6 +14,6 @@ public class CircleMovement extends Node implements ClockListener{
 	public static void main(String args[]){
 		Topology tp=new Topology();
 		tp.setDefaultNodeModel(CircleMovement.class);
-		new jbotsimx.ui.JViewer(tp);
+		new JViewer(tp);
 	}
 }

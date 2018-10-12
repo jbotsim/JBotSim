@@ -1,7 +1,7 @@
 package examples.basic.broadcasting;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 /**
  * Created by acasteig on 25/08/15.

@@ -1,10 +1,10 @@
 package examples.funny.soccer;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JTopology;
-import jbotsimx.ui.JViewer;
-import jbotsimx.ui.painting.BackgroundPainter;
-import jbotsimx.ui.painting.UIComponent;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JTopology;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.ui.painting.BackgroundPainter;
+import io.jbotsim.ui.painting.UIComponent;
 
 import java.awt.*;
 

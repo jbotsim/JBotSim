@@ -6,10 +6,13 @@ import javax.swing.*;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import jbotsim.Point;
+
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Point;
 import java.util.*;
 
-import jbotsim.*;
+import io.jbotsim.Topology;
 
 public class FaceRoutingEditor extends GraphEditor {
 	

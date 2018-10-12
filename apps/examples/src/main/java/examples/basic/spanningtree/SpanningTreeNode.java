@@ -1,7 +1,7 @@
 package examples.basic.spanningtree;
 
-import jbotsim.Message;
-import jbotsim.Node;
+import io.jbotsim.Message;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 10/03/15.

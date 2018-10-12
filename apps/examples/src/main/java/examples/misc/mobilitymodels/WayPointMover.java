@@ -1,9 +1,9 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Node;
-import jbotsim.event.ClockListener;
+import io.jbotsim.Node;
+import io.jbotsim.event.ClockListener;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 

@@ -1,6 +1,6 @@
 package examples.funny.wolfsheep;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 31/08/16.

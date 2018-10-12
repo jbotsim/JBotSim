@@ -1,8 +1,8 @@
 package examples.features.replay;
 
-import jbotsim.Color;
-import jbotsim.Message;
-import jbotsim.Node;
+import io.jbotsim.Color;
+import io.jbotsim.Message;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 10/03/15.

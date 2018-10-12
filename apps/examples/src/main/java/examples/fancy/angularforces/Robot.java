@@ -1,10 +1,9 @@
 package examples.fancy.angularforces;
 
-import jbotsim.Message;
-import jbotsim.Node;
-import jbotsim.Topology;
+import io.jbotsim.Message;
+import io.jbotsim.Node;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 

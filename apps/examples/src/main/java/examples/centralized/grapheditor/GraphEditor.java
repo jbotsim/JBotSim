@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import jbotsim.Point;
+import io.jbotsim.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,10 +15,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsimx.ui.JTopology;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JConsole;
+import io.jbotsim.ui.JTopology;
 
 public class GraphEditor implements ActionListener{
 	protected Topology topo;
@@ -51,7 +52,7 @@ public class GraphEditor implements ActionListener{
 		mainPanel=new JPanel(new BorderLayout());
 		mainPanel.add(cmdImport, BorderLayout.EAST);
 		mainPanel.add(cmdExport, BorderLayout.WEST);
-		mainPanel.add(new jbotsimx.ui.JConsole(topo), BorderLayout.NORTH);
+		mainPanel.add(new JConsole(topo), BorderLayout.NORTH);
 		win.add(mainPanel, BorderLayout.SOUTH);
 		win.setSize(800, 600);
 		win.setVisible(true);

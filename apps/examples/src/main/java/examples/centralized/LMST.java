@@ -1,14 +1,14 @@
 package examples.centralized;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim._Properties;
-import jbotsim.event.ConnectivityListener;
-import jbotsim.event.MovementListener;
-import jbotsim.event.PropertyListener;
-import jbotsimx.ui.JViewer;
-import jbotsimx.Algorithms;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim._Properties;
+import io.jbotsim.event.ConnectivityListener;
+import io.jbotsim.event.MovementListener;
+import io.jbotsim.event.PropertyListener;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.Algorithms;
 
 import java.util.HashMap;
 import java.util.List;

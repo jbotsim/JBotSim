@@ -1,8 +1,8 @@
 package examples.features.replay;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
-import jbotsimx.replay.TracePlayer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.replay.TracePlayer;
 
 public class Replay {
     public static void main(String[] args) {

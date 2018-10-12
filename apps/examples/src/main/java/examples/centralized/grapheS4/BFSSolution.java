@@ -1,15 +1,15 @@
 package examples.centralized.grapheS4;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.MovementListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.MovementListener;
+import io.jbotsim.ui.JViewer;
 
 /* DFS Tree (Depth-First Search) = Arbre en profondeur */
 

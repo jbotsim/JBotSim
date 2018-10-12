@@ -1,11 +1,11 @@
 package examples.misc.dynamicgraphs;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
-import jbotsimx.Connectivity;
-import jbotsimx.dygraph.EMEGPlayer;
-import jbotsimx.dygraph.TVG;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.Connectivity;
+import io.jbotsim.dygraph.EMEGPlayer;
+import io.jbotsim.dygraph.TVG;
 
 
 public class NbComponentsEG implements ClockListener{

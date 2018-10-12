@@ -1,6 +1,6 @@
 package examples.basic.moving;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 2/20/15.

@@ -1,12 +1,12 @@
 package examples.centralized.grapheS4;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.SelectionListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.SelectionListener;
+import io.jbotsim.ui.JViewer;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 
 public class DFSSolution implements SelectionListener{
 	Topology tp;

@@ -1,12 +1,12 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsim.event.TopologyListener;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.event.TopologyListener;
 
-import jbotsim.Point;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Point;
+import io.jbotsim.ui.JViewer;
 
 import java.util.Random;
 

@@ -1,11 +1,11 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
 
 public class GlobalRWP implements ClockListener{
 	Topology tp;

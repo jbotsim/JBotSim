@@ -1,8 +1,8 @@
 package examples.fancy.vectorracer;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 
 public class Drone extends VectorNode {
     Point nextCherry;

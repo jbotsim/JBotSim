@@ -1,9 +1,9 @@
 package examples.misc.dynamicgraphs;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
-import jbotsimx.dygraph.TVG;
-import jbotsimx.dygraph.TVGPlayer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.dygraph.TVG;
+import io.jbotsim.dygraph.TVGPlayer;
 
 public class TestTVGPlayer {
 	public static void main(String args[]){

@@ -2,12 +2,13 @@ package examples.centralized.grapheS4;
 
 import java.util.HashMap;
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.MovementListener;
-import jbotsim.event.SelectionListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Connectivity;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.MovementListener;
+import io.jbotsim.event.SelectionListener;
+import io.jbotsim.ui.JViewer;
 
 /* Instructions du TD :
  * 1-Mettre a jour votre version de jbotsim (wget jbotsim.sf.net/jbotsim.jar)
@@ -37,7 +38,7 @@ public class DijkstraSolution implements SelectionListener,MovementListener {
 
 	public void computeDijkstraFrom(Node source){
 		
-		if (!jbotsimx.Connectivity.isConnected(tp))
+		if (!Connectivity.isConnected(tp))
 			return;
 			
 		// Remet l'épaisseur des arêtes à 1

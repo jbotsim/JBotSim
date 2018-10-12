@@ -1,10 +1,10 @@
 package examples.misc.dynamicgraphs;
-import jbotsim.Message;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Message;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 import java.util.List;
 
 public class TestSendRetry extends Node{

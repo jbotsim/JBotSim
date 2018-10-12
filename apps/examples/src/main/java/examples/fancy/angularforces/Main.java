@@ -1,7 +1,7 @@
 package examples.fancy.angularforces;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 /**
  * Created by Arnaud Casteigts on 15/03/17.

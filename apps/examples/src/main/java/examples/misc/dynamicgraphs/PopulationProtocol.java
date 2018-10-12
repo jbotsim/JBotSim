@@ -1,9 +1,9 @@
 package examples.misc.dynamicgraphs;
 
-import jbotsim.Link;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Link;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
 
 import java.util.List;
 import java.util.Random;

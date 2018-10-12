@@ -1,11 +1,11 @@
 package examples.misc.dynamicgraphs;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

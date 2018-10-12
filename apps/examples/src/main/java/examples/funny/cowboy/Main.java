@@ -1,11 +1,11 @@
 package examples.funny.cowboy;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsimx.ui.JViewer;
-import jbotsimx.ui.painting.BackgroundPainter;
-import jbotsimx.ui.painting.UIComponent;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.ui.painting.BackgroundPainter;
+import io.jbotsim.ui.painting.UIComponent;
 
 import java.awt.*;
 

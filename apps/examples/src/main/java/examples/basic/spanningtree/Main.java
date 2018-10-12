@@ -1,9 +1,9 @@
 package examples.basic.spanningtree;
 
-import jbotsim.Link;
-import jbotsim.Topology;
-import jbotsim.event.StartListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Link;
+import io.jbotsim.Topology;
+import io.jbotsim.event.StartListener;
+import io.jbotsim.ui.JViewer;
 
 /**
  * Created by acasteig on 25/08/15.

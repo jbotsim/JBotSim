@@ -1,6 +1,6 @@
 package examples.fancy.canadairs;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 import java.util.ArrayList;
 import java.util.Random;

@@ -20,7 +20,7 @@
  *******************************************************************************/
 package examples.fancy.angularforces;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,10 +1,10 @@
 package examples.misc.dynamicgraphs;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
-import jbotsimx.dygraph.EMEGPlayer;
-import jbotsimx.dygraph.TVG;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.dygraph.EMEGPlayer;
+import io.jbotsim.dygraph.TVG;
 
 public class EdgeMarkovian {
 	public static void main(String args[]){

@@ -1,21 +1,24 @@
 package examples.centralized;
+
+import io.jbotsim.Algorithms;
+import io.jbotsim.Connectivity;
+import io.jbotsim.Link;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.ui.JViewer;
+
 import java.util.List;
 
-import jbotsim.Link;
-import jbotsim.Topology;
-import jbotsim.event.*;
-import jbotsimx.ui.JViewer;
 
-
-public class MST implements ClockListener{
+public class MST implements ClockListener {
 	Topology tp;
 	public MST(Topology tp){
 		this.tp = tp;
 		tp.addClockListener(this, 10);
 	}
 	protected void updateMST(){
-		if (jbotsimx.Connectivity.isConnected(tp)) {
-            List<Link> mstLinks = jbotsimx.Algorithms.getMST(tp);
+		if (Connectivity.isConnected(tp)) {
+            List<Link> mstLinks = Algorithms.getMST(tp);
             for (Link l : tp.getLinks())
                 l.setWidth(mstLinks.contains(l) ? 5 : 0);
         }else{

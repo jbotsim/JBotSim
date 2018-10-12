@@ -1,10 +1,10 @@
 package examples.fancy.canadairs;
 
-import jbotsim.Message;
-import jbotsim.Node;
+import io.jbotsim.Message;
+import io.jbotsim.Node;
 
-import jbotsim.Color;
-import jbotsim.Point;
+import io.jbotsim.Color;
+import io.jbotsim.Point;
 import java.util.ArrayList;
 import java.util.List;
 

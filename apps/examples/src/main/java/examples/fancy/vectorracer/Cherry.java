@@ -1,6 +1,6 @@
 package examples.fancy.vectorracer;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 /**
  * Created by acasteig on 18/11/16.

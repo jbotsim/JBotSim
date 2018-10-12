@@ -1,7 +1,7 @@
 package examples.misc.spanningforest;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 
 public class Main {

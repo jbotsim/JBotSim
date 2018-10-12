@@ -1,6 +1,6 @@
 package examples.funny.soccer;
 
-import jbotsim.Node;
+import io.jbotsim.Node;
 
 /**
  * Created by Arnaud Casteigts on 06/04/17.

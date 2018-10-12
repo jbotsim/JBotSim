@@ -1,7 +1,8 @@
 package examples.fancy.angularforces;
 
-import jbotsim.Node;
-import jbotsimx.Algorithms;
+import io.jbotsim.Node;
+import io.jbotsim.Point;
+import io.jbotsim.Algorithms;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -33,7 +34,7 @@ public class Forces {
 			// use its current position, as it knows it.
 			if (s!=me){
 				Node scopy=new Node();
-				scopy.setLocation((jbotsim.Point)s.getProperty("oldpos"));
+				scopy.setLocation((Point)s.getProperty("oldpos"));
 				selection.add(scopy);
 			}else
 				selection.add(s);

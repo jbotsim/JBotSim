@@ -1,9 +1,9 @@
 package examples.features.replay;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
-import jbotsimx.format.xml.XMLTopologyParser;
-import jbotsimx.replay.TraceRecorder;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
+import io.jbotsim.format.xml.XMLTopologyParser;
+import io.jbotsim.replay.TraceRecorder;
 
 public class Record {
     public static void main(String[] args) {

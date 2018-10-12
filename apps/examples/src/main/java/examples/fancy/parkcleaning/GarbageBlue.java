@@ -1,6 +1,6 @@
 package examples.fancy.parkcleaning;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 
 /**
  * Created by acasteig on 14/05/15.

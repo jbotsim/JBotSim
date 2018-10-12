@@ -1,11 +1,11 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 import java.util.Random;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 public class DavidNode extends Node{
 

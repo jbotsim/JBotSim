@@ -1,6 +1,6 @@
 package examples.fancy.vectorracer;
 
-import jbotsim.Topology;
+import io.jbotsim.Topology;
 
 /**
  * Created by acasteig on 26/01/17.

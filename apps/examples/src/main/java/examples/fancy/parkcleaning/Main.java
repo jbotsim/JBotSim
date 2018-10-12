@@ -1,7 +1,7 @@
 package examples.fancy.parkcleaning;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 public class Main {
 	public static void main(String[] args) {

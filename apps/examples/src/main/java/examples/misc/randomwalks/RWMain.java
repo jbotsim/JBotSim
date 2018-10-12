@@ -1,7 +1,7 @@
 package examples.misc.randomwalks;
 
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
 /**
  * Created by acasteig on 17/06/15.

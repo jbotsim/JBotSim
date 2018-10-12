@@ -1,10 +1,10 @@
 package examples.misc.mobilitymodels;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.ui.JViewer;
 
-import jbotsim.Point;
+import io.jbotsim.Point;
 
 /**
  * Created by acasteig on 14/06/15.

@@ -1,7 +1,7 @@
 package examples.fancy.vectorracer;
 
-import jbotsim.Node;
-import jbotsim.Point;
+import io.jbotsim.Node;
+import io.jbotsim.Point;
 
 public abstract class VectorNode extends Node {
     public static final double DEVIATION = 10.0;

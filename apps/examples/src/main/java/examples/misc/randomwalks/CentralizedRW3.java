@@ -1,10 +1,10 @@
 package examples.misc.randomwalks;
 
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ClockListener;
-import jbotsim.event.StartListener;
-import jbotsimx.topology.TopologyGenerator;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ClockListener;
+import io.jbotsim.event.StartListener;
+import io.jbotsim.topology.TopologyGenerator;
 
 import java.util.List;
 import java.util.Random;

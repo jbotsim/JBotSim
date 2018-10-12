@@ -1,17 +1,17 @@
 package examples.centralized;
 
-import jbotsim.Color;
+import io.jbotsim.Color;
 import java.util.Random;
 import java.util.Vector;
 
 
-import jbotsim.Link;
-import jbotsim.Node;
-import jbotsim.Topology;
-import jbotsim.event.ConnectivityListener;
-import jbotsim.event.MovementListener;
-import jbotsim.event.TopologyListener;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.Link;
+import io.jbotsim.Node;
+import io.jbotsim.Topology;
+import io.jbotsim.event.ConnectivityListener;
+import io.jbotsim.event.MovementListener;
+import io.jbotsim.event.TopologyListener;
+import io.jbotsim.ui.JViewer;
 
 
 
