@@ -1,5 +1,6 @@
 package jbotsimx.topology;
 
+import jbotsim.Color;
 import jbotsim.Link;
 import jbotsim.Node;
 import jbotsim.Topology;
@@ -144,6 +145,10 @@ public class TopologyGeneratorFactory {
 
     public Generator newGrid(int xOrder, int yOrder) {
         return new GridGenerator(xOrder, yOrder);
+    }
+
+    public Generator newTriangleGrid(int xOrder, int yOrder) {
+        return new TriangleGridGenerator(xOrder, yOrder);
     }
 
     public Generator newKN() {
@@ -340,6 +345,92 @@ public class TopologyGeneratorFactory {
                     n.setLocation(x0 + i * xStep, y0 + j * yStep);
                     n.setCommunicationRange(cr);
                     n.setWirelessStatus(wirelessEnabled);
+
+                    tp.addNode(n);
+                    result[i][j] = n;
+                }
+            }
+
+            return result;
+        }
+    }
+
+    private class TriangleGridGenerator implements Generator {
+        protected int xOrder;
+        protected int yOrder;
+
+        TriangleGridGenerator(int xOrder, int yOrder) {
+            this.xOrder = xOrder;
+            this.yOrder = yOrder;
+        }
+
+        @Override
+        public void generate(Topology tp) {
+            try {
+                generateTriangleGrid(tp);
+            } catch (ReflectiveOperationException e) {
+                System.err.println(e.getMessage());
+            }
+        }
+
+        protected Node[][] generateTriangleGrid(Topology tp) throws ReflectiveOperationException {
+            Node[][] nodes = generateNodes(tp);
+            if (wired) {
+                Link.Type type = directed ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
+                for (int i = 0; i < yOrder; i++) {
+                    boolean isOddRow = i % 2 == 1 ? true : false;
+                    for (int j = 0; j < xOrder; j++) {
+                        boolean isLeftest = j == 0 ? true : false;
+                        boolean isRightest = j == xOrder - 1 ? true : false;
+                        Node n = nodes[i][j];
+                        if (j < xOrder - 1) {
+                            Link l = new Link(n, nodes[i][j + 1], type); // link the right node in the same row
+                            tp.addLink(l);
+                        }
+
+                        if (i < yOrder - 1) {
+                            if (isOddRow) {
+                                Link l1 = new Link(n, nodes[i + 1][j], type);
+                                tp.addLink(l1);
+                                if (!isRightest) {
+                                    Link l2 = new Link(n, nodes[i + 1][j + 1], type);
+                                    tp.addLink(l2);
+                                }
+                            } else {
+                                Link l1 = new Link(n, nodes[i + 1][j], type);
+                                tp.addLink(l1);
+                                if (!isLeftest) {
+                                    Link l2 = new Link(n, nodes[i + 1][j - 1], type);
+                                    tp.addLink(l2);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return nodes;
+        }
+
+        private Node[][] generateNodes(Topology tp) throws ReflectiveOperationException {
+            Node[][] result = new Node[yOrder][];
+            double x0 = getAbsoluteX(tp);
+            double y0 = getAbsoluteY(tp);
+            double xStep = getAbsoluteWidth(tp) / (xOrder>1?xOrder-1:xOrder);
+            double yStep = xStep / 2 * Math.sqrt(3);
+            //double cr = Math.max(xStep, yStep) + 1;
+
+            for (int i = 0; i < yOrder; i++) {
+                boolean isOddRow = i % 2 == 1 ? true : false;
+                result[i] = new Node[xOrder];
+                for (int j = 0; j < xOrder; j++) {
+                    Node n = nodeClass.getConstructor().newInstance();
+                    if (isOddRow) {
+                        n.setLocation(x0 + j * xStep + xStep / 2, y0 + i * yStep);
+                    } else {
+                        n.setLocation(x0 + j * xStep, y0 + i * yStep);
+                    }
+                    n.setCommunicationRange(0);
+                    //n.setWirelessStatus(wirelessEnabled);
 
                     tp.addNode(n);
                     result[i][j] = n;

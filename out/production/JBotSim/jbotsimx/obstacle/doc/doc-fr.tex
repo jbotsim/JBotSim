@@ -1,0 +1,522 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsthm,amssymb,amsmath}
+\usepackage{tikz}
+\usepackage{xspace}
+%\usepackage{minitoc}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage[margin=1.6in]{geometry}
+\newcommand{\obstacle}{{\tt Obstacle}\xspace}
+\newcommand{\jbotsim}{{\tt JBotSim}\xspace}
+
+\title{Un module d'obstacle pour JBotSim}
+\author{Matthieu Barjon}
+\date{16 mars 2017}
+\lstset{language=Java,basicstyle=\footnotesize\sffamily,tabsize=4,breaklines=true,} 
+
+\begin{document}
+\maketitle
+
+%\dotoc
+%\faketableofcontents
+\label{obstacle}
+%\minitoc
+
+Dans ce document, nous nous intéressons à un module permettant de générer des obstacles au sein du simulateur JBotSim \cite{jbotsim}.
+Nous présentons d'abord les différentes raisons qui nous ont poussé à l'élaboration de ce module.
+Puis nous indiquons comment utiliser ce module.
+Enfin, nous en présentons le fonctionnement interne avec notamment un exemple d'utilisation.
+
+\section{Motivation}
+\label{obstacle:section:motivation}
+
+Au délà de la conception et de l'analyse théorique des algorithmes d'explorations présentés dans~\cite{these}, nous avons voulu rendre possible (sans pour autant les faire nous-même) des simulations d'exploration dans les espaces réels 2D ou 3D (et non seulement dans les graphes). 
+L'idée générale est de pouvoir représenter des structures réelles (bâtiment, salles, {\it etc.}) que des appareils (robots/drones) doivent explorer en groupe en tenant compte des contraintes que ces obstacles imposent sur les possibilités de communications.
+Par exemple, lorsque deux appareils sont séparés par un mur et/ou sol et/ou plafond, ils ne peuvent pas établir de lien de communication.\medskip
+
+Nous avons donc développé un module \obstacle pour le simulateur JBotSim. Par défaut, JBotSim permet de simuler des appareils (nœuds) qui évolue dans un espace en deux ou trois dimensions et dont les communications évoluent selon la distance des nœuds. Pour respecter la contrainte que l'on s'est donné, notre module permet de couper les communications entre les différents nœuds lorsqu'un obstacle (mur d'une pièce, ou sol) se trouve entre eux. Nous avons aussi fait en sorte que les n\oe ud puisse détecter la présence d'obstacles afin d'y réagir, notamment en évitant les collision avec ces derniers.\medskip
+
+Le module est publiquement accessible sur le dépot Bitbucket~\cite{obstacle}. Une version a également été déposée sur le dépôt GitHub de JBotSim~\cite{github}, que la communauté sera libre de faire évoluer comme elle l'entend.
+
+\section{Utilisation du module \obstacle}
+\label{utilisation}
+
+Cette section décrit l'utilisation du module \obstacle , c'est à dire comment l'initialiser, comment ajouter ou supprimer des obstacles et comment faire en sorte que les n\oe uds soient avertis de la présence d'obstacles. Un exemple concret d'utilisation est fourni dans la section~\ref{exemple-obstacle}.
+%\todo{Cette section décrit ...}
+
+\subsection{Initialisation du module}
+\label{obstacle:section:init}
+Le module \obstacle contient deux fonctionnalités importantes: 1) il coupe la communication entre deux n\oe uds lorsqu'un obstacle se trouve entre eux, 2) il peut notifier un n\oe ud lorsque celui-ci contient un ou plusieurs obstacles dans sa zone de détection.\medskip
+
+Pour activer les fonctionnalités du module il faut d'abord créer une topologie puis  initialiser le module Obstacle sur cette topologie. Pour cela on utilise la classe \textbf{ObstacleManager} et on exécute le code suivant :\smallskip
+\begin{lstlisting}[frame=single]
+Topology topology = new Topology();
+ObstacleManager.init(topology);
+\end{lstlisting}\smallskip
+
+Une fois cette phase d'initiation réalisée le module est prêt à être utilisé.\medskip
+
+Il est également possible lors de l'initialisation de mettre en place la partie graphique du module, pour cela il faut exécuter le code suivant :\smallskip
+\begin{lstlisting}[frame=single]
+Topology topology = new Topology();
+JTopology jTopology = new JTopology(topology);
+ObstacleManager.init(topology,jTopology);
+\end{lstlisting}
+%La phase d'initialisation consiste à créer de la zone de stockage des obstacles dans la topologie et à changer la manière de tester si un arc existe entre deux n\oe uds en testant la présence d'obstacles. \todo{Les détails d'implémentation ne devraient pas apparaitre dans la section ``utilisation''. Sauf s'ils aident la compréhension, ce qui n'est pas le cas ici. L'utilisateur n'a pas besoin de savoir que le module change la manière de tester si un arc existe (ni même que JBotSim a une fonction pour ça).}
+
+\subsection{Ajout et suppression d'obstacles dans la topologie}
+%\todo{a faire}
+Une fois que le module est initialisé sur une topologie une première fonctionnalité du module est activée : si un obstacle se trouve entre deux n\oe uds alors la communication entre ces n\oe uds devient impossible. Il est aussi maintenant possible d'ajouter ou de supprimer des obstacles dans cette topologie. Pour cela il faut tout d'abord créer un obstacle. 
+
+\subsubsection{Types d'obstacles implémentés}
+Trois types d'obstacles sont implémentés au sein de la version actuelle du module, deux sont des obstacles définis en deux dimensions. Le troisième type d'obstacle est un obstacle en trois dimensions.\medskip
+
+Les obstacles 2D implémentés sont des obstacles pour lesquels on considère qu'ils ont une hauteur infinie pour pouvoir les utiliser que se soit en 2D ou en 3D avec JBotSim.\medskip
+
+Le premier des deux obstacles 2D est un obstacle circulaire défini par un centre et un rayon. Il est important de noter qu'aucun n\oe ud n'a le droit de se trouver à l'intérieur de ce type d'obstacle. Cet obstacle peut être vu comme un pilier de hauteur infinie.\medskip
+
+Le deuxième obstacle 2D est lui une suite de segments continus défini par une liste de points. Par exemple la liste de points $(A,B,C)$ définit les segments AB et BC. Il peut être représenté comme une succession de murs de hauteurs infinies.\medskip
+
+Enfin, l'obstacle 3D est une facette rectangulaire définie par trois points A, B, C de telle sorte que le segment $AB$ est perpendiculaire au segment $AC$. Cette facette est un mur de taille finie qui peut être incliné dans n'importe quel sens. Si lors de la création de l'obstacle les segments AB et AC ne sont pas perpendiculaires alors l'obstacle n'est pas généré et l'exception \textbf{NotPerpendicularException} est retournée.\medskip
+
+Attention : Pour la création des deux obstacles 2D il faut fournir des \textbf{Point} (classe standard de Java)  mais pour l'obstacle 3D il faut des points en trois dimensions, la classe à utiliser est donc \textbf{Point} (classe issue de JBotSim).\\%\todo{Est-ce que tu utilise cette classe directement ou est-ce que tu utilise une copie locale ? (réponse par mail stp)}\\
+
+%L'obstacle 3D qui est une facette rectangulaire peut se représenter par un rectangle sur un plan dans l'espace à trois dimension, les points A, B, C en sont des sommets. Les segments AB et AC sont deux côtés adjacents de la facette rectangulaire. Si les segments AB et AC ne sont pas perpendiculaires alors l'obstacle n'est pas généré et l'exception \textbf{NotPerpendicularException} est retournée.\\
+%\todo{Avant de parler de l'exception, en quoi consiste (et par quoi se caractérise) un obstacle 3D ? (en langage normal)}
+
+% Une exception  est retournée dans le cas où les points fournis à la facette rectangulaire ne forme pas deux segments perpendiculaires.\\
+
+Voici un exemple de création d'instance de chacun des trois types d'obstacles :\medskip
+
+\begin{itemize}
+\item pour le cercle plein\smallskip
+\begin{lstlisting}[frame=single]
+Point center = new Point(400, 400);
+CircleObstacle circle=new CircleObstacle(center, 10);
+\end{lstlisting}\smallskip
+\item pour la suite de segments\smallskip
+\begin{lstlisting}[frame=single]
+List<Point> points = new ArrayList<Point>();
+points.add(new Point(20,80));
+points.add(new Point(200.8,600.1));
+LinesObstacle lines = new LinesObstacle(points);
+\end{lstlisting}\smallskip
+\item pour la facette rectangulaire\smallskip
+\begin{lstlisting}[frame=single]
+Point a = new Point(20, 20, 0);
+Point b = new Point(20, 200, 0);
+Point c = new Point(20, 20, 500.5);
+RectangularFacetObstacle facet = new RectangularFacetObstacle(a,b,c);
+\end{lstlisting}
+\end{itemize}
+
+%\begin{Verbatim}[frame=single]
+%Point center = new Point(400, 400);
+%CircleObstacle circle=new CircleObstacle(center, 10);
+%
+%List<Point> points = new ArrayList<Point>();
+%points.add(new Point(20,80));
+%points.add(new Point(200.8,600.1));
+%LinesObstacle lines = new LinesObstacle(points);
+%
+%NodePoint a = new NodePoint(20, 20, 0);
+%NodePoint b = new NodePoint(20, 200, 0);
+%NodePoint c = new NodePoint(20, 20, 500);
+%RectangularFacetObstacle facet = new RectangularFacetObstacle(a,b,c);
+%\end{Verbatim}
+
+\subsubsection{L'ajout et la suppression d'obstacles au sein d'une topologie}
+
+Pour ajouter un obstacle dans une topologie il faut utiliser la fonction \texttt{addObstacle(Obstacle obstacle, Topologie topology)} de la classe \textbf{ObstacleManager}. Le code suivant montre comment l'utiliser en considérant que les obstacles sont déjà définis et que le module est initialisé sur la topologie. Dans les exemples suivants \texttt{obs} est un objet de la classe \textbf{Obstacle}.\smallskip
+\begin{lstlisting}[frame=single]
+ObstacleManager.addObstacle(obs,topology);
+\end{lstlisting}\smallskip
+Pour supprimer un obstacle dans une topologie il faut utiliser la fonction \texttt{removeObstacle(Obstacle obstacle, Topologie topology)} de la classe\\ \textbf{ObstacleManager}. Le code suivant montre comment l'utiliser en considérant que les obstacles sont déjà définis et que le module est initialisé sur la topologie.\smallskip
+\begin{lstlisting}[frame=single]
+ObstacleManager.removeObstacle(obs,topology);
+\end{lstlisting}
+%On peut remplacer l'obstacle \emph{circle} par n'importe quel autre obstacle.\\
+
+\subsubsection{Création de types d'obstacles}
+
+Il est possible de créer de nouveaux types d'obstacles en implémentant l'interface \textbf{Obstacle}, cette interface définit trois méthodes :\\
+%\todo{todo: mettre les bouts de code en tt quand ils sont dans le texte.. ici {\tt Obstacle}}
+\begin{itemize}
+
+\item \texttt{boolean obstructLink(Node node1, Node node2)} qui doit retourner \emph{true} si l'obstacle se trouve entre les deux n\oe uds et empêche l'établissement d'une communication entre eux.\\
+
+\item \texttt{Point pointAtMinimumDistance(Node node)} qui retourne le point de l'obstacle à distance minimum du n\oe ud.\\
+
+\item \texttt{void paint(Graphics g)} qui contient le code pour afficher l'obstacle sur l'objet g de la classe Graphics.\\
+\end{itemize}
+
+Si ces trois méthodes sont implémentées au sein du nouveau type d'obstacles alors ce type d'obstacles pourra être utilisé comme les autres.
+
+\subsection{Activer ou désactiver la détection d'obstacle}
+
+Cette fonctionnalité consiste à permettre aux n\oe uds d'une topologie d'être avertis lorsqu'un ou plusieurs obstacles se trouvent dans leur zone de détection (sensing range).
+Cette fonctionnalité nécessite  deux choses : l'implémentation de l'interface \textbf{ObstacleListener} par le n\oe ud et qu'il signale à \textbf{ObstacleManager} qu'il souhaite être informé de la présence des obstacles dans sa zone de détection.
+
+\subsubsection{Implémenter ObstacleListener}
+
+
+Pour cela il faut définir une classe qui hérite de \textbf{Node} (comme il est d'usage pour coder un algorithme dans JBotSim) et qui implémente l'interface \textbf{ObstacleListener}. L'interface \textbf{ObstacleListener} définit une seule méthode à implémenter. Il s'agit de la méthode \texttt{onDetectedObstacles(List<Obstacle>\\ obstacles)}. Elle est appelée par le module lorsqu'un ou plusieurs obstacles se retrouvent dans la zone de détection du nœud. L'argument \texttt{obstacles} contient la liste de ces obstacles.\smallskip
+\begin{lstlisting}[frame=single]
+public class MonNode extends Node implements ObstacleListener {
+
+    public MonNode(){
+        ...
+    }
+
+    public void onDetectedObstacles(List<Obstacle> obs){
+        <votre code>
+    }
+}
+\end{lstlisting}
+\subsubsection{Activation de la détection des obstacles}
+
+%Pour qu'un n\oe ud puisse signaler qu'il souhaite être notifié de la présence d'obstacle près de lui, 
+Pour signaler qu'un n\oe ud souhaite détecter les obstacles proches il suffit ensuite d'appeler \texttt{add\-ObstacleListener(ObstacleListener listener, Topo\-logy topology)} sur l'\textbf{ObstacleManager}, le listener est le n\oe ud qui souhaite être notifié de la présence des obstacles et topology est la topologie à laquelle l'ObstacleListener doit être . Pour activer la détection, il faut connaître la topologie du n\oe ud, deux solutions existent. Soit à la création du n\oe ud on transmet la topologie sur lequel il va être accroché. Le code dans ce cas-là doit ressembler à :\smallskip
+\begin{lstlisting}[frame=single]
+public class MonNode extends Node implements ObstacleListener {
+
+    public MonNode(Topology topology){
+        ObstacleManager.addObstacleListener(this,topology);
+    }
+
+    public void onDetectedObstacles(List<Obstacle> obs){
+        <votre code>
+    }
+}
+\end{lstlisting}\smallskip
+
+Lorsqu'un n\oe ud est ajouté par l'interface graphique, le constructeur du n\oe ud appelé par JBotSim n'a pas d'argument donc il n'y a pas moyen de lui transférer la topologie à laquelle va appartenir le n\oe ud. Dans ce cas, le seul moyen de connaître la topologie est de surcharger la méthode \texttt{onStart()} de la classe \textbf{Node}. Cette méthode est appelée par JBotSim au moment où le n\oe ud est ajouté dans la topologie. Dans ce cas le code se résume à :\smallskip
+\begin{lstlisting}[frame=single]
+public class MonNode extends Node implements ObstacleListener {
+
+    public MonNode(){...}
+    
+    public void onStart(){
+        ObstacleManager.addObstacleListener(this, this.getTopology());
+    }
+    
+    public void onDetectedObstacles(List<Obstacle> obs){
+        <votre code>
+    }
+}
+\end{lstlisting}\smallskip
+
+Cette deuxième approche est à privilégier.
+\subsubsection{Désactivation de la détection des obstacles}
+
+Pour désactiver la détection des obstacles pour un n\oe ud implémentant \textbf{ObstacleListener}, il faut appeler la méthode \texttt{removeObstacleListener(Obs\-tacleListener listener, Topology topology)} de la classe \textbf{ObstacleManager}.\medskip
+
+ L'appel à cette méthode doit obligatoirement être fait au moment où le n\oe ud, qui était informé de la présence d'obstacles, est supprimé. Cela peut être fait en surchargeant la méthode \texttt{onStop()} de la même manière que pour l'activation de la détection.\smallskip
+\begin{lstlisting}[frame=single]
+public void onStop(){
+    ObstacleManager.removeObstacleListener(this, this.getTopology());
+}
+\end{lstlisting}
+\subsection{Activer l'affichage des obstacles}
+%\todo{a faire}
+
+Comme dit dans la section \ref{obstacle:section:init}, il est possible d'activer automatiquement l'affichage des obstacles lors de l'initialisation.
+Néanmoins il est aussi possible de le faire manuellement en signalant à la \textbf{JTopology} que l'on veut utiliser la classe \textbf{ObstaclePainter }pour afficher des informations sur le background.
+
+
+
+%Pour afficher les obstacles, il est nécessaire d'utiliser un objet de la classe \textbf{JObstacleTopology}. Cette classe hérite de \textbf{JTopology} qui gère l'affichage des n\oe uds et des liens d'une topologie. Le constructeur de la classe \textbf{JObstacleTopology} a pour argument la topologie qui doit être affichée. La classe \textbf{JViewer} de JBotSim gère l'ensemble de l'affichage de JBotSim. Pour afficher les obstacles, le constructeur de la classe \textbf{JViewer} doit avoir pour argument l'instance de \textbf{JObstacleTopology} qui gère leurs affichages.
+%%Pour signaler à JBotSim qu'il faut utiliser cette classe pour l'affichage, il faut donner l'instance de \textbf{JObstacleTopology} à afficher à la classe \textbf{JViewer} lors de sa création. 
+Il suffit d'utiliser le code suivant pour obtenir l'affichage des obstacles en plus des n\oe uds et des liens :\smallskip
+\begin{lstlisting}[frame=single]
+JTopology jTopology =  new JTopology();
+jTopology.addBackgroundPainter(new ObstaclePainter());
+\end{lstlisting}
+
+
+\section{Fonctionnement interne du module \obstacle}
+\label{fonctionnement}
+%\todo{a faire}
+Le fonctionnement du module va être vu étape par étape en commençant par étudier le c\oe ur du module (incluant aussi la détection des obstacles par les n\oe uds), puis la partie graphique et enfin les types d'obstacles déjà implémentés (cercles et segments en 2D, plans en 3D).
+%Le diagramme des classes est représenté dans le schéma~\ref{diagrammeClasse}.
+
+%\begin{figure}[!h]
+%%\center
+%\includegraphics[scale=.47]{model.png} 
+%\caption{Diagramme des classes du module \obstacle}
+%\label{diagrammeClasse}
+%\end{figure}
+
+%\begin{figure}[!h]
+%%\center
+%\includegraphics[scale=.4]{model2.png} 
+%\caption{Diagramme des classes du module \obstacle sans les attributs ni les méthodes privées}
+%\label{diagrammeClasse}
+%\end{figure}
+
+\subsection{Le c\oe ur du module}
+
+Le c\oe ur du module est la partie qui contient le code de l'ensemble des fonctionnalités du module à l'exception de la partie graphique. Il se trouve dans le package \emph{jbotsimx.obstacle.core}.
+
+\subsubsection{L'interface Obstacle}
+
+Cette interface définit les trois seules méthodes qu'un obstacle doit implémenter. Ces trois fonctions sont : 
+
+
+\begin{itemize}
+
+\item \texttt{boolean obstructLink(Node node1, Node node2)} qui doit retourner \emph{true} si l'obstacle se trouve entre les deux n\oe uds et empêche l'établissement d'une communication entre eux.\medskip
+
+\item \texttt{Point pointAtMinimumDistance(Node node)} qui doit retourner le point de l'obstacle à distance minimum du n\oe ud.\medskip
+
+\item \texttt{void paint(Graphics g)} qui contient le code pour afficher l'obstacle sur l'objet g de la classe Graphics.
+\end{itemize}
+
+
+\subsubsection{L'interface ObstacleListener}
+%\todo{a faire}
+Cette interface doit être implémentée par tout n\oe ud qui souhaite être informé de la présence d'obstacles dans sa zone de détection. Elle définit une seule méthode à implémenter, il s'agit de \texttt{onDetectedObstacles(List<Obstacle> obstacles)}. Cette méthode est appelée par le module dès qu'un ou plusieurs obstacles sont dans la zone de détection du n\oe ud.
+
+\subsubsection{La classe ObstacleDetector}
+
+La classe \textbf{ObstacleDetector} gère l'information de la présence d'obstacles des \textbf{ObstacleListener}. Elle surveille tous les mouvements des n\oe uds de la topologie et, dès qu'un \textbf{ObstacleListener} se retrouve à proximité d'un ou plusieurs obstacles, elle notifie l'\textbf{ObstacleListener} en appelant sa méthode \texttt{onDetectedObstacles(List<Obstacle> obstacles)}.
+%L'ajout et le retrait des obstacles ne sont pas traités par cette classe.
+
+\subsubsection{La classe ObstacleLinkResolver}
+
+La classe \textbf{LinkResolver} de JBotSim est la classe qui gère par défaut le test de communication entre deux n\oe uds.
+Pour pouvoir tester si un obstacle empêche la communication entre deux n\oe uds nous avons créé la classe \textbf{ObstacleLinkResolver}.
+Cette classe hérite de \textbf{LinkResolver} et surcharge la méthode de test de communication \texttt{boolean isHeardBy(Node arg0, Node arg1)}.
+Il y est rajouté un test pour détecter si un des obstacles de la topologie bloque la communication en appelant la méthode \texttt{boolean obstructLink(Node node1, Node node2)} sur chaque obstacle de la topologie.
+
+\subsubsection{La classe ObstacleManager}
+
+La classe \textbf{ObstacleManager} est une classe statique, elle s'occupe d'initialiser le module Obstacle sur chaque topologie qu'on lui fournit en créant un \textbf{ObstacleDetector} pour cette topologie. Elle change aussi la classe de test de communication entre les n\oe uds de la topologie, qui est \textbf{LinkResolver}, par \textbf{ObstacleLinkResolver}, qui est celle du module. Enfin elle initialise le stockage des obstacles dans la topologie en stockant une liste d'obstacles dans les propriétés de la topologie sous le nom "obstacles".\medskip
+
+Cette classe gère aussi l'ajout et la suppression des obstacles au sein des topologies grâce aux fonctions \texttt{void addObstacle(Obstacle o, Topology tp)}  et \texttt{void removeObsta\-cle(Obstacle o, Topology tp)}.\\
+Enfin elle gère le stockage de chaque \textbf{ObstacleDetector} créé et est capable de retourner celui associé à une topologie donnée grâce à la fonction \texttt{ObstacleDe\-tector getObstacleDetector(Topology tp)}, tout cela grâce à une \textbf{HashMap}.
+
+\subsection{La partie graphique}
+
+Nous allons maintenant étudier comment est géré l'affichage des obstacles au sein du module. L'ensemble du code gérant l'affichage se trouve dans le package \emph{jbotsimx.obstacle.ui}.
+L'affichage des obstacles se fait à l'aide de la classe \textbf{ObstaclePainter}.
+
+%L'affichage d'une topologie se fait à l'aide de \textbf{JTopology}, elle gère l'affichage des n\oe uds et des liens entre les n\oe uds. Il est impossible de rajouter des éléments à afficher au sein de cette classe.\\
+%La seule façon de faire est d'hériter de cette classe et de surcharger la méthode d'affichage qui est \texttt{void paint(Graphics g)} pour lui faire afficher les éléments que l'on veut en plus. C'est ce que fait la classe \textbf{JObstacleTopology} décrite ci-dessous.
+
+\subsubsection{La classe ObstaclePainter}
+
+Cette classe implémente l'interface \textbf{BackgroundPainter} fournie par JBotSim et implémente la méthode d'affichage \texttt{paintBackground(Graphics2D gra\-phics2D, Topology topology)}.
+Elle permet d'insérer des dessins sur le rendu d'une topologie avant que JBotSim n'y dessine les nœuds et les arêtes.
+L'affichage se fait en parcourant la liste des obstacles de la topologie et en invoquant la méthode \texttt{void paint(Graphics g)} décrite précédemment  sur chaque objet de type \textbf{Obstacle}.
+
+\subsection{Les exemples d'obstacles}
+
+Dans le cadre de test du module un certain nombre d'obstacles ont été implémentés, ces obstacles sont regroupés au sein du module dans le package \emph{jbotsimx.obstacle.exemple}. Deux catégories d'obstacles sont présentes, obstacle 2D et obstacle 3D.
+
+\subsubsection{Notions mathématiques.}
+
+Pour implémenter les obstacles suivants un certain nombre de notions mathématiques ont été utilisées dont les vecteurs et les opérations sur les vecteurs.
+Nous décrivons ici les prérequis mathématiques pour comprendre les opérations que nous avons implémentées.
+Un vecteur est représenté de la façon suivante $\overrightarrow{A}=\left(\begin{array}{c}x \\ y \end{array}\right)$ dans un espace 2D et $\overrightarrow{A}=\left(\begin{array}{c}x \\ y\\ z \end{array}\right)$ dans un espace 3D, avec $x,y,z$ étant trois réels.
+
+\paragraph{La norme d'un vecteur.}
+
+La norme d'un vecteur est la taille du vecteur. Elle se calcule dans le cadre d'un espace 2D par la formule suivante $\|\overrightarrow{A}\|=\sqrt{x^2+y^2}$ et dans un espace 3D par  $\|\overrightarrow{A}\|=\sqrt{x^2+y^2+z^2}$
+
+\paragraph{Le produit vectoriel.}
+
+Il s'agit d'une opération sur les vecteurs qui calcule un nouveau vecteur à partir des vecteurs suivants $\overrightarrow{A}=\left(\begin{array}{c}x_1 \\ y_1\\ z_1 \end{array}\right)$ et $\overrightarrow{B}=\left(\begin{array}{c}x_2 \\ y_2\\ z_2 \end{array}\right)$. \medskip
+La formule permettant de calculer le nouveau vecteur est $$\overrightarrow{A}\wedge\overrightarrow{B}=\left(\begin{array}{c}y_1z_2-z_1y_2\\z_1x_2-x_1z_2\\x_1y_2-y_1x_2   \end{array}\right)$$.\medskip
+Le vecteur obtenu est perpendiculaire aux deux autres vecteurs.
+
+\paragraph{Le produit scalaire.}
+
+Il s'agit d'une opération sur les vecteurs qui retourne un scalaire (réel) à partir de 2 vecteurs $\overrightarrow{A}=\left(\begin{array}{c}x_1 \\ y_1\\ z_1 \end{array}\right)$ et $\overrightarrow{B}=\left(\begin{array}{c}x_2 \\ y_2\\ z_2 \end{array}\right)$.\\
+ La formule retournant le scalaire est $\overrightarrow{A}\cdot\overrightarrow{B}= x_1*x_2+y_1*y_2+z_1*z_2$.\medskip
+Il est important de noter que lorsque le produit scalaire de deux vecteurs est nul cela signifie que les vecteurs sont perpendiculaires. 
+
+%\paragraph{Le déterminant de deux vecteurs.}
+
+\subsubsection{Les obstacles 2D}
+
+Les obstacles 2D qui ont été implémentés sont des obstacles dont la hauteur est considérée comme infinie. Concrètement quelle que soit l'altitude de deux n\oe uds si l'obstacle se trouve entre eux sur les axes \emph{x} et \emph{y} alors la communication sera coupée entre ces n\oe uds.\medskip
+
+Deux obstacles ont été implémentés, le premier est un obstacle circulaire et le deuxième est une suite de segments définie par une suite de points.
+
+\paragraph{La classe CircleObstacle.}
+
+Cette classe définit l'obstacle circulaire. Pour l'instancier il faut définir son centre C par un Point et son rayon par un nombre réel.\medskip
+
+Pour tester si l'obstacle se trouve entre deux n\oe uds A et B et empêche la communication entre ces n\oe uds, on commence tout d'abord par regarder si la droite passant par A et B coupe l'obstacle. La droite coupe l'obstacle si et seulement si le produit vectoriel $ \overrightarrow{AB} \wedge \overrightarrow{AC}$ est strictement inférieur au produit du rayon du cercle par la norme du vecteur $\overrightarrow{AB}$. Si la droite coupe l'obstacle alors on cherche à déterminer si le segment coupe l'obstacle. C'est le cas si les deux produits scalaires suivants sont positifs : $\overrightarrow{AB}\cdot\overrightarrow{AC}$ et $\overrightarrow{BA}\cdot\overrightarrow{BC}$.\medskip
+
+Pour calculer le point, sur l'obstacle, à distance minimum d'un n\oe ud A on calcule l'angle de la droite CA par rapport à la droite parallèle à l'axe des abscisses passant par le centre C de l'obstacle. Ensuite le point à distance minimum étant sur le cercle, on a seulement à calculer la position du point  en calculant $x=C_x+rayon*cos(angle)$ et $y=C_y+rayon*sin(angle)$ avec $(C_x$,$C_y)$ étant les coordonnées du centre C de l'obstacle.
+
+\paragraph{La classe LinesObstacle.}
+
+Cette classe définit un obstacle par une suite de segments. Pour l'instancier il faut lui fournir une liste de points $p_1,p_2,...,p_n$. Les segments sont alors représentés par un couple de point $(p_i,p_{i+1})$.\medskip
+
+Pour tester si l'obstacle se trouve entre deux n\oe uds A et B et empêche la communication entre ces n\oe uds, il faut tester chaque segment de l'obstacle pour savoir si l'un d'entre eux empêche la communication. Pour chaque segment CD on commence par tester si les boîtes englobantes du segment CD et du segment AB se coupent. Si c'est le cas alors c'est qu'il peut y avoir d'intersection. Ce test permet de réduire les calculs car ceux qui suivent sont plus longs. Si on a eu une intersection entre les boîtes englobantes il faut alors tester l'intersection entre les segments. Pour cela, la seule manière de faire est de tester s'il y a une intersection entre la droite représentant le segment CD et le segment AB et de tester aussi s'il y a une intersection entre la droite représentant le segment AB et la droite représentant le segment CD. Si et seulement si les deux intersections ont lieu alors il y a intersection entre le segment CD et le segment AB donc l'obstacle se trouve entre les deux n\oe uds et la communication entre les n\oe uds est coupée.\\
+Le calcul de l'intersection entre la droite CD et le AB se fait par le calcul de deux produits scalaires, celui entre $\overrightarrow{CD}$ et $\overrightarrow{CA}$ et celui entre $\overrightarrow{CD}$ et $\overrightarrow{CB}$. Les produits scalaires permettent de savoir de quel côté du vecteur (droite) $\overrightarrow{CD}$ se trouvent les points A et B. Si le produit des deux produits scalaires est négatif alors c'est que les produits scalaires sont de signe contraire. Les points A et B sont alors de chaque côté de la droite CD. Il y a alors intersection car le segment AB coupe la droite CD.\medskip
+
+Pour calculer le point, sur l'obstacle, à distance minimale d'un n\oe ud P, il faut calculer le point à distance minimale sur chaque segment de l'obstacle et retourner celui qui est le plus proche de P. Pour trouver ce point sur un segment CD, il faut faire une projection du point P sur l'axe passant par C et D, qui a pour origine le point C et est représenté par le vecteur $\overrightarrow{CD}$. Cette projection est représentée par un nombre réel \emph{p} qui représente le nombre de fois qu'il faut multiplier le vecteur $\overrightarrow{CD}$ pour obtenir le projeté de P sur la droite CD à partir du point C. Si ce nombre \emph{p} est inférieur ou égal à 0 alors le point le plus proche de P sur le segment CD sera le point C. S'il est supérieur ou égal à 1 ce sera le point D. Cela est dû au fait que le projeté de P n'est pas sur le segment CD et que le point le plus proche se retrouve être l'une des extrémités. Dans le cas où \emph{p} se trouve entre 0 et 1 alors le point à distance minimale est le projeté de P sur le segment CD. Il est calculé grâce à \emph{p} qui permet lorsque l'on multiplie le vecteur $\overrightarrow{CD}$ par lui d'obtenir un nouveau vecteur. Lorsque ce nouveau vecteur est appliqué à partir de C on obtient alors les coordonnées du projeté de P sur le segment CD.
+%Pour chaque segment on calcul le point à distance minimal de P. Si le point obtenu est plus proche de P que celui déjà sauvegardé alors on le sauvegarde à la place. Lorsque tous les segments ont été parcourus le point sauvegardé est le point, sur l'obstacle, à distance minimal du point P.
+
+\subsubsection{L'obstacle 3D}
+
+Un seul obstacle 3D a été implémenté, il s'agit d'une facette rectangulaire. Étant  donné que la majorité des calculs impliquent de travailler avec des vecteurs lorsque que l'on est en 3D, une classe Vector3D a été créée. De plus une exception dédiée à l'obstacle a elle aussi été ajoutée.
+
+\paragraph{La classe Vector3D.}
+
+Cette classe implémente des vecteurs 3D, trois constructeurs ont été créés le premier prend trois nombres réels en entrée pour créer le vecteur, le deuxième prend deux \textbf{Point} (classe issue de JBotSim) A et B pour créer le vecteur $\overrightarrow{AB}$ le troisième prend un \textbf{Vector3D} en entrée et crée une copie de celui-ci.\medskip
+
+Les opérations de produit vectoriel, de produit scalaire, de somme de deux vecteurs, de multiplication par un scalaire, de division par un scalaire ou de norme ont été implémentées pour faciliter les calculs.\medskip
+ 
+De plus la méthode \texttt{Point getNewPointFrom(Point n)} permet d'obtenir un nouveau point après application du vecteur à partir du n\oe ud n donné.
+
+\paragraph{La classe NotPerpendicularException.}
+
+Cette exception est levée par \textbf{RectangularFacet\-Obstacle} lorsque les points donnés par l'utilisateur au constructeur de \textbf{RectangularFacetObstacle} ne forme pas deux droites perpendiculaires. Il s'agit principalement d'une classe d'avertissement.
+
+\paragraph{La classe RectangularFacetObstacle.}
+
+Cette classe implémente l'obstacle 3D qui est une facette rectangulaire. Pour l'instancier il faut lui fournir trois points E, F, G de telle sorte que les segments EF et EG soient perpendiculaires. Lors de sa création l'obstacle va aussi calculer son vecteur normal $\overrightarrow{N}$ comme s'il s'agissait d'un plan. Ce vecteur est perpendiculaire à la facette et il est important pour les calculs.
+Si lors de l'instanciation les segments EF et EG ne sont pas perpendiculaires alors l'exception  \textbf{NotPerpendicularException} est levée.\medskip
+
+Pour tester si l'obstacle se trouve entre deux n\oe uds A et B et empêche la communication entre ces n\oe uds, on calcule le produit scalaire entre $\overrightarrow{AB}$ et $\overrightarrow{N}$. Si la valeur retournée par ce produit est 0 alors le segment AB est perpendiculaire au vecteur normal de la facette. Vu que le vecteur normal de la facette est par définition perpendiculaire à la facette, on a alors le segment AB perpendiculaire à la facette. Si en plus le produit scalaire entre $\overrightarrow{EA}$ et $\overrightarrow{N}$ vaut 0 alors le segment se trouve sur le même plan que la facette.\medskip
+
+Il faut alors tester qu'aucun des points du segment AB ne se trouvent sur la facette, ce qui couperait la communication. Pour cela il faut projeter la position des deux extrémités sur les axes EF et EG avec E comme origine des axes. À partir de ces coordonnées il suffit de regarder leurs positions. Si les deux points sont à l'intérieur ou si les deux points coupent l'un des segments représentant le bord de la facette alors il n'y a pas de communication. Sinon la communication est possible.\medskip
+
+Si la facette et le segment ne sont pas parallèles alors deux cas existent. Soit le point d'intersection entre la droite AB et le plan représentant la facette se trouve entre les points A et B (c'est-à-dire sur le segment AB) et alors il peut y avoir une intersection avec la facette. Soit il est en dehors du segment et il n'y a pas d'intersection possible entre la facette et le segment donc la communication entre A et B existe.\medskip
+
+Dans le cas où le point d'intersection se trouve sur le segment AB il faut ensuite vérifier que le point d'intersection se trouve sur la facette grâce à la projection du point d'intersection sur les axes EF et EG avec E comme origine des axes. Enfin, il suffit juste de vérifier si les coordonnées obtenues sont bien à l'intérieur de la facette. Si c'est bien le cas alors l'obstacle empêche la communication entre A et B, sinon la communication existe entre les n\oe uds A et B.\medskip
+
+Pour calculer le point, sur l'obstacle, à distance minimum d'un n\oe ud P, on projette la position du n\oe ud sur les axes EF et EG avec E comme origine des axes. On obtient alors les coordonnés 2D du n\oe ud P sur ce plan. Si le point 2D P' est dans la facette alors on peut calculer le vecteur $\overrightarrow{EP'}$ dans le plan puis le convertir dans l'espace.
+Il suffit ensuite d'appliquer ce vecteur à partir de E pour obtenir les coordonnées de P' en 3D.\medskip
+
+Si le point obtenu n'est pas dans la facette alors il suffit de regarder où se trouve le point grâce à ses coordonnés 2D pour trouver sur quelle bordure de la facette se trouve le point à distance minimal. On peut alors calculer les coordonnés 2D du point à distance minimale, puis enfin les convertir en coordonnés 3D.
+
+\section{Exemple d'utilisation du module}
+\label{exemple-obstacle}
+
+Nous présentons ici un exemple concret d'utilisation du module \obstacle, à travers un certain nombre de classes.
+Dans la classe \textbf{Main} (code \ref{main}) plusieurs obstacles sont crées : un sous la forme d'une suite de segments et trois sous la forme de cercle. L'ensemble est ensuite ajouté au sein de la topologie. Nous ajoutons également quelques n\oe uds du type \textbf{ObstacleNode} (code \ref{obstaclenode}). Ces n\oe uds se déplacent vers une destination et changent de destination (aléatoirement) s'ils rencontrent un obstacle.
+Dans le cas où il y a plusieurs obstacles à proximité, seul l'obstacle le plus proche est considéré.
+La figure \ref{obstacle:fig:exemple} est une capture d'écran montrant le résultat graphique de l'implémentation présentée ci-dessous.\medskip
+
+Ces classes illustrent la plupart des fonctionnalités qui sont utilisables au sein du module, la création des obstacles 2D du module et leurs ajouts au sein d'une topologie ainsi que la partie concernant la gestion de la détection d'obstacles au sein d'un nœud implémentant \textbf{ObstacleListener}.\medskip
+
+\begin{lstlisting}[frame=shadowbox,captionpos=b,caption={Classe Main},abovecaptionskip=2ex,label={main}]
+public class Main {
+
+    public static void main(String[] args) {
+        Topology tp = new Topology(800,600);
+        tp.setDefaultNodeModel(ObstacleNode.class);
+        JTopology jtp = new JTopology(tp);
+
+        ObstacleManager.init(tp, jtp);
+
+        List<Point> points = new ArrayList<>();
+        points.add(new Point(100, 100));
+        points.add(new Point(200, 400));
+        points.add(new Point(500, 500));
+        points.add(new Point(600, 300));
+
+        LinesObstacle lo = new LinesObstacle(points);
+        ObstacleManager.addObstacle(lo, tp);
+
+        CircleObstacle co = new CircleObstacle(new Point(400, 400), 10);
+        ObstacleManager.addObstacle(co, tp);
+        co = new CircleObstacle(new Point(200, 200), 20);
+        ObstacleManager.addObstacle(co, tp);
+        co = new CircleObstacle(new Point(600, 200), 80);
+        ObstacleManager.addObstacle(co, tp);
+
+        tp.pause();
+        Node n = new ObstacleNode();
+        tp.addNode(400, 500, n);
+        n = new ObstacleNode();
+        tp.addNode(200,500,n);
+        n = new ObstacleNode();
+        tp.addNode(400,300,n);
+        tp.resume();
+        new JViewer(jtp);
+    }
+
+}
+\end{lstlisting}
+
+\begin{lstlisting}[frame=shadowbox,captionpos=b,caption={Classe ObstacleNode},abovecaptionskip=2ex,label={obstaclenode}]
+public class ObstacleNode extends Node implements ObstacleListener{
+
+    private static Random r = new Random();
+
+    public ObstacleNode() {
+        setProperty("target", new Point(r.nextInt(800), r.nextInt(600)));
+        setSensingRange(25);
+
+    }
+
+    @Override
+    public void onStart() {
+        ObstacleManager.addObstacleListener(this, getTopology());
+    }
+
+    @Override
+    public void onStop() {
+        ObstacleManager.removeObstacleListener(this, getTopology());
+    }
+
+    @Override
+    public void onDetectedObstacles(List<Obstacle> obstacles) {
+        Point p = obstacles.get(0).pointAtMinimumDistance(this);
+        Point tmp = new Point(this.getX()+Math.cos(this.getDirection()), this.getY() + Math.sin(this.getDirection()),0);
+        double distance = p.distance(tmp);
+
+        for (Obstacle o : obstacles){
+            Point ptmp = o.pointAtMinimumDistance(this);
+            if (ptmp.distance(tmp) < distance){
+                p = ptmp;
+                distance = p.distance(tmp);
+            }
+        }
+        Point tmp2;
+        Point n = new Point(this.getX(),this.getY(),this.getZ());
+        if(p.distance(tmp) < this.getSensingRange() && p.distance(tmp) < p.distance(n)){
+            do {
+                setProperty("target", new Point(r.nextInt(800), r.nextInt(600)));
+                Point target = (Point)getProperty("target");
+                double direction = Math.atan2(target.getX() - this.getX(), - (target.getY() - this.getY())) - Math.PI/2;
+                tmp2 = new Point(this.getX() + Math.cos(direction), this.getY() + Math.sin(direction),0);
+            }
+            while(p.distance(tmp2) < p.distance(n));
+        }
+    }
+
+    @Override
+    public void onClock() {
+        Point target = (Point)getProperty("target");
+        setDirection(target);
+        move();
+        if (distance(target) < 15)
+            setProperty("target", new Point(r.nextInt(800), r.nextInt(600)));
+    }
+
+}
+\end{lstlisting}
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=.5]{example.png}
+\caption{Capture d'écran d'un exemple de scénario utilisant des obstacles.}
+\label{obstacle:fig:exemple}
+\end{figure}
+
+\section{Conclusion}
+Le module obstacle est disponible en téléchargement sur le dépot Bitbucket~\cite{obstacle} sous la forme d'une librairie (.jar) utilisable directement avec JBotSim. Le code source est également disponible au téléchargement. Ce module est actuellement utilisé dans le cadre d'un cours de master 2 à l'Université de Bordeaux.
+
+\bibliographystyle{plain}
+\bibliography{doc-fr}
+\end{document}

@@ -1,0 +1,18 @@
+<component name="libraryTable">
+  <library name="release">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha23.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha24.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha25.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha22.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-beta02.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha20.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-beta01.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha18.jar!/" />
+      <root url="jar://$PROJECT_DIR$/release/jbotsim-1.0-alpha19.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

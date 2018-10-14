@@ -69,4 +69,19 @@ public class TopologyGenerator {
         gf.setOrder (nbNodes);
         gf.newKN().generate(topology);
     }
+    public static void generateTriangleGrid(Topology tp, int order){
+        generateTriangleGrid(tp, order, order);
+    }
+    public static void generateTriangleGrid(Topology tp, int orderX, int orderY){
+        TopologyGeneratorFactory gf = new TopologyGeneratorFactory();
+        gf.setAbsoluteCoords(true);
+        gf.setX(50);
+        gf.setY(50);
+        gf.setWidth(tp.getWidth()-50);
+        gf.setHeight(tp.getWidth()-50);
+        gf.setWired(true);
+        gf.setNodeClass(tp.getNodeModel("default"));
+        gf.newTriangleGrid(orderX, orderY).generate(tp);
+
+    }
 }

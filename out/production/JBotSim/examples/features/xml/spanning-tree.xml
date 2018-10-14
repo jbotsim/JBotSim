@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0"><topology wireless-enabled="true" speed="500">
+    <classes>
+    </classes>
+    <graph>
+        <generator>
+            <grid order="5" wired="true" x="0.1" y="0.1" width=".5" height=".5" node-class="examples.basic.spanningtree.SpanningTreeNode"/>
+        </generator>
+    </graph>
+</topology></jbotsim>
