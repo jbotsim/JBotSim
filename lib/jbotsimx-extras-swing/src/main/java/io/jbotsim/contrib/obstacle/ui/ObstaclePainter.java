@@ -1,9 +1,9 @@
-package io.jbotsim.obstacle.ui;
+package io.jbotsim.contrib.obstacle.ui;
 
 import io.jbotsim.Topology;
 import io.jbotsim.ui.painting.BackgroundPainter;
-import io.jbotsim.obstacle.core.Obstacle;
-import io.jbotsim.obstacle.core.ObstacleManager;
+import io.jbotsim.contrib.obstacle.core.Obstacle;
+import io.jbotsim.contrib.obstacle.core.ObstacleManager;
 import io.jbotsim.ui.painting.UIComponent;
 
 

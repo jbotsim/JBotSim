@@ -1,4 +1,4 @@
-package io.jbotsim.obstacle.shapes3d;
+package io.jbotsim.contrib.obstacle.shapes3d;
 
 public class NotPerpendicularException extends Exception {
 

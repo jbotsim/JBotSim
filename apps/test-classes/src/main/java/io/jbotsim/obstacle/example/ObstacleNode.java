@@ -2,9 +2,9 @@ package io.jbotsim.obstacle.example;
 
 import io.jbotsim.Node;
 import io.jbotsim.Point;
-import io.jbotsim.obstacle.core.Obstacle;
-import io.jbotsim.obstacle.core.ObstacleListener;
-import io.jbotsim.obstacle.core.ObstacleManager;
+import io.jbotsim.contrib.obstacle.core.Obstacle;
+import io.jbotsim.contrib.obstacle.core.ObstacleListener;
+import io.jbotsim.contrib.obstacle.core.ObstacleManager;
 import java.util.List;
 import java.util.Random;
 

@@ -1,7 +1,7 @@
-package io.jbotsim.obstacle.core;
+package io.jbotsim.contrib.obstacle.core;
 
 import io.jbotsim.Topology;
-import io.jbotsim.obstacle.ui.ObstaclePainter;
+import io.jbotsim.contrib.obstacle.ui.ObstaclePainter;
 import io.jbotsim.ui.JTopology;
 
 import java.util.ArrayList;

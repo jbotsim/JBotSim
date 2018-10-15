@@ -1,4 +1,4 @@
-package io.jbotsim.obstacle.core;
+package io.jbotsim.contrib.obstacle.core;
 
 import java.util.List;
 

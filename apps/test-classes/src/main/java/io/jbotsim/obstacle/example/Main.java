@@ -4,9 +4,9 @@ import io.jbotsim.Point;
 import io.jbotsim.Topology;
 import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.obstacle.core.ObstacleManager;
-import io.jbotsim.obstacle.shapes2d.CircleObstacleDrawable;
-import io.jbotsim.obstacle.shapes2d.LinesObstacleDrawable;
+import io.jbotsim.contrib.obstacle.core.ObstacleManager;
+import io.jbotsim.contrib.obstacle.shapes2d.CircleObstacleDrawable;
+import io.jbotsim.contrib.obstacle.shapes2d.LinesObstacleDrawable;
 
 import java.util.ArrayList;
 import java.util.List;

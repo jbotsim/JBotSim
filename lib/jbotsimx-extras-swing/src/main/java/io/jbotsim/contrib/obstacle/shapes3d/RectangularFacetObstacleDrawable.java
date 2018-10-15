@@ -1,7 +1,7 @@
-package io.jbotsim.obstacle.shapes3d;
+package io.jbotsim.contrib.obstacle.shapes3d;
 
 import io.jbotsim.Point;
-import io.jbotsim.obstacle.ui.ObstacleDrawable;
+import io.jbotsim.contrib.obstacle.ui.ObstacleDrawable;
 import io.jbotsim.ui.painting.UIComponent;
 
 public class RectangularFacetObstacleDrawable extends RectangularFacetObstacle implements ObstacleDrawable {

@@ -1,4 +1,4 @@
-package io.jbotsim.obstacle.core;
+package io.jbotsim.contrib.obstacle.core;
 
 import io.jbotsim.Node;
 import io.jbotsim.Point;

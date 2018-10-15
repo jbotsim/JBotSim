@@ -1,6 +1,6 @@
-package io.jbotsim.obstacle.ui;
+package io.jbotsim.contrib.obstacle.ui;
 
-import io.jbotsim.obstacle.core.Obstacle;
+import io.jbotsim.contrib.obstacle.core.Obstacle;
 import io.jbotsim.ui.painting.UIComponent;
 
 /**
