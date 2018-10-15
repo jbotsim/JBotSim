@@ -1,8 +1,6 @@
 package io.jbotsim.contrib.obstacle.core;
 
 import io.jbotsim.Topology;
-import io.jbotsim.contrib.obstacle.ui.ObstaclePainter;
-import io.jbotsim.ui.JTopology;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public class ObstacleManager  {
     
     //private static final HashMap<Topology,ObstacleDetector> map = new HashMap<>();
     
-    private ObstacleManager(){
+    protected ObstacleManager(){
         
     }
 
@@ -31,11 +29,6 @@ public class ObstacleManager  {
         topology.setProperty("Obstacles", new ArrayList<Obstacle>());
         topology.setProperty("obstaclelisteners", new ArrayList<ObstacleListener>());
         topology.setProperty("obstacleDetector",new ObstacleDetector(topology));
-    }
-
-    public static void init(Topology topology, JTopology jTopology) {
-        init(topology);
-        jTopology.addBackgroundPainter(new ObstaclePainter());
     }
     
     /**

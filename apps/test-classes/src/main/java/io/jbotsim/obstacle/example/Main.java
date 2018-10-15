@@ -2,6 +2,7 @@ package io.jbotsim.obstacle.example;
 
 import io.jbotsim.Point;
 import io.jbotsim.Topology;
+import io.jbotsim.contrib.obstacle.ui.ObstacleManagerDrawable;
 import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.contrib.obstacle.core.ObstacleManager;
@@ -21,7 +22,8 @@ public class Main {
         tp.setDefaultNodeModel(ObstacleNode.class);
         JTopology jtp = new JTopology(tp);
 
-        ObstacleManager.init(tp, jtp);
+        ObstacleManagerDrawable.init(tp, jtp);
+//        ObstacleManager.init(tp);
 
         List<Point> points = new ArrayList<>();
         points.add(new Point(100, 100));
