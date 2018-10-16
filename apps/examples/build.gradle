@@ -6,7 +6,7 @@ mainClassName = "examples.basic.helloworld.Main"
 description = "Collection of examples using JBotSim."
 
 dependencies {
-    implementation project(':lib:jbotsimx-extras-common'), project(':lib:jbotsimx-ui-swing'),
+    implementation project(':lib:jbotsim-extras-common'), project(':lib:jbotsim-ui-swing'),
             'guru.nidi:graphviz-java:0.5+'
 }
 

@@ -2,8 +2,8 @@
 description = "JBotSim No UI: generates a fat jar containing all non-specific classes from JBotSim"
 
 dependencies{
-    api ("${group}:jbotsimx-extras-common:${depVersion}")
-    api ("${group}:jbotsimx-ui-common:${depVersion}")
+    api ("${group}:jbotsim-extras-common:${depVersion}")
+    api ("${group}:jbotsim-ui-common:${depVersion}")
 }
 
 task artifactJarCreator (type: Copy) {

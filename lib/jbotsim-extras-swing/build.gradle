@@ -2,7 +2,7 @@ description = "JBotSim Extras Swing: generates/publish a jar containing AWT/SWIN
 def displayName = "JBotSim Extras Swing"
 
 dependencies {
-    api project(':lib:jbotsimx-ui-swing'), project(':lib:jbotsimx-extras-common')
+    api project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-common')
 }
 
 publishing {

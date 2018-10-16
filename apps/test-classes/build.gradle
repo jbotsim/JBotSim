@@ -1,7 +1,7 @@
 description = "Collection of Main classes for several jbotsim/jbotsimx classes."
 
 dependencies {
-    implementation project(':lib:jbotsim-core'), project(':lib:jbotsimx-ui-swing'), project(':lib:jbotsimx-extras-swing')
+    implementation project(':lib:jbotsim-core'), project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-swing')
     //, 'guru.nidi:graphviz-java:0.5+'
 }
 
