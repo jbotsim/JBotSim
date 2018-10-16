@@ -111,6 +111,11 @@ Action<? super MavenPom> createConfigureActionForPom (String nameStr, String des
                     name = 'Arnaud Casteigts'
                     email = 'acasteigts@labri.fr'
                 }
+                developer {
+                    id = 'rlaplace'
+                    name = 'Remi Laplace'
+                    email = 'remi.laplace@labri.fr'
+                }
             }
             pom.scm {
                 connection = 'scm:git:git://github.com/acasteigts/jbotsim.git'
