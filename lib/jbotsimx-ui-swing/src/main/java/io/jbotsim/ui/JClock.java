@@ -11,8 +11,8 @@
  */
 package io.jbotsim.ui;
 
-import io.jbotsim.ClockManager;
-import io.jbotsim.Clock;
+import io.jbotsim.core.ClockManager;
+import io.jbotsim.core.Clock;
 
 import javax.swing.Timer;
 

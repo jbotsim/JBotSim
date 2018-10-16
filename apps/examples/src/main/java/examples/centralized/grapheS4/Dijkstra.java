@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.SelectionListener;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.SelectionListener;
 import io.jbotsim.ui.JViewer;
 
 public class Dijkstra implements SelectionListener {

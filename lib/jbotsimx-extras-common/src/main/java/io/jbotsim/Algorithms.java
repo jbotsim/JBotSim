@@ -20,6 +20,10 @@
  *******************************************************************************/
 package io.jbotsim;
 
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+
 import static java.lang.Math.PI;
 import static java.lang.Math.abs;
 import static java.lang.Math.atan2;

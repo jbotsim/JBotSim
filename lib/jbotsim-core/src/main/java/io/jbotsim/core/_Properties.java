@@ -9,13 +9,13 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import io.jbotsim.event.PropertyListener;
+import io.jbotsim.core.event.PropertyListener;
 
 public abstract class _Properties {
     protected HashMap<String, Object> properties = new HashMap<>();

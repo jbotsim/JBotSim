@@ -3,7 +3,7 @@
  *
  * <p>Currently two kind of objects can be stored using XML format:</p>
  * <ul>
- *     <li>{@link io.jbotsim.Topology Topologies}</li>
+ *     <li>{@link io.jbotsim.core.Topology Topologies}</li>
  *     <li>Traces of simulations of topologies (see {@link io.jbotsim.replay.TraceRecorder} and
  *     {@link io.jbotsim.replay.TracePlayer}).</li>
  * </ul>
@@ -13,7 +13,7 @@
  * (e.g. when all events of the trace have been collected), {@code write} methods are used to output the
  * {@link org.w3c.dom.Document} (the helper methods of {@link io.jbotsim.format.xml.XMLIO} can also be used).</p>
  *
- * <p>Following example shows how to output a {@link io.jbotsim.Topology} on standard output (using XML format):</p>
+ * <p>Following example shows how to output a {@link io.jbotsim.core.Topology} on standard output (using XML format):</p>
  * <pre>
  *  Topology tp = new Topology();
  *  TopologyGenerator.generateKN(tp,5);
@@ -26,7 +26,7 @@
  * </pre>
  *
  * <p>Similarly the loading of an XML document is realized given a destination object i.e. either a
- * {@link io.jbotsim.Topology} or a {@link io.jbotsim.replay.TracePlayer}. For instance the following code initializes
+ * {@link io.jbotsim.core.Topology} or a {@link io.jbotsim.replay.TracePlayer}. For instance the following code initializes
  * a topology {@code tp} with the first parameter of the {@code main} method: </p>
  * <pre>
  *  Topology tp = new Topology();

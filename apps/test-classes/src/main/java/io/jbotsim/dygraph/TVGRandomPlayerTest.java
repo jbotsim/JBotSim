@@ -1,8 +1,6 @@
 package io.jbotsim.dygraph;
 
-import io.jbotsim.Topology;
-import io.jbotsim.dygraph.TVG;
-import io.jbotsim.dygraph.TVGRandomPlayer;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
 public class TVGRandomPlayerTest {

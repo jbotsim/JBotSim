@@ -1,7 +1,7 @@
 package examples.misc.dynamicgraphs;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.dygraph.EMEGPlayer;
 import io.jbotsim.dygraph.TVG;

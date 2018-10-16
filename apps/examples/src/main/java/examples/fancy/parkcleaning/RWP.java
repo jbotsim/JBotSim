@@ -1,11 +1,11 @@
 package examples.fancy.parkcleaning;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.ClockListener;
-import io.jbotsim.event.TopologyListener;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.ClockListener;
+import io.jbotsim.core.event.TopologyListener;
 
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 import io.jbotsim.ui.JViewer;
 
 import java.util.Random;

@@ -1,6 +1,6 @@
 package examples.fancy.parkcleaning;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 public class Garbage extends Node{
 	public Garbage(){

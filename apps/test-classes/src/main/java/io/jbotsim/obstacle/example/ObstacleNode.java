@@ -1,7 +1,7 @@
 package io.jbotsim.obstacle.example;
 
-import io.jbotsim.Node;
-import io.jbotsim.Point;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 import io.jbotsim.contrib.obstacle.core.Obstacle;
 import io.jbotsim.contrib.obstacle.core.ObstacleListener;
 import io.jbotsim.contrib.obstacle.core.ObstacleManager;

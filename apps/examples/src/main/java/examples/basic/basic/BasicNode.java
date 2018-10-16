@@ -1,7 +1,7 @@
 package examples.basic.basic;
 
-import io.jbotsim.Message;
-import io.jbotsim.Node;
+import io.jbotsim.core.Message;
+import io.jbotsim.core.Node;
 
 public class BasicNode extends Node{
     @Override

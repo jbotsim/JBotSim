@@ -1,6 +1,6 @@
 package io.jbotsim.format.xml;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.format.common.Formatter;
 
 public class XMLTopologyFormatter implements Formatter {

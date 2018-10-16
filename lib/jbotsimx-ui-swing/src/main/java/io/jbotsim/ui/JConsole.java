@@ -22,11 +22,11 @@ package io.jbotsim.ui;
 import java.awt.*;
 import java.awt.event.*;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.Link.Mode;
-import io.jbotsim.Link.Type;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.Link.Mode;
+import io.jbotsim.core.Link.Type;
 import io.jbotsim.format.plain.PlainFormatter;
 import io.jbotsim.format.tikz.TikzFormatter;
 

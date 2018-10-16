@@ -1,13 +1,13 @@
 package examples.features.async;
 
-import io.jbotsim.Message;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Message;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.messaging.AsyncMessageEngine;
 import io.jbotsim.topology.TopologyGenerator;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 
 /**
  * Created by acasteig on 9/18/15.

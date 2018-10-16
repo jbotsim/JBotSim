@@ -1,8 +1,8 @@
 package examples.basic.broadcasting;
 
-import io.jbotsim.Color;
-import io.jbotsim.Message;
-import io.jbotsim.Node;
+import io.jbotsim.core.Color;
+import io.jbotsim.core.Message;
+import io.jbotsim.core.Node;
 
 
 

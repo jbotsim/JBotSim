@@ -9,9 +9,9 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
-import io.jbotsim.event.ClockListener;
+import io.jbotsim.core.event.ClockListener;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class ClockManager {
     public void start() {
         if (clockModel == null) {
             try {
-                clockModel = (Class<? extends Clock>) Class.forName("io.jbotsim.DefaultClock");
+                clockModel = (Class<? extends Clock>) Class.forName("io.jbotsim.core.DefaultClock");
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

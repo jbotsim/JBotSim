@@ -1,7 +1,6 @@
 package io.jbotsim.format.tikz;
 
-import io.jbotsim.format.tikz.TikzFormatter;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.format.common.Format;
 import io.jbotsim.ui.JViewer;
 

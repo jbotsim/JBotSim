@@ -1,8 +1,8 @@
 package io.jbotsim.contrib.obstacle.core;
 
-import io.jbotsim.LinkResolver;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.LinkResolver;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 
 import java.util.List;
 

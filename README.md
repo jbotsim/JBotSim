@@ -16,7 +16,7 @@ For examples of code, refer to the `src/examples` directory (here), or to the ex
 Here is a basic HelloWorld with JBotSim:
 
 ```java
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
 public class HelloWorld{

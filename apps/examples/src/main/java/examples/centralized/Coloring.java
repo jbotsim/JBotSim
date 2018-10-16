@@ -1,16 +1,16 @@
 package examples.centralized;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.ConnectivityListener;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.ConnectivityListener;
 import io.jbotsim.ui.JViewer;
 
 public class Coloring implements ConnectivityListener{

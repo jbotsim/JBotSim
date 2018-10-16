@@ -1,6 +1,6 @@
 package io.jbotsim.contrib.obstacle.core;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 import java.util.ArrayList;
 import java.util.List;

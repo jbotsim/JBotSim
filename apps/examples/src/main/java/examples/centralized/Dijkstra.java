@@ -3,11 +3,11 @@ package examples.centralized;
 import java.util.HashMap;
 
 import io.jbotsim.Connectivity;
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.MovementListener;
-import io.jbotsim.event.SelectionListener;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.MovementListener;
+import io.jbotsim.core.event.SelectionListener;
 import io.jbotsim.ui.JViewer;
 
 /* Instructions du TD :

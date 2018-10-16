@@ -1,9 +1,9 @@
 package examples.fancy.canadairs;
 
-import io.jbotsim.Message;
-import io.jbotsim.Node;
+import io.jbotsim.core.Message;
+import io.jbotsim.core.Node;
 
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 import java.util.*;
 
 /**

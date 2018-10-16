@@ -1,8 +1,8 @@
 package examples.misc.randomwalks;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 import java.util.Random;
 
 /**

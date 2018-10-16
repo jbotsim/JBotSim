@@ -1,7 +1,6 @@
 package io.jbotsim.replay;
 
-import io.jbotsim.Topology;
-import io.jbotsim.replay.TraceRecorder;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
 public class TraceRecorderTest {

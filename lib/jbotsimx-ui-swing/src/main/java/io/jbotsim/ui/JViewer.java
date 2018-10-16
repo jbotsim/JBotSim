@@ -11,9 +11,9 @@
  */
 package io.jbotsim.ui;
 
-import io.jbotsim.Topology;
-import io.jbotsim._Properties;
-import io.jbotsim.event.PropertyListener;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core._Properties;
+import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.format.common.Format;
 
 import javax.swing.*;

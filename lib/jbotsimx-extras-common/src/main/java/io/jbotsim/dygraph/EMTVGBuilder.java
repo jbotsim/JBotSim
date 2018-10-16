@@ -1,6 +1,6 @@
 package io.jbotsim.dygraph;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 import java.util.Random;
 import java.util.Vector;

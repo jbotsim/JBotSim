@@ -9,14 +9,14 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core.event;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Message;
 
-public interface SelectionListener{
+public interface MessageListener {
     /**
-     * Notifies the underlying listener that a node has selected.
-     * @param node The selected node.
+     * Notifies the underlying MessageListener that a message has arrived.
+     * @param msg The incoming message.
      */
-    void onSelection(Node node);
+    void onMessage(Message msg);
 }

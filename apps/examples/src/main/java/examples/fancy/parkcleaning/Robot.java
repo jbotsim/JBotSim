@@ -1,9 +1,9 @@
 package examples.fancy.parkcleaning;
 
-import io.jbotsim.Node;
-import io.jbotsim.event.ClockListener;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.event.ClockListener;
 
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 import java.util.List;
 
 public class Robot extends Node implements ClockListener{

@@ -1,6 +1,6 @@
 package io.jbotsim;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.format.common.Format;
 import io.jbotsim.format.plain.PlainFormatter;
 import io.jbotsim.ui.JViewer;

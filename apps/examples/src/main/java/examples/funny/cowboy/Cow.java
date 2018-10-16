@@ -1,6 +1,6 @@
 package examples.funny.cowboy;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 public class Cow extends Node{
     static Node farmer;

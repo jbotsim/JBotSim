@@ -1,12 +1,12 @@
 package examples.misc.dynamicgraphs;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.ClockListener;
-import io.jbotsim.event.SelectionListener;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.ClockListener;
+import io.jbotsim.core.event.SelectionListener;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 import io.jbotsim.ui.JViewer;
 
 import java.util.Random;

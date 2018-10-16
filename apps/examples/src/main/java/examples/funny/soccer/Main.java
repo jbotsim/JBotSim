@@ -1,6 +1,6 @@
 package examples.funny.soccer;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.ui.painting.BackgroundPainter;

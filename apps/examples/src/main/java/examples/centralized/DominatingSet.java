@@ -1,11 +1,11 @@
 package examples.centralized;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 
 public class DominatingSet extends Node{
 

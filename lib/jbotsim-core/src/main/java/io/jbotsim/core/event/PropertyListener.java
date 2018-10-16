@@ -9,14 +9,15 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core.event;
 
-import io.jbotsim.Node;
+import io.jbotsim.core._Properties;
 
-public interface MovementListener{
+public interface PropertyListener {
     /**
-     * Notifies the underlying listener that a node has moved.
-     * @param node The node.
+     * Notifies that a property of this object has changed.
+     * @param o The object.
+     * @param key The name of the changed property.
      */
-    void onMove(Node node);
+    void propertyChanged(_Properties o, String key);
 }

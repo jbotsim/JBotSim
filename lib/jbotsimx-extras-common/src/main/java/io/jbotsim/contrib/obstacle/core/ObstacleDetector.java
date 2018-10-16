@@ -1,9 +1,9 @@
 package io.jbotsim.contrib.obstacle.core;
 
-import io.jbotsim.Node;
-import io.jbotsim.Point;
-import io.jbotsim.Topology;
-import io.jbotsim.event.MovementListener;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.MovementListener;
 
 import java.util.ArrayList;
 import java.util.List;

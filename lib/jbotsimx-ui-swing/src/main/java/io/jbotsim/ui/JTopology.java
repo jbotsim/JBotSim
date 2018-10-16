@@ -11,11 +11,11 @@
  */
 package io.jbotsim.ui;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim._Properties;
-import io.jbotsim.event.*;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core._Properties;
+import io.jbotsim.core.event.*;
 import io.jbotsim.format.common.Format;
 import io.jbotsim.ui.painting.*;
 

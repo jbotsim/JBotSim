@@ -1,4 +1,4 @@
-package io.jbotsim;
+package io.jbotsim.core;
 
 import java.io.Serializable;
 

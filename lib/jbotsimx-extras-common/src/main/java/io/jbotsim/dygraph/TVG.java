@@ -6,7 +6,7 @@ import java.util.StringTokenizer;
 import java.util.TreeSet;
 import java.util.Vector;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 public class TVG{
     Vector<Node> nodes=new Vector<Node>();

@@ -9,14 +9,14 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core.event;
 
-import io.jbotsim.Message;
+import io.jbotsim.core.Node;
 
-public interface MessageListener {
+public interface MovementListener{
     /**
-     * Notifies the underlying MessageListener that a message has arrived.
-     * @param msg The incoming message.
+     * Notifies the underlying listener that a node has moved.
+     * @param node The node.
      */
-    void onMessage(Message msg);
+    void onMove(Node node);
 }

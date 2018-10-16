@@ -1,6 +1,6 @@
 package io.jbotsim.ui.painting;
 
-import io.jbotsim.Link;
+import io.jbotsim.core.Link;
 
 public interface LinkPainter {
     /**

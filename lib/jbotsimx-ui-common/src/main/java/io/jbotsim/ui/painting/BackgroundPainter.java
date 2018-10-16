@@ -11,7 +11,7 @@
  */
 package io.jbotsim.ui.painting;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 /**
  * Created by acasteig on 6/9/15.

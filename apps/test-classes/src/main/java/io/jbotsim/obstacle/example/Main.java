@@ -1,7 +1,7 @@
 package io.jbotsim.obstacle.example;
 
-import io.jbotsim.Point;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Point;
+import io.jbotsim.core.Topology;
 import io.jbotsim.contrib.obstacle.ui.ObstacleManagerDrawable;
 import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;

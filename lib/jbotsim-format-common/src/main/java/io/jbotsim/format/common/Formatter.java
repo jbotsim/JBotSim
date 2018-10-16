@@ -1,6 +1,6 @@
 package io.jbotsim.format.common;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 public interface Formatter {
     /**

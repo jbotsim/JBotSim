@@ -1,6 +1,6 @@
 package io.jbotsim.dygraph;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 import java.util.Random;
 

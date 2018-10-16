@@ -9,11 +9,11 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
-import io.jbotsim.Link.Mode;
-import io.jbotsim.Link.Type;
-import io.jbotsim.event.*;
+import io.jbotsim.core.Link.Mode;
+import io.jbotsim.core.Link.Type;
+import io.jbotsim.core.event.*;
 
 import java.util.*;
 

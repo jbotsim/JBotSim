@@ -9,15 +9,12 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core;
 
-import io.jbotsim._Properties;
+import io.jbotsim.core.event.ClockListener;
 
-public interface PropertyListener {
-    /**
-     * Notifies that a property of this object has changed.
-     * @param o The object.
-     * @param key The name of the changed property.
-     */
-    void propertyChanged(_Properties o, String key);
+import java.util.List;
+
+public interface Scheduler {
+    void onClock(Topology tp, List<ClockListener> expiredListeners);
 }

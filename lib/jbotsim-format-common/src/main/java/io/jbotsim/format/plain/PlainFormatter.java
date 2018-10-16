@@ -1,9 +1,9 @@
 package io.jbotsim.format.plain;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Point;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
+import io.jbotsim.core.Topology;
 import io.jbotsim.format.common.Formatter;
 
 import java.util.HashMap;

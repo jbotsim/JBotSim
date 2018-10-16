@@ -9,12 +9,11 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core.event;
 
-
-public class LinkResolver {
-    public boolean isHeardBy(Node n1, Node n2) {
-        return (n1.isWirelessEnabled() && n2.isWirelessEnabled()
-                && n1.distance(n2) <= n1.getCommunicationRange());
-    }
+public interface ClockListener {
+    /**
+     * Called periodically by the central scheduler.
+     */
+    void onClock();
 }

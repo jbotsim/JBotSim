@@ -1,8 +1,8 @@
 package io.jbotsim.messaging;
 
-import io.jbotsim.Message;
-import io.jbotsim.MessageEngine;
-import io.jbotsim.Node;
+import io.jbotsim.core.Message;
+import io.jbotsim.core.MessageEngine;
+import io.jbotsim.core.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;

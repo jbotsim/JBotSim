@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +15,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JConsole;
 import io.jbotsim.ui.JTopology;
 

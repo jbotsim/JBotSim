@@ -1,15 +1,15 @@
 package io.jbotsim.format.xml;
 
-import io.jbotsim.*;
+import io.jbotsim.core.*;
 import io.jbotsim.topology.TopologyGeneratorFactory;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static io.jbotsim.Link.Mode.WIRED;
-import static io.jbotsim.Link.Type.DIRECTED;
-import static io.jbotsim.Link.Type.UNDIRECTED;
+import static io.jbotsim.core.Link.Mode.WIRED;
+import static io.jbotsim.core.Link.Type.DIRECTED;
+import static io.jbotsim.core.Link.Type.UNDIRECTED;
 import static io.jbotsim.format.xml.XMLKeys.*;
 
 /**

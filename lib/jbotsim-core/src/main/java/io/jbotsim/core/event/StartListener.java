@@ -9,12 +9,11 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core.event;
 
-import io.jbotsim.event.ClockListener;
-
-import java.util.List;
-
-public interface Scheduler {
-    void onClock(Topology tp, List<ClockListener> expiredListeners);
+public interface StartListener {
+    /**
+     * Notifies that a restart was requested on this topology.
+     */
+    void onStart();
 }

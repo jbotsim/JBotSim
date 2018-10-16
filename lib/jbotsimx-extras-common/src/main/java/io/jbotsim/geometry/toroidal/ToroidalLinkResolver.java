@@ -1,9 +1,9 @@
 package io.jbotsim.geometry.toroidal;
 
 
-import io.jbotsim.LinkResolver;
-import io.jbotsim.Node;
-import io.jbotsim.Point;
+import io.jbotsim.core.LinkResolver;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 
 
 /**

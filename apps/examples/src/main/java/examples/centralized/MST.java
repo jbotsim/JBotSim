@@ -2,9 +2,9 @@ package examples.centralized;
 
 import io.jbotsim.Algorithms;
 import io.jbotsim.Connectivity;
-import io.jbotsim.Link;
-import io.jbotsim.Topology;
-import io.jbotsim.event.ClockListener;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.ui.JViewer;
 
 import java.util.List;

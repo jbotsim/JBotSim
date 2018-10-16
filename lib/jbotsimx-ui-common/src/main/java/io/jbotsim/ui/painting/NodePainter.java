@@ -11,7 +11,7 @@
  */
 package io.jbotsim.ui.painting;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 public interface NodePainter {
     /**

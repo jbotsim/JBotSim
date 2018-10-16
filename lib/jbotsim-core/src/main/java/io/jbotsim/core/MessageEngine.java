@@ -9,10 +9,10 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
-import io.jbotsim.event.ClockListener;
-import io.jbotsim.event.MessageListener;
+import io.jbotsim.core.event.ClockListener;
+import io.jbotsim.core.event.MessageListener;
 
 import java.util.ArrayList;
 

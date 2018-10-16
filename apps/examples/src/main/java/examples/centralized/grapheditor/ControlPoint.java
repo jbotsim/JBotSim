@@ -1,8 +1,8 @@
 package examples.centralized.grapheditor;
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
 
 
 public class ControlPoint {

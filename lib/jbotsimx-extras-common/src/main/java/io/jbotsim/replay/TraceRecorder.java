@@ -1,11 +1,11 @@
 package io.jbotsim.replay;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.MovementListener;
-import io.jbotsim.event.SelectionListener;
-import io.jbotsim.event.StartListener;
-import io.jbotsim.event.TopologyListener;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.MovementListener;
+import io.jbotsim.core.event.SelectionListener;
+import io.jbotsim.core.event.StartListener;
+import io.jbotsim.core.event.TopologyListener;
 import io.jbotsim.format.xml.XMLBuilder;
 import io.jbotsim.format.xml.XMLTraceBuilder;
 

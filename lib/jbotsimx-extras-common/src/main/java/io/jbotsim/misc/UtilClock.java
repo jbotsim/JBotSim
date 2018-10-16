@@ -21,8 +21,8 @@
 
 package io.jbotsim.misc;
 
-import io.jbotsim.Clock;
-import io.jbotsim.ClockManager;
+import io.jbotsim.core.Clock;
+import io.jbotsim.core.ClockManager;
 
 import java.util.Timer;
 import java.util.TimerTask;

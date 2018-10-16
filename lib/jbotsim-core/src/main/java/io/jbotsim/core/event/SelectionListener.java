@@ -9,11 +9,14 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core.event;
 
-public interface ClockListener {
+import io.jbotsim.core.Node;
+
+public interface SelectionListener{
     /**
-     * Called periodically by the central scheduler.
+     * Notifies the underlying listener that a node has selected.
+     * @param node The selected node.
      */
-    void onClock();
+    void onSelection(Node node);
 }

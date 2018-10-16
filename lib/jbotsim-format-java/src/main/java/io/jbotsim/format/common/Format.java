@@ -1,6 +1,6 @@
 package io.jbotsim.format.common;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.format.plain.PlainFormatter;
 
 import java.io.FileNotFoundException;

@@ -1,7 +1,7 @@
 package io.jbotsim.contrib.obstacle.shapes3d;
 
-import io.jbotsim.Node;
-import io.jbotsim.Point;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 import io.jbotsim.contrib.obstacle.core.Obstacle;
 
 public class RectangularFacetObstacle implements Obstacle {

@@ -19,7 +19,7 @@
  * Quentin Bramas <bramas@unistra.fr>
  */
 
-package io.jbotsim;
+package io.jbotsim.core;
 
 public class DefaultClock extends Clock implements Runnable{
     volatile boolean running;

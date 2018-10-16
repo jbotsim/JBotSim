@@ -1,6 +1,6 @@
 package examples.fancy.angularforces;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
 /**

@@ -1,6 +1,6 @@
 package io.jbotsim.contrib.obstacle.shapes2d;
 
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 import io.jbotsim.contrib.obstacle.ui.ObstacleDrawable;
 import io.jbotsim.ui.painting.UIComponent;
 

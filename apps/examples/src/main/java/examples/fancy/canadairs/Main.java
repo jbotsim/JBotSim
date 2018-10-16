@@ -1,12 +1,12 @@
 package examples.fancy.canadairs;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.LinkResolver;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.LinkResolver;
 import io.jbotsim.ui.JViewer;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 
 /**
  * Created by acasteig on 22/03/15.

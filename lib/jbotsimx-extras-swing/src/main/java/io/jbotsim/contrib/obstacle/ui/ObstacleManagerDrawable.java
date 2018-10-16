@@ -1,12 +1,8 @@
 package io.jbotsim.contrib.obstacle.ui;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.contrib.obstacle.core.ObstacleManager;
-import io.jbotsim.contrib.obstacle.ui.ObstaclePainter;
 import io.jbotsim.ui.JTopology;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Drawable version of the Main class of the plugin (ObstacleManager).

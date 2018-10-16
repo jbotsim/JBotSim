@@ -1,6 +1,6 @@
-package io.jbotsim;
+package io.jbotsim.core;
 
-import io.jbotsim.event.ClockListener;
+import io.jbotsim.core.event.ClockListener;
 
 import java.util.List;
 

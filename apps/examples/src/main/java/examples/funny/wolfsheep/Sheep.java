@@ -1,7 +1,7 @@
 package examples.funny.wolfsheep;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 
 /**
  * Created by acasteig on 31/08/16.

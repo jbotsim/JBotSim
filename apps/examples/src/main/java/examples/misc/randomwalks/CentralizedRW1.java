@@ -1,12 +1,12 @@
 package examples.misc.randomwalks;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.event.ClockListener;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.topology.TopologyGenerator;
 
-import io.jbotsim.Color;
+import io.jbotsim.core.Color;
 import java.util.List;
 import java.util.Random;
 

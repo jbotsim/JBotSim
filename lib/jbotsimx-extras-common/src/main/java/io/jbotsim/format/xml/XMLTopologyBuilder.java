@@ -1,7 +1,6 @@
 package io.jbotsim.format.xml;
 
-import io.jbotsim.*;
-
+import io.jbotsim.core.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

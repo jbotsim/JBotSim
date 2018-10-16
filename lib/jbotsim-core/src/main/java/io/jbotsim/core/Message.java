@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
 
 import java.util.HashMap;

@@ -1,10 +1,7 @@
 package io.jbotsim.dygraph;
 
-import io.jbotsim.Node;
-import io.jbotsim.Topology;
-import io.jbotsim.dygraph.EMTVGBuilder;
-import io.jbotsim.dygraph.TVG;
-import io.jbotsim.dygraph.TVGPlayer;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 
 import java.util.Vector;

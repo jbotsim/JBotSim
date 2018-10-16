@@ -9,11 +9,12 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core;
 
-public interface StartListener {
-    /**
-     * Notifies that a restart was requested on this topology.
-     */
-    void onStart();
+
+public class LinkResolver {
+    public boolean isHeardBy(Node n1, Node n2) {
+        return (n1.isWirelessEnabled() && n2.isWirelessEnabled()
+                && n1.distance(n2) <= n1.getCommunicationRange());
+    }
 }

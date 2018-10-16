@@ -1,6 +1,6 @@
 package examples.fancy.canadairs;
 
-import io.jbotsim.Node;
+import io.jbotsim.core.Node;
 
 /**
  * Created by acasteig on 22/03/15.

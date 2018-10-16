@@ -9,13 +9,13 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim;
+package io.jbotsim.core;
 
 import java.util.*;
 import java.util.List;
 
-import io.jbotsim.event.ClockListener;
-import io.jbotsim.event.MovementListener;
+import io.jbotsim.core.event.ClockListener;
+import io.jbotsim.core.event.MovementListener;
 
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;

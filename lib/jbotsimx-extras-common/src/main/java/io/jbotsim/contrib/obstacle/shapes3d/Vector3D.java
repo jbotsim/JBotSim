@@ -1,7 +1,7 @@
 package io.jbotsim.contrib.obstacle.shapes3d;
 
 
-import io.jbotsim.Point;
+import io.jbotsim.core.Point;
 
 public class Vector3D{
 

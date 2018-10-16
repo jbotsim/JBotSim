@@ -7,12 +7,12 @@ import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
-import io.jbotsim.Point;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 import java.util.*;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 public class FaceRoutingEditor extends GraphEditor {
 	

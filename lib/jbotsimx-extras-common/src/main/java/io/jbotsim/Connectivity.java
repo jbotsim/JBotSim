@@ -20,6 +20,10 @@
  *******************************************************************************/
 package io.jbotsim;
 
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
+
 import java.util.*;
 
 public class Connectivity {

@@ -1,6 +1,6 @@
 package examples.features.replay;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.format.xml.XMLTopologyParser;
 import io.jbotsim.replay.TraceRecorder;

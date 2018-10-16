@@ -9,19 +9,21 @@
  *    Authors:
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
-package io.jbotsim.event;
+package io.jbotsim.core.event;
 
-import io.jbotsim.Link;
+import io.jbotsim.core.Node;
 
-public interface ConnectivityListener {
+public interface TopologyListener{
     /**
-     * Notifies the underlying listener that a link has been added.
-     * @param link The added link.
+     * Notifies the underlying listener that a node has been added to the
+     * topology.
+     * @param node The added node.
      */
-    void onLinkAdded(Link link);
+    void onNodeAdded(Node node);
     /**
-     * Notifies the underlying listener that a link has been removed.
-     * @param link The removed link.
+     * Notifies the underlying listener that a node has been removed to the 
+     * topology.
+     * @param node The removed node.
      */
-    void onLinkRemoved(Link link);
+    void onNodeRemoved(Node node);
 }

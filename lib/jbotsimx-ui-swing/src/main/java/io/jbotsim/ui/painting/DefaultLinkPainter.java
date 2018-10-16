@@ -11,10 +11,8 @@
  */
 package io.jbotsim.ui.painting;
 
-import io.jbotsim.Link;
-import io.jbotsim.Topology;
-import io.jbotsim.ui.painting.LinkPainter;
-import io.jbotsim.ui.painting.UIComponent;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Topology;
 
 import java.awt.*;
 

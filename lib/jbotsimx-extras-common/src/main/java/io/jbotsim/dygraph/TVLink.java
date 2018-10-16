@@ -3,8 +3,8 @@ package io.jbotsim.dygraph;
 import java.util.Iterator;
 import java.util.TreeSet;
 
-import io.jbotsim.Link;
-import io.jbotsim.Node;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
 
 public class TVLink extends Link{
     TreeSet<Integer> appearanceDates=new TreeSet<Integer>();

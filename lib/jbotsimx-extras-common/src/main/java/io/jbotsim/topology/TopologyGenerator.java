@@ -1,6 +1,6 @@
 package io.jbotsim.topology;
 
-import io.jbotsim.Topology;
+import io.jbotsim.core.Topology;
 
 public class TopologyGenerator {
     public static void generateLine(Topology tp, int order){

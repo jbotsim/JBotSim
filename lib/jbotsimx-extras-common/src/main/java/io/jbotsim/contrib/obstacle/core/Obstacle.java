@@ -1,7 +1,7 @@
 package io.jbotsim.contrib.obstacle.core;
 
-import io.jbotsim.Node;
-import io.jbotsim.Point;
+import io.jbotsim.core.Node;
+import io.jbotsim.core.Point;
 
 /**
  * Interface for all the obstacles (3D obstacles and 2D obstacles)

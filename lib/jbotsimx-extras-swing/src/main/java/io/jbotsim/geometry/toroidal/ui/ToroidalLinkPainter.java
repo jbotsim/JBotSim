@@ -1,8 +1,8 @@
 package io.jbotsim.geometry.toroidal.ui;
 
-import io.jbotsim.Link;
-import io.jbotsim.Point;
-import io.jbotsim.Topology;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Point;
+import io.jbotsim.core.Topology;
 import io.jbotsim.ui.painting.DefaultLinkPainter;
 import io.jbotsim.ui.painting.UIComponent;
 
