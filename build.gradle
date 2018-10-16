@@ -15,8 +15,7 @@ subprojects {
     sourceCompatibility = 1.8 // java 8
     targetCompatibility = 1.8
 
-//    group = "io.jbotsim"
-    group = "com.github.acasteigts"
+    group = "io.jbotsim"
     version = '1.0-beta02-SNAPSHOT'
 
     ext.depVersion = '1.0-beta02-SNAPSHOT'
