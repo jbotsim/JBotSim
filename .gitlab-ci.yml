@@ -1,17 +1,55 @@
-# Only one runner
-variables:
-   JAVA_HOME: "/usr/lib/jvm/java-7-openjdk-amd64/"
+image: openjdk:10-jdk-slim
 
-# default build 
-jbotsim:
+before_script:
+- export GRADLE_USER_HOME=`pwd`/.gradle
+- chmod +x ./gradlew
+
+cache:
+  paths:
+  - .gradle/wrapper
+
+stages:
+  - build
+  - test
+  - publish
+
+assemble-jar:
   stage: build
   tags:
-    - ubuntu1404
+  - docker
   script:
-    - $JAVA_HOME/bin/java -version
-    - cd src && make
+  - java -version
+  - ./gradlew lib:cleans lib:jars
   artifacts:
     paths:
-      - src/jbotsim.jar
+    - lib/jbotsim-core/build/libs
+    - lib/jbotsim-extras-common/build/libs
+    - lib/jbotsim-extras-swing/build/libs
+    - lib/jbotsim-ui-common/build/libs
+    - lib/jbotsim-ui-swing/build/libs
+    - lib/jbotsim-serialization-common/build/libs
     name: jbotsim
+
+run-unit-tests:
+  stage: test
+  tags:
+  - docker
+  script:
+  - java -version
+  - ./gradlew lib:cleans lib:tests
+  artifacts:
+    paths:
+    - lib/jbotsim-core/build/test-results
+    - lib/jbotsim-extras-common/build/test-results
+    - lib/jbotsim-extras-swing/build/test-results
+    - lib/jbotsim-ui-common/build/test-results
+    - lib/jbotsim-ui-swing/build/test-results
+    - lib/jbotsim-serialization-common/build/test-results
+    - lib/jbotsim-core/build/reports
+    - lib/jbotsim-extras-common/build/reports
+    - lib/jbotsim-extras-swing/build/reports
+    - lib/jbotsim-ui-common/build/reports
+    - lib/jbotsim-ui-swing/build/reports
+    - lib/jbotsim-serialization-common/build/reports
+    name: tests
 
