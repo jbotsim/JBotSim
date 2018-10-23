@@ -1,5 +1,6 @@
 description = "JBotSim UI Common: generates/publish a jar containing common classes for UI manipulation."
 def displayName = "JBotSim UI Common"
+def displayDescription = "Jar containing common classes for UI manipulation for JBotSim."
 
 dependencies {
     api project(':lib:jbotsim-core')
@@ -13,7 +14,7 @@ publishing {
             artifact javadocJar
             artifact sourcesJar
 
-            pom createConfigureActionForPom (displayName,  project.description)
+            pom createConfigureActionForPom (displayName,  displayDescription)
         }
     }
     signing {

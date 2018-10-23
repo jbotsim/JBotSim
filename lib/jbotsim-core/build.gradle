@@ -1,5 +1,6 @@
 description = "JBotSim Core: generates/publish a jar containing the core of JBotSim."
 def displayName = "JBotSim Core"
+def displayDescription = "Jar containing the core of JBotSim."
 
 publishing {
     publications {
@@ -9,7 +10,7 @@ publishing {
             artifact javadocJar
             artifact sourcesJar
 
-            pom createConfigureActionForPom (displayName,  project.description)
+            pom createConfigureActionForPom (displayName,  displayDescription)
         }
     }
     signing {
