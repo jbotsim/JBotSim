@@ -4,8 +4,8 @@
  * <p>Currently two kind of objects can be stored using XML format:</p>
  * <ul>
  *     <li>{@link io.jbotsim.core.Topology Topologies}</li>
- *     <li>Traces of simulations of topologies (see {@link io.jbotsim.replay.TraceRecorder} and
- *     {@link io.jbotsim.replay.TracePlayer}).</li>
+ *     <li>Traces of simulations of topologies (see {@link io.jbotsim.dynamicity.movement.trace.TraceRecorder} and
+ *     {@link io.jbotsim.dynamicity.movement.trace.TracePlayer}).</li>
  * </ul>
  *
  * <p>In order to store (into a file or elsewhere) one of these objects, an {@link io.jbotsim.format.xml.XMLBuilder}
@@ -26,7 +26,7 @@
  * </pre>
  *
  * <p>Similarly the loading of an XML document is realized given a destination object i.e. either a
- * {@link io.jbotsim.core.Topology} or a {@link io.jbotsim.replay.TracePlayer}. For instance the following code initializes
+ * {@link io.jbotsim.core.Topology} or a {@link io.jbotsim.dynamicity.movement.trace.TracePlayer}. For instance the following code initializes
  * a topology {@code tp} with the first parameter of the {@code main} method: </p>
  * <pre>
  *  Topology tp = new Topology();

@@ -1,4 +1,4 @@
-package io.jbotsim.dygraph;
+package io.jbotsim.dynamicity.graph;
 
 import java.util.Iterator;
 import java.util.TreeSet;

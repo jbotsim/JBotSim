@@ -3,7 +3,7 @@ package examples.features.replay;
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.format.xml.XMLTopologyParser;
-import io.jbotsim.replay.TraceRecorder;
+import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
 
 public class Record {
     public static void main(String[] args) {

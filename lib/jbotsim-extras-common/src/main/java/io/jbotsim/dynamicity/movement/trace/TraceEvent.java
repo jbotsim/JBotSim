@@ -1,4 +1,4 @@
-package io.jbotsim.replay;
+package io.jbotsim.dynamicity.movement.trace;
 
 public class TraceEvent {
     public enum EventKind {

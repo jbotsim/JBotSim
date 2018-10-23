@@ -3,8 +3,8 @@ package examples.misc.dynamicgraphs;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.dygraph.EMEGPlayer;
-import io.jbotsim.dygraph.TVG;
+import io.jbotsim.dynamicity.graph.EMEGPlayer;
+import io.jbotsim.dynamicity.graph.TVG;
 
 public class EdgeMarkovian {
 	public static void main(String args[]){

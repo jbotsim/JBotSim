@@ -1,7 +1,7 @@
 package io.jbotsim.format.xml;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.replay.TraceRecorder;
+import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;

@@ -1,8 +1,8 @@
 package io.jbotsim.format.xml;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.replay.TraceEvent;
-import io.jbotsim.replay.TracePlayer;
+import io.jbotsim.dynamicity.movement.trace.TraceEvent;
+import io.jbotsim.dynamicity.movement.trace.TracePlayer;
 import org.w3c.dom.Element;
 
 import static io.jbotsim.format.xml.XMLKeys.*;

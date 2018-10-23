@@ -1,4 +1,4 @@
-package io.jbotsim.dygraph;
+package io.jbotsim.dynamicity.graph;
 
 import io.jbotsim.core.Topology;
 

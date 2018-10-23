@@ -1,4 +1,4 @@
-package io.jbotsim.replay;
+package io.jbotsim.dynamicity.movement.trace;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
