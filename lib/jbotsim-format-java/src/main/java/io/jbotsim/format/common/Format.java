@@ -1,13 +1,10 @@
 package io.jbotsim.format.common;
 
 import io.jbotsim.core.Topology;
+import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.format.plain.PlainFormatter;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.regex.Pattern;
 
 public class Format {
@@ -39,11 +36,21 @@ public class Format {
      * @param formatter What format to use
      */
     public static void exportToFile(Topology topology, String filename, Formatter formatter) {
-        try (PrintWriter out = new PrintWriter(filename)) {
-            out.print(formatter.exportTopology(topology));
-        } catch (FileNotFoundException e) {
+        FileAccessor fileAccessor = topology.getFileAccessor();
+
+        try {
+            OutputStream outputStream = fileAccessor.getOutStreamForName(filename);
+            String exportedString = formatter.exportTopology(topology);
+            writeStringToStream(outputStream, exportedString);
+            outputStream.flush();
+            outputStream.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    protected static void writeStringToStream(OutputStream outputStream, String data) throws IOException {
+        outputStream.write(data.getBytes());
     }
 
     /**
@@ -86,12 +93,34 @@ public class Format {
      * @param formatter The format to use
      */
     public static void importFromFile(Topology topology, String filename, Formatter formatter) {
+        FileAccessor fileAccessor = topology.getFileAccessor();
         try {
-            String s = new String(Files.readAllBytes(Paths.get(filename)));
+            InputStream file = fileAccessor.getInputStreamForName(filename);
+            String s = readInputStreamContentAsString(file);
             formatter.importTopology(topology, s);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Reads the content of the provided {@link InputStream} object and returns it as a String.<br/>
+     * Note: This method uses a {@link BufferedReader} to read the file.
+     * @param in the {@link InputStream} from which data must be read
+     * @return a String representing the content
+     * @throws IOException
+     */
+    protected static String readInputStreamContentAsString(InputStream in) throws IOException {
+        InputStreamReader inputStreamReader = new InputStreamReader(in);
+        BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+
+        StringBuilder stringBuilder = new StringBuilder();
+        String read;
+        while ((read = bufferedReader.readLine()) != null)
+            stringBuilder.append(read+'\n');
+
+        return stringBuilder.toString();
     }
 
     /**

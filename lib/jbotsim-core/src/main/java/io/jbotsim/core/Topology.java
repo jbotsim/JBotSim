@@ -14,10 +14,13 @@ package io.jbotsim.core;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
 import io.jbotsim.core.event.*;
+import io.jbotsim.core.io.DefaultFileAccessor;
+import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.FileAccessorProvider;
 
 import java.util.*;
 
-public class Topology extends _Properties implements ClockListener {
+public class Topology extends _Properties implements ClockListener, FileAccessorProvider {
     public static final int DEFAULT_WIDTH = 600;
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
@@ -47,6 +50,8 @@ public class Topology extends _Properties implements ClockListener {
     private boolean step = false;
     private boolean isStarted = false;
     private int nextID = 0;
+    private FileAccessor fileAccessor = new DefaultFileAccessor();
+
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
@@ -523,7 +528,7 @@ public class Topology extends _Properties implements ClockListener {
             arcs.add(l);
             l.source.outLinks.put(l.destination, l);
             if (l.destination.outLinks.containsKey(l.source)) {
-                Link edge = new Link(l.source, l.destination, Link.Type.UNDIRECTED, l.mode);
+                Link edge = new Link(l.source, l.destination, Type.UNDIRECTED, l.mode);
                 edges.add(edge);
                 if (!silent)
                     notifyLinkAdded(edge);
@@ -532,7 +537,7 @@ public class Topology extends _Properties implements ClockListener {
             Link arc1 = l.source.outLinks.get(l.destination);
             Link arc2 = l.destination.outLinks.get(l.source);
             if (arc1 == null) {
-                arc1 = new Link(l.source, l.destination, Link.Type.DIRECTED);
+                arc1 = new Link(l.source, l.destination, Type.DIRECTED);
                 arcs.add(arc1);
                 arc1.source.outLinks.put(arc1.destination, arc1);
                 if (!silent)
@@ -541,7 +546,7 @@ public class Topology extends _Properties implements ClockListener {
                 arc1.mode = l.mode;
             }
             if (arc2 == null) {
-                arc2 = new Link(l.destination, l.source, Link.Type.DIRECTED);
+                arc2 = new Link(l.destination, l.source, Type.DIRECTED);
                 arcs.add(arc2);
                 arc2.source.outLinks.put(arc2.destination, arc2);
                 if (!silent)
@@ -688,7 +693,7 @@ public class Topology extends _Properties implements ClockListener {
             //int pos=arcs.indexOf(l);
             //return (pos != -1)?arcs.get(pos):null;
         } else {
-            Link l = new Link(from, to, Link.Type.UNDIRECTED);
+            Link l = new Link(from, to, Type.UNDIRECTED);
             int pos = edges.indexOf(l);
             return (pos != -1) ? edges.get(pos) : null;
         }
@@ -885,6 +890,16 @@ public class Topology extends _Properties implements ClockListener {
      */
     public void removeClockListener(ClockListener listener) {
         clockManager.removeClockListener(listener);
+    }
+
+    @Override
+    public void setFileAccessor(FileAccessor accessor) {
+        fileAccessor = accessor;
+    }
+
+    @Override
+    public FileAccessor getFileAccessor() {
+        return fileAccessor;
     }
 
     protected void notifyLinkAdded(Link l) {
