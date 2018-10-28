@@ -22,7 +22,7 @@ public class Topology extends _Properties implements ClockListener {
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
     public static final double DEFAULT_SENSING_RANGE = 0;
-    ClockManager clockManager;
+    public ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
     List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
     List<TopologyListener> topologyListeners = new ArrayList<>();

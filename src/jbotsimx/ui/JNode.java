@@ -104,7 +104,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
             newXform.rotate(direction + Math.PI / 2, drawSize, drawSize);
             g2d.setTransform(newXform);
         }
-        g2d.drawImage(scaledIcon, 0, 0, null);
+        //g2d.drawImage(scaledIcon, 0, 0, null);
         JTopology jTopology = (JTopology) this.getParent();
         for (NodePainter painter : jTopology.nodePainters)
             painter.paintNode(g2d, node);

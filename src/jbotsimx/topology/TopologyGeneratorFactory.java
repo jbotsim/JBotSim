@@ -431,7 +431,7 @@ public class TopologyGeneratorFactory {
                     }
                     n.setCommunicationRange(0);
                     //n.setWirelessStatus(wirelessEnabled);
-
+                    n.setColor(Color.ORANGE);
                     tp.addNode(n);
                     result[i][j] = n;
                 }

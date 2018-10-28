@@ -88,6 +88,11 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      *                 (e.g. for embedding the JViewer in your own frame).
      */
     public JViewer(JTopology jtopo, boolean windowed) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+
+        }
         jtp = jtopo;
         jtp.addCommand("Set communication range");
         jtp.addCommand("Set sensing range");
