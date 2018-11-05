@@ -11,15 +11,17 @@ public interface FileAccessor {
 
 
     /**
-     * Returns a {@link File} object corresponding to the provided file name
+     * Returns an {@link InputStream} object corresponding to the provided file name
      * @param filename the name of the file to open
-     * @return a {@link File}
+     * @return a {@link InputStream}
      */
-//    File getFileForName(String filename);
-    InputStream getInputStreamForResourceName(String filename) throws IOException;
-    
     InputStream getInputStreamForName(String filename) throws IOException;
 
-    OutputStream getOutStreamForName(String filename) throws IOException;
+    /**
+     * Returns an {@link OutputStream} object corresponding to the provided file name
+     * @param filename the name of the file to open
+     * @return a {@link OutputStream}
+     */
+    OutputStream getOutputStreamForName(String filename) throws IOException;
 
 }

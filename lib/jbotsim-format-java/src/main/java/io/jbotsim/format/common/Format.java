@@ -39,7 +39,7 @@ public class Format {
         FileAccessor fileAccessor = topology.getFileAccessor();
 
         try {
-            OutputStream outputStream = fileAccessor.getOutStreamForName(filename);
+            OutputStream outputStream = fileAccessor.getOutputStreamForName(filename);
             String exportedString = formatter.exportTopology(topology);
             writeStringToStream(outputStream, exportedString);
             outputStream.flush();
