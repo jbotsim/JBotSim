@@ -3,8 +3,8 @@ package io.jbotsim.dynamicity.movement.trace;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
-import io.jbotsim.format.xml.XMLParser;
-import io.jbotsim.format.xml.XMLTraceParser;
+import io.jbotsim.io.serialization.xml.XMLParser;
+import io.jbotsim.io.serialization.xml.XMLTraceParser;
 
 import java.util.HashMap;
 import java.util.LinkedList;

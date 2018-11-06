@@ -1,0 +1,23 @@
+description = "JBotSim Serialization Common: generates/publish a jar containing extension classes for topologies serialization (import/export)."
+def displayName = "JBotSim Format Common"
+def displayDescription = "Jar containing extension classes for topologies serialization (import/export) for JBotSim."
+
+dependencies {
+  api project(':lib:jbotsim-core')
+}
+
+publishing {
+  publications {
+    formatCommon(MavenPublication) {
+
+      from components.java
+      artifact javadocJar
+      artifact sourcesJar
+
+      pom createConfigureActionForPom (displayName,  displayDescription)
+    }
+  }
+  signing {
+    sign publishing.publications.formatCommon
+  }
+}

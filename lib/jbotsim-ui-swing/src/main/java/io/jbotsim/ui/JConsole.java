@@ -27,8 +27,8 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
-import io.jbotsim.format.plain.PlainFormatter;
-import io.jbotsim.format.tikz.TikzFormatter;
+import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
+import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
 
 @SuppressWarnings("serial")
 public class JConsole extends TextArea implements TextListener{
@@ -71,9 +71,9 @@ public class JConsole extends TextArea implements TextListener{
            }else if (args[0].equals("load")){
                topo.clear();
                String exemple="communicationRange 0.0\nsensingRange 0.0\nA [345.0, 291.0]\nB [419.0, 239.0]\nC [367.0, 367.0]\nNode@671f95 [388.0, 305.0]\nA <--> B\nA <--> C\n";
-               new PlainFormatter().importTopology(topo, exemple);
+               new PlainTopologySerializer().importTopology(topo, exemple);
            }else if (args[0].equals("tikz")){
-               this.setText(new TikzFormatter().exportTopology(topo));
+               this.setText(new TikzTopologySerializer().exportTopology(topo));
            }else if (args[0].equals("rename")){
                Node n=(Node)topo.getProperty("selectedNode");
                if (n!=null) 

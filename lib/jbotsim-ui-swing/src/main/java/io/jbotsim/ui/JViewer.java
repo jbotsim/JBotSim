@@ -14,7 +14,12 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core._Properties;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.format.common.Format;
+import io.jbotsim.io.serialization.topology.FileTopologySerializer;
+import io.jbotsim.io.serialization.topology.TopologySerializerFilenameMatcher;
+import io.jbotsim.io.serialization.topology.string.TopologySerializer;
+import io.jbotsim.io.serialization.topology.string.dot.DotTopologySerializer;
+import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
+import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -201,17 +206,71 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             jtp.topo.restart();
         } else if (command.equals("Execute a single step")) {
             jtp.topo.step();
-        } else if (command.equals("Load topology")) {
-            JFileChooser fc = new JFileChooser();
-            fc.showOpenDialog(jtp.getParent());
-            if (fc.getSelectedFile() != null)
-                Format.importFromFile(jtp.topo, fc.getSelectedFile().toString());
-        } else if (command.equals("Save topology")) {
-            JFileChooser fc = new JFileChooser();
-            fc.showSaveDialog(jtp.getParent());
-            if (fc.getSelectedFile() != null)
-                Format.exportToFile(jtp.topo, fc.getSelectedFile().toString());
+        } else {
+            if (command.equals("Load topology")) {
+                executeLoadTopology();
+            } else if (command.equals("Save topology")) {
+                executeSaveTopology();
+            }
         }
+    }
+
+    private void executeSaveTopology() {
+        String filename = getFilenameFromUser();
+        if (filename == null) return;
+
+        TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
+
+        new FileTopologySerializer().exportToFile(jtp.topo, filename, serializer);
+    }
+
+    private void executeLoadTopology() {
+        String filename = getFilenameFromUser();
+        if (filename == null) return;
+
+        TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
+
+        new FileTopologySerializer().importFromFile(jtp.topo, filename, serializer);
+    }
+
+    /**
+     * Manages user interactions in order to retrieve a filename.
+     *
+     * @return the filename in case of success, null otherwise
+     */
+    private String getFilenameFromUser() {
+        JFileChooser fc = new JFileChooser();
+        fc.showOpenDialog(jtp.getParent());
+        if (fc.getSelectedFile() == null)
+            return null;
+        return fc.getSelectedFile().toString();
+    }
+
+    /**
+     * Search a known {@link TopologySerializer} matching with the provided filename.<br/>
+     * If not found, the result of {@link Topology#getTopologySerializer()} is returned.
+     *
+     * @param filename the filename too be matched
+     * @param topology the {@link Topology} to use as fallback if no match is found
+     * @return a {@link TopologySerializer}
+     */
+    private TopologySerializer getTopologySerializerForFilename(String filename, Topology topology) {
+        TopologySerializerFilenameMatcher filenameMatcher = getConfiguredTopologyFileNameMatcher();
+        TopologySerializer serializer = filenameMatcher.getTopologySerializerFor(filename);
+
+        if(serializer == null)
+            serializer = topology.getTopologySerializer();
+
+        return serializer;
+    }
+
+    private TopologySerializerFilenameMatcher getConfiguredTopologyFileNameMatcher() {
+        TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
+//        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologyFormatter());
+        filenameMatcher.addTopologySerializer(".*\\.dot",new DotTopologySerializer());
+        filenameMatcher.addTopologySerializer(".*\\.tikz",new TikzTopologySerializer());
+        filenameMatcher.addTopologySerializer(".*\\.plain",new PlainTopologySerializer());
+        return filenameMatcher;
     }
 
     @Override

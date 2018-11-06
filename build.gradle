@@ -16,9 +16,9 @@ subprojects {
     targetCompatibility = 1.8
 
     group = "io.jbotsim"
-    version = '1.0-beta02-SNAPSHOT'
+    version = '1.0-beta10-SNAPSHOT'
 
-    ext.depVersion = '1.0-beta02-SNAPSHOT'
+    ext.depVersion = '1.0-beta10-SNAPSHOT'
 
     repositories {
         mavenLocal()

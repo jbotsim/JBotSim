@@ -17,6 +17,8 @@ import io.jbotsim.core.event.*;
 import io.jbotsim.core.io.DefaultFileAccessor;
 import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.core.io.FileAccessorProvider;
+import io.jbotsim.io.serialization.topology.string.TopologySerializer;
+import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
 
 import java.util.*;
 
@@ -51,6 +53,7 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
     private boolean isStarted = false;
     private int nextID = 0;
     private FileAccessor fileAccessor = new DefaultFileAccessor();
+    private TopologySerializer topologySerializer = new PlainTopologySerializer();
 
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
@@ -73,6 +76,14 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
         setScheduler(new DefaultScheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
+    }
+
+    /**
+     * Creates a topology and populates it from a serialized {@link String} representation.
+     * @param serialized a {@link String} representation of a {@link Topology} object.
+     */
+    public Topology(String serialized) {
+        fromString(serialized);
     }
 
     /**
@@ -902,6 +913,22 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
         return fileAccessor;
     }
 
+    /**
+     * Provides a {@link TopologySerializer}.
+     * @return a {@link TopologySerializer}.
+     */
+    public TopologySerializer getTopologySerializer() {
+        return topologySerializer;
+    }
+
+    /**
+     *  Sets the new {@link TopologySerializer} to use.
+     * @param topologySerializer the new {@link TopologySerializer} to use.
+     */
+    public void setTopologySerializer(TopologySerializer topologySerializer) {
+        this.topologySerializer = topologySerializer;
+    }
+
     protected void notifyLinkAdded(Link l) {
         if (l.type == Type.DIRECTED) {
             l.endpoint(0).onDirectedLinkAdded(l);
@@ -1003,7 +1030,22 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
 
     @Override
     public String toString() {
-        System.err.println("Export and Import has been removed from Topology (see format extensions)");
-        return "";
+        if(topologySerializer == null)
+            return "";
+
+        return topologySerializer.exportTopology(this);
+    }
+
+    /**
+     * Populates the {@link Topology} based on the date found in the provided {@link String}.<br/>
+     *
+     * The {@link String} is deserialized using the {@link TopologySerializer} configured by
+     * {@link #setTopologySerializer(TopologySerializer)} and {@link #getTopologySerializer()}.
+     * @param s
+     */
+    public void fromString(String s) {
+        clear();
+
+        topologySerializer.importTopology(this, s);
     }
 }

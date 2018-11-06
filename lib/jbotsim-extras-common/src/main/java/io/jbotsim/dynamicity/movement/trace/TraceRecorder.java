@@ -6,8 +6,8 @@ import io.jbotsim.core.event.MovementListener;
 import io.jbotsim.core.event.SelectionListener;
 import io.jbotsim.core.event.StartListener;
 import io.jbotsim.core.event.TopologyListener;
-import io.jbotsim.format.xml.XMLBuilder;
-import io.jbotsim.format.xml.XMLTraceBuilder;
+import io.jbotsim.io.serialization.xml.XMLBuilder;
+import io.jbotsim.io.serialization.xml.XMLTraceBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
