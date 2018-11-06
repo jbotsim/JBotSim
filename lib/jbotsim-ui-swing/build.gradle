@@ -3,7 +3,7 @@ def displayName = "JBotSim UI Swing"
 def displayDescription = "Jar containing AWT/SWING-specific classes for UI manipulation for JBotSim."
 
 dependencies {
-    api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-java'), project(':lib:jbotsim-ui-common')
+    api project(':lib:jbotsim-core'), project(':lib:jbotsim-format-common'), project(':lib:jbotsim-ui-common')
 }
 
 publishing {

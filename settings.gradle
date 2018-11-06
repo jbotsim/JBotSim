@@ -1,4 +1,4 @@
-include 'lib:jbotsim-core', 'lib:jbotsim-format-common', 'lib:jbotsim-format-java', 'lib:jbotsim-extras-common', 'lib:jbotsim-extras-swing', 'lib:jbotsim-ui-common', 'lib:jbotsim-ui-swing',
+include 'lib:jbotsim-core', 'lib:jbotsim-format-common', 'lib:jbotsim-extras-common', 'lib:jbotsim-extras-swing', 'lib:jbotsim-ui-common', 'lib:jbotsim-ui-swing',
         'apps:examples', 'apps:test-classes',
         'fats:jbotsim-full', 'fats:jbotsim-common'
 
