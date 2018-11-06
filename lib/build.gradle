@@ -1,11 +1,11 @@
 description = "Sub project regrouping each 'unitary' jar."
 
-apply plugin: "maven-publish"
-apply plugin: "java-library"
 
 String localRepositoryName = "LocalRepo"
 String sonatypeRepositoryName = "Sonatype"
-String remoteRepositoryName = "NexusDocker"
+String nexusDockerRepositoryName = "NexusDocker"
+String remoteRepositoryName = nexusDockerRepositoryName
+
 subprojects {
 
     apply plugin: "java-library"
@@ -18,7 +18,7 @@ subprojects {
 
         repositories {
             maven {
-                name = 'NexusDocker'
+                name = nexusDockerRepositoryName
 
                 def releasesRepoUrl = "http://localhost:8081/nexus/content/repositories/releases/"
                 def snapshotsRepoUrl = "http://localhost:8081/nexus/content/repositories/snapshots/"
@@ -35,7 +35,7 @@ subprojects {
 
         repositories {
             maven {
-                name = 'Sonatype'
+                name = sonatypeRepositoryName
 
                 def stagingRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
                 def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
@@ -52,7 +52,7 @@ subprojects {
 
         repositories {
             maven {
-                name = 'LocalRepo'
+                name = localRepositoryName
                 url = "file://${rootDir}/repo"
             }
         }
@@ -97,7 +97,7 @@ task publishToTestRepository {
 
 task publishToRemoteRepository {
     group = 'publishing'
-    description = 'Publishes all Maven publications to the configured remote Maven repository.'
+    description = "Publishes all Maven publications to the configured remote Maven repository (currently: $remoteRepositoryName)."
 
     String bestEffortTaskName = "PublicationTo" + remoteRepositoryName
     dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
