@@ -61,13 +61,17 @@ public class Point implements Serializable {
     }
 
     public void setLocation(Point p) {
-        setLocation(p.getX(), p.getY());
+        setLocation(p.getX(), p.getY(), p.getZ());
     }
 
     public void setLocation(double x, double y) {
+        setLocation(x, y, 0);
+    }
+
+    protected void setLocation(double x, double y, double z) {
         this.x = x;
         this.y = y;
-        this.z = 0;
+        this.z = z;
     }
 
     public double distance(double px, double py) {
