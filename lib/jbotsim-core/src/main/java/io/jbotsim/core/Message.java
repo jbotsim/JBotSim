@@ -14,6 +14,9 @@ package io.jbotsim.core;
 
 import java.util.HashMap;
 
+/**
+ * <p>The {@link Message} object simply encode a message exchanged by two {@link Node}s.</p>
+ */
 public final class Message extends _Properties {
     protected Node sender;
     protected Node destination;

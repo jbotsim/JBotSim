@@ -15,6 +15,18 @@ import io.jbotsim.core.event.ClockListener;
 
 import java.util.List;
 
+/**
+ * <p>The {@link Scheduler} defines JBotSim's scheduler.</p>
+ *
+ * <p>It provides an {@link #onClock(Topology, List)} method which is supposed to be called regularly.</p>
+ */
 public interface Scheduler {
+
+    /**
+     * Performs the regular scheduling operations.
+     *
+     * @param tp a {@link Topology} object on which the scheduling must take place
+     * @param expiredListeners a list of {@link ClockListener} that are to be informed
+     */
     void onClock(Topology tp, List<ClockListener> expiredListeners);
 }

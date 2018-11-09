@@ -2,6 +2,11 @@ package io.jbotsim.core;
 
 import java.io.Serializable;
 
+/**
+ * <p>The {@link Point} used by JBotSim.</p>
+ *
+ * <p>The third dimension is optionalclass supports three dimensions.</p>
+ */
 public class Point implements Serializable {
     public double x;
     public double y;

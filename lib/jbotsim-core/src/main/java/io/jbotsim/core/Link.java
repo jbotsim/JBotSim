@@ -16,6 +16,13 @@ package io.jbotsim.core;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <p>The {@link Link} object encodes a communication link between two {@link Node}s.</p>
+ *
+ * <p>Links can either be {@link Type#DIRECTED} or {@link Type#UNDIRECTED}, and either
+ * {@link Mode#WIRED} or {@link Mode#WIRELESS}.
+ * The by default, a link will be {@link Type#UNDIRECTED} and {@link Mode#WIRELESS}.</p>
+ */
 public class Link extends _Properties implements Comparable<Link> {
     public static final Color DEFAULT_COLOR = Color.darkGray;
     public static final int DEFAULT_WIDTH = 1;

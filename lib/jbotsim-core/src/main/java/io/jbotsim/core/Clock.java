@@ -11,6 +11,12 @@
  */
 package io.jbotsim.core;
 
+/**
+ * <p>The abstract class {@link Clock} is used by the {@link ClockManager} to provide JBotSim with a clock mechanism.</p>
+ *
+ * <p>A {@link DefaultClock} is provided, but each platform/implementation is able to use its own clock by subclassiong
+ * the {@link Clock} class.</p>
+ */
 public abstract class Clock {
     protected ClockManager manager;
 

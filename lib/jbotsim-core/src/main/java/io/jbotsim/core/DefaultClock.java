@@ -21,6 +21,16 @@
 
 package io.jbotsim.core;
 
+/**
+ * <p>The {@link DefaultClock} is JBotSim default implementation of the {@link Clock}.</p>
+ *
+ * <p>Implementation remarks:</p>
+ * <ul>
+ *     <li>It uses a {@link Thread} to perform the clock</li>
+ *     <li>The time delay is simply ignored</li>
+ * </ul>
+ *
+ */
 public class DefaultClock extends Clock implements Runnable{
     volatile boolean running;
     Thread timer;
@@ -48,36 +58,22 @@ public class DefaultClock extends Clock implements Runnable{
     public void setTimeUnit(int delay) {
     }
 
-    /**
-     * Indicates whether the clock is currently running or paused.
-     *
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
-     */
     @Override
     public boolean isRunning() {
         return running;
     }
 
-    /**
-     * Starts the clock.
-     */
     @Override
     public void start() {
         running = true;
         timer.start();
     }
 
-    /**
-     * Pauses the clock.
-     */
     @Override
     public void pause() {
         running = false;
     }
 
-    /**
-     * Resumes the clock if it was paused.
-     */
     @Override
     public void resume() {
         running = true;

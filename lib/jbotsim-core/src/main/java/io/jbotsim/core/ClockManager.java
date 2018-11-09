@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * <p>The {@link ClockManager} is used by the {@link Topology} object to implement its clock mechanism.</p>
+ */
 public class ClockManager {
     Topology tp;
     HashMap<ClockListener, Integer> listeners = new HashMap<>();

@@ -17,6 +17,12 @@ import java.util.List;
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.core.event.MovementListener;
 
+/**
+ * <p>The {@link Node} object is one of the main component of JBotSim, since it encodes an element of the graph/network.
+ * It is used by the {@link Topology} along with the {@link Link} object to represent the graph.</p>
+ *
+ * <p>Any behavior modification should be implemented by subclassing this class.</p>
+ */
 public class Node extends _Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;
     public static final int DEFAULT_SIZE = 8;

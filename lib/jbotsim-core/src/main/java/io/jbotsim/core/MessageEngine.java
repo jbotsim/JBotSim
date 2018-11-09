@@ -16,6 +16,10 @@ import io.jbotsim.core.event.MessageListener;
 
 import java.util.ArrayList;
 
+/**
+ * <p>The {@link MessageEngine} is responsible for regularly (it is a {@link ClockListener}) transmitting available
+ * {@link Message}s from any sender {@link Node} of the {@link Topology} to their destination.</p>
+ */
 public class MessageEngine implements ClockListener {
     protected Topology topology;
     protected boolean debug = false;
@@ -29,6 +33,7 @@ public class MessageEngine implements ClockListener {
         topology.addClockListener(this, speed);
     }
 
+    @Override
     public void onClock() {
         clearMailboxes();
         processMessages(collectMessages());
