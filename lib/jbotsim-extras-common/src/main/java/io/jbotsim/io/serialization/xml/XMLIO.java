@@ -1,5 +1,6 @@
 package io.jbotsim.io.serialization.xml;
 
+import io.jbotsim.core.io.FileAccessor;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -17,14 +18,10 @@ import java.io.*;
  * follow XML syntax; the validation of the document must be realized elsewhere.
  */
 public class XMLIO {
-    /**
-     * Outputs the given <code>document</code> on standard output.
-     *
-     * @param document writen on standard output
-     * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
-     */
-    public static void write(Document document) throws XMLIOException {
-        write(new PrintWriter(System.out, true), document);
+    private static FileAccessor fileAccessor;
+
+    public XMLIO(FileAccessor fileAccessor) {
+        this.fileAccessor = fileAccessor;
     }
 
     /**
@@ -34,42 +31,15 @@ public class XMLIO {
      * @param document to be written in <code>filename</code>
      * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
      */
-    public static void write(String filename, Document document) throws XMLIOException {
+    public void write(String filename, Document document) throws XMLIOException {
         try {
-            PrintWriter out = new PrintWriter(filename);
-            write(out, document);
-        } catch (FileNotFoundException e) {
-            throw new XMLIOException(e);
-        }
-    }
-
-    /**
-     * Outputs the given <code>document</code> to a file descriptor.
-     *
-     * @param file descriptor of the destination file
-     * @param document to be written in <code>filename</code>
-     * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
-     */
-    public static void write(File file, Document document) throws XMLIOException {
-        try {
-            PrintWriter out = new PrintWriter(new FileWriter(file));
-            write(out, document);
+            OutputStream outputStream = fileAccessor.getOutputStreamForName(filename);
+            write(new OutputStreamWriter(outputStream), document);
         } catch (FileNotFoundException e) {
             throw new XMLIOException(e);
         } catch (IOException e) {
             throw new XMLIOException(e);
         }
-    }
-
-    /**
-     * Outputs the given <code>document</code> to a stream.
-     *
-     * @param ostream the output stream
-     * @param document to be written in <code>filename</code>
-     * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
-     */
-    public static void write(OutputStream ostream, Document document) throws XMLIOException {
-        write(new OutputStreamWriter(ostream), document);
     }
 
     /**
@@ -83,12 +53,13 @@ public class XMLIO {
         try {
             TransformerFactory tFactory =
                     TransformerFactory.newInstance();
-            tFactory.setAttribute("indent-number", 2);
 
             Transformer transformer =
                     tFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
             transformer.setOutputProperty(OutputKeys.METHOD, "xml");
             DOMSource source = new DOMSource(doc);
             StreamResult result = new StreamResult(out);
@@ -118,29 +89,9 @@ public class XMLIO {
      * @return the XML document as a {@link Document}
      * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
      */
-    public static Document read(String filename) throws XMLIOException {
+    public Document read(String filename) throws XMLIOException {
         try {
-            InputStream input = new FileInputStream(filename);
-            Document result = read(input);
-            input.close();
-            return result;
-        } catch (XMLIOException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new XMLIOException(e);
-        }
-    }
-
-    /**
-     * Reads an XML document from a <code>file</code> descriptor.
-     *
-     * @param file the descriptor of the input file
-     * @return the XML document as a {@link Document}
-     * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
-     */
-    public static Document read(File file) throws XMLIOException {
-        try {
-            InputStream input = new FileInputStream(file);
+            InputStream input = fileAccessor.getInputStreamForName(filename);
             Document result = read(input);
             input.close();
             return result;
@@ -169,7 +120,7 @@ public class XMLIO {
      * @return the XML document as a {@link Document}
      * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
      */
-    public static Document read(InputStream input) throws XMLIOException {
+    protected static Document read(InputStream input) throws XMLIOException {
         return read(new InputSource(input));
     }
 
@@ -180,7 +131,7 @@ public class XMLIO {
      * @return the XML document as a {@link Document}
      * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
      */
-    public static Document read(Reader input) throws XMLIOException {
+    protected static Document read(Reader input) throws XMLIOException {
         return read(new InputSource(input));
     }
 
@@ -191,7 +142,7 @@ public class XMLIO {
      * @return the XML document as a {@link Document}
      * @throws XMLIOException is thrown if an XML operation fails or if an IO exception occurs.
      */
-    public static Document read(InputSource input) throws XMLIOException{
+    protected static Document read(InputSource input) throws XMLIOException{
         try {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = dbf.newDocumentBuilder();

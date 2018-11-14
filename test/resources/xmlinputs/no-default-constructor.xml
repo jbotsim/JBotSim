@@ -9,7 +9,7 @@
             <clock-class class="JClock" id="default"/>
         </classes>
         <graph>
-            <node class="jbotsimx.format.xml.ParserTest$NoDefaultConstructor" color="ffff0000" id="0" x="50.0"
+            <node class="io.jbotsim.io.serialization.xml.XMLParserTest$NoDefaultConstructor" color="ffff0000" id="0" x="50.0"
                   y="50.0"/>
             <node color="0000ffff" id="2" x="50.0" y="210.0"/>
             <link src="0" dst="2" color="0012345678"/>

@@ -2,6 +2,7 @@ package io.jbotsim.io.serialization.topology;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.Utils;
 import io.jbotsim.io.serialization.topology.string.TopologySerializer;
 
 import java.io.*;
@@ -44,7 +45,7 @@ public class FileTopologySerializer {
             OutputStream outputStream = fileAccessor.getOutputStreamForName(filename);
             String exportedString = topology.toString();
             topology.setTopologySerializer(topologySerializer);
-            writeStringToStream(outputStream, exportedString);
+            Utils.writeStringToStream(outputStream, exportedString);
             outputStream.flush();
             outputStream.close();
         } catch (IOException e) {
@@ -55,16 +56,6 @@ public class FileTopologySerializer {
         }
     }
 
-    /**
-     * Writes the provided data in the {@link OutputStream}.
-     *
-     * @param outputStream the {@link OutputStream} to which the data must be written
-     * @param data the data to be written
-     * @throws IOException
-     */
-    protected static void writeStringToStream(OutputStream outputStream, String data) throws IOException {
-        outputStream.write(data.getBytes());
-    }
     // endregion Export
 
     // region Import

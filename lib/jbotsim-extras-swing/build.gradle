@@ -4,6 +4,7 @@ def displayDescription = "Jar containing AWT/Swing-specific classes for several 
 
 dependencies {
     api project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-common')
+    implementation ('guru.nidi:graphviz-java:0.5+')
 }
 
 publishing {

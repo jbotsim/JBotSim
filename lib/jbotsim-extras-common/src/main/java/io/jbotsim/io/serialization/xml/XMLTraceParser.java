@@ -1,6 +1,7 @@
 package io.jbotsim.io.serialization.xml;
 
 import io.jbotsim.core.Topology;
+import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
 import org.w3c.dom.Element;
@@ -25,6 +26,24 @@ public class XMLTraceParser extends XMLParser {
      */
     public XMLTraceParser(TracePlayer tp) {
         this.tp = tp;
+    }
+
+    /**
+     * Loads and parses the document contained in (@code filename}.
+     *
+     * @param filename the name of the file to read.
+     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
+     */
+    public void parse(String filename) throws ParserException {
+        try {
+            parse(new XMLIO(getFileAccessor()).read(filename));
+        } catch (XMLIO.XMLIOException e) {
+            throw new ParserException(e);
+        }
+    }
+
+    protected FileAccessor getFileAccessor() {
+        return tp.getTopology().getFileAccessor();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.jbotsim.io.serialization.xml;
 
 import io.jbotsim.core.Topology;
+import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,6 +16,7 @@ import org.w3c.dom.Element;
  */
 public class XMLTraceBuilder extends XMLBuilder {
     private Element traceElement;
+    private Topology tp;
 
     /**
      * This constructor add to the root element of the {@link Document document} the {@code trace} element that
@@ -28,12 +30,32 @@ public class XMLTraceBuilder extends XMLBuilder {
      */
     public XMLTraceBuilder(Topology tp) throws BuilderException {
         super();
+        this.tp = tp;
         Document document = getDocument();
         traceElement = XMLKeys.TRACE.createElement(document);
         Element topo = XMLTopologyBuilder.buildTopologyElement(document, tp);
         traceElement.appendChild(topo);
 
         document.getDocumentElement().appendChild(traceElement);
+    }
+
+    protected FileAccessor getFileAccessor() {
+        return tp.getFileAccessor();
+    }
+
+    /**
+     * Outputs the current XML document into the specified file.
+     *
+     * @param filename the targeted output file
+     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
+     *         occurs.
+     */
+    public void write(String filename) throws BuilderException {
+        try {
+            new XMLIO(getFileAccessor()).write(filename, getDocument());
+        } catch (XMLIO.XMLIOException e) {
+            throw new BuilderException(e);
+        }
     }
 
     /**

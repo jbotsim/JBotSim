@@ -1,6 +1,7 @@
 package io.jbotsim.io.serialization.xml;
 
 import io.jbotsim.core.Topology;
+import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -48,52 +49,42 @@ public abstract class XMLParser {
     }
 
     /**
-     * Loads and parses the document contained in (@code filename}.
-     *
-     * @param filename the name of the file to read.
-     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
-     */
-    public void parse(String filename) throws ParserException {
-        try {
-            parse(XMLIO.read(filename));
-        } catch (XMLIO.XMLIOException e) {
-            throw new ParserException(e);
-        }
-    }
-
-    /**
      * Load and parses the document from the given {@link InputStream input stream}.
      *
      * @param input the stream from which the document is read.
      * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
      */
     public void parse(InputStream input) throws ParserException {
-        parse(new InputSource(input));
-    }
-
-    /**
-     * Loads and parses the document from the given {@link Reader reader}.
-     *
-     * @param input the reader with which the document if loaded.
-     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
-     */
-    public void parse(Reader input) throws ParserException {
-        parse(new InputSource(input));
-    }
-
-    /**
-     * Loads and parses the document from the given {@link InputSource SAX source}.
-     *
-     * @param input the source of the document
-     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
-     */
-    public void parse(InputSource input) throws ParserException {
         try {
             parse(XMLIO.read(input));
         } catch (XMLIO.XMLIOException e) {
             throw new ParserException(e);
         }
     }
+//
+//    /**
+//     * Loads and parses the document from the given {@link Reader reader}.
+//     *
+//     * @param input the reader with which the document if loaded.
+//     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
+//     */
+//    public void parse(Reader input) throws ParserException {
+//        parse(new InputSource(input));
+//    }
+//
+//    /**
+//     * Loads and parses the document from the given {@link InputSource SAX source}.
+//     *
+//     * @param input the source of the document
+//     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
+//     */
+//    public void parse(InputSource input) throws ParserException {
+//        try {
+//            parse(XMLIO.read(input));
+//        } catch (XMLIO.XMLIOException e) {
+//            throw new ParserException(e);
+//        }
+//    }
 
     /**
      * Loads and parses the document from the given {@link String string}.

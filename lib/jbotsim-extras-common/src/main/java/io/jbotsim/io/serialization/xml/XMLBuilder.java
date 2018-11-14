@@ -1,5 +1,6 @@
 package io.jbotsim.io.serialization.xml;
 
+import io.jbotsim.core.io.FileAccessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -53,51 +54,37 @@ public abstract class XMLBuilder {
         return document;
     }
 
-    /**
-     * Outputs the current XML document into the specified file.
-     *
-     * @param filename the targeted output file
-     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
-     *         occurs.
-     */
-    public void write(String filename) throws BuilderException {
-        try {
-            XMLIO.write(filename, document);
-        } catch (XMLIO.XMLIOException e) {
-            throw new BuilderException(e);
-        }
-    }
 
-
-    /**
-     * Outputs the current XML document into the specified file pointed by the given {@link File} descriptor.
-     *
-     * @param file the targeted output file
-     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
-     *         occurs.
-     */
-    public void write(File file) throws BuilderException {
-        try {
-            XMLIO.write(file, document);
-        } catch (XMLIO.XMLIOException e) {
-            throw new BuilderException(e);
-        }
-    }
-
-    /**
-     * Outputs the current XML document to the specified stream.
-     *
-     * @param ostream the targeted output
-     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
-     *         occurs.
-     */
-    public void write(OutputStream ostream) throws BuilderException {
-        try {
-            XMLIO.write(ostream, document);
-        } catch (XMLIO.XMLIOException e) {
-            throw new BuilderException(e);
-        }
-    }
+//
+//    /**
+//     * Outputs the current XML document into the specified file pointed by the given {@link File} descriptor.
+//     *
+//     * @param file the targeted output file
+//     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
+//     *         occurs.
+//     */
+//    public void write(File file) throws BuilderException {
+//        try {
+//            XMLIO.write(file, document);
+//        } catch (XMLIO.XMLIOException e) {
+//            throw new BuilderException(e);
+//        }
+//    }
+//
+//    /**
+//     * Outputs the current XML document to the specified stream.
+//     *
+//     * @param ostream the targeted output
+//     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
+//     *         occurs.
+//     */
+//    public void write(OutputStream ostream) throws BuilderException {
+//        try {
+//            XMLIO.write(ostream, document);
+//        } catch (XMLIO.XMLIOException e) {
+//            throw new BuilderException(e);
+//        }
+//    }
 
     /**
      * Outputs the current XML document into the specified file pointed by the given {@link File} descriptor.

@@ -1,6 +1,7 @@
 package io.jbotsim.io.serialization.xml;
 
 import io.jbotsim.core.*;
+import io.jbotsim.core.io.FileAccessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -12,6 +13,8 @@ import org.w3c.dom.Element;
  * {@link Topology}; for instance it is used by {@link XMLTraceBuilder}.
  */
 public class XMLTopologyBuilder extends XMLBuilder {
+    private Topology tp;
+
     /**
      * This constructor add to the root element of the {@link Document document} the {@code topology} element that
      * stores the {@link Topology topology}.
@@ -21,6 +24,7 @@ public class XMLTopologyBuilder extends XMLBuilder {
      */
     public XMLTopologyBuilder(Topology tp) throws BuilderException {
         super();
+        this.tp = tp;
         Document doc = getDocument();
         Element topo = buildTopologyElement(doc, tp);
         doc.getDocumentElement().appendChild(topo);
@@ -134,4 +138,5 @@ public class XMLTopologyBuilder extends XMLBuilder {
         XMLKeys.WIDTH_ATTR.setNotDefaultAttribute(ne, l.getWidth(), Link.DEFAULT_WIDTH);
         XMLKeys.COLOR_ATTR.setNotDefaultAttribute(ne, colorToXml(l.getColor()), colorToXml(Link.DEFAULT_COLOR));
     }
+
 }
