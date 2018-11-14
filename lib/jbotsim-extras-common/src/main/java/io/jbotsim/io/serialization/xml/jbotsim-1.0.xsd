@@ -54,6 +54,7 @@
     <xs:complexType name="node">
         <xs:attribute name="id" type="xs:token" use="required"/>
         <xs:attribute name="color" type="xs:hexBinary"/>
+        <xs:attribute name="icon" type="xs:token"/>
         <xs:attribute name="communication-range" type="xs:double"/>
         <xs:attribute name="sensing-range" type="xs:double"/>
         <xs:attribute name="direction" type="xs:double"/>

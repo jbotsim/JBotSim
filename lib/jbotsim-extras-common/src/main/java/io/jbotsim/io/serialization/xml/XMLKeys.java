@@ -11,7 +11,7 @@ import java.util.function.Function;
  * attributes with <code>_ATTR</code>. The class also offers some helper methods used by parsers and builders.
  */
 public enum XMLKeys {
-    JBOTSIM("io/jbotsim"),
+    JBOTSIM("jbotsim"),
     TOPOLOGY("topology"),
     CLASSES("classes"),
     NODECLASS("node-class"),
@@ -54,6 +54,7 @@ public enum XMLKeys {
     WIDTH_ATTR("width"),
     HEIGHT_ATTR("height"),
     COLOR_ATTR("color"),
+    ICON_ATTR("icon"),
     SIZE_ATTR("size"),
     LOCATION_X_ATTR("x"),
     LOCATION_Y_ATTR("y"),

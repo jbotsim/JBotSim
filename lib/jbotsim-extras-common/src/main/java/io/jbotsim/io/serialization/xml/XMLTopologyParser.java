@@ -180,6 +180,9 @@ public class XMLTopologyParser extends XMLParser {
         nodeids.put(id, n);
 
         n.setColor(parseColor(ne, Node.DEFAULT_COLOR));
+        if (XMLKeys.ICON_ATTR.isAttributeOf(ne)) {
+            n.setIcon(XMLKeys.ICON_ATTR.getValueFor(ne));
+        }
 
         int size = XMLKeys.SIZE_ATTR.getValueFor(ne, Node.DEFAULT_SIZE);
         n.setSize(size);

@@ -186,8 +186,7 @@ public abstract class XMLParser {
      */
     private Schema loadSchemaForVersion(String version) throws ParserException {
         SchemaFactory sF = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        String xsdpath = "/" + getClass().getPackage().getName().replace('.', '/');
-        xsdpath += "/" + XSD_RESOURCE_PREFIX + version + XSD_RESOURCE_SUFFIX;
+        String xsdpath = XSD_RESOURCE_PREFIX + version + XSD_RESOURCE_SUFFIX;
         try {
             InputStream is = getClass().getResourceAsStream(xsdpath);
             return sF.newSchema(new StreamSource(is));
