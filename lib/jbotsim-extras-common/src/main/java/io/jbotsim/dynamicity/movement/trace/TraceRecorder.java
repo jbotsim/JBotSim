@@ -6,8 +6,6 @@ import io.jbotsim.core.event.MovementListener;
 import io.jbotsim.core.event.SelectionListener;
 import io.jbotsim.core.event.StartListener;
 import io.jbotsim.core.event.TopologyListener;
-import io.jbotsim.io.serialization.xml.XMLBuilder;
-import io.jbotsim.io.serialization.xml.XMLTraceBuilder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -16,12 +14,12 @@ import java.util.List;
  * Created by acasteig on 17/05/15.
  */
 public class TraceRecorder implements MovementListener, SelectionListener, TopologyListener, StartListener {
-    private XMLTraceBuilder builder;
+    private TraceFileWriter traceFileWriter;
     private Topology tp;
     private List<TraceEvent> story;
 
-    public TraceRecorder(Topology tp) throws Exception {
-        builder = new XMLTraceBuilder(tp);
+    public TraceRecorder(Topology tp, TraceFileWriter traceFileWriter) {
+        this.traceFileWriter = traceFileWriter;
         this.tp = tp;
         story = new LinkedList<>();
         tp.addMovementListener(this);
@@ -61,11 +59,11 @@ public class TraceRecorder implements MovementListener, SelectionListener, Topol
         story.clear();
     }
 
-    public void stopAndWrite(String filename) throws XMLBuilder.BuilderException {
+    public void stopAndWrite(String filename) throws Exception {
         for(TraceEvent e : story) {
-            builder.addTraceEvent(e);
+            traceFileWriter.addTraceEvent(e);
         }
-        builder.write(filename);
+        traceFileWriter.write(filename);
     }
 
 }

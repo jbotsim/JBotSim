@@ -1,4 +1,4 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;
 
 import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.io.StringReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;

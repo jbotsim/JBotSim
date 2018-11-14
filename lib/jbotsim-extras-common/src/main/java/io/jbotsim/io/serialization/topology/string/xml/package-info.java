@@ -8,10 +8,10 @@
  *     {@link io.jbotsim.dynamicity.movement.trace.TracePlayer}).</li>
  * </ul>
  *
- * <p>In order to store (into a file or elsewhere) one of these objects, an {@link io.jbotsim.io.serialization.xml.XMLBuilder}
+ * <p>In order to store (into a file or elsewhere) one of these objects, an {@link io.jbotsim.io.serialization.topology.string.xml.XMLBuilder}
  * must be instantiated with the object to be stored as argument of the constructor. Once the document is terminated
  * (e.g. when all events of the trace have been collected), {@code write} methods are used to output the
- * {@link org.w3c.dom.Document} (the helper methods of {@link io.jbotsim.io.serialization.xml.XMLIO} can also be used).</p>
+ * {@link org.w3c.dom.Document} (the helper methods of {@link io.jbotsim.io.serialization.topology.string.xml.XMLIO} can also be used).</p>
  *
  * <p>Following example shows how to output a {@link io.jbotsim.core.Topology} on standard output (using XML format):</p>
  * <pre>
@@ -38,4 +38,4 @@
  *  }
  * </pre>
  */
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;

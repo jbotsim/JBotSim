@@ -3,8 +3,11 @@ package examples.features.replay;
 import io.jbotsim.core.Topology;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
 import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
-import io.jbotsim.io.serialization.xml.XMLParser;
-import io.jbotsim.io.serialization.xml.XMLTopologyParser;
+import io.jbotsim.io.serialization.topology.string.xml.XMLParser;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologyBuilder;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologyParser;
+import io.jbotsim.io.serialization.trace.xml.XMLTraceBuilder;
+import io.jbotsim.io.serialization.trace.xml.XMLTraceParser;
 import io.jbotsim.ui.CommandListener;
 import io.jbotsim.ui.JViewer;
 
@@ -36,7 +39,8 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
     public void onCommand(String command) {
         try {
             if (command.equals(START_RECORDER)) {
-                recorder = new TraceRecorder(topology);
+                XMLTraceBuilder xmlTopologyBuilder = new XMLTraceBuilder(topology);
+                recorder = new TraceRecorder(topology, xmlTopologyBuilder);
                 recorder.start();
             } else if (command.equals(STOP_RECORDER)) {
                 recorder.stopAndWrite(TRACE_FILENAME);
@@ -47,7 +51,7 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
                     recorder = null;
                 }
                 topology.clear();
-                player = new TracePlayer(topology);
+                player = new TracePlayer(topology, new XMLTraceParser(topology));
                 player.loadAndStart(TRACE_FILENAME);
             }
         } catch (Exception e) {

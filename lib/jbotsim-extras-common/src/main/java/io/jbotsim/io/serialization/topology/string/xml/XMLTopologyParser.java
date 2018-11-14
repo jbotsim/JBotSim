@@ -1,7 +1,6 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;
 
 import io.jbotsim.core.*;
-import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.topology.TopologyGeneratorFactory;
 import org.w3c.dom.Element;
 

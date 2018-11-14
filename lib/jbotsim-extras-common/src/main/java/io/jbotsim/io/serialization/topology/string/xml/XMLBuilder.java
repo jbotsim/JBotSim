@@ -1,6 +1,5 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;
 
-import io.jbotsim.core.io.FileAccessor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -8,7 +7,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.OutputStream;
 
 /**
  * Base class for ones used to build JBotSim XML document.
@@ -32,7 +30,7 @@ public abstract class XMLBuilder {
 
     private Document document;
 
-    XMLBuilder() throws BuilderException {
+    protected XMLBuilder() throws BuilderException {
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             document = builder.newDocument();
@@ -53,38 +51,6 @@ public abstract class XMLBuilder {
     public Document getDocument() {
         return document;
     }
-
-
-//
-//    /**
-//     * Outputs the current XML document into the specified file pointed by the given {@link File} descriptor.
-//     *
-//     * @param file the targeted output file
-//     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
-//     *         occurs.
-//     */
-//    public void write(File file) throws BuilderException {
-//        try {
-//            XMLIO.write(file, document);
-//        } catch (XMLIO.XMLIOException e) {
-//            throw new BuilderException(e);
-//        }
-//    }
-//
-//    /**
-//     * Outputs the current XML document to the specified stream.
-//     *
-//     * @param ostream the targeted output
-//     * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
-//     *         occurs.
-//     */
-//    public void write(OutputStream ostream) throws BuilderException {
-//        try {
-//            XMLIO.write(ostream, document);
-//        } catch (XMLIO.XMLIOException e) {
-//            throw new BuilderException(e);
-//        }
-//    }
 
     /**
      * Outputs the current XML document into the specified file pointed by the given {@link File} descriptor.

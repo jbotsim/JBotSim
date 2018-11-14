@@ -1,9 +1,15 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.trace.xml;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.FileAccessorProvider;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
+import io.jbotsim.dynamicity.movement.trace.TraceFileReader;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
+import io.jbotsim.io.serialization.topology.string.xml.XMLIO;
+import io.jbotsim.io.serialization.topology.string.xml.XMLKeys;
+import io.jbotsim.io.serialization.topology.string.xml.XMLParser;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologyParser;
 import org.w3c.dom.Element;
 
 /**
@@ -16,25 +22,29 @@ import org.w3c.dom.Element;
  *
  * The class does not create an new topology. It populates a {@link TracePlayer} passed to the constructor.
  */
-public class XMLTraceParser extends XMLParser {
-    private final TracePlayer tp;
+public class XMLTraceParser extends XMLParser implements TraceFileReader {
+    private TracePlayer tracePlayer;
+    private final FileAccessorProvider fileAccessorProvider;
 
     /**
      * Creates a parser for the given {@link TracePlayer}.
      *
-     * @param tp the {@link TracePlayer} that is populated by the parser.
+     * @param fileAccessorProvider the {@link TracePlayer} that is populated by the parser.
      */
-    public XMLTraceParser(TracePlayer tp) {
-        this.tp = tp;
+    public XMLTraceParser(FileAccessorProvider fileAccessorProvider) {
+        this.fileAccessorProvider = fileAccessorProvider;
     }
 
     /**
      * Loads and parses the document contained in (@code filename}.
      *
      * @param filename the name of the file to read.
+     * @param tracePlayer the {@link TracePlayer} that is populated by the parser.
      * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
      */
-    public void parse(String filename) throws ParserException {
+    @Override
+    public void parse(String filename, TracePlayer tracePlayer) throws ParserException {
+        this.tracePlayer = tracePlayer;
         try {
             parse(new XMLIO(getFileAccessor()).read(filename));
         } catch (XMLIO.XMLIOException e) {
@@ -43,16 +53,16 @@ public class XMLTraceParser extends XMLParser {
     }
 
     protected FileAccessor getFileAccessor() {
-        return tp.getTopology().getFileAccessor();
+        return fileAccessorProvider.getFileAccessor();
     }
 
     @Override
     public void parseRootElement(Element element) throws ParserException {
-        parseTraceElement(element, tp);
+        parseTraceElement(element, tracePlayer);
     }
 
     /**
-     * Populates the given {@link TracePlayer} {@code tp} with the topology and events describes by
+     * Populates the given {@link TracePlayer} {@code tracePlayer} with the topology and events describes by
      * {@link Element element}.
      *
      * @param element the root element of the XML tree describing the trace.

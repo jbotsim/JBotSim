@@ -3,8 +3,6 @@ package io.jbotsim.dynamicity.movement.trace;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
-import io.jbotsim.io.serialization.xml.XMLParser;
-import io.jbotsim.io.serialization.xml.XMLTraceParser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +14,7 @@ import java.util.PriorityQueue;
  */
 public class TracePlayer implements ClockListener {
     private Topology topology;
+    private TraceFileReader traceFileReader;
     private LinkedList<TraceEvent> events;
     private PriorityQueue<TraceEvent> story;
     private HashMap<Integer, Node> recordedNodes;
@@ -25,8 +24,9 @@ public class TracePlayer implements ClockListener {
         void onReplayTerminated(TracePlayer tracePlayer);
     }
 
-    public TracePlayer(Topology topology) {
+    public TracePlayer(Topology topology, TraceFileReader traceFileReader) {
         this.topology = topology;
+        this.traceFileReader = traceFileReader;
         events = new LinkedList<>();
         story = null;
         recordedNodes = new HashMap<Integer, Node>();
@@ -42,9 +42,8 @@ public class TracePlayer implements ClockListener {
         listeners.remove(l);;
     }
 
-    public void loadAndStart(String filename) throws XMLParser.ParserException {
-        XMLTraceParser parser = new XMLTraceParser(this);
-        parser.parse(filename);
+    public void loadAndStart(String filename) throws Exception {
+        traceFileReader.parse(filename, this);
         start();
     }
 

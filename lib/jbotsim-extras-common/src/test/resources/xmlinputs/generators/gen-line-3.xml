@@ -6,9 +6,9 @@
         <graph>
             <generator>
                 <line order="6" x=".1" y=".1" horizontal="true" width=".5"
-                      node-class="io.jbotsim.io.serialization.xml.XMLParserTest$DummyNode1"/>
+                      node-class="io.jbotsim.io.serialization.topology.string.xml.XMLParserTest$DummyNode1"/>
                 <line order="5" wired="true" x=".5" y=".5" horizontal="false" height=".3"
-                      node-class="io.jbotsim.io.serialization.xml.XMLParserTest$DummyNode2"/>
+                      node-class="io.jbotsim.io.serialization.topology.string.xml.XMLParserTest$DummyNode2"/>
             </generator>
         </graph>
     </topology>

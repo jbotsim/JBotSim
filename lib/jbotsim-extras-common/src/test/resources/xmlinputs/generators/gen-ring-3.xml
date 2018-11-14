@@ -7,11 +7,11 @@
             <generator>
                 <ring wired="true" order="1" x=".5" y=".5" width="0" height="0"/>
                 <ring wired="true" order="3" x=".5" y=".5" width="0.1" height="0.1"
-                      node-class="io.jbotsim.io.serialization.xml.XMLParserTest$DummyNode1"/>
+                      node-class="io.jbotsim.io.serialization.topology.string.xml.XMLParserTest$DummyNode1"/>
                 <ring wired="false" order="4" x=".5" y=".5" width="0.33" height="0.33"
-                      node-class="io.jbotsim.io.serialization.xml.XMLParserTest$DummyNode2"/>
+                      node-class="io.jbotsim.io.serialization.topology.string.xml.XMLParserTest$DummyNode2"/>
                 <ring directed="true" order="5" x=".5" y=".5" width="0.75" height="0.75"
-                      node-class="io.jbotsim.io.serialization.xml.XMLParserTest$DummyNode2"/>
+                      node-class="io.jbotsim.io.serialization.topology.string.xml.XMLParserTest$DummyNode2"/>
             </generator>
         </graph>
     </topology>

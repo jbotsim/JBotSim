@@ -1,4 +1,4 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

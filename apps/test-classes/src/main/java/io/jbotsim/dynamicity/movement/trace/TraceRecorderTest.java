@@ -1,6 +1,8 @@
 package io.jbotsim.dynamicity.movement.trace;
 
 import io.jbotsim.core.Topology;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologyBuilder;
+import io.jbotsim.io.serialization.trace.xml.XMLTraceBuilder;
 import io.jbotsim.ui.JViewer;
 
 public class TraceRecorderTest {
@@ -8,7 +10,7 @@ public class TraceRecorderTest {
         try {
             Topology tp = new Topology();
             String traceFileName = args[0];
-            TraceRecorder tr = new TraceRecorder(tp);
+            TraceRecorder tr = new TraceRecorder(tp, new XMLTraceBuilder(tp));
 
             Runtime.getRuntime().addShutdownHook(new Thread() {
                 @Override

@@ -2,7 +2,7 @@ package io.jbotsim.io.serialization.topology.string.dot;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.io.serialization.topology.FileTopologySerializer;
-import io.jbotsim.io.serialization.xml.XMLTopologySerializer;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologySerializer;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

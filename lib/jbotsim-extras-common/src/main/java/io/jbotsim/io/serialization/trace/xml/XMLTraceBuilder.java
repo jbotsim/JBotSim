@@ -1,8 +1,13 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.trace.xml;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.io.FileAccessor;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
+import io.jbotsim.dynamicity.movement.trace.TraceFileWriter;
+import io.jbotsim.io.serialization.topology.string.xml.XMLBuilder;
+import io.jbotsim.io.serialization.topology.string.xml.XMLIO;
+import io.jbotsim.io.serialization.topology.string.xml.XMLKeys;
+import io.jbotsim.io.serialization.topology.string.xml.XMLTopologyBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -14,7 +19,7 @@ import org.w3c.dom.Element;
  *
  * <p>Event of the {@link Topology} are recorded using {@link #addTraceEvent(TraceEvent)} method.</p>
  */
-public class XMLTraceBuilder extends XMLBuilder {
+public class XMLTraceBuilder extends XMLBuilder implements TraceFileWriter {
     private Element traceElement;
     private Topology tp;
 
@@ -50,6 +55,7 @@ public class XMLTraceBuilder extends XMLBuilder {
      * @throws BuilderException raised either when an XML error occurs while the document is created or if an IO error
      *         occurs.
      */
+    @Override
     public void write(String filename) throws BuilderException {
         try {
             new XMLIO(getFileAccessor()).write(filename, getDocument());
@@ -63,6 +69,7 @@ public class XMLTraceBuilder extends XMLBuilder {
      *
      * @param e the {@link TraceEvent event} added to the stored story
      */
+    @Override
     public void addTraceEvent(TraceEvent e){
         Document doc = getDocument();
         Element event = null;

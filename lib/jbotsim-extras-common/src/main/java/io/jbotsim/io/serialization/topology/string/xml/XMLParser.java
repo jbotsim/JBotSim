@@ -1,12 +1,8 @@
-package io.jbotsim.io.serialization.xml;
+package io.jbotsim.io.serialization.topology.string.xml;
 
-import io.jbotsim.core.Topology;
-import io.jbotsim.core.io.FileAccessor;
-import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
@@ -17,11 +13,9 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 
 /**
- * Base class for onesused to interpret XML documents that store JBotSim objects like a
- * {@link Topology topology} or a {@link TraceRecorder trace}.
+ * Base class for manipulation of XML documents that store JBotSim objects.
  *
  * <p>The class proposes several helper functions used to load and interpret a document; IO operations use {@link XMLIO}
  * methods. It parses the root node of the document to determine the version of the XSD schema used to format the
@@ -61,30 +55,6 @@ public abstract class XMLParser {
             throw new ParserException(e);
         }
     }
-//
-//    /**
-//     * Loads and parses the document from the given {@link Reader reader}.
-//     *
-//     * @param input the reader with which the document if loaded.
-//     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
-//     */
-//    public void parse(Reader input) throws ParserException {
-//        parse(new InputSource(input));
-//    }
-//
-//    /**
-//     * Loads and parses the document from the given {@link InputSource SAX source}.
-//     *
-//     * @param input the source of the document
-//     * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
-//     */
-//    public void parse(InputSource input) throws ParserException {
-//        try {
-//            parse(XMLIO.read(input));
-//        } catch (XMLIO.XMLIOException e) {
-//            throw new ParserException(e);
-//        }
-//    }
 
     /**
      * Loads and parses the document from the given {@link String string}.
@@ -210,7 +180,7 @@ public abstract class XMLParser {
      * @param v the visitor function.
      * @throws ParserException raised if an IO error occurs or if the XML document is malformed.
      */
-    protected static void mapElementChildrenOf(Node parent, XMLTopologyParser.ElementVisitor v) throws ParserException {
+    protected static void mapElementChildrenOf(Node parent, ElementVisitor v) throws ParserException {
         for (Node n = parent.getFirstChild(); n != null; n = n.getNextSibling()) {
             if (n instanceof Element)
                 v.accept((Element) n);
@@ -221,11 +191,11 @@ public abstract class XMLParser {
      * Exception raised whenever an error occurs while interpreting the XML document.
      */
     public static class ParserException extends Exception {
-        ParserException(Throwable cause) {
+        public ParserException(Throwable cause) {
             super("XML parser yields an exception.", cause);
         }
 
-        ParserException(String message) {
+        public ParserException(String message) {
             super(message);
         }
     }

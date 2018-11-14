@@ -267,6 +267,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
 //        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologyFormatter());
 //        filenameMatcher.addTopologySerializer(".*\\.dot",new DotTopologySerializer());
+//        filenameMatcher.addTopologySerializer(".*\\.xml",new XMLTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.tikz",new TikzTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.plain",new PlainTopologySerializer());
         return filenameMatcher;
