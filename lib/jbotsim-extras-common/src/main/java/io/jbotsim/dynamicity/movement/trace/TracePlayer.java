@@ -6,6 +6,7 @@ import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.io.serialization.xml.XMLParser;
 import io.jbotsim.io.serialization.xml.XMLTraceParser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -18,6 +19,11 @@ public class TracePlayer implements ClockListener {
     private LinkedList<TraceEvent> events;
     private PriorityQueue<TraceEvent> story;
     private HashMap<Integer, Node> recordedNodes;
+    private ArrayList<ReplayTerminatedListener> listeners;
+
+    public interface ReplayTerminatedListener {
+        void onReplayTerminated(TracePlayer tracePlayer);
+    }
 
     public TracePlayer(Topology topology) {
         this.topology = topology;
@@ -25,6 +31,15 @@ public class TracePlayer implements ClockListener {
         story = null;
         recordedNodes = new HashMap<Integer, Node>();
         topology.addClockListener(this);
+        listeners = new ArrayList<>();
+    }
+
+    public void addListener (ReplayTerminatedListener l) {
+        listeners.add(l);
+    }
+
+    public void removeListener (ReplayTerminatedListener l) {
+        listeners.remove(l);;
     }
 
     public void loadAndStart(String filename) throws XMLParser.ParserException {
@@ -58,6 +73,13 @@ public class TracePlayer implements ClockListener {
         while (!story.isEmpty() && story.peek().getTime() <= topology.getTime()) {
             TraceEvent e = story.remove();
             runEvent(e);
+        }
+
+        if (story.isEmpty()) {
+            for (ReplayTerminatedListener l : listeners) {
+                l.onReplayTerminated(this);
+            }
+            story = null;
         }
     }
 
