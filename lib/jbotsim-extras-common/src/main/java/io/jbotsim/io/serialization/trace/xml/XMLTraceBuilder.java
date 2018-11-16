@@ -1,7 +1,7 @@
 package io.jbotsim.io.serialization.trace.xml;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.FileAsStream;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
 import io.jbotsim.dynamicity.movement.trace.TraceFileWriter;
 import io.jbotsim.io.serialization.topology.string.xml.XMLBuilder;
@@ -44,8 +44,8 @@ public class XMLTraceBuilder extends XMLBuilder implements TraceFileWriter {
         document.getDocumentElement().appendChild(traceElement);
     }
 
-    protected FileAccessor getFileAccessor() {
-        return tp.getFileAccessor();
+    protected FileAsStream getFileAccessor() {
+        return tp.getFileManager();
     }
 
     /**

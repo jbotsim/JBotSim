@@ -1,6 +1,6 @@
 package io.jbotsim.io.serialization.topology.string.xml;
 
-import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.FileAsStream;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
@@ -18,10 +18,10 @@ import java.io.*;
  * follow XML syntax; the validation of the document must be realized elsewhere.
  */
 public class XMLIO {
-    private static FileAccessor fileAccessor;
+    private static FileAsStream fileAsStream;
 
-    public XMLIO(FileAccessor fileAccessor) {
-        this.fileAccessor = fileAccessor;
+    public XMLIO(FileAsStream fileAsStream) {
+        this.fileAsStream = fileAsStream;
     }
 
     /**
@@ -33,7 +33,7 @@ public class XMLIO {
      */
     public void write(String filename, Document document) throws XMLIOException {
         try {
-            OutputStream outputStream = fileAccessor.getOutputStreamForName(filename);
+            OutputStream outputStream = fileAsStream.getOutputStreamForName(filename);
             write(new OutputStreamWriter(outputStream), document);
         } catch (FileNotFoundException e) {
             throw new XMLIOException(e);
@@ -91,7 +91,7 @@ public class XMLIO {
      */
     public Document read(String filename) throws XMLIOException {
         try {
-            InputStream input = fileAccessor.getInputStreamForName(filename);
+            InputStream input = fileAsStream.getInputStreamForName(filename);
             Document result = read(input);
             input.close();
             return result;

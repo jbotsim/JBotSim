@@ -1,8 +1,8 @@
 package io.jbotsim.io.serialization.trace.xml;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.core.io.FileAccessor;
-import io.jbotsim.core.io.FileAccessorProvider;
+import io.jbotsim.core.io.FileAsStream;
+import io.jbotsim.core.io.FileManagerProvider;
 import io.jbotsim.dynamicity.movement.trace.TraceEvent;
 import io.jbotsim.dynamicity.movement.trace.TraceFileReader;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
@@ -24,15 +24,15 @@ import org.w3c.dom.Element;
  */
 public class XMLTraceParser extends XMLParser implements TraceFileReader {
     private TracePlayer tracePlayer;
-    private final FileAccessorProvider fileAccessorProvider;
+    private final FileManagerProvider fileManagerProvider;
 
     /**
      * Creates a parser for the given {@link TracePlayer}.
      *
-     * @param fileAccessorProvider the {@link TracePlayer} that is populated by the parser.
+     * @param fileManagerProvider the {@link TracePlayer} that is populated by the parser.
      */
-    public XMLTraceParser(FileAccessorProvider fileAccessorProvider) {
-        this.fileAccessorProvider = fileAccessorProvider;
+    public XMLTraceParser(FileManagerProvider fileManagerProvider) {
+        this.fileManagerProvider = fileManagerProvider;
     }
 
     /**
@@ -52,8 +52,8 @@ public class XMLTraceParser extends XMLParser implements TraceFileReader {
         }
     }
 
-    protected FileAccessor getFileAccessor() {
-        return fileAccessorProvider.getFileAccessor();
+    protected FileAsStream getFileAccessor() {
+        return fileManagerProvider.getFileManager();
     }
 
     @Override

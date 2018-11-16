@@ -7,7 +7,7 @@ import java.io.*;
  *
  * Specific implementation should be provided for each platform.
  */
-public interface FileAccessor {
+public interface FileAsStream {
 
 
     /**

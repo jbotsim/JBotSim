@@ -1,7 +1,7 @@
 package io.jbotsim.io.serialization.topology;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.core.io.FileAccessor;
+import io.jbotsim.core.io.FileAsStream;
 import io.jbotsim.core.io.Utils;
 import io.jbotsim.io.serialization.topology.string.TopologySerializer;
 
@@ -37,12 +37,12 @@ public class FileTopologySerializer {
      * @param topologySerializer What format to use
      */
     public void exportToFile(Topology topology, String filename, TopologySerializer topologySerializer) {
-        FileAccessor fileAccessor = topology.getFileAccessor();
+        FileAsStream fileAsStream = topology.getFileManager();
 
         TopologySerializer backupSerializer = topology.getTopologySerializer();
 
         try {
-            OutputStream outputStream = fileAccessor.getOutputStreamForName(filename);
+            OutputStream outputStream = fileAsStream.getOutputStreamForName(filename);
             String exportedString = topology.toString();
             topology.setTopologySerializer(topologySerializer);
             Utils.writeStringToStream(outputStream, exportedString);
@@ -77,12 +77,12 @@ public class FileTopologySerializer {
      * @return the updated {@link Topology} object
      */
     public Topology importFromFile(Topology topology, String filename, TopologySerializer topologySerializer) {
-        FileAccessor fileAccessor = topology.getFileAccessor();
+        FileAsStream fileAsStream = topology.getFileManager();
 
         TopologySerializer backupSerializer = topology.getTopologySerializer();
 
         try {
-            InputStream file = fileAccessor.getInputStreamForName(filename);
+            InputStream file = fileAsStream.getInputStreamForName(filename);
             String s = readInputStreamContentAsString(file);
             topology.setTopologySerializer(topologySerializer);
             topology.fromString(s);

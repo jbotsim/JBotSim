@@ -14,9 +14,8 @@ package io.jbotsim.core;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
 import io.jbotsim.core.event.*;
-import io.jbotsim.core.io.DefaultFileAccessor;
-import io.jbotsim.core.io.FileAccessor;
-import io.jbotsim.core.io.FileAccessorProvider;
+import io.jbotsim.core.io.FileManager;
+import io.jbotsim.core.io.FileManagerProvider;
 import io.jbotsim.io.serialization.topology.string.TopologySerializer;
 import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
 
@@ -28,7 +27,7 @@ import java.util.*;
  * It provides several features and convenience accessors, but at its core, it contains a set of {@link Node} objects
  * which can be linked two by two with a set of {@link Link} objects.
  */
-public class Topology extends _Properties implements ClockListener, FileAccessorProvider {
+public class Topology extends _Properties implements ClockListener, FileManagerProvider {
     public static final int DEFAULT_WIDTH = 600;
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
@@ -58,7 +57,7 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
     private boolean step = false;
     private boolean isStarted = false;
     private int nextID = 0;
-    private FileAccessor fileAccessor = new DefaultFileAccessor();
+    private FileManager fileManager = new FileManager();
     private TopologySerializer topologySerializer = new PlainTopologySerializer();
 
 
@@ -910,13 +909,13 @@ public class Topology extends _Properties implements ClockListener, FileAccessor
     }
 
     @Override
-    public void setFileAccessor(FileAccessor accessor) {
-        fileAccessor = accessor;
+    public void setFileManager(FileManager fileManager) {
+        this.fileManager = fileManager;
     }
 
     @Override
-    public FileAccessor getFileAccessor() {
-        return fileAccessor;
+    public FileManager getFileManager() {
+        return fileManager;
     }
 
     /**
