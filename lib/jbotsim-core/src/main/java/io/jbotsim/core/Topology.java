@@ -84,14 +84,6 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     }
 
     /**
-     * Creates a topology and populates it from a serialized {@link String} representation.
-     * @param serialized a {@link String} representation of a {@link Topology} object.
-     */
-    public Topology(String serialized) {
-        fromString(serialized);
-    }
-
-    /**
      * Returns the node class corresponding to that name.
      */
     public Class<? extends Node> getNodeModel(String modelName) {
@@ -1035,22 +1027,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     @Override
     public String toString() {
-        if(topologySerializer == null)
-            return "";
-
-        return topologySerializer.exportTopology(this);
+        return super.toString();
     }
 
-    /**
-     * Populates the {@link Topology} based on the date found in the provided {@link String}.<br/>
-     *
-     * The {@link String} is deserialized using the {@link TopologySerializer} configured by
-     * {@link #setTopologySerializer(TopologySerializer)} and {@link #getTopologySerializer()}.
-     * @param s
-     */
-    public void fromString(String s) {
-        clear();
-
-        topologySerializer.importTopology(this, s);
-    }
 }
