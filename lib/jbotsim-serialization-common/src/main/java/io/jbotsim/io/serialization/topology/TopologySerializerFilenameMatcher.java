@@ -1,6 +1,6 @@
 package io.jbotsim.io.serialization.topology;
 
-import io.jbotsim.io.serialization.topology.string.TopologySerializer;
+import io.jbotsim.serialization.TopologySerializer;
 
 import java.util.ArrayList;
 import java.util.List;

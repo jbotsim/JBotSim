@@ -28,7 +28,7 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
 import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
-import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
+import io.jbotsim.serialization.plain.PlainTopologySerializer;
 
 @SuppressWarnings("serial")
 public class JConsole extends TextArea implements TextListener{

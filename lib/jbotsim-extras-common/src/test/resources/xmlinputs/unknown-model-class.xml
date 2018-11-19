@@ -2,7 +2,7 @@
 <jbotsim version="1.0">
     <topology wireless-enabled="true">
         <classes>
-            <node-class class="io.jbotsim.io.serialization.topology.string.xml.BroadcastingNode" id="default"/>
+            <node-class class="io.jbotsim.serialization.xml.BroadcastingNode" id="default"/>
             <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
             <link-resolver class="nosuchclass" id="default"/>
             <scheduler class="io.jbotsim.core.DefaultScheduler" id="default"/>

@@ -64,4 +64,11 @@ task publishToInternalRepository {
     dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
 }
 
+task checkAll {
+    group = 'verification'
+    description = 'Checks that the project is in a good shape (everythings builds properly)'
+    dependsOn ':lib:jars'
+    dependsOn ':lib:tests'
+    dependsOn ':apps:buildAllSubprojects'
 
+}

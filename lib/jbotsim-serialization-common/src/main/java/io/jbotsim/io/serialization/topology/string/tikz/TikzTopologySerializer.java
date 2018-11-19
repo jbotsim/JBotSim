@@ -15,7 +15,7 @@ import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.serialization.topology.string.TopologySerializer;
+import io.jbotsim.serialization.TopologySerializer;
 
 
 public class TikzTopologySerializer implements TopologySerializer {
