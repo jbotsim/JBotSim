@@ -1,8 +1,6 @@
 package io.jbotsim.io.serialization.topology.string.plain;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.serialization.topology.FileTopologySerializer;
-import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
 import io.jbotsim.ui.JViewer;
 
 public class PlainFormatterTest {
@@ -10,7 +8,8 @@ public class PlainFormatterTest {
     public static void main(String[] args) {
         String filename = "/home/acasteig/test.plain"; // to be updated
         Topology tp = new Topology();
-        tp = new FileTopologySerializer().importFromFile(tp, filename, new PlainTopologySerializer());
+        tp.setTopologySerializer(new PlainTopologySerializer()); // is actually the default
+        tp.getTopologySerializer().importTopology(tp, tp.getFileManager().read(filename));
         new JViewer(tp);
     }
 }

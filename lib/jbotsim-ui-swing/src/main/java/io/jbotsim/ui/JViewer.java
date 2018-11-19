@@ -14,7 +14,6 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core._Properties;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.io.serialization.topology.FileTopologySerializer;
 import io.jbotsim.io.serialization.topology.TopologySerializerFilenameMatcher;
 import io.jbotsim.io.serialization.topology.string.TopologySerializer;
 import io.jbotsim.io.serialization.topology.string.plain.PlainTopologySerializer;
@@ -219,8 +218,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         if (filename == null) return;
 
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
-
-        new FileTopologySerializer().exportToFile(jtp.topo, filename, serializer);
+        String exportedTopology = serializer.exportTopology(jtp.topo);
+        jtp.topo.getFileManager().write(filename, exportedTopology);
     }
 
     private void executeLoadTopology() {
@@ -228,8 +227,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         if (filename == null) return;
 
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
-
-        new FileTopologySerializer().importFromFile(jtp.topo, filename, serializer);
+        String fileContent = jtp.topo.getFileManager().read(filename);
+        serializer.importTopology(jtp.topo, fileContent);
     }
 
     /**

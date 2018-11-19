@@ -1,7 +1,6 @@
 package io.jbotsim.io.serialization.topology.string.dot;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.serialization.topology.FileTopologySerializer;
 import io.jbotsim.ui.JViewer;
 
 public class DotFormatterTest {
@@ -10,7 +9,8 @@ public class DotFormatterTest {
         Topology tp = new Topology();
         tp.disableWireless();
         String filename = "/home/acasteig/test.dot"; // to be updated
-        new FileTopologySerializer().importFromFile(tp, filename, new DotTopologySerializer());
+        tp.setTopologySerializer(new DotTopologySerializer()); // is actually the default
+        tp.getTopologySerializer().importTopology(tp, tp.getFileManager().read(filename));
         new JViewer(tp);
     }
 }
