@@ -10,6 +10,7 @@ dependencies {
 //    implementation "io.jbotsim:jbotsim-ui-swing:$version"
 
     implementation project(':lib:jbotsim-extras-common'),
+            project(':lib:jbotsim-extras-swing'), // for DotTopologySerializer. Temporary?
             project(':lib:jbotsim-ui-swing'),
             'guru.nidi:graphviz-java:0.5+'
 }
