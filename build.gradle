@@ -46,10 +46,12 @@ subprojects {
 
     dependencies{
         testImplementation(
-                'org.junit.jupiter:junit-jupiter-api:5.1.0'
+                'org.junit.jupiter:junit-jupiter-api:5.1.0',
+                "junit:junit:4+"
         )
         testRuntimeOnly(
-                'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+                'org.junit.vintage:junit-vintage-engine:5.1.0'
         )
     }
     test {

@@ -63,10 +63,6 @@ subprojects {
         required { !version.endsWith('SNAPSHOT') }
     }
 
-    dependencies{
-        testImplementation "junit:junit:4+"
-    }
-
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
@@ -139,7 +135,13 @@ task tests {
     dependsOn test
     dependsOn subprojects.collect {it.tasks.withType(Test)}
 }
-
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
 /**
  * This methods helps modifying the pom for each submodule.
  * The common part is defined here. Only the parameters are to be provided by the submodule.
