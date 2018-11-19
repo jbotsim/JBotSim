@@ -11,3 +11,10 @@ subprojects {
     }
 
 }
+
+task buildAllSubprojects {
+    group = 'build'
+    description = 'Assembles and tests all subprojects project.'
+
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("build")}}
+}

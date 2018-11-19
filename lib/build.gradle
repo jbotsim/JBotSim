@@ -117,6 +117,29 @@ task publishToSonatypeRepository {
             .matching {it.name.contains(bestEffortTaskName)} }
 }
 
+task jars {
+    group = 'build'
+    description = 'Assembles a jar archive for all sub projects.'
+
+    dependsOn tasks.withType(Jar)
+    dependsOn subprojects.collect {it.tasks
+            .withType(Jar)}
+}
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("clean")}}
+}
+task tests {
+    group = 'verification'
+    description = 'Runs the unit tests for all sub projects.'
+
+    dependsOn test
+    dependsOn subprojects.collect {it.tasks.withType(Test)}
+}
+
 /**
  * This methods helps modifying the pom for each submodule.
  * The common part is defined here. Only the parameters are to be provided by the submodule.
