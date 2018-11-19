@@ -227,7 +227,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Assign a random color to this node.
+     *
+     * @deprecated Please use {@link #setColor(Color)} with {@link Color#getRandomColor()} instead.
      */
+    @Deprecated
     public void setRandomColor() {
         Random r = new Random();
         setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
