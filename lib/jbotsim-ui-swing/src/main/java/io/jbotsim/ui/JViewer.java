@@ -15,9 +15,9 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core._Properties;
 import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.io.serialization.topology.TopologySerializerFilenameMatcher;
+import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;
-import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -36,6 +36,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     protected JTopology jtp;
     protected int width = 600;
     protected JSlider slideBar = new JSlider(0, width);
+    protected TopologySerializerFilenameMatcher topologySerializerFilenameMatcher;
 
     protected enum BarType {COMMUNICATION, SENSING, SPEED}
 
@@ -115,6 +116,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             });
         }
         slideBar.addChangeListener(this);
+        initFilenameMatcher();
     }
 
     /**
@@ -253,8 +255,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      * @return a {@link TopologySerializer}
      */
     private TopologySerializer getTopologySerializerForFilename(String filename, Topology topology) {
-        TopologySerializerFilenameMatcher filenameMatcher = getConfiguredTopologyFileNameMatcher();
-        TopologySerializer serializer = filenameMatcher.getTopologySerializerFor(filename);
+        TopologySerializer serializer = topologySerializerFilenameMatcher.getTopologySerializerFor(filename);
 
         if(serializer == null)
             serializer = topology.getTopologySerializer();
@@ -262,14 +263,28 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         return serializer;
     }
 
-    private TopologySerializerFilenameMatcher getConfiguredTopologyFileNameMatcher() {
-        TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
+    /**
+     * <p>Initializes the {@link TopologySerializerFilenameMatcher} with known/available {@link TopologySerializer}s.</p>
+     */
+    private void initFilenameMatcher() {
+        topologySerializerFilenameMatcher = new TopologySerializerFilenameMatcher();
 //        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologyFormatter());
 //        filenameMatcher.addTopologySerializer(".*\\.dot",new DotTopologySerializer());
 //        filenameMatcher.addTopologySerializer(".*\\.xml",new XMLTopologySerializer());
-        filenameMatcher.addTopologySerializer(".*\\.tikz",new TikzTopologySerializer());
-        filenameMatcher.addTopologySerializer(".*\\.plain",new PlainTopologySerializer());
-        return filenameMatcher;
+        addTopologySerializer(".*\\.tikz", new TikzTopologySerializer());
+        addTopologySerializer(".*\\.plain", new PlainTopologySerializer());
+    }
+
+    /**
+     * <p>Records and links the provided {@link TopologySerializer} to a specific regular expression.</p>
+     * <p>This couple will be used during {@link Topology} import/export. If the file's name matches the provided regular
+     * expression, the linked {@link TopologySerializer} will be used for (de)serialization.</p>
+     *
+     * @param regexp a regular expression matching the file names
+     * @param topologySerializer the {@link TopologySerializer} to be recorded
+     */
+    public void addTopologySerializer(String regexp, TopologySerializer topologySerializer) {
+        topologySerializerFilenameMatcher.addTopologySerializer(regexp, topologySerializer);
     }
 
     @Override
