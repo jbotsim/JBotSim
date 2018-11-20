@@ -14,7 +14,7 @@ public interface TopologySerializer {
      * here (not the topology's properties).
      *
      * @param tp The {@link Topology} object which must be exported
-     * @return
+     * @return the {@link String} representation of the {@link Topology}
      */
     String exportTopology(Topology tp);
 
