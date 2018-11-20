@@ -12,12 +12,12 @@ import java.io.*;
 public class FileManager implements FileAsStream {
 
     @Override
-    public InputStream getInputStreamForName(String filename) throws FileNotFoundException {
+    public InputStream getInputStreamForName(String filename) throws IOException {
         return new FileInputStream(new File(filename));
     }
 
     @Override
-    public OutputStream getOutputStreamForName(String filename) throws FileNotFoundException {
+    public OutputStream getOutputStreamForName(String filename) throws IOException {
         return new FileOutputStream(new File(filename));
     }
 
