@@ -1,7 +1,6 @@
 package io.jbotsim.serialization.xml;
 
 import io.jbotsim.core.*;
-import io.jbotsim.topology.TopologyGeneratorFactory;
 import org.w3c.dom.Element;
 
 import java.util.HashMap;

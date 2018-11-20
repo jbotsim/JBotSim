@@ -4,6 +4,8 @@ def displayDescription = "Jar containing extension classes for topologies serial
 
 dependencies {
   api project(':lib:jbotsim-core')
+
+  testImplementation project(':lib:jbotsim-extras-common')
 }
 
 publishing {
