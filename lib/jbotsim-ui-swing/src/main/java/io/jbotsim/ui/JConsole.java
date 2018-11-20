@@ -27,7 +27,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
-import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
+import io.jbotsim.serialization.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;
 
 @SuppressWarnings("serial")

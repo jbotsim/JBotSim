@@ -9,7 +9,7 @@
  *    Authors:
  *    Arnaud Casteigts        <casteig@site.uottawa.ca>
  */
-package io.jbotsim.io.serialization.topology.string.tikz;
+package io.jbotsim.serialization.tikz;
 
 import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;

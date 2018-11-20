@@ -1,7 +1,6 @@
-package io.jbotsim.io.serialization.plain;
+package io.jbotsim.serialization.plain;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
 import io.jbotsim.ui.JViewer;
 
 public class PlainFormatterTest {

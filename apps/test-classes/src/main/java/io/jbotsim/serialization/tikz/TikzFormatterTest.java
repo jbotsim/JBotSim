@@ -1,4 +1,4 @@
-package io.jbotsim.io.serialization.topology.string.tikz;
+package io.jbotsim.serialization.tikz;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;

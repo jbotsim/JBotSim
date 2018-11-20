@@ -1,8 +1,8 @@
 package examples.tools;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.serialization.topology.TopologySerializerFilenameMatcher;
-import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
+import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
+import io.jbotsim.serialization.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.dot.DotTopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;

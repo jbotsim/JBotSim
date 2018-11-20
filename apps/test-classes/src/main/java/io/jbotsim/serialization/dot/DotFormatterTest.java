@@ -1,7 +1,6 @@
-package io.jbotsim.io.serialization.dot;
+package io.jbotsim.serialization.dot;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.serialization.dot.DotTopologySerializer;
 import io.jbotsim.ui.JViewer;
 
 public class DotFormatterTest {

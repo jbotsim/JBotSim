@@ -154,7 +154,7 @@ public class DotTopologySerializer implements TopologySerializer {
 //    public static void main(String[] args) {
 //        Topology tp = new Topology();
 //        tp.disableWireless();
-//        String filename = "/home/acasteig/test.io.jbotsim.io.serialization.dot"; // to be updated
+//        String filename = "/home/acasteig/test.io.jbotsim.serialization.dot"; // to be updated
 //        Format.importFromFile(tp, filename, new DotFormatter());
 //        new JViewer(tp);
 //    }

@@ -14,8 +14,8 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core._Properties;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.io.serialization.topology.TopologySerializerFilenameMatcher;
-import io.jbotsim.io.serialization.topology.string.tikz.TikzTopologySerializer;
+import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
+import io.jbotsim.serialization.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;
 
