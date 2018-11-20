@@ -120,8 +120,6 @@ public class XMLTopologyParser extends XMLParser {
                 parseNode(e, tp, nodeids);
             else if (XMLKeys.LINK.labelsElement(e))
                 parseLink(e, tp, nodeids);
-            else if (XMLKeys.GENERATOR.labelsElement(e))
-                parseGenerators(e, tp);
             else throw new EnumConstantNotPresentException(XMLKeys.class, e.getTagName());
         });
     }
@@ -216,86 +214,4 @@ public class XMLTopologyParser extends XMLParser {
         tp.addLink(l, true);
     }
 
-    private static void parseGeneratorAttributes(Element e, Topology tp, TopologyGeneratorFactory tgf) throws ParserException {
-        tgf.setAbsoluteCoords(XMLKeys.ABSOLUTE_COORDS_ATTR.getValueFor(e, false));
-        tgf.setX(XMLKeys.LOCATION_X_ATTR.getValueFor(e, 0.0));
-        tgf.setY(XMLKeys.LOCATION_Y_ATTR.getValueFor(e, 0.0));
-        tgf.setOrder(XMLKeys.ORDER_ATTR.getValueFor(e, 1));
-        tgf.setWidth(XMLKeys.WIDTH_ATTR.getValueFor(e, 1.0));
-        tgf.setHeight(XMLKeys.HEIGHT_ATTR.getValueFor(e, 1.0));
-        tgf.setWired(XMLKeys.WIRED_ATTR.getValueFor(e, false));
-        tgf.setWirelessEnabled(XMLKeys.WIRELESS_ENABLED_ATTR.getValueFor(e, true));
-        tgf.setDirected(XMLKeys.DIRECTED_ATTR.getValueFor(e, false));
-        tgf.setNodeClass(getNodeClass(tp, XMLKeys.NODECLASS_ATTR.getValueFor(e, "default")));
-    }
-
-    private static void parseLineGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-        boolean horizontal = XMLKeys.HORIZONTAL_ATTR.getValueFor(e,true);
-        tgf.newLine(horizontal).generate(tp);
-    }
-
-    private static void parseRingGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-        tgf.newRing().generate(tp);
-    }
-
-    private static void parseGridGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-
-        TopologyGeneratorFactory.Generator gen;
-        if (XMLKeys.X_ORDER_ATTR.isAttributeOf(e)) {
-            gen = tgf.newGrid(XMLKeys.X_ORDER_ATTR.getValueFor(e, 1), XMLKeys.Y_ORDER_ATTR.getValueFor(e, 1));
-        } else {
-            gen = tgf.newSquareGrid();
-        }
-        gen.generate(tp);
-    }
-
-    private static void parseTorusGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-
-        TopologyGeneratorFactory.Generator gen;
-        if (XMLKeys.X_ORDER_ATTR.isAttributeOf(e)) {
-            gen = tgf.newTorus(XMLKeys.X_ORDER_ATTR.getValueFor(e, 1), XMLKeys.Y_ORDER_ATTR.getValueFor(e, 1));
-        } else {
-            gen = tgf.newTorus();
-        }
-        gen.generate(tp);
-    }
-
-    private static void parseKNGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-        tgf.newKN().generate(tp);
-    }
-
-    private static void parseRndLocationsGenerator(Element e, Topology tp) throws ParserException {
-        TopologyGeneratorFactory tgf = new TopologyGeneratorFactory();
-        parseGeneratorAttributes(e, tp, tgf);
-        tgf.newRandomLocations().generate(tp);
-    }
-
-    private static void parseGenerators(Element ge, Topology tp) throws ParserException {
-        mapElementChildrenOf(ge, e -> {
-            if (XMLKeys.LINE.labelsElement(e))
-                parseLineGenerator(e, tp);
-            else if (XMLKeys.RING.labelsElement(e))
-                parseRingGenerator(e, tp);
-            else if (XMLKeys.GRID.labelsElement(e))
-                parseGridGenerator(e, tp);
-            else if (XMLKeys.TORUS.labelsElement(e))
-                parseTorusGenerator(e, tp);
-            else if (XMLKeys.KN.labelsElement(e))
-                parseKNGenerator(e, tp);
-            else if (XMLKeys.RANDOM_LOCATIONS.labelsElement(e))
-                parseRndLocationsGenerator(e, tp);
-            else
-                throw new EnumConstantNotPresentException(XMLKeys.class, e.getTagName());
-        });
-    }
 }

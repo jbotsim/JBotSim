@@ -23,14 +23,6 @@ public enum XMLKeys {
     SCHEDULER("scheduler"),
     CLOCKCLASS("clock-class"),
 
-    GENERATOR("generator"),
-    LINE("line"),
-    GRID("grid"),
-    KN("KN"),
-    TORUS("torus"),
-    RING("ring"),
-    RANDOM_LOCATIONS("random-locations"),
-
     VERSION_ATTR("version"),
     IDENTIFIER_ATTR("id"),
     DIRECTED_ATTR("directed"),
@@ -43,12 +35,6 @@ public enum XMLKeys {
     DIRECTION_ATTR("direction"),
     CLOCK_SPEED_ATTR("speed"),
 
-    ORDER_ATTR("order"),
-    X_ORDER_ATTR("x-order"),
-    Y_ORDER_ATTR("y-order"),
-    ABSOLUTE_COORDS_ATTR("absolute-coords"),
-    WIRED_ATTR("wired"),
-    HORIZONTAL_ATTR("horizontal"),
     NODECLASS_ATTR("node-class"),
 
     WIDTH_ATTR("width"),
