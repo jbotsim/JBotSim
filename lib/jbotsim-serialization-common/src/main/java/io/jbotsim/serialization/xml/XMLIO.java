@@ -51,12 +51,15 @@ public class XMLIO {
      */
     public static void write(Writer out, Document doc) throws XMLIOException {
         try {
+            // we assume that we don't have a DTD 
+            doc.setXmlStandalone(true);
+
             TransformerFactory tFactory =
                     TransformerFactory.newInstance();
 
             Transformer transformer =
                     tFactory.newTransformer();
-            transformer.setOutputProperty(OutputKeys.STANDALONE, "no");
+            transformer.setOutputProperty(OutputKeys.STANDALONE, "yes");
             transformer.setOutputProperty(OutputKeys.INDENT, "yes");
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 

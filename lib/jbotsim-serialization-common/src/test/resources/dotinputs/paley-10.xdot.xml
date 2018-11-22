@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jbotsim version="1.0">
   <topology height="388" speed="10" width="384" wireless-enabled="false">
     <classes>
