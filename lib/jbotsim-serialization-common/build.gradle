@@ -6,6 +6,10 @@ dependencies {
   api project(':lib:jbotsim-core')
 
   testImplementation project(':lib:jbotsim-extras-common')
+
+  implementation ('guru.nidi:graphviz-java:0.5+'){
+    exclude group: '*'
+  }
 }
 
 publishing {
