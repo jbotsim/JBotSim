@@ -46,6 +46,17 @@ subprojects {
         testImplementation "junit:junit:4+"
     }
 
+    shadowJar {
+        exclude (
+                // known useless files from graphviz dependency
+                "/com/kitfox/svg/**",
+                "/help/about/about.html",
+                "/icons/cursor.svg",
+                "/icons/SVGUniverseIcon_16c.png",
+                "/icons/SVGUniverseIcon_32c.png",
+                "/viz*.js"
+        )
+    }
 }
 
 String generateJarName (Project proj) {
@@ -56,5 +67,13 @@ String generateJarName (Project proj) {
     return returnStr
 }
 
+task jars {
+    group = 'build'
+    description = 'Create a combined JARs for all sub projects.'
+
+    dependsOn tasks.withType(Jar)
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("shadowJar")}}
+
+}
 
 
