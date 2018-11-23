@@ -15,9 +15,11 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core._Properties;
 import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
+import io.jbotsim.serialization.dot.DotTopologySerializer;
 import io.jbotsim.serialization.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;
+import io.jbotsim.serialization.xml.XMLTopologySerializer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -268,10 +270,9 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      */
     private void initFilenameMatcher() {
         topologySerializerFilenameMatcher = new TopologySerializerFilenameMatcher();
-//        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologyFormatter());
-//        filenameMatcher.addTopologySerializer(".*\\.dot",new DotTopologySerializer());
-//        filenameMatcher.addTopologySerializer(".*\\.xml",new XMLTopologySerializer());
         addTopologySerializer(".*\\.tikz", new TikzTopologySerializer());
+        addTopologySerializer(".*\\.dot", new DotTopologySerializer());
+        addTopologySerializer(".*\\.xml", new XMLTopologySerializer());
         addTopologySerializer(".*\\.plain", new PlainTopologySerializer());
     }
 
