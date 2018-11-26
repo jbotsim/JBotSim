@@ -76,4 +76,11 @@ task jars {
 
 }
 
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("clean")}}
+}
 

@@ -2,6 +2,5 @@
 description = "JBotSim Full: generates a fat jar containing all JBotSim jars"
 
 dependencies{
-    api ("${group}:jbotsim-extras-swing:${depVersion}")
-    api ("${group}:jbotsim-ui-swing:${depVersion}")
+    api ("${group}:jbotsim-all:${depVersion}")
 }
