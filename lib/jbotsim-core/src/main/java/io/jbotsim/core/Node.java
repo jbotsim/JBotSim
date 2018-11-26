@@ -25,7 +25,7 @@ import static io.jbotsim.core.Node.PropString.*;
  *
  * <p>Any behavior modification should be implemented by subclassing this class.</p>
  */
-public class Node extends _Properties implements ClockListener, Comparable<Node> {
+public class Node extends Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;
     public static final int DEFAULT_SIZE = 8;
     public static final double DEFAULT_DIRECTION =  Math.PI / 2;;

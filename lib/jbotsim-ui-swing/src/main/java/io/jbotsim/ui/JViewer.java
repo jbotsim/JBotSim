@@ -12,7 +12,7 @@
 package io.jbotsim.ui;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.core._Properties;
+import io.jbotsim.core.Properties;
 import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
 import io.jbotsim.serialization.dot.DotTopologySerializer;
@@ -293,7 +293,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     @Override
-    public void propertyChanged(_Properties o, String p) {
+    public void onPropertyChanged(Properties o, String p) {
         if (slideBarType != null) {
             if (p.equals("communicationRange") && slideBarType == BarType.COMMUNICATION)
                 slideBar.setValue((int) jtp.topo.getCommunicationRange());
