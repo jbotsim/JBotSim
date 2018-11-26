@@ -27,7 +27,7 @@ import java.util.*;
  * It provides several features and convenience accessors, but at its core, it contains a set of {@link Node} objects
  * which can be linked two by two with a set of {@link Link} objects.
  */
-public class Topology extends _Properties implements ClockListener, FileManagerProvider {
+public class Topology extends Properties implements ClockListener, FileManagerProvider {
     public static final int DEFAULT_WIDTH = 600;
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;

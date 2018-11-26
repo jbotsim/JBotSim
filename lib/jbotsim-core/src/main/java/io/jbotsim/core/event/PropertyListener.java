@@ -11,7 +11,7 @@
  */
 package io.jbotsim.core.event;
 
-import io.jbotsim.core._Properties;
+import io.jbotsim.core.Properties;
 
 public interface PropertyListener {
     /**
@@ -19,5 +19,5 @@ public interface PropertyListener {
      * @param o The object.
      * @param key The name of the changed property.
      */
-    void propertyChanged(_Properties o, String key);
+    void onPropertyChanged(Properties o, String key);
 }

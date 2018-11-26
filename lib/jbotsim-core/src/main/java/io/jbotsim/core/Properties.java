@@ -17,7 +17,7 @@ import java.util.List;
 
 import io.jbotsim.core.event.PropertyListener;
 
-public abstract class _Properties {
+public abstract class Properties {
     protected HashMap<String, Object> properties = new HashMap<>();
     List<PropertyListener> propertyListeners = new ArrayList<>();
 
@@ -60,7 +60,7 @@ public abstract class _Properties {
     public void setProperty(String key, Object value) {
         properties.put(key, value);
         for (PropertyListener pl : new ArrayList<>(propertyListeners))
-            pl.propertyChanged(this, key);
+            pl.onPropertyChanged(this, key);
     }
 
     /**

@@ -14,7 +14,7 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.core._Properties;
+import io.jbotsim.core.Properties;
 import io.jbotsim.core.event.*;
 import io.jbotsim.ui.painting.*;
 
@@ -237,7 +237,7 @@ public class JTopology extends JPanel implements ActionListener {
                 ((JNode) n.getProperty("jnode")).update();
         }
 
-        public void propertyChanged(_Properties o, String property) {
+        public void onPropertyChanged(Properties o, String property) {
             if (o instanceof Node) { // Node
                 JNode jn = (JNode) ((Node) o).getProperty("jnode");
                 if (property.equals("color")) {
