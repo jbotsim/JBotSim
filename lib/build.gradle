@@ -13,7 +13,11 @@ subprojects {
     apply plugin: "maven-publish"
     apply plugin: 'signing'
 
-
+    compileJava   {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    
     publishing {
 
         repositories {
