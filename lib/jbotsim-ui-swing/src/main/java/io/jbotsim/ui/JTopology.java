@@ -53,9 +53,9 @@ public class JTopology extends JPanel implements ActionListener {
         super.addKeyListener(handler);
         super.setPreferredSize(new Dimension(topo.getWidth(), topo.getHeight()));
         ToolTipManager.sharedInstance().setInitialDelay(0);
-        linkPainter = new DefaultLinkPainter();
-        nodePainters.add(new DefaultNodePainter());
-        backgroundPainters.add(new DefaultBackgroundPainter());
+        linkPainter = new JLinkPainter();
+        nodePainters.add(new JNodePainter());
+        backgroundPainters.add(new JBackgroundPainter());
     }
 
     public Topology getTopology() {

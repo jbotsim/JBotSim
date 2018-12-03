@@ -12,22 +12,19 @@
 package io.jbotsim.ui.painting;
 
 import io.jbotsim.core.Node;
-import io.jbotsim.core.Topology;
+import io.jbotsim.ui.JNode;
 
 import java.awt.*;
 
-
-public class DefaultBackgroundPainter implements BackgroundPainter {
+public class JNodePainter implements NodePainter {
     @Override
-    public void paintBackground(UIComponent uiComponent, Topology tp) {
+    public void paintNode(UIComponent uiComponent, Node node) {
         Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
-        g2d.setStroke(new BasicStroke(1));
-        for (Node n : tp.getNodes()) {
-            double sR = n.getSensingRange();
-            if (sR > 0) {
-                g2d.setColor(Color.gray);
-                g2d.drawOval((int) n.getX() - (int) sR, (int) n.getY() - (int) sR, 2 * (int) sR, 2 * (int) sR);
-            }
+        JNode jn = (JNode) node.getProperty("jnode");
+        int drawSize = jn.getWidth() / 2;
+        if (node.getColor() != null) {
+            g2d.setColor(new Color(node.getColor().getRGB()));
+            g2d.fillOval(drawSize / 2, drawSize / 2, drawSize, drawSize);
         }
     }
 }

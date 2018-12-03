@@ -17,7 +17,7 @@ import io.jbotsim.core.Topology;
 import java.awt.*;
 
 
-public class DefaultLinkPainter implements LinkPainter {
+public class JLinkPainter implements LinkPainter {
     @Override
     public void paintLink(UIComponent uiComponent, Link link) {
         Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
