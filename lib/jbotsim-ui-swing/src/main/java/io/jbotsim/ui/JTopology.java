@@ -23,7 +23,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-
+/**
+ * <p>The {@link JTopology} element draws a {@link Topology}, using a Swing {@link JPanel}.</p>
+ */
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener {
     protected ArrayList<BackgroundPainter> backgroundPainters = new ArrayList<>();

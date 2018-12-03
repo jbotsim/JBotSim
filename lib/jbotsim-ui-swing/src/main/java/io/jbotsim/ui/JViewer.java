@@ -29,10 +29,10 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 /**
- * The viewer includes a central jtopology which will draw the attached
+ * <p>The {@link JViewer} includes a central {@link JTopology} which will draw the attached
  * topology and offer interaction, as well as contextual commands to add or
  * remove a communication range or sensing range tuners (slider bars), or to
- * pause/resume the system clock.
+ * pause/resume the system clock.</p>
  */
 public class JViewer implements CommandListener, ChangeListener, PropertyListener {
     protected JTopology jtp;

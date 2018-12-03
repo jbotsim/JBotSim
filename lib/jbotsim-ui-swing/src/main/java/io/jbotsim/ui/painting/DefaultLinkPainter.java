@@ -18,12 +18,6 @@ import java.awt.*;
 
 
 public class DefaultLinkPainter implements LinkPainter {
-    /**
-     * Paints the Links.
-     *
-     * @param uiComponent  The graphics object
-     * @param link The link to be drawn
-     */
     @Override
     public void paintLink(UIComponent uiComponent, Link link) {
         Graphics2D g2d = (Graphics2D) uiComponent.getComponent();

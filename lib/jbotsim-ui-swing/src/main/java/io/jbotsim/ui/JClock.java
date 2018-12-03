@@ -16,6 +16,9 @@ import io.jbotsim.core.Clock;
 
 import javax.swing.Timer;
 
+/**
+ * <p>The {@link JClock} implements the {@link Clock} interface, using a Swing {@link Timer}.</p>
+ */
 public class JClock extends Clock {
     Timer timer;
 
@@ -24,9 +27,6 @@ public class JClock extends Clock {
         timer = new Timer(10, e -> manager.onClock());
     }
 
-    /**
-     * Returns the time unit of the clock, in milliseconds.
-     */
     @Override
     public int getTimeUnit() {
         return timer.getDelay();
@@ -42,35 +42,21 @@ public class JClock extends Clock {
         timer.setDelay(delay);
     }
 
-    /**
-     * Indicates whether the clock is currently running or paused.
-     *
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
-     */
     @Override
     public boolean isRunning() {
         return timer.isRunning();
     }
 
-    /**
-     * Starts the clock.
-     */
     @Override
     public void start() {
         timer.start();
     }
 
-    /**
-     * Pauses the clock.
-     */
     @Override
     public void pause() {
         timer.stop();
     }
 
-    /**
-     * Resumes the clock if it was paused.
-     */
     @Override
     public void resume() {
         timer.start();

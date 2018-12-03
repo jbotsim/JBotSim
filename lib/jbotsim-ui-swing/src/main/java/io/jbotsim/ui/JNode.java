@@ -25,6 +25,9 @@ import java.awt.geom.AffineTransform;
 import java.net.URL;
 import java.nio.file.Paths;
 
+/**
+ * <p>The {@link JNode} element draws a {@link Node}, using a Swing {@link JButton}.</p>
+ */
 @SuppressWarnings("serial")
 public class JNode extends JButton implements MouseListener, MouseMotionListener, MouseWheelListener {
     protected Image icon;
