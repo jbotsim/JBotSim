@@ -11,6 +11,14 @@
  */
 package io.jbotsim.ui;
 
+/**
+ * <p>The {@link CommandListener} is an element which is used to be called when a command arises.</p>
+ */
 public interface CommandListener {
+    /**
+     * Provides a way to react upon command selection.
+     *
+     * @param command the command which has risen.
+     */
     void onCommand(String command);
 }

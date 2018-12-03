@@ -14,13 +14,14 @@ package io.jbotsim.ui.painting;
 import io.jbotsim.core.Topology;
 
 /**
- * Created by acasteig on 6/9/15.
+ * <p>The {@link BackgroundPainter} is an element which is used to be called while trying to draw a background.</p>
  */
 public interface BackgroundPainter {
     /**
      * Provides a way to draw things on the background.
      *
-     * @param g2d The background graphics.
+     * @param uiComponent the graphical object to be drawn on.
+     * @param tp the {@link Topology} to pick information from.
      */
-    void paintBackground(UIComponent g2d, Topology tp);
+    void paintBackground(UIComponent uiComponent, Topology tp);
 }
