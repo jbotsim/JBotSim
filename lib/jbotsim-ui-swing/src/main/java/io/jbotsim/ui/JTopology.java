@@ -51,6 +51,7 @@ public class JTopology extends JPanel implements ActionListener {
         super.setBackground(new java.awt.Color(180, 180, 180));
         super.addMouseListener(handler);
         super.addKeyListener(handler);
+        super.addComponentListener(handler);
         super.setPreferredSize(new Dimension(topo.getWidth(), topo.getHeight()));
         ToolTipManager.sharedInstance().setInitialDelay(0);
         linkPainter = new JLinkPainter();
@@ -202,7 +203,7 @@ public class JTopology extends JPanel implements ActionListener {
     }
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener {
+            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener, ComponentListener {
         boolean ctrlPressed = false;
 
         public void onNodeAdded(Node n) {
@@ -329,6 +330,26 @@ public class JTopology extends JPanel implements ActionListener {
         @Override
         public void keyReleased(KeyEvent e) {
             ctrlPressed = false;
+        }
+
+        @Override
+        public void componentResized(ComponentEvent componentEvent) {
+            topo.setDimensions(componentEvent.getComponent().getWidth(), componentEvent.getComponent().getHeight());
+        }
+
+        @Override
+        public void componentMoved(ComponentEvent componentEvent) {
+
+        }
+
+        @Override
+        public void componentShown(ComponentEvent componentEvent) {
+
+        }
+
+        @Override
+        public void componentHidden(ComponentEvent componentEvent) {
+
         }
     }
 
