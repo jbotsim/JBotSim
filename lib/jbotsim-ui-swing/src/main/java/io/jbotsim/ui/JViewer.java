@@ -249,8 +249,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     /**
-     * Search a known {@link TopologySerializer} matching with the provided filename.<br/>
-     * If not found, the result of {@link Topology#getTopologySerializer()} is returned.
+     * <p>Search a known {@link TopologySerializer} matching with the provided filename.<br>
+     * If not found, the result of {@link Topology#getTopologySerializer()} is returned.</p>
      *
      * @param filename the filename too be matched
      * @param topology the {@link Topology} to use as fallback if no match is found

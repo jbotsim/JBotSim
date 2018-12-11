@@ -22,7 +22,7 @@ import io.jbotsim.serialization.plain.PlainTopologySerializer;
 import java.util.*;
 
 /**
- * The {@link Topology} object is the main entry point of JBotSim.<br/>
+ * <p>The {@link Topology} object is the main entry point of JBotSim.</p>
  *
  * It provides several features and convenience accessors, but at its core, it contains a set of {@link Node} objects
  * which can be linked two by two with a set of {@link Link} objects.

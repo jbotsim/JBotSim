@@ -60,7 +60,7 @@ public class FileManager implements FileAsStream {
     }
 
     /**
-     * Reads the content of the provided {@link InputStream} object and returns it as a String.<br/>
+     * <p>Reads the content of the provided {@link InputStream} object and returns it as a String.</p>
      * Note: This method uses a {@link BufferedReader} to read the file.
      * @param in the {@link InputStream} from which data must be read
      * @return a String representing the content
