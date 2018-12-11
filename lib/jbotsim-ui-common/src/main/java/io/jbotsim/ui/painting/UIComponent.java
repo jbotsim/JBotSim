@@ -3,7 +3,7 @@ package io.jbotsim.ui.painting;
 /**
  * <p>The {@link UIComponent} contains a platform-dependent object to be used for displaying graphical elements.</p>
  *
- * <p>Its sole member is a simple {@link Object}. The typical usage is:
+ * <p>Its sole member is a simple {@link Object}. The typical usage is:</p>
  * <ol>
  *     <li>wrap the system UI component (say <code>View</code>) in the {@link UIComponent} when a (re)draw is prompted
  *     by the system;</li>
@@ -12,12 +12,10 @@ package io.jbotsim.ui.painting;
  *     (<code>View</code>) and use it normally, see <code>DefaultBackgroundPainter</code> example below.</li>
  * </ol>
  *
- * </p>
  * <pre>
- * {@code
+ *  {@code
  *
  * public class DefaultBackgroundPainter implements BackgroundPainter {
- *     @Override
  *     public void paintBackground(UIComponent uiComponent, Topology tp) {
  *         Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
  *         g2d.setStroke(new BasicStroke(1));
