@@ -82,6 +82,9 @@ subprojects {
         archives javadocJar
     }
 
+    javadoc {
+        options.addStringOption('Xdoclint:all', '-quiet')
+    }
 }
 
 task publishToTestRepository {
