@@ -1,5 +1,5 @@
 language: java
-script: ./gradlew lib:cleans lib:jars
+script: ./gradlew lib:cleans lib:jars lib:tests
 jdk:
   - openjdk8
   - oraclejdk8
