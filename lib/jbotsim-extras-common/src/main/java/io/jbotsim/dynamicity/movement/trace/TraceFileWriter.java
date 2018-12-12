@@ -14,7 +14,7 @@ public interface TraceFileWriter {
     /**
      * Write the current trace content to the corresponding file
      * @param filename the name of the destination file
-     * @throws Exception
+     * @throws Exception in case of error
      */
     void write(String filename) throws Exception;
 }

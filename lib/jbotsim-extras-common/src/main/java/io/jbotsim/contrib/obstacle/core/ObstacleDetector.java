@@ -20,7 +20,10 @@ public class ObstacleDetector implements MovementListener {
     private Topology topology;
     
     /**
-     * Constructor Of the class, It just say that it is a listener for the movement of the nodes.
+     * <p>Constructor of the class.</p>
+     * <p>It simply registers as a movement listener on the provided {@link Topology}.</p>
+     *
+     * @param topology the {@link Topology}
      */
     public ObstacleDetector(Topology topology) {
         topology.addMovementListener(this);

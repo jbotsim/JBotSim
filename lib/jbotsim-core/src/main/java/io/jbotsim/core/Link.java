@@ -36,21 +36,18 @@ public class Link extends _Properties implements Comparable<Link> {
      * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
      * <tt>Type.UNDIRECTED</tt>.
      */
-    public static enum Type {
+    public enum Type {
         DIRECTED, UNDIRECTED
     }
-
-    ;
 
     /**
      * Enumerates the two possible modes of a link: <tt>Mode.WIRED</tt> and
      * <tt>Mode.WIRELESS</tt>.
      */
-    public static enum Mode {
+    public enum Mode {
         WIRED, WIRELESS
     }
 
-    ;
     /**
      * The source node of this link (if directed),
      * the first endpoint otherwise.
@@ -173,14 +170,16 @@ public class Link extends _Properties implements Comparable<Link> {
     }
 
     /**
-     * Returns the color of this link as a string.
+     * Returns the color of this link.
+     * @return the {@link Color} of the link.
      */
     public Color getColor() {
         return color;
     }
 
     /**
-     * Sets the color of this link as a string.
+     * Sets the color of this link
+     * @param color the new {@link Color} of the link.
      */
     public void setColor(Color color) {
         this.color = color;
@@ -189,6 +188,7 @@ public class Link extends _Properties implements Comparable<Link> {
 
     /**
      * Returns the width of this link.
+     * @return the width of this link.
      */
     public Integer getWidth() {
         return width;
@@ -196,6 +196,7 @@ public class Link extends _Properties implements Comparable<Link> {
 
     /**
      * Sets the width of this link.
+     * @param width the width of this link.
      */
     public void setWidth(Integer width) {
         this.width = width;
@@ -204,22 +205,25 @@ public class Link extends _Properties implements Comparable<Link> {
 
     /**
      * Returns the euclidean distance between this link endpoints.
+     * @return the length between the endpoints, as a {@link Double}.
      */
     public Double getLength() {
         return source.distance(destination);
     }
 
     /**
-     * Returns <tt>true</tt> if the link <tt>mode</tt> is wireless,
-     * <tt>false</tt> otherwise.
+     * Tests whether the <tt>mode</tt> is WIRELESS.
+     * @return <tt>true</tt> if the link <tt>mode</tt> is WIRELESS,
+     *         <tt>false</tt> otherwise.
      */
     public boolean isWireless() {
         return mode == Mode.WIRELESS;
     }
 
     /**
-     * Returns <tt>true</tt> if the link <tt>type</tt> is directed,
-     * <tt>false</tt> otherwise.
+     * Tests whether the <tt>type</tt> is DIRECTED.
+     * @return <tt>true</tt> if the link <tt>type</tt> is DIRECTED,
+     *         <tt>false</tt> otherwise.
      */
     public boolean isDirected() {
         return type == Type.DIRECTED;

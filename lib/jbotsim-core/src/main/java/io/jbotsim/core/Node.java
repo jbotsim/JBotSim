@@ -69,17 +69,18 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Sets the identifier of this node. Nodes have an identifier by default,
+     * Sets the identifier of this node. {@link Node}s have an identifier by default,
      * which is the smallest available integer.
+     * @param ID the new identifier.
      */
     public void setID(int ID) {
         this.ID = ID;
     }
 
     /**
-     * Returns the parent topology of this node, if any.
+     * Returns the parent {@link Topology} of this node, if any.
      *
-     * @return The parent topology, or <tt>null</tt> if the node is orphan.
+     * @return The parent {@link Topology}, or <tt>null</tt> if the node is orphan.
      */
     public Topology getTopology() {
         return topo;
@@ -131,49 +132,57 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Called when this node receives a message
+     * Called when this node receives a {@link Message}.
+     * @param message the received {@link Message}.
      */
     public void onMessage(Message message) {
     }
 
     /**
-     * Called when an adjacent undirected link is added
+     * Called when an adjacent undirected link is added.
+     * @param link the added {@link Link}.
      */
     public void onLinkAdded(Link link) {
     }
 
     /**
-     * Called when an adjacent undirected link is removed
+     * Called when an adjacent undirected link is removed.
+     * @param link the removed {@link Link}.
      */
     public void onLinkRemoved(Link link) {
     }
 
     /**
-     * Called when an adjacent directed link is added
+     * Called when an adjacent directed link is added.
+     * @param link the added {@link Link}.
      */
     public void onDirectedLinkAdded(Link link) {
     }
 
     /**
-     * Called when an adjacent directed link is removed
+     * Called when an adjacent directed link is removed.
+     * @param link the removed {@link Link}.
      */
     public void onDirectedLinkRemoved(Link link) {
     }
 
     /**
-     * Called when another node is sensed for the first time
+     * Called when another node is sensed for the first time.
+     * @param node the {@link Node} that has been sensed.
      */
     public void onSensingIn(Node node) {
     }
 
     /**
-     * Called when a sensed node is no more sensed
+     * Called when a sensed node is no more sensed.
+     * @param node the {@link Node} that is not sensed anymore.
      */
     public void onSensingOut(Node node) {
     }
 
     /**
      * Returns the x-coordinate of this node.
+     * @return the x-coordinate, as a double.
      */
     public double getX() {
         return coords.getX();
@@ -181,6 +190,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the y-coordinate of this node.
+     * @return the y-coordinate, as a double.
      */
     public double getY() {
         return coords.getY();
@@ -188,6 +198,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the z-coordinate of this node.
+     * @return the z-coordinate, as a double.
      */
     public double getZ() {
         return coords.getZ();
@@ -195,6 +206,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the color of this node.
+     * @return the {@link Node}'s {@link Color}.
      */
     public Color getColor() {
         return color;
@@ -202,6 +214,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Sets the color of this node.
+     * @param color the {@link Node}'s new {@link Color}.
      */
     public void setColor(Color color) {
         this.color = color;
@@ -210,6 +223,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the color of this node.
+     * @return the color of this node, as an integer.
      */
     public int getIntColor() {
         return Color.basicColors.indexOf(color);
@@ -217,9 +231,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Sets the color of this node.
+     * @param intColor an integer
      */
     public void setIntColor(Integer intColor) {
-        Random r = new Random();
         while (Color.basicColors.size() <= intColor)
             Color.basicColors.add(Color.getRandomColor());
         setColor(Color.basicColors.get(intColor));
@@ -246,17 +260,23 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *     node.setIcon("/package/path/to/image");
      * }
      * </pre>
+     * @param fileName a {@link String} leading to the icon.
      */
     public void setIcon(String fileName) {
         setProperty(ICON.toString(), fileName);
     }
 
+    /**
+     * Returns the icon of the this node.
+     * @return a {@link String} leading to the icon.
+     */
     public String getIcon() {
         return (String) getProperty(ICON.toString());
     }
 
     /**
      * Returns the size of this node.
+     * @return the size of this node, as an integer.
      */
     public int getSize() {
         return size;
@@ -264,6 +284,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Sets the size of this node.
+     * @param size the new size of the node, as an integer.
      */
     public void setSize(int size) {
         this.size = size;
@@ -271,8 +292,9 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Returns the label of this node.
+     * Returns the state of this node.
      *
+     * @return the state of the node, as an {@link Object}.
      * @deprecated Use setLabel() instead.
      */
     @Deprecated
@@ -281,9 +303,10 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     }
 
     /**
-     * Sets the label of this node. This text will appear as a tooltip
+     * Sets the state of this node. This text will appear as a tooltip
      * when the mouse cursor is held some time over the node.
      *
+     * @param state the new state of the node.
      * @deprecated Use setLabel() instead.
      */
     @Deprecated
@@ -294,6 +317,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the label of this node.
+     * @return the label of the node, as an {@link Object}.
      */
     public Object getLabel() {
         return label;
@@ -302,6 +326,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     /**
      * Sets the label of this node. Default GUI shows it as tooltip
      * when the mouse cursor is held some time over the node.
+     * @param label the {@link Object} representing the new label of the node.
      */
     public void setLabel(Object label) {
         this.label = label;
@@ -310,6 +335,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the communication range of this node (as a radius).
+     * @return the current communication range.
      */
     public double getCommunicationRange() {
         return communicationRange;
@@ -320,6 +346,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * its communication range to the specified radius. This
      * determines the distance up to which this node can <i>send</i> messages
      * to other nodes.
+     * @param range the new communication range, as a double.
      */
     public void setCommunicationRange(double range) {
         communicationRange = range;
@@ -329,6 +356,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Indicates whether this node has wireless capabilities enabled.
+     * @return <tt>true</tt> if the wireless capabilities are enabled,
+     *         <tt>false</tt> otherwise.
      */
     public boolean isWirelessEnabled() {
         return isWirelessEnabled;
@@ -350,6 +379,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Set wireless capabilities status
+     * @param enabled the new wireless status: <tt>true</tt> to enable,
+     *         <tt>false</tt> otherwise.
      */
     public void setWirelessStatus(boolean enabled) {
         if (enabled == isWirelessEnabled)
@@ -361,6 +392,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the sensing range of this node (as a radius).
+     * @return the current sensing range.
      */
     public double getSensingRange() {
         return sensingRange;
@@ -368,6 +400,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Sets the sensing range of this node to the specified radius.
+     * @param range the new sensing range, as a double.
      */
     public void setSensingRange(double range) {
         sensingRange = range;
@@ -376,6 +409,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the location of this node.
+     * @return the current location of this node, as a {@link Point}.
      */
     public Point getLocation() {
         return new Point(coords);
@@ -448,13 +482,15 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param dx The abscissa component.
      * @param dy The ordinate component.
+     * @param dz The applicate component.
      */
     public void translate(double dx, double dy, double dz) {
         setLocation(coords.getX() + dx, coords.getY() + dy, coords.getZ() + dz);
     }
 
     /**
-     * Returns the current time (current round number)
+     * Returns the current time (current round number).
+     * @return the current time.
      */
     public int getTime() {
         return topo.getTime();
@@ -462,6 +498,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns the current direction angle of this node (in radians).
+     * @return the current direction.
      */
     public double getDirection() {
         return direction;
@@ -482,7 +519,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * point. Only the resulting angle matters (not the particular location of
      * the reference point).
      *
-     * @param p The reference point.
+     * @param p The reference {@link Point}.
      */
     public void setDirection(Point p) {
         setDirection(Math.atan2(p.getY() - coords.getY(), (p.getX() - coords.getX())));
@@ -493,7 +530,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * point. Only the resulting angle matters (not the particular location of
      * the reference point).
      *
-     * @param p The reference point.
+     * @param p The reference {@link Point}.
+     * @param opposite <tt>true</tt> if the new direction should be the opposite of the reference point.
      */
     public void setDirection(Point p, boolean opposite) {
         Point p2 = (Point) p.clone();
@@ -513,6 +551,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
     /**
      * Translates the location of this node by the specified distance towards
      * the node's current direction. The distance unit is the pixel.
+     * @param distance the distance by which the {@link Node} should be moved.
      */
     public void move(double distance) {
         translate(Math.cos(direction) * distance, Math.sin(direction) * distance);
@@ -555,6 +594,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns a list containing all links for which this node is the
      * destination. The returned list can be subsequently modified without
      * effect on the topology.
+     * @return the {@link List} of inbound {@link Link}s.
      */
     public List<Link> getInLinks() {
         return topo.getLinks(true, this, 2);
@@ -564,6 +604,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns a list containing all links for which this node is the
      * sender. The returned list can be subsequently modified without effect
      * on the topology.
+     * @return the {@link List} of outbound {@link Link}s.
      */
     public List<Link> getOutLinks() {
         return new ArrayList<Link>(outLinks.values());
@@ -573,6 +614,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns a list containing all undirected links adjacent to this node.
      * The returned list can be subsequently modified without effect on the
      * topology.
+     * @return the {@link List} of {@link Link}s
      */
     public List<Link> getLinks() {
         return getLinks(false);
@@ -584,6 +626,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * @param directed <tt>true</tt> for directed, <tt>false</tt> for
      *                 undirected. The returned list can be subsequently modified without
      *                 effect on the topology.
+     * @return the {@link List} of {@link Link}s
      */
     public List<Link> getLinks(boolean directed) {
         return topo.getLinks(directed, this, 0);
@@ -664,6 +707,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * messages (since all received messages are retained in the mailbox). The
      * returned list must be considered as the original copy of the node's
      * mailbox.
+     *
+     * @return the {@link List} of incoming {@link Message}s
      */
     public List<Message> getMailbox() {
         return mailBox;
@@ -671,6 +716,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
 
     /**
      * Returns a list of the messages that this node is about to send.
+     *
+     * @return the {@link List} of outgoing {@link Message}s
      */
     public List<Message> getOutbox() {
         return new ArrayList<>(sendQueue);
@@ -758,6 +805,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the distance between this node and the specified node.
      *
      * @param n The other node.
+     * @return the distance, as a double.
      */
     public double distance(Node n) {
         return coords.distance(n.coords);
@@ -767,6 +815,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the distance between this node and the specified 2D location.
      *
      * @param p The location (as a point).
+     * @return the distance, as a double.
      */
 /*    public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), 0);
@@ -777,6 +826,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param x The abscissa of the point to which the distance is measured.
      * @param y The ordinate of the point to which the distance is measured.
+     * @return the distance, as a double.
      */
     public double distance(double x, double y) {
         return coords.distance(x, y, 0);
@@ -786,6 +836,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      * Returns the distance between this node and the specified 3D location.
      *
      * @param p The location (as a 3D point).
+     * @return the distance, as a double.
      */
     public double distance(Point p) {
         return coords.distance(p.getX(), p.getY(), p.getZ());
@@ -796,6 +847,8 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
      *
      * @param x The abscissa of the point to which the distance is measured.
      * @param y The ordinate of the point to which the distance is measured.
+     * @param z The applicate of the point to which the distance is measured.
+     * @return the distance, as a double.
      */
     public double distance(double x, double y, double z) {
         return coords.distance(x, y, z);
@@ -808,6 +861,7 @@ public class Node extends _Properties implements ClockListener, Comparable<Node>
                 ml.onMove(this);
     }
 
+    @Override
     public int compareTo(Node o) {
         return (toString().compareTo(o.toString()));
     }

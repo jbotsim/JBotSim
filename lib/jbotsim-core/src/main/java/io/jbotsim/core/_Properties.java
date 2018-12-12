@@ -44,6 +44,7 @@ public abstract class _Properties {
      * Returns the property stored under the specified key.
      *
      * @param key The property key.
+     * @return the {@link Object} corresponding to the provided key
      */
     public Object getProperty(String key) {
         return properties.get(key);
@@ -75,6 +76,7 @@ public abstract class _Properties {
      * Returns the property stored under the specified key.
      *
      * @param key The property key.
+     * @return <tt>true</tt> is the provided key corresponds to a known propery, <tt>false</tt> otherwise.
      */
     public boolean hasProperty(String key) {
         return properties.containsKey(key);

@@ -80,7 +80,7 @@ public final class Message extends _Properties {
     }
 
     /**
-     * Copy constructor
+     * Copy constructor.
      *
      * @param message The original message to be copied.
      */
@@ -89,10 +89,10 @@ public final class Message extends _Properties {
     }
 
     /**
-     * Copy constructor with custom sender and destination
+     * Copy constructor with custom sender and destination.
      *
-     * @param sender      The new sender of the message
-     * @param destination The new destination of the message
+     * @param sender      The new sender of the message.
+     * @param destination The new destination of the message.
      * @param message     The original message to be copied.
      */
     Message(Node sender, Node destination, Message message) {
@@ -105,9 +105,10 @@ public final class Message extends _Properties {
     }
 
     /**
-     * Copy the current message, changing only the destination
+     * Copy the current message, changing only the destination.
      *
-     * @param newDestination The new destination of the message
+     * @param newDestination The new destination of the message.
+     * @return the new {@link Message} object.
      */
     public Message withDestination(Node newDestination) {
         return new Message(this.getSender(), newDestination, this);
@@ -115,6 +116,7 @@ public final class Message extends _Properties {
 
     /**
      * The sender of this message.
+     * @return the {@link Node} registered as the sender of the message.
      */
     public Node getSender() {
         return sender;
@@ -122,6 +124,7 @@ public final class Message extends _Properties {
 
     /**
      * The destination of this message.
+     * @return the {@link Node} registered as the destination of the message.
      */
     public Node getDestination() {
         return destination;
@@ -129,18 +132,21 @@ public final class Message extends _Properties {
 
     /**
      * The content of this message, which may be an object of any class.
+     * @return the content of the message, as an {@link Object}.
      */
     public Object getContent() {
         return content;
     }
 
     /**
-     * Returns the flag of this message.
+     * The flag of this message.
+     * @return the flag of this message, as a {@link String}.
      */
     public String getFlag() {
         return flag;
     }
 
+    @Override
     public String toString() {
         return sender + " -> " + destination + ": " + content;
     }
