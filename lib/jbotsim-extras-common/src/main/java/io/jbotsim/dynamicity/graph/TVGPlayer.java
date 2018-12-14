@@ -21,6 +21,7 @@ public class TVGPlayer implements ClockListener{
      * by taking all dates modulo the specified period.
      * @param tvg the time-varying graph
      * @param tp the target topology
+     * @param period the period after which the player should be restarted
      */
     public TVGPlayer (TVG tvg, Topology tp, Integer period){
         this.tvg=tvg;

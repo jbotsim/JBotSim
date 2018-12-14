@@ -9,7 +9,7 @@ public interface TraceFileReader {
      * Parse the content of the file named filename and put it in the provided {@link TracePlayer}.
      * @param filename the filename of the source file
      * @param tracePlayer the {@link TracePlayer} which must be populated
-     * @throws Exception
+     * @throws Exception in case of error
      */
     void parse(String filename, TracePlayer tracePlayer) throws Exception;
 }

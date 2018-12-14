@@ -5,11 +5,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Builder for {@link Topology topologies} objects.
+ * <p>Builder for {@link Topology topologies} objects.</p>
  *
- * This class is used, mainly, through methods inherited from {@link XMLBuilder}. The class method
+ * <p>This class is used, mainly, through methods inherited from {@link XMLBuilder}. The class method
  * {@link #buildTopologyElement} can be invoked to build the element that stores an entire
- * {@link Topology}; for instance it is used by {@link XMLTraceBuilder}.
+ * {@link Topology}.</p>
  */
 public class XMLTopologyBuilder extends XMLBuilder {
     private Topology tp;

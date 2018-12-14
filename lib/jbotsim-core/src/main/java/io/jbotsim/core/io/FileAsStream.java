@@ -14,6 +14,7 @@ public interface FileAsStream {
      * Returns an {@link InputStream} object corresponding to the provided file name
      * @param filename the name of the file to open
      * @return a {@link InputStream}
+     * @throws IOException in case of error when opening associated file
      */
     InputStream getInputStreamForName(String filename) throws IOException;
 
@@ -21,6 +22,7 @@ public interface FileAsStream {
      * Returns an {@link OutputStream} object corresponding to the provided file name
      * @param filename the name of the file to open
      * @return a {@link OutputStream}
+     * @throws IOException in case of error when opening associated file
      */
     OutputStream getOutputStreamForName(String filename) throws IOException;
 

@@ -53,8 +53,9 @@ public class ObstacleManager  {
     }
     
     /**
-     * Remove the given bstacle from the topology if the obstacle exist in the topology or do nothing
-     * @param obstacle The obstacle that will be remove from the topology
+     * Remove the given obstacle from the topology if the obstacle exist in the topology or do nothing
+     * @param obstacle The {@link Obstacle} that will be removed from the topology
+     * @param topology The {@link Topology} containing the obstacle
      */
     @SuppressWarnings("unchecked")
     public static void removeObstacle(Obstacle obstacle, Topology topology){

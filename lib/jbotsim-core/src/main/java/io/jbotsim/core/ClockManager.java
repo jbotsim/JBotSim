@@ -49,7 +49,8 @@ public class ClockManager {
     }
 
     /**
-     * Returns a reference to the Clock.
+     * Returns a reference to the {@link Clock}.
+     * @return a reference to the {@link Clock}.
      */
     public Clock getClock() {
         return clock;
@@ -57,6 +58,7 @@ public class ClockManager {
 
     /**
      * Returns the clock model currently in use.
+     * @return the current clock model.
      */
     public Class<? extends Clock> getClockModel() {
         return clockModel;
@@ -105,7 +107,8 @@ public class ClockManager {
     }
 
     /**
-     * Returns the time unit of the clock, in milliseconds.
+     * <p>Returns the time unit of the clock, in milliseconds. The time unit is the duration of a round.</p>
+     * @return the time unit of the clock, in milliseconds.
      */
     public int getTimeUnit(){
         return timeUnit;
@@ -124,6 +127,7 @@ public class ClockManager {
 
     /**
      * Returns the current round number.
+     * @return the current time.
      */
     public Integer currentTime() {
         return time;

@@ -25,7 +25,8 @@ public abstract class Clock {
     }
 
     /**
-     * Returns the time unit of the clock, in milliseconds.
+     * <p>Returns the time unit of the clock, in milliseconds. The time unit is the duration of a round.</p>
+     * @return the time unit of the clock, in milliseconds.
      */
     public abstract int getTimeUnit();
 

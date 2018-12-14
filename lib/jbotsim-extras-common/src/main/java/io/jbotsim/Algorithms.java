@@ -142,6 +142,9 @@ public class Algorithms {
     }
     /**
      * Returns the diameter of the topology (largest shortest path between any two nodes)
+     *
+     * @param t a {@link Topology}
+     * @return the diameter of the provided {@link Topology}, as an integer.
      */
     public static Integer getDiameter(Topology t) {
         if (!Connectivity.isConnected(t))

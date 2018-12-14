@@ -22,7 +22,7 @@ import io.jbotsim.serialization.plain.PlainTopologySerializer;
 import java.util.*;
 
 /**
- * The {@link Topology} object is the main entry point of JBotSim.<br/>
+ * <p>The {@link Topology} object is the main entry point of JBotSim.</p>
  *
  * It provides several features and convenience accessors, but at its core, it contains a set of {@link Node} objects
  * which can be linked two by two with a set of {@link Link} objects.
@@ -63,7 +63,6 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
-    ;
     RefreshMode refreshMode = RefreshMode.EVENTBASED;
 
     /**
@@ -75,6 +74,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Creates a topology of given dimensions.
+     * @param width the {@link Topology}'s width, as an integer.
+     * @param height the {@link Topology}'s height, as an integer.
      */
     public Topology(int width, int height) {
         setMessageEngine(new MessageEngine());
@@ -85,6 +86,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the node class corresponding to that name.
+     * @param modelName a {@link String} identifying the node model.
+     * @return the node model registered for the provided modelName.
      */
     public Class<? extends Node> getNodeModel(String modelName) {
         return nodeModels.get(modelName);
@@ -94,6 +97,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
      * Returns the default node model,
      * all properties assigned to this virtual node will be given to further nodes created
      * without explicit model name.
+     * @return the default node model.
      */
     public Class<? extends Node> getDefaultNodeModel() {
         return getNodeModel("default");
@@ -102,8 +106,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Adds the given node instance as a model.
      *
-     * @param modelName
-     * @param nodeClass
+     * @param modelName a {@link String} identifying the node model.
+     * @param nodeClass the node model: a {@link Class} object a class extending the {@link Node} class.
      */
     public void setNodeModel(String modelName, Class<? extends Node> nodeClass) {
         nodeModels.put(modelName, nodeClass);
@@ -112,7 +116,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Sets the default node model to the given node instance.
      *
-     * @param nodeClass
+     * @param nodeClass the default node model: a {@link Class} object a class extending the {@link Node} class.
      */
     public void setDefaultNodeModel(Class<? extends Node> nodeClass) {
         setNodeModel("default", nodeClass);
@@ -120,6 +124,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the set registered node classes.
+     * @return the {@link Set} of known model names.
      */
     public Set<String> getModelsNames() {
         return nodeModels.keySet();
@@ -128,7 +133,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Create a new instance of this type of node.
      *
-     * @param modelName
+     * @param modelName a {@link String} identifying the node model.
      * @return a new instance of this type of node
      */
     public Node newInstanceOfModel(String modelName) {
@@ -151,6 +156,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Sets the updates (links, sensed objects, etc.) to be instantaneous (EVENTBASED),
      * or periodic after each round (CLOCKBASED).
+     * @param refreshMode the {@link RefreshMode} to use.
      */
     public void setRefreshMode(RefreshMode refreshMode) {
         this.refreshMode = refreshMode;
@@ -158,6 +164,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the current refresh mode (CLOCKBASED or EVENTBASED).
+     * @return the current {@link RefreshMode}.
      */
     public RefreshMode getRefreshMode() {
         return refreshMode;
@@ -179,6 +186,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Set wireless capabilities status
+     * @param enabled the new wireless status: <tt>true</tt> to enable,
+     *         <tt>false</tt> otherwise.
      */
     public void setWirelessStatus(boolean enabled) {
         if (enabled == isWirelessEnabled)
@@ -190,10 +199,13 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns true if wireless links are enabled.
+     * @return <tt>true</tt> if the wireless links are enabled,
+     *         <tt>false</tt> otherwise.
      */
     public boolean getWirelessStatus() {
         return isWirelessEnabled;
     }
+
     /**
      * Returns the default communication range.
      *
@@ -240,6 +252,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Gets a reference on the message engine of this topology.
+     * @return the current {@link MessageEngine}.
      */
     public MessageEngine getMessageEngine() {
         return messageEngine;
@@ -247,6 +260,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Sets the message engine of this topology.
+     * @param messageEngine the new {@link MessageEngine}.
      */
     public void setMessageEngine(MessageEngine messageEngine) {
         this.messageEngine = messageEngine;
@@ -256,6 +270,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Gets a reference on the associated JTopology (if any, null otherwise).
      *
+     * @return the JTopology, as an {@link Object}.
      * @deprecated was indirectly a dependency to Swing (through JTopology);
      * The method still returns it, but only as an "Object" for this reason.
      */
@@ -266,6 +281,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Gets a reference on the scheduler.
+     * @return the current {@link Scheduler}.
      */
     public Scheduler getScheduler() {
         return scheduler;
@@ -273,6 +289,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Sets the scheduler of this topology.
+     * @param scheduler the new {@link Scheduler}.
      */
     public void setScheduler(Scheduler scheduler) {
         this.scheduler = scheduler;
@@ -298,6 +315,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the clock model currently in use.
+     * @return the current clock model.
      */
     public Class<? extends Clock> getClockModel() {
         return clockManager.getClockModel();
@@ -314,6 +332,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the current time (current round number)
+     * @return the current time.
      */
     public int getTime() {
         return clockManager.currentTime();
@@ -351,6 +370,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Sets the topology dimensions as indicated.
+     * @param width the {@link Topology}'s width, as an integer.
+     * @param height the {@link Topology}'s height, as an integer.
      */
     public void setDimensions(int width, int height) {
         this.width = width;
@@ -359,6 +380,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the width of this topology.
+     * @return the width, as an integer.
      */
     public int getWidth() {
         return width;
@@ -366,6 +388,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the height of this topology.
+     * @return the height, as an integer.
      */
     public int getHeight() {
         return height;
@@ -530,6 +553,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
      * communication ranges.
      *
      * @param l The link to be added.
+     * @param silent <tt>true</tt> to disable notifications of this adding.
      */
     public void addLink(Link l, boolean silent) {
         if (l.type == Type.DIRECTED) {
@@ -600,6 +624,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns true if this topology has at least one directed link.
+     * @return <tt>true</tt> if the {@link Topology} has at least one directed link, <tt>false</tt> otherwise.
      */
     public boolean hasDirectedLinks() {
         return arcs.size() > 2 * edges.size();
@@ -608,6 +633,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Returns a list containing all the nodes in this topology. The returned
      * ArrayList can be subsequently modified without effect on the topology.
+     * @return the {@link List} of {@link Node}s.
      */
     public List<Node> getNodes() {
         return new ArrayList<>(nodes);
@@ -615,6 +641,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
 
     /**
      * Returns the first node found with this ID.
+     * @param id an integer identifying the {@link Node}.
+     * @return the corresponding {@link Node}, null if not found.
      */
     public Node findNodeById(int id) {
         for (Node node : nodes)
@@ -639,6 +667,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
      * Returns a list containing all undirected links in this topology. The
      * returned ArrayList can be subsequently modified without effect on the
      * topology.
+     * @return the {@link List} of {@link Link}s.
      */
     public List<Link> getLinks() {
         return getLinks(false);
@@ -651,6 +680,7 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
      *
      * @param directed <tt>true</tt> for directed links, <tt>false</tt> for
      *                 undirected links.
+     * @return the {@link List} of {@link Link}s.
      */
     public List<Link> getLinks(boolean directed) {
         return new ArrayList<>(directed ? arcs : edges);
@@ -680,6 +710,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Returns the undirected link shared the specified nodes, if any.
      *
+     * @param n1 the first {@link Node}.
+     * @param n2 the second {@link Node}.
      * @return The requested link, if such a link exists, <tt>null</tt>
      * otherwise.
      */
@@ -690,6 +722,9 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     /**
      * Returns the link of the specified type between the specified nodes, if
      * any.
+     * @param from the source {@link Node}.
+     * @param to the destination {@link Node}.
+     * @param directed <tt>true</tt> if the searched {@link Link} is directed, <tt>false</tt> otherwise.
      *
      * @return The requested link, if such a link exists, <tt>null</tt>
      * otherwise.
@@ -717,8 +752,8 @@ public class Topology extends _Properties implements ClockListener, FileManagerP
     }
 
     /**
-     * Return the current LinkResolver
-     *
+     * Return the current LinkResolver.
+     * @return the current {@link LinkResolver}.
      */
     public LinkResolver getLinkResolver() {
         return linkResolver;
