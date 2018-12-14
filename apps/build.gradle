@@ -1,0 +1,20 @@
+
+description = "Sub project regrouping testers and examples."
+
+subprojects {
+
+    apply plugin: "java"
+    apply plugin: "idea"
+
+    dependencies{
+        testImplementation "junit:junit:4+"
+    }
+
+}
+
+task buildAllSubprojects {
+    group = 'build'
+    description = 'Assembles and tests all subprojects project.'
+
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("build")}}
+}

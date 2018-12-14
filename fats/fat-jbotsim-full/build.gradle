@@ -1,0 +1,6 @@
+
+description = "JBotSim Full: generates a fat jar containing all JBotSim jars"
+
+dependencies{
+    api ("${group}:jbotsim-all:${depVersion}")
+}

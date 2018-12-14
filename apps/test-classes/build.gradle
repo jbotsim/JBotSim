@@ -1,0 +1,13 @@
+description = "Collection of Main classes for several jbotsim/jbotsimx classes."
+
+dependencies {
+    implementation project(':lib:jbotsim-core'), project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-swing')
+    //, 'guru.nidi:graphviz-java:0.5+'
+}
+
+processResources {
+    from("src/main/java")
+    excludes = ["**/*.java"]
+}
+
+

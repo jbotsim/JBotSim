@@ -1,0 +1,23 @@
+description = "JBotSim UI Swing: generates/publish a jar containing AWT/Swing-specific classes for UI manipulation."
+def displayName = "JBotSim UI Swing"
+def displayDescription = "Jar containing AWT/Swing-specific classes for UI manipulation for JBotSim."
+
+dependencies {
+    api project(':lib:jbotsim-core'), project(':lib:jbotsim-serialization-common'), project(':lib:jbotsim-ui-common')
+}
+
+publishing {
+    publications {
+        uiSwing(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  displayDescription)
+        }
+    }
+    signing {
+        sign publishing.publications.uiSwing
+    }
+}

@@ -1,0 +1,6 @@
+
+description = "JBotSim Common: generates a fat jar containing all non-specific classes from JBotSim"
+
+dependencies{
+    api ("${group}:jbotsim-common:${depVersion}")
+}

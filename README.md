@@ -16,8 +16,8 @@ For examples of code, refer to the `src/examples` directory (here), or to the ex
 Here is a basic HelloWorld with JBotSim:
 
 ```java
-import jbotsim.Topology;
-import jbotsimx.ui.JViewer;
+import io.jbotsim.core.Topology;
+import io.jbotsim.ui.JViewer;
 
 public class HelloWorld{
     public static void main(String[] args){
@@ -27,3 +27,11 @@ public class HelloWorld{
     }
 }
 ```
+
+## Project structure
+The project is separated in three main modules:
+* [`apps`](./apps/README.md): contains some sample apps and mains using modules from `libs`. 
+* [`lib`](./lib/README.md): contains submodules responsible for the generation and publication of unitary *jars* files.
+* [`fats`](./fats/README.md): contains submodules responsible for the generation and publication of standalone *fat jars* by using existing 
+published JBotSim jars (published by `lib`).
+ 

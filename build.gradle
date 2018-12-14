@@ -1,0 +1,76 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
+subprojects {
+
+    apply plugin: "java"
+    apply plugin: "idea"
+
+    sourceCompatibility = 1.8 // java 8
+    targetCompatibility = 1.8
+
+    group = "io.jbotsim"
+    version = '1.0-beta10-SNAPSHOT'
+
+    ext.depVersion = '1.0-beta10-SNAPSHOT'
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    repositories {
+        maven {
+            name = 'NexusDockerRelease'
+            url = "http://localhost:8081/nexus/content/repositories/releases/"
+        }
+        maven {
+            name = 'NexusDockerSnapshot'
+            url = "http://localhost:8081/nexus/content/repositories/snapshots/"
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'LocalRepo'
+            url = "file://${rootDir}/repo"
+        }
+    }
+
+
+    dependencies{
+        testImplementation(
+                'org.junit.jupiter:junit-jupiter-api:5.1.0',
+                "junit:junit:4+"
+        )
+        testRuntimeOnly(
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+                'org.junit.vintage:junit-vintage-engine:5.1.0'
+        )
+    }
+    test {
+        useJUnitPlatform()
+    }
+}
+
+task publishToInternalRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the internal Maven repository.'
+    dependsOn tasks.withType(PublishToMavenLocal)
+    dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
+}
+
+task checkAll {
+    group = 'verification'
+    description = 'Checks that the project is in a good shape (everythings builds properly)'
+    dependsOn ':lib:jars'
+    dependsOn ':lib:tests'
+    dependsOn ':apps:buildAllSubprojects'
+
+}

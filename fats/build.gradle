@@ -1,0 +1,86 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
+description = "Sub project regrouping fat-jars generators."
+
+subprojects {
+
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "java-library"
+    apply plugin: "maven-publish"
+    apply plugin: "idea"
+
+    publishing {
+        repositories {
+            maven {
+                name = 'NexusDocker'
+
+                def releasesRepoUrl = "http://localhost:8081/nexus/content/repositories/releases/"
+                def snapshotsRepoUrl = "http://localhost:8081/nexus/content/repositories/snapshots/"
+
+                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = repoUrl
+
+                credentials {
+                    username "admin"
+                    password "admin123"
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = 'LocalRepo'
+                url = "file://${rootDir}/repo"
+            }
+        }
+    }
+
+    dependencies{
+        testImplementation "junit:junit:4+"
+    }
+
+    shadowJar {
+        exclude (
+                // known useless files from graphviz dependency
+                "/com/kitfox/svg/**",
+                "/help/about/about.html",
+                "/icons/cursor.svg",
+                "/icons/SVGUniverseIcon_16c.png",
+                "/icons/SVGUniverseIcon_32c.png",
+                "/viz*.js"
+        )
+    }
+}
+
+String generateJarName (Project proj) {
+    String artifactName = proj.getName()
+    String versionStr = proj.getVersion()
+    String returnStr = artifactName + "-" + versionStr + ".jar"
+    println("Artifact name: " + returnStr)
+    return returnStr
+}
+
+task jars {
+    group = 'build'
+    description = 'Create a combined JARs for all sub projects.'
+
+    dependsOn tasks.withType(Jar)
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("shadowJar")}}
+
+}
+
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("clean")}}
+}
+

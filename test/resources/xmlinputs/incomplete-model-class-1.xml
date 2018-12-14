@@ -3,10 +3,10 @@
     <topology wireless-enabled="true">
         <classes>
             <node-class class="examples.basic.broadcasting.BroadcastingNode" id="default"/>
-            <message-engine class="jbotsim.MessageEngine" id="default"/>
+            <message-engine class="MessageEngine" id="default"/>
             <link-resolver id="default"/>
-            <scheduler class="jbotsim.DefaultScheduler" id="default"/>
-            <clock-class class="jbotsimx.ui.JClock" id="default"/>
+            <scheduler class="DefaultScheduler" id="default"/>
+            <clock-class class="JClock" id="default"/>
         </classes>
         <graph>
             <node color="ffff0000" id="0" x="50.0" y="50.0"/>

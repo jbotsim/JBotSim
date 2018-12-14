@@ -3,7 +3,7 @@
     <topology wireless-enabled="true">
         <classes>
             <node-class class="examples.basic.broadcasting.BroadcastingNode" id="default"/>
-            <message-engine class="jbotsim.MessageEngine" id="default"/>
+            <message-engine class="MessageEngine" id="default"/>
             <clock-class class="java.lang.Object" id="default"/>
         </classes>
         <graph>
