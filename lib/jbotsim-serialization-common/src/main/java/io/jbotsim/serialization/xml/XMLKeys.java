@@ -4,7 +4,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.util.NoSuchElementException;
-import java.util.function.Function;
 
 /**
  * This enumeration lists all names of elements and attributes used in JBotSim XML documents. By convention we suffixed
@@ -54,6 +53,31 @@ public enum XMLKeys {
     START_TOPOLOGY("start-topology"),
     TIME_ATTR("time")
     ;
+
+    public interface Function<IType, RType> {
+        RType apply(IType in);
+    }
+
+    public static final Function<String, Boolean> BooleanFromString = new Function<String, Boolean>() {
+        @Override
+        public Boolean apply(String i) {
+            return Boolean.valueOf(i);
+        }
+    };
+
+    public static final Function<String, Integer> IntegerFromString = new Function<String, Integer>() {
+        @Override
+        public Integer apply(String i) {
+            return Integer.valueOf(i);
+        }
+    };
+
+    public static final Function<String, Double> DoubleFromString = new Function<String, Double>() {
+        @Override
+        public Double apply(String i) {
+            return Double.valueOf(i);
+        }
+    };
 
     private final String key;
 
@@ -195,7 +219,7 @@ public enum XMLKeys {
      * @return the value of this attribute.
      */
     public Integer getValueFor(Element el, Integer default_value) {
-        return getValueFor(el, Integer::valueOf, default_value);
+        return getValueFor(el, IntegerFromString, default_value);
     }
 
     /**
@@ -208,7 +232,7 @@ public enum XMLKeys {
      * @throws NoSuchElementException if this attribute does not exists for {@code el}.
      */
     public Integer getIntegerValueFor(Element el) throws NoSuchElementException {
-        return getValueFor(el, Integer::valueOf);
+        return getValueFor(el, IntegerFromString);
     }
 
     /**
@@ -222,7 +246,7 @@ public enum XMLKeys {
      * @return the value of this attribute if present or {@code default_value} if not.
      */
     public Double getValueFor(Element el, Double default_value) {
-        return getValueFor(el, Double::valueOf, default_value);
+        return getValueFor(el, DoubleFromString, default_value);
     }
 
     /**
@@ -235,7 +259,7 @@ public enum XMLKeys {
      * @throws NoSuchElementException if this attribute does not exists for {@code el}.
      */
     public Double getDoubleValueFor(Element el) throws NoSuchElementException {
-        return getValueFor(el, Double::valueOf);
+        return getValueFor(el, DoubleFromString);
     }
 
     /**
@@ -249,7 +273,7 @@ public enum XMLKeys {
      * @return the value of this attribute if present or {@code default_value} if not.
      */
     public Boolean getValueFor(Element el, Boolean default_value) {
-        return getValueFor(el, Boolean::valueOf, default_value);
+        return getValueFor(el, BooleanFromString, default_value);
     }
 
     /**

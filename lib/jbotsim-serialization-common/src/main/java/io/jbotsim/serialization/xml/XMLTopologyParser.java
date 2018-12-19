@@ -48,14 +48,14 @@ public class XMLTopologyParser extends XMLParser {
             throw new ParserException("invalid node '" + topo.getNodeName() + "' where '" + XMLKeys.TOPOLOGY + "' was expected");
 
         if (XMLKeys.WIRELESS_ENABLED_ATTR.isAttributeOf(topo)) {
-            if (XMLKeys.WIRELESS_ENABLED_ATTR.getValueFor(topo, Boolean::valueOf)) {
+            if (XMLKeys.WIRELESS_ENABLED_ATTR.getValueFor(topo, XMLKeys.BooleanFromString)) {
                 tp.enableWireless();
             } else
                 tp.disableWireless();
         }
 
         if (XMLKeys.CLOCK_SPEED_ATTR.isAttributeOf(topo)) {
-            tp.setClockSpeed(XMLKeys.CLOCK_SPEED_ATTR.getValueFor(topo, Integer::valueOf));
+            tp.setClockSpeed(XMLKeys.CLOCK_SPEED_ATTR.getValueFor(topo, XMLKeys.IntegerFromString));
         }
 
         int width = XMLKeys.WIDTH_ATTR.getValueFor(topo, Topology.DEFAULT_WIDTH);
@@ -127,7 +127,7 @@ public class XMLTopologyParser extends XMLParser {
         Color result = default_color;
         String color = XMLKeys.COLOR_ATTR.getValueFor(e, (String) null);
         if (color != null && !color.equals("None")) {
-            result = new Color(Integer.parseUnsignedInt(color, 16));
+            result = new Color((int) Long.parseLong(color, 16));
         }
         return result;
     }
