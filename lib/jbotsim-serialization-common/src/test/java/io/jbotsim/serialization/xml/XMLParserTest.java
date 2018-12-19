@@ -180,17 +180,7 @@ public class XMLParserTest {
     public void invalidMessageEngineClassTest() {
         invalidClassTest("invalid-message-engine-class.xml");
     }
-
-    @Test
-    public void invalidDoubleTest() {
-        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
-    }
-
-    @Test
-    public void invalidIntegerTest() {
-        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
-    }
-
+    
     //
     // Helper methods
     //
