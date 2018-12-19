@@ -96,15 +96,14 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     public void paint(Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         double direction = this.node.getDirection();
-        if (direction != Math.PI / 2) {
-            AffineTransform newXform = g2d.getTransform();
-            newXform.rotate(direction + Math.PI / 2, drawSize, drawSize);
-            g2d.setTransform(newXform);
-        }
+        AffineTransform newXform = g2d.getTransform();
+        newXform.rotate(direction - Node.DEFAULT_DIRECTION, drawSize, drawSize);
+        g2d.setTransform(newXform);
         g2d.drawImage(scaledIcon, 0, 0, null);
         JTopology jTopology = (JTopology) this.getParent();
+        UIComponent uic = new UIComponent(g2d);
         for (NodePainter painter : jTopology.nodePainters)
-            painter.paintNode(new UIComponent(g2d), node);
+            painter.paintNode(uic, node);
     }
 
     // EVENTS
