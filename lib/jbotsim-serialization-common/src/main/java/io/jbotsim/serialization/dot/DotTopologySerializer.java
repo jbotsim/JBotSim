@@ -1,43 +1,49 @@
 package io.jbotsim.serialization.dot;
 
-import guru.nidi.graphviz.model.MutableGraph;
-import guru.nidi.graphviz.model.MutableNode;
-import guru.nidi.graphviz.model.MutablePortNode;
-import guru.nidi.graphviz.parse.Parser;
+import com.paypal.digraph.parser.GraphEdge;
+import com.paypal.digraph.parser.GraphNode;
+import com.paypal.digraph.parser.GraphParser;
+
 import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.serialization.TopologySerializer;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by acasteig on 08/10/15.
  */
 public class DotTopologySerializer implements TopologySerializer {
-    double scale;
+    private double scale;
+    private int margin;
 
     public DotTopologySerializer() {
-        this.scale = 2;
+        this(2, 50);
     }
 
-    public DotTopologySerializer(double scale) {
+    public DotTopologySerializer(double scale, int margin) {
         this.scale = scale;
+        this.margin = margin;
     }
 
     @Override
     public void importTopology(Topology tp, String s) {
         tp.disableWireless();
 
-        try {
-            MutableGraph G = Parser.read(s);
-            makeTopologyFromGraph(G, tp);
-            organize(tp, scale);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        GraphParser parser = new GraphParser(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
+        Map<String, GraphNode> nodes = parser.getNodes();
+        if(nodes.isEmpty())
+            return;
+
+        Map<String, GraphEdge> edges = parser.getEdges();
+
+        makeTopologyFromGraph(nodes, edges, tp);
+        organize(tp, scale, margin);
     }
 
     @Override
@@ -45,38 +51,37 @@ public class DotTopologySerializer implements TopologySerializer {
         return null;
     }
 
-    private void makeTopologyFromGraph(MutableGraph G, Topology tp) {
-        HashMap<MutableNode,Node> nodes = new HashMap<>();
+    private void makeTopologyFromGraph(Map<String,GraphNode> nodes, Map<String,GraphEdge> edges, Topology tp) {
+        HashMap<GraphNode,Node> nodeTable = new HashMap<>();
 
-        for(MutableNode mutableNode : G.nodes()) {
+        for(String nname : nodes.keySet()) {
+            GraphNode gn = nodes.get(nname);
             Node node = tp.newInstanceOfModel("default");
-            extractAttributes(mutableNode, node);
+            extractAttributes(gn, node);
             tp.addNode(node);
-            nodes.put(mutableNode, node);
+            nodeTable.put(gn, node);
         }
-        Link.Type linkType = G.isDirected() ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
-        for(MutableNode mutableNode : G.nodes()) {
-            Node src = nodes.get(mutableNode);
+        Link.Type linkType = Link.Type.UNDIRECTED;
 
-            for (guru.nidi.graphviz.model.Link ml : mutableNode.links()) {
-                MutablePortNode mpn = (MutablePortNode)ml.to();
-                Node dst = nodes.get(mpn.node());
-                assert (dst != null);
-                Link l = new Link(src, dst, linkType);
-                extractAttributes(ml, l);
-                tp.addLink(l);
-            }
+        for(GraphEdge edge : edges.values()) {
+            GraphNode gn1 = edge.getNode1();
+            Node src = nodeTable.get(gn1);
+            GraphNode gn2 = edge.getNode2();
+            Node tgt = nodeTable.get(gn2);
+            Link l = new Link(src, tgt, linkType);
+            extractAttributes(edge, l);
+            tp.addLink(l);
         }
     }
 
-    private void extractAttributes(MutableNode mn, Node node) {
-        String pos = (String) mn.get("pos");
+    private void extractAttributes(GraphNode mn, Node node) {
+        String pos = (String) mn.getAttribute("pos");
         if (pos != null) {
             String[] xy = pos.split(",");
             node.setLocation(Double.valueOf(xy[0]), Double.valueOf(xy[1]));
         }
 
-        String c = (String) mn.get("color");
+        String c = (String) mn.getAttribute("color");
         if (c != null) {
             try {
                 node.setColor(Color.decode(c.substring(0)));
@@ -84,7 +89,7 @@ public class DotTopologySerializer implements TopologySerializer {
 
             }
         }
-        c = (String) mn.get("fillcolor");
+        c = (String) mn.getAttribute("fillcolor");
         if (c != null) {
             try {
                 node.setColor(Color.decode(c.substring(0)));
@@ -94,8 +99,8 @@ public class DotTopologySerializer implements TopologySerializer {
         }
     }
 
-    private void extractAttributes(guru.nidi.graphviz.model.Link ml, Link l) {
-        String c = (String) ml.get("color");
+    private void extractAttributes(GraphEdge ml, Link l) {
+        String c = (String) ml.getAttribute("color");
         if (c != null) {
             try {
                 l.setColor(Color.decode(c.substring(0)));
@@ -103,7 +108,7 @@ public class DotTopologySerializer implements TopologySerializer {
 
             }
         }
-        String w = (String) ml.get("width");
+        String w = (String) ml.getAttribute("width");
         if (w != null) {
             try {
                 l.setWidth(Integer.decode(w));
@@ -113,7 +118,7 @@ public class DotTopologySerializer implements TopologySerializer {
         }
     }
 
-    public static void organize(Topology tp, double scale){
+    public static void organize(Topology tp, double scale, int margin){
         if(tp.getNodes().isEmpty())
             return;
 
@@ -122,7 +127,6 @@ public class DotTopologySerializer implements TopologySerializer {
             node.setLocation(node.getX() * scale, node.getY() * scale);
 
         // Adjust window size and centers the graph within
-        final int margin = 50;
         double minX = Integer.MAX_VALUE;
         double minY = Integer.MAX_VALUE;
         double maxX = 0;
@@ -149,14 +153,4 @@ public class DotTopologySerializer implements TopologySerializer {
         for (Node node : tp.getNodes())
             node.setLocation(node.getX(), height - node.getY());
     }
-
-//    // Test
-//    public static void main(String[] args) {
-//        Topology tp = new Topology();
-//        tp.disableWireless();
-//        String filename = "/home/acasteig/test.io.jbotsim.serialization.dot"; // to be updated
-//        Format.importFromFile(tp, filename, new DotFormatter());
-//        new JViewer(tp);
-//    }
-
 }
