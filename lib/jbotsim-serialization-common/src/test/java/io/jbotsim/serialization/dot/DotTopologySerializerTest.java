@@ -23,7 +23,7 @@ public class DotTopologySerializerTest {
     @Parameterized.Parameter
     public String dotFileName;
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name="{index}: {0}")
     public static Collection<String> makers() {
         return Arrays.asList(
                 "arboricity-100-2.dot",
