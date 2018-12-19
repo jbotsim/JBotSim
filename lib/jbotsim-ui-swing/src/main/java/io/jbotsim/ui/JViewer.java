@@ -222,7 +222,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     private void executeSaveTopology() {
-        String filename = getFilenameFromUser();
+        String filename = getFilenameFromUser(true);
         if (filename == null) return;
 
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
@@ -231,12 +231,28 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     private void executeLoadTopology() {
-        String filename = getFilenameFromUser();
-        if (filename == null) return;
+        String filename = getFilenameFromUser(false);
+        if (filename == null)
+            return;
+
+        if (! jtp.topo.getNodes().isEmpty()) {
+            int n = JOptionPane.showConfirmDialog(jtp.getParent(),
+                    "Should we reset the current topology ?",
+                    "Make a choice",
+                    JOptionPane.YES_NO_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (n == JOptionPane.YES_OPTION) {
+                jtp.getTopology().clear();
+            } else if (n == JOptionPane.CANCEL_OPTION || n == JOptionPane.CLOSED_OPTION) {
+                return;
+            }
+        }
 
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
         String fileContent = jtp.topo.getFileManager().read(filename);
         serializer.importTopology(jtp.topo, fileContent);
+        if(window != null)
+            window.setSize(jtp.topo.getWidth(), jtp.topo.getHeight());
     }
 
     /**
@@ -244,9 +260,12 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      *
      * @return the filename in case of success, null otherwise
      */
-    private String getFilenameFromUser() {
-        JFileChooser fc = new JFileChooser();
-        fc.showOpenDialog(jtp.getParent());
+    private String getFilenameFromUser(boolean saveFile) {
+        JFileChooser fc = new JFileChooser(System.getProperty("user.dir"));
+        if (saveFile)
+            fc.showSaveDialog(jtp.getParent());
+        else
+            fc.showOpenDialog(jtp.getParent());
         if (fc.getSelectedFile() == null)
             return null;
         return fc.getSelectedFile().toString();
