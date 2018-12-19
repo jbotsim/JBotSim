@@ -6,10 +6,9 @@ dependencies {
   api project(':lib:jbotsim-core')
 
   testImplementation project(':lib:jbotsim-extras-common')
+  testImplementation 'com.paypal.digraph:digraph-parser:1.0'
 
-  implementation ('com.paypal.digraph:digraph-parser:1.0') {
-    exclude group: '*'
-  }
+  api 'com.paypal.digraph:digraph-parser:1.0'
 }
 
 publishing {
