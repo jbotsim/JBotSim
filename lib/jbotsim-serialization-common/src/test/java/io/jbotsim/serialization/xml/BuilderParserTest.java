@@ -51,7 +51,7 @@ public class BuilderParserTest {
         assertEquals(t1, t2);
     }
 
-    @Parameters
+    @Parameters(name="{index}: {0}")
     public static Collection<TopologyMaker> makers() {
         return Arrays.asList(
                 BuilderParserTest::T1,
