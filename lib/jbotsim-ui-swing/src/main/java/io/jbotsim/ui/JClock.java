@@ -15,6 +15,8 @@ import io.jbotsim.core.ClockManager;
 import io.jbotsim.core.Clock;
 
 import javax.swing.Timer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * <p>The {@link JClock} implements the {@link Clock} interface, using a Swing {@link Timer}.</p>
@@ -22,9 +24,14 @@ import javax.swing.Timer;
 public class JClock extends Clock {
     Timer timer;
 
-    public JClock(ClockManager manager) {
+    public JClock(final ClockManager manager) {
         super(manager);
-        timer = new Timer(10, e -> manager.onClock());
+        timer = new Timer(10, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                manager.onClock();
+            }
+        });
     }
 
     @Override

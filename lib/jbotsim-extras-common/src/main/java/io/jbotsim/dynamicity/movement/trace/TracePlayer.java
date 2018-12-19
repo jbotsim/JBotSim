@@ -5,6 +5,7 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -29,7 +30,7 @@ public class TracePlayer implements ClockListener {
         this.traceFileReader = traceFileReader;
         events = new LinkedList<>();
         story = null;
-        recordedNodes = new HashMap<Integer, Node>();
+        recordedNodes = new HashMap<>();
         topology.addClockListener(this);
         listeners = new ArrayList<>();
     }
@@ -39,7 +40,7 @@ public class TracePlayer implements ClockListener {
     }
 
     public void removeListener (ReplayTerminatedListener l) {
-        listeners.remove(l);;
+        listeners.remove(l);
     }
 
     public void loadAndStart(String filename) throws Exception {
@@ -50,8 +51,11 @@ public class TracePlayer implements ClockListener {
     public void start() {
         topology.resetTime();
         if(! events.isEmpty()) {
-            story = new PriorityQueue<>(events.size(), (e1, e2) -> {
-                return e1.getTime() - e2.getTime();
+            story = new PriorityQueue<>(events.size(), new Comparator<TraceEvent>() {
+                @Override
+                public int compare(TraceEvent e1, TraceEvent e2) {
+                    return e1.getTime() - e2.getTime();
+                }
             });
             story.addAll(events);
         }

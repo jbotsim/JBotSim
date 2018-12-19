@@ -65,27 +65,30 @@ public class XMLTraceParser extends XMLParser implements TraceFileReader {
      * @param tp the {@link TracePlayer} popuylated by the parser
      * @throws ParserException is raised if the given {@link org.w3c.dom.Document document} is malformed.
      */
-    public static void parseTraceElement(Element element, TracePlayer tp) throws ParserException {
+    public static void parseTraceElement(Element element, final TracePlayer tp) throws ParserException {
         if (!XMLKeys.TRACE.equals(element.getNodeName()))
             throw new ParserException("invalid node '" + element.getNodeName() + "' where '" +
                     XMLKeys.TRACE + "' was expected");
-        mapElementChildrenOf(element, e -> {
-            if (XMLKeys.TOPOLOGY.labelsElement(e))
-                XMLTopologyParser.parseTopologyElement(e, tp.getTopology());
-            else {
-                TraceEvent ev = null;
-                if (XMLKeys.ADD_NODE.labelsElement(e))
-                    ev = parseAddNodeEvent(e);
-                else if (XMLKeys.DELETE_NODE.labelsElement(e))
-                    ev = parseDeleteNodeEvent(e);
-                else if (XMLKeys.MOVE_NODE.labelsElement(e))
-                    ev = parseMoveNodeEvent(e);
-                else if (XMLKeys.SELECT_NODE.labelsElement(e))
-                    ev = parseSelectNodeEvent(e);
-                else if (XMLKeys.START_TOPOLOGY.labelsElement(e))
-                    ev = parseStartTopologyEvent(e);
-                assert (ev != null);
-                tp.addTraceEvent(ev);
+        mapElementChildrenOf(element, new ElementVisitor() {
+            @Override
+            public void accept(Element e) throws ParserException {
+                if (XMLKeys.TOPOLOGY.labelsElement(e))
+                    XMLTopologyParser.parseTopologyElement(e, tp.getTopology());
+                else {
+                    TraceEvent ev = null;
+                    if (XMLKeys.ADD_NODE.labelsElement(e))
+                        ev = parseAddNodeEvent(e);
+                    else if (XMLKeys.DELETE_NODE.labelsElement(e))
+                        ev = parseDeleteNodeEvent(e);
+                    else if (XMLKeys.MOVE_NODE.labelsElement(e))
+                        ev = parseMoveNodeEvent(e);
+                    else if (XMLKeys.SELECT_NODE.labelsElement(e))
+                        ev = parseSelectNodeEvent(e);
+                    else if (XMLKeys.START_TOPOLOGY.labelsElement(e))
+                        ev = parseStartTopologyEvent(e);
+                    assert (ev != null);
+                    tp.addTraceEvent(ev);
+                }
             }
         });
     }

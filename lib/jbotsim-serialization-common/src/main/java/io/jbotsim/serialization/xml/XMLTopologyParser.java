@@ -43,19 +43,19 @@ public class XMLTopologyParser extends XMLParser {
      * @param tp the {@link Topology topology} that is populated with XML data.
      * @throws ParserException is raised if the given XML document is malformed.
      */
-    public static void parseTopologyElement(Element topo, Topology tp) throws ParserException {
+    public static void parseTopologyElement(Element topo, final Topology tp) throws ParserException {
         if (!XMLKeys.TOPOLOGY.equals(topo.getNodeName()))
             throw new ParserException("invalid node '" + topo.getNodeName() + "' where '" + XMLKeys.TOPOLOGY + "' was expected");
 
         if (XMLKeys.WIRELESS_ENABLED_ATTR.isAttributeOf(topo)) {
-            if (XMLKeys.WIRELESS_ENABLED_ATTR.getValueFor(topo, Boolean::valueOf)) {
+            if (XMLKeys.WIRELESS_ENABLED_ATTR.getValueFor(topo, XMLKeys.BooleanFromString)) {
                 tp.enableWireless();
             } else
                 tp.disableWireless();
         }
 
         if (XMLKeys.CLOCK_SPEED_ATTR.isAttributeOf(topo)) {
-            tp.setClockSpeed(XMLKeys.CLOCK_SPEED_ATTR.getValueFor(topo, Integer::valueOf));
+            tp.setClockSpeed(XMLKeys.CLOCK_SPEED_ATTR.getValueFor(topo, XMLKeys.IntegerFromString));
         }
 
         int width = XMLKeys.WIDTH_ATTR.getValueFor(topo, Topology.DEFAULT_WIDTH);
@@ -67,11 +67,19 @@ public class XMLTopologyParser extends XMLParser {
         tp.setSensingRange(sr);
         tp.setCommunicationRange(cr);
 
-        mapElementChildrenOf(topo, e -> {
-            if (XMLKeys.CLASSES.labelsElement(e))
-                mapElementChildrenOf(e, el -> parseClass(el,tp) );
-            else if (XMLKeys.GRAPH.labelsElement(e))
-                parseGraphElement(e, tp);
+        mapElementChildrenOf(topo, new ElementVisitor() {
+            @Override
+            public void accept(Element e) throws ParserException {
+                if (XMLKeys.CLASSES.labelsElement(e)) {
+                    mapElementChildrenOf(e, new ElementVisitor() {
+                        @Override
+                        public void accept(Element element) throws ParserException {
+                            parseClass(element, tp);
+                        }
+                    });
+                } else if (XMLKeys.GRAPH.labelsElement(e))
+                    parseGraphElement(e, tp);
+            }
         });
     }
 
@@ -112,14 +120,17 @@ public class XMLTopologyParser extends XMLParser {
         }
     }
 
-    private static void parseGraphElement(Element ge, Topology tp) throws ParserException {
-        HashMap<String, Node> nodeids = new HashMap<>();
-        mapElementChildrenOf(ge, e -> {
+    private static void parseGraphElement(Element ge, final Topology tp) throws ParserException {
+        final HashMap<String, Node> nodeids = new HashMap<>();
+        mapElementChildrenOf(ge, new ElementVisitor() {
+            @Override
+            public void accept(Element e) throws ParserException {
             if (XMLKeys.NODE.labelsElement(e))
                 parseNode(e, tp, nodeids);
             else if (XMLKeys.LINK.labelsElement(e))
                 parseLink(e, tp, nodeids);
             else throw new EnumConstantNotPresentException(XMLKeys.class, e.getTagName());
+            }
         });
     }
 
@@ -127,7 +138,7 @@ public class XMLTopologyParser extends XMLParser {
         Color result = default_color;
         String color = XMLKeys.COLOR_ATTR.getValueFor(e, (String) null);
         if (color != null && !color.equals("None")) {
-            result = new Color(Integer.parseUnsignedInt(color, 16));
+            result = new Color((int) Long.parseLong(color, 16));
         }
         return result;
     }
