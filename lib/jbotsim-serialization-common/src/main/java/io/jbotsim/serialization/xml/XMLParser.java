@@ -1,5 +1,6 @@
 package io.jbotsim.serialization.xml;
 
+import io.jbotsim.core.Topology;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,11 +28,24 @@ public abstract class XMLParser {
     private static final String XSD_RESOURCE_PREFIX = "jbotsim-";
     private static final String XSD_RESOURCE_SUFFIX = ".xsd";
 
+    public static final String VALIDATE_DOCUMENT_PROPERTY =
+            XMLParser.class.getPackage().getName()+".validate_document";
+
     /**
      * The version read from the XML document. This member variable is used to interpret the XML document according
      * to a given version of the XSD schema.
      */
     private String version = null;
+
+    private boolean validateDocument;
+
+    protected XMLParser() {
+        this(Boolean.valueOf(System.getProperty(VALIDATE_DOCUMENT_PROPERTY, "true")));
+    }
+
+    protected XMLParser(boolean validateDocument) {
+        this.validateDocument = validateDocument;
+    }
 
     /**
      * Gets the version of the interpreted document.
@@ -92,30 +106,32 @@ public abstract class XMLParser {
                     XMLKeys.JBOTSIM + "' was expected");
         }
 
-        String version = XMLKeys.VERSION_ATTR.getValueFor(rootNode, XMLBuilder.DEFAULT_VERSION);
-        try {
-            Schema schema = loadSchemaForVersion(version);
-            schema.newValidator().validate(new DOMSource(rootNode));
-        } catch (SAXParseException e) {
-            String msg;
-            if (e.getPublicId() == null) {
-                msg = "XSD validation error: ";
-            } else {
-                msg = e.getPublicId() + ":";
-                if (e.getLineNumber() >= 1) {
-                    msg += e.getLineNumber() + ":";
-                    if (e.getColumnNumber() >= 1) {
-                        msg += e.getColumnNumber() + ":";
+        if (validateDocument) {
+            String version = XMLKeys.VERSION_ATTR.getValueFor(rootNode, XMLBuilder.DEFAULT_VERSION);
+            try {
+                Schema schema = loadSchemaForVersion(version);
+                schema.newValidator().validate(new DOMSource(rootNode));
+            } catch (SAXParseException e) {
+                String msg;
+                if (e.getPublicId() == null) {
+                    msg = "XSD validation error: ";
+                } else {
+                    msg = e.getPublicId() + ":";
+                    if (e.getLineNumber() >= 1) {
+                        msg += e.getLineNumber() + ":";
+                        if (e.getColumnNumber() >= 1) {
+                            msg += e.getColumnNumber() + ":";
+                        }
                     }
+                    msg += "error: ";
                 }
-                msg += "error: ";
+                throw new ParserException(msg + e.getMessage());
+            } catch (SAXException e) {
+                throw new ParserException("unable to validate XML topology:" + e.getMessage());
+            } catch (IOException e) {
+                throw new ParserException("some IO exception occurs while trying to validate XML topology:" +
+                        e.getMessage());
             }
-            throw new ParserException(msg + e.getMessage());
-        } catch (SAXException e) {
-            throw new ParserException("unable to validate XML topology:" + e.getMessage());
-        } catch (IOException e) {
-            throw new ParserException("some IO exception occurs while trying to validate XML topology:" +
-                    e.getMessage());
         }
 
         for (Node n = rootNode.getFirstChild(); n != null; n = n.getNextSibling()) {
