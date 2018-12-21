@@ -3,6 +3,7 @@ include 'lib:jbotsim-core',
         'lib:jbotsim-extras-common', 'lib:jbotsim-extras-swing',
         'lib:jbotsim-ui-common', 'lib:jbotsim-ui-swing',
         'lib:jbotsim-common', 'lib:jbotsim-all',
+        'lib:jbotsim-adapter-jgrapht',
         'apps:examples', 'apps:test-classes',
         'fats:fat-jbotsim-full', 'fats:fat-jbotsim-common'
 

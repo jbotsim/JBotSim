@@ -1,0 +1,23 @@
+description = "JBotSim JGraphT Adapter: generates/publish a jar containing an adapter of the JGraphT library for JBotSim."
+def displayName = "JBotSim JGraphT Adapter"
+def displayDescription = "Jar containing an adapter of the JGraphT library for JBotSim."
+
+dependencies {
+    api 'org.jgrapht:jgrapht-ext:1.3.0'
+}
+
+publishing {
+    publications {
+        adapterJGraphT(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  displayDescription)
+        }
+    }
+    signing {
+        sign publishing.publications.adapterJGraphT
+    }
+}
