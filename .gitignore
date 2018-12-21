@@ -22,6 +22,11 @@ target/
 
 build/
 
+# ignore "out" directories from root to subprojects (e.g. /apps/test-classes/out/)
+/out/
+/*/out/
+/*/*/out/
+
 .DS_Store
 
 *.swp
