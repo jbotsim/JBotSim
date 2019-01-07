@@ -68,6 +68,17 @@ public class Link extends Properties implements Comparable<Link> {
     public Mode mode;
 
     /**
+     * Creates a {@link Link} by copying an existing one.
+     * @param link the {@link Link} to copy.
+     */
+    public Link(Link link) {
+        this.destination = link.destination;
+        this.source = link.source;
+        this.type = link.type;
+        this.mode = link.mode;
+    }
+
+    /**
      * Creates an undirected wired link between the two specified nodes.
      *
      * @param n1 The source node.
