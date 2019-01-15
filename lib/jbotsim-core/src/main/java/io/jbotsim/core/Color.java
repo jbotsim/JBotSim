@@ -32,7 +32,7 @@ public class Color {
     public static Color CYAN = cyan;
     public static Color blue = new Color(0, 0, 255);
     public static Color BLUE = blue;
-    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
+    static ArrayList<Color> indexedColors = new ArrayList<>(Arrays.asList(
             Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
             Color.black, Color.white, Color.gray, Color.orange, Color.cyan,
             Color.magenta, Color.lightGray, Color.darkGray));
@@ -43,7 +43,7 @@ public class Color {
 
     static final int ALPHA_MASK = 255 << 24;
 
-    // We expect the basicColors array to always be the same Colors. The associated Random thus uses a constant seed.
+    // We expect the indexedColors array to always be the same Colors. The associated Random thus uses a constant seed.
     static private Random intColorsRandom = new Random(0);
 
     public Color(int r, int g, int b, int a) {
@@ -108,8 +108,8 @@ public class Color {
         return value;
     }
 
-    public static List<Color> getBasicColors() {
-        return basicColors;
+    public static List<Color> getIndexedColors() {
+        return indexedColors;
     }
 
     public void testColorValueRange(int r, int g, int b, int a) {
@@ -230,10 +230,10 @@ public class Color {
      * @return the {@link Color} associated to the provided index.
      */
     public static Color getColorAt(Integer colorIndex) {
-        while (Color.basicColors.size() <= colorIndex)
-            Color.basicColors.add(Color.getRandomColor(intColorsRandom));
+        while (Color.indexedColors.size() <= colorIndex)
+            Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
 
-        return Color.basicColors.get(colorIndex);
+        return Color.indexedColors.get(colorIndex);
     }
 
     /**
@@ -243,7 +243,7 @@ public class Color {
      * @return the associated color index. {@code -1} if not found.
      */
     public static int indexOf(Color color) {
-        return Color.basicColors.indexOf(color);
+        return Color.indexedColors.indexOf(color);
     }
 
     /**

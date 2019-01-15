@@ -228,7 +228,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * {@link Node#setIntColor(Integer)} for more explanation.
      */
     public int getIntColor() {
-        return Color.basicColors.indexOf(color);
+        return Color.indexedColors.indexOf(color);
     }
 
     /**
@@ -238,9 +238,9 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * @deprecated Please use {@link Node#setColor(Color)} in associated with {@link Color#getColorAt(Integer)} instead.
      */
     public void setIntColor(Integer intColor) {
-        while (Color.basicColors.size() <= intColor)
-            Color.basicColors.add(Color.getRandomColor());
-        setColor(Color.basicColors.get(intColor));
+        while (Color.indexedColors.size() <= intColor)
+            Color.indexedColors.add(Color.getRandomColor());
+        setColor(Color.indexedColors.get(intColor));
     }
 
     /**
