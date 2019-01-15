@@ -224,7 +224,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * Returns the color of this node.
      * @return the color of this node, as an integer.
      *
-     * @deprecated Please use {@link Color#getIntColor()} on the result of {@link Node#getColor()}. See
+     * @deprecated Please use {@link Color#indexOf(Color)} on the result of {@link Node#getColor()}. See
      * {@link Node#setIntColor(Integer)} for more explanation.
      */
     public int getIntColor() {
@@ -235,7 +235,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * Sets the color of this node.
      * @param intColor an integer
      *
-     * @deprecated Please use {@link Node#setColor(Color)} in associated with {@link Color#getIntColor(Integer)} instead.
+     * @deprecated Please use {@link Node#setColor(Color)} in associated with {@link Color#getColorAt(Integer)} instead.
      */
     public void setIntColor(Integer intColor) {
         while (Color.basicColors.size() <= intColor)

@@ -222,27 +222,28 @@ public class Color {
     }
 
     /**
-     * <p>Returns the {@link Color} associated to the provided {@link Integer}.</p>
-     * <p>The {@link Color} returned for a specific intColor will remain the same across instances.</p>
+     * <p>Returns the {@link Color} associated to the provided index.</p>
+     * <p>The {@link Color} returned for a specific index will remain the same across instances.</p>
      * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are thus
      * generated (from {@code 0} to {@code intColor}) on demand, and stored for later use.</p>
-     * @param intColor the index of the {@link Color}.
+     * @param colorIndex the index of the {@link Color}.
      * @return the {@link Color} associated to the provided index.
      */
-    public static Color getIntColor(Integer intColor) {
-        while (Color.basicColors.size() <= intColor)
+    public static Color getColorAt(Integer colorIndex) {
+        while (Color.basicColors.size() <= colorIndex)
             Color.basicColors.add(Color.getRandomColor(intColorsRandom));
 
-        return Color.basicColors.get(intColor);
+        return Color.basicColors.get(colorIndex);
     }
 
     /**
-     * <p>Tries to find the color index associated with the current {@link Color}.</p>
+     * <p>Searches for the color index associated with the current {@link Color}.</p>
      *
+     * @param color the {@link Color} to be searched for.
      * @return the associated color index. {@code -1} if not found.
      */
-    public int getIntColor() {
-        return Color.basicColors.indexOf(this);
+    public static int indexOf(Color color) {
+        return Color.basicColors.indexOf(color);
     }
 
     /**

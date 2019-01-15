@@ -14,79 +14,78 @@ class ColorTest {
 
     @BeforeEach
     void setUp() {
-        color255 = Color.getIntColor(255);
+        color255 = Color.getColorAt(255);
     }
 
 
-    // region getIntColor(Color)
-
+    // region indexOf(Color)
 
     @Test
-    void getIntColorToIndex_constantIndexes_sameResult() {
+    void indexOf_constantIndexes_sameResult() {
 
         // Constant values
-        testGetIntColor_toIndex(0, Color.blue);
-        testGetIntColor_toIndex(1, Color.red);
-        testGetIntColor_toIndex(2, Color.green);
-        testGetIntColor_toIndex(3, Color.yellow);
-        testGetIntColor_toIndex(4, Color.pink);
-        testGetIntColor_toIndex(5, Color.black);
-        testGetIntColor_toIndex(6, Color.white);
-        testGetIntColor_toIndex(7, Color.gray);
-        testGetIntColor_toIndex(8, Color.orange);
-        testGetIntColor_toIndex(9, Color.cyan);
-        testGetIntColor_toIndex(10, Color.magenta);
-        testGetIntColor_toIndex(11, Color.lightGray);
-        testGetIntColor_toIndex(12, Color.darkGray);
+        testIndexOf(0, Color.blue);
+        testIndexOf(1, Color.red);
+        testIndexOf(2, Color.green);
+        testIndexOf(3, Color.yellow);
+        testIndexOf(4, Color.pink);
+        testIndexOf(5, Color.black);
+        testIndexOf(6, Color.white);
+        testIndexOf(7, Color.gray);
+        testIndexOf(8, Color.orange);
+        testIndexOf(9, Color.cyan);
+        testIndexOf(10, Color.magenta);
+        testIndexOf(11, Color.lightGray);
+        testIndexOf(12, Color.darkGray);
 
         // Generated value
-        testGetIntColor(color255, 255);
+        testGetColorAt(color255, 255);
 
     }
 
     @Test
-    void getIntColorToIndex_notPresent_returnMinus1() {
+    void indexOf_notPresent_returnMinus1() {
 
-        testGetIntColor_toIndex( -1, new Color(-1, -1, -1));
+        testIndexOf( -1, new Color(-1, -1, -1));
 
     }
 
-    private void testGetIntColor_toIndex(int expectedIndex, Color color) {
-        int index = color.getIntColor();
+    private void testIndexOf(int expectedIndex, Color color) {
+        int index = Color.indexOf(color);
         assertEquals(expectedIndex, index);
     }
 
     // endregion
 
-    // region getIntColor(int)
+    // region getColorAt(int)
 
     @Test
-    void getIntColor_constantIndexes_sameResult() {
+    void getColorAt_constantIndexes_sameResult() {
 
         // Constant values
-        testGetIntColor(Color.blue, 0);
-        testGetIntColor(Color.red, 1);
-        testGetIntColor(Color.green, 2);
-        testGetIntColor(Color.yellow, 3);
-        testGetIntColor(Color.pink, 4);
-        testGetIntColor(Color.black, 5);
-        testGetIntColor(Color.white, 6);
-        testGetIntColor(Color.gray, 7);
-        testGetIntColor(Color.orange, 8);
-        testGetIntColor(Color.cyan, 9);
-        testGetIntColor(Color.magenta, 10);
-        testGetIntColor(Color.lightGray, 11);
-        testGetIntColor(Color.darkGray, 12);
+        testGetColorAt(Color.blue, 0);
+        testGetColorAt(Color.red, 1);
+        testGetColorAt(Color.green, 2);
+        testGetColorAt(Color.yellow, 3);
+        testGetColorAt(Color.pink, 4);
+        testGetColorAt(Color.black, 5);
+        testGetColorAt(Color.white, 6);
+        testGetColorAt(Color.gray, 7);
+        testGetColorAt(Color.orange, 8);
+        testGetColorAt(Color.cyan, 9);
+        testGetColorAt(Color.magenta, 10);
+        testGetColorAt(Color.lightGray, 11);
+        testGetColorAt(Color.darkGray, 12);
 
         // Generated values
-        testGetIntColor(color255, 255);
-        testGetIntColor(new Color(182, 139, 4), 5000);
-        testGetIntColor(new Color(242, 132, 68), 6000);
+        testGetColorAt(color255, 255);
+        testGetColorAt(new Color(182, 139, 4), 5000);
+        testGetColorAt(new Color(242, 132, 68), 6000);
 
     }
 
-    private void testGetIntColor(Color expectedColor, int intColor) {
-        Color color = Color.getIntColor(intColor);
+    private void testGetColorAt(Color expectedColor, int intColor) {
+        Color color = Color.getColorAt(intColor);
         assertEquals(expectedColor, color);
     }
 
