@@ -37,10 +37,9 @@ public class Color {
             Color.black, Color.white, Color.gray, Color.orange, Color.cyan,
             Color.magenta, Color.lightGray, Color.darkGray));
 
-    private float falpha = 0;
     int value = 0;
     private double r, g, b, a;
-    private double FACTOR = 0.7;
+    static final private double FACTOR = 0.7;
 
     static final int ALPHA_MASK = 255 << 24;
 
@@ -75,12 +74,9 @@ public class Color {
 
 
     public Color(int value, boolean hasalpha) {
-        if (hasalpha)
-            falpha = ((value & ALPHA_MASK) >> 24) / 255f;
-        else {
+        if (!hasalpha)
             value |= ALPHA_MASK;
-            falpha = 1;
-        }
+
         this.value = value;
     }
 
@@ -90,7 +86,6 @@ public class Color {
         this.b = color.b;
         this.a = color.a;
         this.value = color.value;
-        this.falpha = color.falpha;
     }
 
     public int getRed() {
