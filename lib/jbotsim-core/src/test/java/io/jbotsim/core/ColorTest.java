@@ -118,4 +118,59 @@ class ColorTest {
         assertNotEquals(color1, color2);
     }
     // endregion
+
+    // region equals
+
+    @Test
+    void equals_sameObject_equal() {
+        Color color1 = new Color(125, 125 , 125, 0);
+
+        assertEquals(color1, color1);
+    }
+    @Test
+    void equals_sameValues_equal() {
+        Color color1 = new Color(125, 125 , 125, 0);
+        Color color2 = new Color(125, 125 , 125, 0);
+
+        assertEquals(color1, color2);
+    }
+    @Test
+    void equals_differentR_notEqual() {
+        Color color1 = new Color(0, 125 , 125, 0);
+        Color color2 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, color2);
+    }
+    @Test
+    void equals_differentG_notEqual() {
+        Color color1 = new Color(125, 0 , 125, 0);
+        Color color2 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, color2);
+    }
+    @Test
+    void equals_differentB_notEqual() {
+        Color color1 = new Color(125, 125 , 0, 0);
+        Color color2 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, color2);
+    }
+    @Test
+    void equals_differentAlpha_notEqual() {
+        Color color1 = new Color(125, 125 , 125, 12);
+        Color color2 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, color2);
+    }
+    // endregion
+
+    // region copy constructor
+    @Test
+    void copyConstructor_equal() {
+        Color color1 = new Color(125, 125 , 125, 12);
+        Color color2 = new Color(color1);
+
+        assertEquals(color1, color2);
+    }
+    // endregion
 }
