@@ -87,6 +87,16 @@ subprojects {
     }
 }
 
+/**
+ * This task generates a monolithic javadoc based on the classes of all its subprojects.
+ * The resulting javadoc can be used for online publication.
+ */
+task monolithicJavadoc(type: Javadoc) {
+    group = 'documentation'
+    source subprojects.collect { it.sourceSets.main.allJava }
+    classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
+}
+
 task publishToTestRepository {
     group = 'publishing'
     description = 'Publishes all Maven publications to the test (project root) Maven repository.'
