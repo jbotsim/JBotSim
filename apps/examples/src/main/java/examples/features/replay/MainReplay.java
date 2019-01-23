@@ -24,7 +24,7 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
 
     public MainReplay() throws XMLParser.ParserException {
         topology = new Topology();
-        XMLTopologyParser parser = new XMLTopologyParser(topology);
+        XMLTopologyParser parser = new XMLTopologyParser(topology, true);
         parser.parse(getClass().getResourceAsStream("/examples/features/replay/network.xml"));
 
         jViewer = new JViewer(topology);
@@ -50,7 +50,7 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
                     recorder = null;
                 }
                 topology.clear();
-                player = new TracePlayer(topology, new XMLTraceParser(topology));
+                player = new TracePlayer(topology, new XMLTraceParser(topology, true));
                 player.loadAndStart(TRACE_FILENAME);
             }
         } catch (Exception e) {

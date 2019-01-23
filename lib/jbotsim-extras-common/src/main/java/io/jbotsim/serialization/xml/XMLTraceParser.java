@@ -27,7 +27,8 @@ public class XMLTraceParser extends XMLParser implements TraceFileReader {
      *
      * @param fileManagerProvider the {@link TracePlayer} that is populated by the parser.
      */
-    public XMLTraceParser(FileManagerProvider fileManagerProvider) {
+    public XMLTraceParser(FileManagerProvider fileManagerProvider, boolean validateDocument) {
+        super(validateDocument);
         this.fileManagerProvider = fileManagerProvider;
     }
 

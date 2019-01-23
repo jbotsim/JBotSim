@@ -27,7 +27,8 @@ public class XMLTopologyParser extends XMLParser {
      *
      * @param tp the {@link Topology} populated by the parser.
      */
-    public XMLTopologyParser(Topology tp) {
+    public XMLTopologyParser(Topology tp, boolean validateDocument) {
+        super(validateDocument);
         this.tp = tp;
     }
 

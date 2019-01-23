@@ -51,7 +51,7 @@ public class JBotSimConvert {
         TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
         filenameMatcher.addTopologySerializer(".*\\.dot$",new DotTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.xdot$",new DotTopologySerializer());
-        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologySerializer());
+        filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologySerializer(true));
         filenameMatcher.addTopologySerializer(".*\\.tikz$",new TikzTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.plain$",new PlainTopologySerializer());
         return filenameMatcher;

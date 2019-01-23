@@ -296,7 +296,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         addTopologySerializer(".*\\.tikz", new TikzTopologySerializer());
         addTopologySerializer(".*\\.dot", new DotTopologySerializer());
         addTopologySerializer(".*\\.xdot", new DotTopologySerializer());
-        addTopologySerializer(".*\\.xml", new XMLTopologySerializer());
+        addTopologySerializer(".*\\.xml", new XMLTopologySerializer(false));
         addTopologySerializer(".*\\.plain", new PlainTopologySerializer());
     }
 

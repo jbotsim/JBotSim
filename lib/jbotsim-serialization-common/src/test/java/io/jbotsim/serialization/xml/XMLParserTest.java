@@ -200,7 +200,7 @@ public class XMLParserTest {
 
     public static Topology loadXMLFile(String xmlFileName) throws XMLParser.ParserException {
         Topology T = new Topology();
-        XMLTopologyParser tpp = new XMLTopologyParser(T);
+        XMLTopologyParser tpp = new XMLTopologyParser(T, true);
         String resource = TEST_RC_ROOT + xmlFileName;
         InputStream is = XMLParserTest.class.getResourceAsStream(resource);
         if (is == null) {
