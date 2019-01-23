@@ -28,9 +28,6 @@ public abstract class XMLParser {
     private static final String XSD_RESOURCE_PREFIX = "jbotsim-";
     private static final String XSD_RESOURCE_SUFFIX = ".xsd";
 
-    public static final String VALIDATE_DOCUMENT_PROPERTY =
-            XMLParser.class.getPackage().getName()+".validate_document";
-
     /**
      * The version read from the XML document. This member variable is used to interpret the XML document according
      * to a given version of the XSD schema.
@@ -38,10 +35,6 @@ public abstract class XMLParser {
     private String version = null;
 
     private boolean validateDocument;
-
-    protected XMLParser() {
-        this(Boolean.valueOf(System.getProperty(VALIDATE_DOCUMENT_PROPERTY, "true")));
-    }
 
     protected XMLParser(boolean validateDocument) {
         this.validateDocument = validateDocument;

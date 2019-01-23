@@ -26,8 +26,10 @@ public class XMLTopologyParser extends XMLParser {
      * Construct a new topology parser.
      *
      * @param tp the {@link Topology} populated by the parser.
+     * @param validateDocument enable or disable the validation of the document using an XSD schema.
      */
-    public XMLTopologyParser(Topology tp) {
+    public XMLTopologyParser(Topology tp, boolean validateDocument) {
+        super(validateDocument);
         this.tp = tp;
     }
 

@@ -35,10 +35,6 @@ package io.jbotsim.ui.painting;
 public class UIComponent {
     private Object component;
 
-    public UIComponent() {
-        this(null);
-    }
-
     /**
      * <p>Creates a {@link UIComponent} by wrapping the provided system {@link Object}</p>
      * @param component the {@link Object} to be wrapped
@@ -55,13 +51,5 @@ public class UIComponent {
     public Object getComponent()
     {
         return component;
-    }
-
-    /**
-     * <p>Sets the {@link Object} the wrapped platform-dependent object.</p>
-     * @param component the {@link Object} to be wrapped
-     */
-    public void setComponent(Object component) {
-        this.component = component;
     }
 }

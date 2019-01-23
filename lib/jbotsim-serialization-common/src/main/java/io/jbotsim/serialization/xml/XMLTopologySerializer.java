@@ -4,6 +4,12 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.serialization.TopologySerializer;
 
 public class XMLTopologySerializer implements TopologySerializer {
+    private boolean validateDocument;
+
+    public XMLTopologySerializer(boolean validateDocument) {
+        this.validateDocument = validateDocument;
+    }
+
     @Override
     public String exportTopology(Topology tp) {
         String result;
@@ -22,7 +28,7 @@ public class XMLTopologySerializer implements TopologySerializer {
     @Override
     public void importTopology(Topology tp, String s) {
         try {
-            XMLTopologyParser parser = new XMLTopologyParser(tp);
+            XMLTopologyParser parser = new XMLTopologyParser(tp, validateDocument);
             parser.parseFromString(s);
         } catch (XMLParser.ParserException e) {
             e.printStackTrace();
