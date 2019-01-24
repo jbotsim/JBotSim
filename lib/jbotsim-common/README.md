@@ -28,6 +28,8 @@ These result in the following dependency graph containing all *common* modules (
 ```
 +--- project :lib:jbotsim-serialization-common
 |    +--- project :lib:jbotsim-core
-+--- project :lib:jbotsim-ui-common
-|    \--- project :lib:jbotsim-core
+|    \--- # external dependency
+\--- project :lib:jbotsim-ui-common
+     \--- project :lib:jbotsim-core
+
 ```

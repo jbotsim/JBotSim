@@ -8,9 +8,9 @@ description = "Collection of examples using JBotSim."
 dependencies {
 //    implementation "io.jbotsim:jbotsim-extras-common:$version"
 //    implementation "io.jbotsim:jbotsim-ui-swing:$version"
+//    implementation "io.jbotsim:jbotsim-icons:$version"
 
     implementation project(':lib:jbotsim-extras-common'),
-            project(':lib:jbotsim-extras-swing'), // for DotTopologySerializer. Temporary?
             project(':lib:jbotsim-ui-swing'),
             project(':lib:jbotsim-icons')
 }
