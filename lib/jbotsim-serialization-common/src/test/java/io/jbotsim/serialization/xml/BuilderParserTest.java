@@ -43,7 +43,7 @@ public class BuilderParserTest {
         String t1 = new XMLTopologyBuilder(T1).writeToString();
 
         Topology T2 = new Topology();
-        XMLTopologyParser tpp = new XMLTopologyParser(T2);
+        XMLTopologyParser tpp = new XMLTopologyParser(T2, true);
         tpp.parseFromString(t1);
 
         String t2 = new XMLTopologyBuilder(T2).writeToString();
@@ -51,7 +51,7 @@ public class BuilderParserTest {
         assertEquals(t1, t2);
     }
 
-    @Parameters
+    @Parameters(name="{index}: {0}")
     public static Collection<TopologyMaker> makers() {
         return Arrays.asList(
                 BuilderParserTest::T1,

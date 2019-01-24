@@ -23,7 +23,7 @@ public class DotTopologySerializerTest {
     @Parameterized.Parameter
     public String dotFileName;
 
-    @Parameterized.Parameters
+    @Parameterized.Parameters(name="{index}: {0}")
     public static Collection<String> makers() {
         return Arrays.asList(
                 "arboricity-100-2.dot",
@@ -45,7 +45,7 @@ public class DotTopologySerializerTest {
         new DotTopologySerializer().importTopology(tp, fileContent);
         assertNotNull(tp);
 
-        String xmlTp = new XMLTopologySerializer().exportTopology(tp);
+        String xmlTp = new XMLTopologySerializer(true).exportTopology(tp);
         assertNotNull(xmlTp);
 //        String bkupFileName = url.getPath() + "-res.xml";
 //        System.out.println(bkupFileName);

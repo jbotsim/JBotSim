@@ -16,6 +16,7 @@ package io.jbotsim.ui.painting;
  *  {@code
  *
  * public class DefaultBackgroundPainter implements BackgroundPainter {
+ *     
  *     public void paintBackground(UIComponent uiComponent, Topology tp) {
  *         Graphics2D g2d = (Graphics2D) uiComponent.getComponent();
  *         g2d.setStroke(new BasicStroke(1));

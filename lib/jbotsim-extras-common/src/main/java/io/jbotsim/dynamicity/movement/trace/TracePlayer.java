@@ -29,7 +29,7 @@ public class TracePlayer implements ClockListener {
         this.traceFileReader = traceFileReader;
         events = new LinkedList<>();
         story = null;
-        recordedNodes = new HashMap<Integer, Node>();
+        recordedNodes = new HashMap<>();
         topology.addClockListener(this);
         listeners = new ArrayList<>();
     }
@@ -39,7 +39,7 @@ public class TracePlayer implements ClockListener {
     }
 
     public void removeListener (ReplayTerminatedListener l) {
-        listeners.remove(l);;
+        listeners.remove(l);
     }
 
     public void loadAndStart(String filename) throws Exception {

@@ -180,17 +180,7 @@ public class XMLParserTest {
     public void invalidMessageEngineClassTest() {
         invalidClassTest("invalid-message-engine-class.xml");
     }
-
-    @Test
-    public void invalidDoubleTest() {
-        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
-    }
-
-    @Test
-    public void invalidIntegerTest() {
-        testXSDValidationError("invalid-double.xml", "cvc-datatype-valid.1.2.1");
-    }
-
+    
     //
     // Helper methods
     //
@@ -210,7 +200,7 @@ public class XMLParserTest {
 
     public static Topology loadXMLFile(String xmlFileName) throws XMLParser.ParserException {
         Topology T = new Topology();
-        XMLTopologyParser tpp = new XMLTopologyParser(T);
+        XMLTopologyParser tpp = new XMLTopologyParser(T, true);
         String resource = TEST_RC_ROOT + xmlFileName;
         InputStream is = XMLParserTest.class.getResourceAsStream(resource);
         if (is == null) {

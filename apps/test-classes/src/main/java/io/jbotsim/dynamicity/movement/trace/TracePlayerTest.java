@@ -9,7 +9,7 @@ public class TracePlayerTest {
         try {
             Topology topology = new Topology();
             new JViewer(topology);
-            TracePlayer tp = new TracePlayer(topology, new XMLTraceParser(topology));
+            TracePlayer tp = new TracePlayer(topology, new XMLTraceParser(topology, true));
             tp.loadAndStart(args[0]);
         } catch (Exception e) {
             e.printStackTrace();
