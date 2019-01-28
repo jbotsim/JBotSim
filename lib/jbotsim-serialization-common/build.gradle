@@ -8,7 +8,7 @@ dependencies {
   testImplementation project(':lib:jbotsim-extras-common')
   testImplementation 'com.paypal.digraph:digraph-parser:1.0'
 
-  api 'com.paypal.digraph:digraph-parser:1.0'
+  implementation 'com.paypal.digraph:digraph-parser:1.0'
 }
 
 publishing {

@@ -29,7 +29,6 @@ These result in the following dependency graph containing all modules:
 |    |    +--- project :lib:jbotsim-core
 |    |    +--- project :lib:jbotsim-serialization-common
 |    |    |    +--- project :lib:jbotsim-core
-|    |    |    \--- guru.nidi:graphviz-java:0.5+ -> 0.5.4
 |    |    \--- project :lib:jbotsim-ui-common
 |    |         \--- project :lib:jbotsim-core
 |    \--- project :lib:jbotsim-extras-common
