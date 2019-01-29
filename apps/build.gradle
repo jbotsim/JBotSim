@@ -10,6 +10,13 @@ subprojects {
         testImplementation "junit:junit:4+"
     }
 
+    repositories {
+        mavenCentral()
+
+        maven {
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
 }
 
 task buildAllSubprojects {
