@@ -6,10 +6,9 @@ dependencies {
   api project(':lib:jbotsim-core')
 
   testImplementation project(':lib:jbotsim-extras-common')
+  testImplementation 'com.paypal.digraph:digraph-parser:1.0'
 
-  implementation ('guru.nidi:graphviz-java:0.5+'){
-    exclude group: '*'
-  }
+  implementation 'com.paypal.digraph:digraph-parser:1.0'
 }
 
 publishing {
