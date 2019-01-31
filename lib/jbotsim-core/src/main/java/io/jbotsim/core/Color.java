@@ -1,8 +1,6 @@
 package io.jbotsim.core;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * * Original code AWT
@@ -34,17 +32,19 @@ public class Color {
     public static Color CYAN = cyan;
     public static Color blue = new Color(0, 0, 255);
     public static Color BLUE = blue;
-    static ArrayList<Color> basicColors = new ArrayList<>(Arrays.asList(
+    static ArrayList<Color> indexedColors = new ArrayList<>(Arrays.asList(
             Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
             Color.black, Color.white, Color.gray, Color.orange, Color.cyan,
             Color.magenta, Color.lightGray, Color.darkGray));
 
-    private float falpha = 0;
     int value = 0;
     private double r, g, b, a;
-    private double FACTOR = 0.7;
+    static final private double FACTOR = 0.7;
 
     static final int ALPHA_MASK = 255 << 24;
+
+    // We expect the indexedColors array to always be the same Colors. The associated Random thus uses a constant seed.
+    static private Random intColorsRandom = new Random(0);
 
     public Color(int r, int g, int b, int a) {
         value = ((255 & 0xFF) << 24) |
@@ -74,13 +74,18 @@ public class Color {
 
 
     public Color(int value, boolean hasalpha) {
-        if (hasalpha)
-            falpha = ((value & ALPHA_MASK) >> 24) / 255f;
-        else {
+        if (!hasalpha)
             value |= ALPHA_MASK;
-            falpha = 1;
-        }
+
         this.value = value;
+    }
+
+    public Color(Color color) {
+        this.r = color.r;
+        this.g = color.g;
+        this.b = color.b;
+        this.a = color.a;
+        this.value = color.value;
     }
 
     public int getRed() {
@@ -103,8 +108,8 @@ public class Color {
         return value;
     }
 
-    public static List<Color> getBasicColors() {
-        return basicColors;
+    public static List<Color> getIndexedColors() {
+        return indexedColors;
     }
 
     public void testColorValueRange(int r, int g, int b, int a) {
@@ -216,7 +221,73 @@ public class Color {
                 getAlpha());
     }
 
+    /**
+     * <p>Returns the {@link Color} associated to the provided index.</p>
+     * <p>The {@link Color} returned for a specific index will remain the same across instances.</p>
+     * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are thus
+     * generated (from {@code 0} to {@code intColor}) on demand, and stored for later use.</p>
+     * @param colorIndex the index of the {@link Color}.
+     * @return the {@link Color} associated to the provided index.
+     */
+    public static Color getColorAt(Integer colorIndex) {
+        while (Color.indexedColors.size() <= colorIndex)
+            Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
+
+        return Color.indexedColors.get(colorIndex);
+    }
+
+    /**
+     * <p>Searches for the color index associated with the current {@link Color}.</p>
+     *
+     * @param color the {@link Color} to be searched for.
+     * @return the associated color index. {@code -1} if not found.
+     */
+    public static int indexOf(Color color) {
+        return Color.indexedColors.indexOf(color);
+    }
+
+    /**
+     * <p>Returns a {@link Color} object generated using 3 calls to the provided {@link Random} object.</p>
+     * <p>If the provided random is null, the result of {@link #getRandomColor()} is returned.</p>
+     * @param random a {@link Random} object to be used. Can be null.
+     * @return the generated {@link Color} object.
+     */
+    public static Color getRandomColor(Random random) {
+        if(random == null)
+          return getRandomColor();
+
+        return new Color(nextRandomRGBComponent(random), nextRandomRGBComponent(random), nextRandomRGBComponent(random));
+    }
+
+    private static int nextRandomRGBComponent(Random random) {
+        return (int) (random.nextDouble() * 255);
+    }
+
     public static Color getRandomColor() {
         return new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(r, g, b, a, value);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(this == obj)
+            return true;
+
+        if(!(obj instanceof Color))
+            return false;
+
+        Color color = (Color) obj;
+
+        if(r != color.r || g != color.g || b != color.b || a != color.a)
+            return false;
+
+        if(value != color.value)
+            return false;
+
+        return true;
     }
 }

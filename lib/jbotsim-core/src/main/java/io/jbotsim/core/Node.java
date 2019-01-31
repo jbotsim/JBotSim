@@ -11,11 +11,10 @@
  */
 package io.jbotsim.core;
 
-import java.util.*;
-import java.util.List;
-
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.core.event.MovementListener;
+
+import java.util.*;
 
 import static io.jbotsim.core.Node.PropString.*;
 
@@ -224,19 +223,24 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Returns the color of this node.
      * @return the color of this node, as an integer.
+     *
+     * @deprecated Please use {@link Color#indexOf(Color)} on the result of {@link Node#getColor()}. See
+     * {@link Node#setIntColor(Integer)} for more explanation.
      */
     public int getIntColor() {
-        return Color.basicColors.indexOf(color);
+        return Color.indexedColors.indexOf(color);
     }
 
     /**
      * Sets the color of this node.
      * @param intColor an integer
+     *
+     * @deprecated Please use {@link Node#setColor(Color)} in associated with {@link Color#getColorAt(Integer)} instead.
      */
     public void setIntColor(Integer intColor) {
-        while (Color.basicColors.size() <= intColor)
-            Color.basicColors.add(Color.getRandomColor());
-        setColor(Color.basicColors.get(intColor));
+        while (Color.indexedColors.size() <= intColor)
+            Color.indexedColors.add(Color.getRandomColor());
+        setColor(Color.indexedColors.get(intColor));
     }
 
     /**
