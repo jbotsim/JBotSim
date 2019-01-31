@@ -542,7 +542,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
 
     /**
      * Translates the location of this node by one unit towards
-     * the node's current direction. The distance unit is the pixel.
+     * the node's current direction.
      */
     public void move() {
         move(1);
@@ -550,7 +550,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
 
     /**
      * Translates the location of this node by the specified distance towards
-     * the node's current direction. The distance unit is the pixel.
+     * the node's current direction.
      * @param distance the distance by which the {@link Node} should be moved.
      */
     public void move(double distance) {
