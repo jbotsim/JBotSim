@@ -73,7 +73,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
 
     private void setDefaultIcon() {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        icon = tk.getImage(getClass().getResource("/io/jbotsim/ui/circle.png"));
+        icon = tk.getImage(getClass().getResource("/io/jbotsim/ui/default-node-icon.png"));
         updateIconSize();
     }
 
