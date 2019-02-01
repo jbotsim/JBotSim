@@ -6,6 +6,8 @@ buildscript {
     }
 }
 
+apply plugin: 'base'
+
 description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
 
 def currentVersion = project.findProperty('jBotSimVersion')
@@ -77,4 +79,28 @@ task checkAll {
     dependsOn ':lib:tests'
     dependsOn ':apps:buildAllSubprojects'
 
+}
+
+/**
+ * This task builds and gathers the jars generated for the standalone versions of JBotSim.
+ * The jars are put in the "/dist" directory.
+ */
+task distStandalone (type:Copy) {
+    group = 'build'
+    description = 'Retrieve all standalone artifacts'
+
+    from rootProject.project("fats").tasks.matching {it.name == "jars"}
+    from rootProject.project("lib").tasks.matching {it.name == "monolithicJavadocJar"}
+    from rootProject.project("lib").tasks.matching {it.name == "monolithicSourcesJar"}
+
+    into "${buildDir}/dist"
+    include '*.jar'
+}
+
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("cleans")}}
 }

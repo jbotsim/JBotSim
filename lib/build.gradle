@@ -94,7 +94,30 @@ subprojects {
 task monolithicJavadoc(type: Javadoc) {
     group = 'documentation'
     source subprojects.collect { it.sourceSets.main.allJava }
+
+    title = "JBotSim Project documentation"
+
     classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
+}
+
+/**
+ * This task generates a jar containing all javadoc based on the classes of all its subprojects.
+ */
+task monolithicJavadocJar(type: Jar, dependsOn: monolithicJavadoc) {
+    group = 'documentation'
+    from monolithicJavadoc.destinationDir
+
+    archiveName = "jbotsim-standalone-${version}-javadoc.${extension}"
+}
+
+/**
+ * This task generates a jar containing all sources based on the classes of all its subprojects.
+ */
+task monolithicSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from subprojects.collect { it.sourceSets.main.allJava }
+    
+    archiveName = "jbotsim-standalone-${version}-sources.${extension}"
 }
 
 task publishToTestRepository {
