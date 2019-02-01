@@ -182,7 +182,7 @@ public class Link extends Properties implements Comparable<Link> {
      * @param color the new {@link Color} of the link.
      */
     public void setColor(Color color) {
-        this.color = color;
+        this.color = (color != null) ? color : Color.darkGray;
         setProperty("color", color); // Used for property notification
     }
 
