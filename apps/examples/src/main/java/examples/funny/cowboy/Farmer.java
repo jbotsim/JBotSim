@@ -7,7 +7,7 @@ import io.jbotsim.core.Node;
  */
 public class Farmer extends Node {
     public Farmer() {
-        setIcon("/examples/funny/cowboy/farmer.png");
+        setIcon("/io/jbotsim/ui/farmer.png");
         setSize(30);
         disableWireless();
     }

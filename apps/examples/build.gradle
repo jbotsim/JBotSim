@@ -11,7 +11,8 @@ dependencies {
 
     implementation project(':lib:jbotsim-extras-common'),
             project(':lib:jbotsim-extras-swing'), // for DotTopologySerializer. Temporary?
-            project(':lib:jbotsim-ui-swing')
+            project(':lib:jbotsim-ui-swing'),
+            project(':lib:jbotsim-icons')
 }
 
 //Create a run task for each example in the examples directory:

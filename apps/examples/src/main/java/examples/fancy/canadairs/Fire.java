@@ -13,7 +13,7 @@ public class Fire extends Node {
 	public Fire(){
         disableWireless();
         allFires.add(this);
-        setIcon("/examples/fancy/canadairs/fire.png");
+        setIcon("/io/jbotsim/ui/fire.png");
         setSize(10);
 	}
 	public void onClock(){
