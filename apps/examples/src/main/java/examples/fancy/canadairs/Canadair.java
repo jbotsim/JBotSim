@@ -14,7 +14,7 @@ public class Canadair extends Node {
     Point lake = new Point(50,50);
 
     public Canadair(){
-        setIcon("/examples/fancy/canadairs/canadair.png");
+        setIcon("/io/jbotsim/ui/canadair.png");
         setSize(18);
         setCommunicationRange(120);
         setSensingRange(30);

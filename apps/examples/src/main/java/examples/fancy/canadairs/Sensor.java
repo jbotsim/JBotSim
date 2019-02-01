@@ -17,7 +17,7 @@ public class Sensor extends Node {
     int lastReceivedTime;
 
     public Sensor() {
-        setIcon("/examples/fancy/canadairs/sensor.png");
+        setIcon("/io/jbotsim/ui/sensor.png");
         setSize(16);
         setCommunicationRange(120);
         setSensingRange(60);
