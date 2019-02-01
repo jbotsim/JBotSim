@@ -25,6 +25,7 @@ assemble-jar:
     - lib/jbotsim-core/build/libs
     - lib/jbotsim-extras-common/build/libs
     - lib/jbotsim-extras-swing/build/libs
+    - lib/jbotsim-icons/build/libs
     - lib/jbotsim-ui-common/build/libs
     - lib/jbotsim-ui-swing/build/libs
     - lib/jbotsim-serialization-common/build/libs
@@ -42,12 +43,14 @@ run-unit-tests:
     - lib/jbotsim-core/build/test-results
     - lib/jbotsim-extras-common/build/test-results
     - lib/jbotsim-extras-swing/build/test-results
+    - lib/jbotsim-icons/build/test-results
     - lib/jbotsim-ui-common/build/test-results
     - lib/jbotsim-ui-swing/build/test-results
     - lib/jbotsim-serialization-common/build/test-results
     - lib/jbotsim-core/build/reports
     - lib/jbotsim-extras-common/build/reports
     - lib/jbotsim-extras-swing/build/reports
+    - lib/jbotsim-icons/build/reports
     - lib/jbotsim-ui-common/build/reports
     - lib/jbotsim-ui-swing/build/reports
     - lib/jbotsim-serialization-common/build/reports
