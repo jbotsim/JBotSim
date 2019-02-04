@@ -17,7 +17,7 @@ public class Station extends Node {
 
     public Station() {
         setIcon("/io/jbotsim/ui/station.png");
-        setSize(25);
+        setIconSize(25);
         setCommunicationRange(120);
     }
 

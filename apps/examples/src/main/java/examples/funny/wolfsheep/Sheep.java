@@ -13,7 +13,7 @@ public class Sheep extends Node {
     @Override
     public void onStart() {
         setIcon("/io/jbotsim/ui/sheep.png");
-        setSize(12);
+        setIconSize(12);
         setDirection(Math.random() * Math.PI * 2);
     }
 

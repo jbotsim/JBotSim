@@ -12,7 +12,7 @@ public class Robot extends Node implements ClockListener{
 	
 	public Robot(){
 		setIcon("/examples/fancy/parkcleaning/gmrobot.png");
-		setSize(10);
+		setIconSize(10);
 		setSensingRange(30);
 		disableWireless();
 	}		

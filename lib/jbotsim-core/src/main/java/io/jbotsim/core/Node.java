@@ -26,7 +26,7 @@ import static io.jbotsim.core.Node.PropString.*;
  */
 public class Node extends Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;
-    public static final int DEFAULT_SIZE = 8;
+    public static final int DEFAULT_ICON_SIZE = 8;
     public static final double DEFAULT_DIRECTION =  -Math.PI / 2;
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();
@@ -41,13 +41,13 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     Color color = null;
     Object label = null;
     Integer ID = -1;
-    int size = DEFAULT_SIZE;
+    int iconSize = DEFAULT_ICON_SIZE;
 
     enum PropString {
         COLOR("color"),
         ICON("icon"),
         LABEL("label"),
-        SIZE("size");
+        SIZE("iconSize");
 
         PropString(String str) { value = str; };
 
@@ -279,20 +279,20 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Returns the size of this node.
-     * @return the size of this node, as an integer.
+     * Returns the {@link Node}'s icon's desired size.
+     * @return the desired size of this {@link Node}'s icon, as an integer.
      */
-    public int getSize() {
-        return size;
+    public int getIconSize() {
+        return iconSize;
     }
 
     /**
-     * Sets the size of this node.
-     * @param size the new size of the node, as an integer.
+     * Sets the {@link Node}'s icon's desired size.
+     * @param iconSize the new desired size of this {@link Node}'s icon, as an integer.
      */
-    public void setSize(int size) {
-        this.size = size;
-        setProperty(SIZE.toString(), size); // used for property notification
+    public void setIconSize(int iconSize) {
+        this.iconSize = iconSize;
+        setProperty(SIZE.toString(), iconSize); // used for property notification
     }
 
     /**
@@ -465,7 +465,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Changes this node's location modulo the size of topology.
+     * Changes this node's location modulo the iconSize of topology.
      */
     public void wrapLocation() {
         setLocation((coords.getX() + topo.getWidth()) % topo.getWidth(), (coords.getY() + topo.getHeight()) % topo.getHeight());

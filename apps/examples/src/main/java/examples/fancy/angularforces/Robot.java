@@ -14,7 +14,7 @@ public class Robot extends Node{
 	
 	public Robot() {
 		setIcon("/examples/fancy/angularforces/robot.png");
-		setSize(18);
+		setIconSize(18);
 		setProperty("oldpos", getLocation());
 	}
 	public void onClock() {

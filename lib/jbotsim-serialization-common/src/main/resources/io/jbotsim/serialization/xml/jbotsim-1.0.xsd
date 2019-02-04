@@ -58,7 +58,7 @@
         <xs:attribute name="communication-range" type="xs:double"/>
         <xs:attribute name="sensing-range" type="xs:double"/>
         <xs:attribute name="direction" type="xs:double"/>
-        <xs:attribute name="size" type="xs:unsignedInt"/>
+        <xs:attribute name="iconSize" type="xs:unsignedInt"/>
         <xs:attribute name="x" type="xs:double"/>
         <xs:attribute name="y" type="xs:double"/>
         <xs:attribute name="z" type="xs:double"/>
