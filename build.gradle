@@ -7,6 +7,10 @@ buildscript {
 }
 
 description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
+
+def currentVersion = project.findProperty('jBotSimVersion')
+println("Current version: " + currentVersion)
+
 subprojects {
 
     apply plugin: "java"
@@ -16,9 +20,9 @@ subprojects {
     targetCompatibility = 1.8
 
     group = "io.jbotsim"
-    version = '1.0-beta10-SNAPSHOT'
 
-    ext.depVersion = '1.0-beta10-SNAPSHOT'
+    version = currentVersion
+    ext.depVersion = currentVersion
 
     repositories {
         mavenLocal()
