@@ -183,8 +183,8 @@ public class XMLTopologyParser extends XMLParser {
             n.setIcon(XMLKeys.ICON_ATTR.getValueFor(ne));
         }
 
-        int size = XMLKeys.SIZE_ATTR.getValueFor(ne, Node.DEFAULT_SIZE);
-        n.setSize(size);
+        int size = XMLKeys.SIZE_ATTR.getValueFor(ne, Node.DEFAULT_ICON_SIZE);
+        n.setIconSize(size);
         double cr = XMLKeys.COMMUNICATION_RANGE_ATTR.getValueFor(ne, tp.getCommunicationRange());
         n.setCommunicationRange(cr);
         double sr = XMLKeys.SENSING_RANGE_ATTR.getValueFor(ne, tp.getSensingRange());

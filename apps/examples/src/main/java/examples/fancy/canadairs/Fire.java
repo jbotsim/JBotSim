@@ -14,7 +14,7 @@ public class Fire extends Node {
         disableWireless();
         allFires.add(this);
         setIcon("/io/jbotsim/ui/fire.png");
-        setSize(10);
+        setIconSize(10);
 	}
 	public void onClock(){
         if (Math.random() < 0.01)

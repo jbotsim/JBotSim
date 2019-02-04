@@ -8,7 +8,7 @@ public class Cow extends Node{
 
     public Cow(){
         setIcon("/examples/funny/cowboy/cow.png");
-        setSize(30);
+        setIconSize(30);
         disableWireless();
     }
 

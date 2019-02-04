@@ -15,7 +15,7 @@ public class Canadair extends Node {
 
     public Canadair(){
         setIcon("/io/jbotsim/ui/canadair.png");
-        setSize(18);
+        setIconSize(18);
         setCommunicationRange(120);
         setSensingRange(30);
     }

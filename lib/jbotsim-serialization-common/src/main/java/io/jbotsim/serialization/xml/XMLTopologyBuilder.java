@@ -109,7 +109,7 @@ public class XMLTopologyBuilder extends XMLBuilder {
         XMLKeys.IDENTIFIER_ATTR.setAttribute(ne, n.getID());
         XMLKeys.COLOR_ATTR.setNotDefaultAttribute(ne, colorToXml(n.getColor()), colorToXml(Node.DEFAULT_COLOR));
         XMLKeys.ICON_ATTR.setNotDefaultAttribute(ne, n.getIcon(), null);
-        XMLKeys.SIZE_ATTR.setNotDefaultAttribute(ne, n.getSize(), Node.DEFAULT_SIZE);
+        XMLKeys.SIZE_ATTR.setNotDefaultAttribute(ne, n.getIconSize(), Node.DEFAULT_ICON_SIZE);
         XMLKeys.COMMUNICATION_RANGE_ATTR.setNotDefaultAttribute(ne, n.getCommunicationRange(),
                 tp.getCommunicationRange());
         XMLKeys.SENSING_RANGE_ATTR.setNotDefaultAttribute(ne, n.getSensingRange(),

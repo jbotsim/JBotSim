@@ -78,7 +78,7 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
     }
 
     public void updateIconSize() {
-        drawSize = (int) (node.getSize() * camheight / (camheight - node.getZ()));
+        drawSize = (int) (node.getIconSize() * camheight / (camheight - node.getZ()));
         scaledIcon = icon.getScaledInstance(drawSize * 2, drawSize * 2, Image.SCALE_DEFAULT);
         setIcon(new ImageIcon(scaledIcon));
         setBounds((int) node.getX() - drawSize, (int) node.getY() - drawSize, drawSize * 2, drawSize * 2);

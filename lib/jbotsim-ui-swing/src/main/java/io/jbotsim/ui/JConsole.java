@@ -87,7 +87,7 @@ public class JConsole extends TextArea implements TextListener{
 //        jbotsim.ui.JViewer v=new jbotsim.ui.JViewer(tp, false); 
 //        win.add(v.getJTopology(), BorderLayout.CENTER);
 //        win.add(new JConsole(tp),BorderLayout.SOUTH);
-//        win.setSize(800, 650);
+//        win.setIconSize(800, 650);
 //        win.setVisible(true);
 //        Node.getNodeModel("default").setCommunicationRange(50);
 //    }    

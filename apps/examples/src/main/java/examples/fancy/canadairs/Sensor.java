@@ -18,7 +18,7 @@ public class Sensor extends Node {
 
     public Sensor() {
         setIcon("/io/jbotsim/ui/sensor.png");
-        setSize(16);
+        setIconSize(16);
         setCommunicationRange(120);
         setSensingRange(60);
     }
