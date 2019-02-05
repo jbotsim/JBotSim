@@ -296,30 +296,6 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Returns the state of this node.
-     *
-     * @return the state of the node, as an {@link Object}.
-     * @deprecated Use setLabel() instead.
-     */
-    @Deprecated
-    public Object getState() {
-        return label;
-    }
-
-    /**
-     * Sets the state of this node. This text will appear as a tooltip
-     * when the mouse cursor is held some time over the node.
-     *
-     * @param state the new state of the node.
-     * @deprecated Use setLabel() instead.
-     */
-    @Deprecated
-    public void setState(Object state) {
-        this.label = state;
-        setProperty(LABEL.toString(), label); // Used for property notification
-    }
-
-    /**
      * Returns the label of this node.
      * @return the label of the node, as an {@link Object}.
      */

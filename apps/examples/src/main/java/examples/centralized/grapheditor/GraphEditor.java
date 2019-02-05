@@ -152,7 +152,7 @@ public class GraphEditor implements ActionListener{
 		for (Node n : nodes){
 			if(isDefault(n.toString())){
 				n.setProperty("id", "v"+nextID++);
-				n.setState("v"+nextID);
+				n.setLabel("v"+nextID);
 			}
 		}
 	}
