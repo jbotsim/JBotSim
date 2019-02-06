@@ -25,8 +25,6 @@ import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * <p>The {@link JViewer} includes a central {@link JTopology} which will draw the attached
@@ -36,13 +34,11 @@ import java.awt.event.ComponentEvent;
  */
 public class JViewer implements CommandListener, ChangeListener, PropertyListener {
     protected JTopology jtp;
-    protected int width = 600;
-    protected JSlider slideBar = new JSlider(0, width);
+    protected JSlider slideBar;
     protected TopologySerializerFilenameMatcher topologySerializerFilenameMatcher;
 
     protected enum BarType {COMMUNICATION, SENSING, SPEED}
 
-    ;
     protected BarType slideBarType = null;
     protected JFrame window = null;
 
@@ -112,7 +108,9 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             window.pack();
             window.setVisible(true);
         }
+        slideBar = new JSlider(0, jtp.getWidth());
         slideBar.addChangeListener(this);
+
         initFilenameMatcher();
     }
 
@@ -175,25 +173,11 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     @Override
     public void onCommand(String command) {
         if (command.equals("Set communication range")) {
-            if (slideBarType != BarType.COMMUNICATION)
-                addSlideBar(BarType.COMMUNICATION,
-                        (int) jtp.topo.getCommunicationRange());
-            else
-                removeSlideBar();
-            jtp.updateUI();
+            executeSetCommunicationRange();
         } else if (command.equals("Set sensing range")) {
-            if (slideBarType != BarType.SENSING)
-                addSlideBar(BarType.SENSING,
-                        (int) jtp.topo.getSensingRange());
-            else
-                removeSlideBar();
-            jtp.updateUI();
+            executeSetSensingRange();
         } else if (command.equals("Set clock speed")) {
-            if (slideBarType != BarType.SPEED)
-                addSlideBar(BarType.SPEED, (width - jtp.topo.getClockSpeed() * 40));
-            else
-                removeSlideBar();
-            jtp.updateUI();
+            executeSetClockSpeed();
         } else if (command.equals("Pause or resume execution")) {
             if (!jtp.topo.isStarted())
                 jtp.topo.start();
@@ -214,6 +198,30 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
                 executeSaveTopology();
             }
         }
+    }
+
+    private void executeSetClockSpeed() {
+        // The clock speed is linked by a specific law to the range of the slider
+        int value = getSliderValueFromClockSpeed(slideBar.getMaximum(), jtp.topo.getClockSpeed());
+        reactToSlideBarCommand(BarType.SPEED, value);
+    }
+
+    private void executeSetSensingRange() {
+        // The sensing range is linearly linked to the original range of the slider
+        reactToSlideBarCommand(BarType.SENSING, (int) jtp.topo.getSensingRange());
+    }
+
+    private void executeSetCommunicationRange() {
+        // The communication range is linearly linked to the original range of the slider
+        reactToSlideBarCommand(BarType.COMMUNICATION, (int) jtp.topo.getCommunicationRange());
+    }
+
+    private void reactToSlideBarCommand(BarType barType, int value) {
+        if (slideBarType != barType)
+            addSlideBar(barType, value);
+        else
+            removeSlideBar();
+        jtp.updateUI();
     }
 
     private void executeSaveTopology() {
@@ -324,8 +332,112 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         } else if (slideBarType == BarType.SENSING) {
             jtp.topo.setSensingRange(slideBar.getValue());
         } else if (slideBarType == BarType.SPEED) {
-            jtp.topo.setClockSpeed((width - slideBar.getValue()) / 40 + 1);
+            jtp.topo.setClockSpeed(getClockSpeedFromSlideBarValue(slideBar.getMaximum(), slideBar.getValue()));
         }
         jtp.updateUI();
     }
+
+
+    // region ClockSpeed <-> JSlider conversion
+
+    /**
+     * Computes the clock speed associated with the provided slider parameters.
+     * @param slideBarMaxValue the maximum value of the slider (values in [0:slideBarMaxValue]), as an integer.
+     * @param slideBarValue the value of the slider, as an integer.
+     * @return the corresponding clock speed.
+     */
+    static int getClockSpeedFromSlideBarValue(final int slideBarMaxValue, final int slideBarValue) {
+        return (int) computeClockSpeed(slideBarMaxValue, slideBarValue);
+    }
+
+    protected static double computeClockSpeed(final double maxValue, final double value) {
+        double normalizedValue = (value / maxValue) * AccelerationFunctionExp.ZERO_AT;
+
+        double normalizedClockSpeed = AccelerationFunctionExp.of(normalizedValue);
+        return normalizedClockSpeed;
+    }
+
+    /**
+     * Computes the value of the slider (i.e. its position) associated with the provided clock speed.
+     *
+     * @param slideBarMaxValue the maximum value of the slider (values in [0:slideBarMaxValue]), as an integer.
+     * @param clockSpeed the clock speed, as an integer.
+     * @return the corresponding value of the slider.
+     */
+    static int getSliderValueFromClockSpeed(final int slideBarMaxValue, final int clockSpeed) {
+        return (int) computeSliderPosition(slideBarMaxValue, clockSpeed);
+    }
+
+    protected static double computeSliderPosition(double maxValue, double value) {
+        double functionSpacedPosition = AccelerationFunctionExp.inverseOf(value);
+
+        double sliderSpacedPosition = (functionSpacedPosition / AccelerationFunctionExp.ZERO_AT) * maxValue;
+        return sliderSpacedPosition;
+    }
+
+    /**
+     * The {@link AccelerationFunctionExp} class implements the following function in
+     * [0:{@link #ZERO_AT}]:
+     * <ul>
+     *  <li> {@value unShiftedValueAtZero} {@code * Math.exp(-x / }{@value decreaseSpeed}{@code ) - }{@value shift} </li>
+     * </ul>
+     * Two methods are provided:
+     * <ul>
+     *     <li>{@link #of(double)}: computes the function;</li>
+     *     <li>{@link #inverseOf(double)}: computes the inverse of the function.</li>
+     * </ul>
+     */
+    public static class AccelerationFunctionExp {
+
+        private static final double conversionFactor = 125;
+        private static final double unShiftedValueAtZero = 5;
+        private static final double decreaseSpeed = 15;
+        private static final double shift = 3;
+
+        /**
+         * The exact value of the function at abscissa 0.
+         */
+        public static final double VALUE_AT_ZERO = 3000;
+
+        /**
+         * The exact abscissa at which the function reaches 0.
+         */
+        public static final double ZERO_AT = 30517578125./14348907.;
+        public static final double ZERO_AT_APPROX_FOR_DOC = 2126.82249;
+
+        /**
+         * <p>Computes a value of the acceleration function associated with the provided parameter.</p>
+         * <p>Currently, the associated descending function is defined on [0:{@value #ZERO_AT_APPROX_FOR_DOC}] with the
+         * following remarkable points:</p>
+         * <ul>
+         *     <li>f(0) = {@value #VALUE_AT_ZERO}</li>
+         *     <li>f({@value #ZERO_AT_APPROX_FOR_DOC}) = 0</li>
+         * </ul>
+         * @param x a double in [0:{@link #ZERO_AT}].
+         * @return the value of the acceleration function
+         */
+        public static double of(double x) {
+            if(x<=0) return AccelerationFunctionExp.VALUE_AT_ZERO;
+
+            double y = unShiftedValueAtZero * Math.exp(-Math.log(x) / decreaseSpeed) - shift;
+            return conversionFactor * y;
+        }
+
+        /**
+         * <p>Inverts the acceleration function for the provided value.</p>
+         * <p>Currently, the associated ascending function is defined on [0:{@value #VALUE_AT_ZERO}] with the following
+         * remarkable points:</p>
+         * <ul>
+         *     <li>f({@value #VALUE_AT_ZERO}) = 0</li>
+         *     <li>f(0) = {@value #ZERO_AT_APPROX_FOR_DOC}</li>
+         * </ul>
+         * @param y a double in [0:{@value #VALUE_AT_ZERO}].
+         * @return the associated abscissa the acceleration function
+         */
+        public static double inverseOf(double y) {
+            y /= conversionFactor;
+            return Math.exp(-decreaseSpeed*Math.log((y+shift)/unShiftedValueAtZero));
+        }
+    }
+    // endregion
 }
