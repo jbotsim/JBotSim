@@ -4,7 +4,7 @@ import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.topology.TopologyGenerator;
+import io.jbotsim.topology.TopologyGenerators;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -80,7 +80,7 @@ public class BuilderParserTest {
         T.setNodeModel("test1", TestNode1.class);
         T.setNodeModel("test2", TestNode2.class);
         T.setDefaultNodeModel(TestNode3.class);
-        TopologyGenerator.generateRing(T, 5, true);
+        TopologyGenerators.generateRing(T, 5, true);
         T.getNodes().get(2).setColor(Color.red);
 
         return T;

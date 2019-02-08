@@ -5,7 +5,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.messaging.AsyncMessageEngine;
-import io.jbotsim.topology.TopologyGenerator;
+import io.jbotsim.topology.TopologyGenerators;
 
 /**
  * Created by acasteig on 9/18/15.
@@ -37,7 +37,7 @@ public class AsyncExampleFIFO extends Node {
         tp.setMessageEngine(new AsyncMessageEngine(20, AsyncMessageEngine.Type.FIFO));
         //tp.getMessageEngine().setSpeed(10);
         tp.setDefaultNodeModel(AsyncExampleFIFO.class);
-        TopologyGenerator.generateLine(tp, 2);
+        TopologyGenerators.generateLine(tp, 2);
         new JViewer(tp);
     }
 }
