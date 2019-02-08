@@ -32,6 +32,12 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
     public static final double DEFAULT_SENSING_RANGE = 0;
+
+    /**
+     * The name under which the default Node model is stored.
+     */
+    public static final String DEFAULT_NODE_MODEL_NAME = "default";
+
     ClockManager clockManager;
     List<ConnectivityListener> cxUndirectedListeners = new ArrayList<>();
     List<ConnectivityListener> cxDirectedListeners = new ArrayList<>();
@@ -100,7 +106,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      * @return the default node model.
      */
     public Class<? extends Node> getDefaultNodeModel() {
-        return getNodeModel("default");
+        return getNodeModel(DEFAULT_NODE_MODEL_NAME);
     }
 
     /**
@@ -119,7 +125,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      * @param nodeClass the default node model: a {@link Class} object a class extending the {@link Node} class.
      */
     public void setDefaultNodeModel(Class<? extends Node> nodeClass) {
-        setNodeModel("default", nodeClass);
+        setNodeModel(DEFAULT_NODE_MODEL_NAME, nodeClass);
     }
 
     /**
@@ -470,7 +476,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      * @param y The ordinate of the location.
      */
     public void addNode(double x, double y) {
-        addNode(x, y, newInstanceOfModel("default"));
+        addNode(x, y, newInstanceOfModel(DEFAULT_NODE_MODEL_NAME));
     }
 
     /**

@@ -3,7 +3,7 @@ package io.jbotsim.topology;
 import io.jbotsim.core.Topology;
 
 public class TopologyGenerator {
-    public static final String DEFAULT_NODE_MODEL = "default";
+    public static final String DEFAULT_NODE_MODEL = Topology.DEFAULT_NODE_MODEL_NAME;
     
     public static void generateLine(Topology tp, int order){
         generateLine(tp, order, DEFAULT_NODE_MODEL);
