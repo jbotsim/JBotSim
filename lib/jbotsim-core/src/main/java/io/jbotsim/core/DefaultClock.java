@@ -10,30 +10,31 @@
  *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
  */
 
-/**
- * Default Clock is a simple clock implementation using a simple timer to
- * schedule onClock at a fixed rate.
- * This class is not thread-safe
- *
- * Authors:
- * Quentin Bramas <bramas@unistra.fr>
- */
-
 package io.jbotsim.core;
+
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * <p>The {@link DefaultClock} is JBotSim default implementation of the {@link Clock}.</p>
  *
  * <p>Implementation remarks:</p>
  * <ul>
- *     <li>It uses a {@link Thread} to perform the clock</li>
- *     <li>The time delay is simply ignored</li>
+ *     <li>It uses a {@link Thread} to perform the clock.</li>
+ *     <li>The {@link Thread} will sleep for the specified time between each round.</li>
+ *     <li>The {@link Thread} will keep the application alive until it is interrupted or the application is killed.</li>
  * </ul>
  *
  */
-public class DefaultClock extends Clock implements Runnable{
+public class DefaultClock extends Clock implements Runnable {
     volatile boolean running;
     Thread timer;
+
+    final Lock lock = new ReentrantLock();
+    final Condition shouldRunCondition = lock.newCondition();
+
+    private int delay = 0;
 
     public DefaultClock(ClockManager manager) {
         super(manager);
@@ -41,21 +42,14 @@ public class DefaultClock extends Clock implements Runnable{
         timer = new Thread(this);
     }
 
-    /**
-     * Returns the duration of one time unit, in milliseconds.
-     */
     @Override
     public int getTimeUnit() {
-        return 0;
+        return delay;
     }
 
-    /**
-     * Sets the time unit of the clock to the specified value in millisecond.
-     *
-     * @param delay The desired time unit (1 corresponds to the fastest rate)
-     */
     @Override
     public void setTimeUnit(int delay) {
+        this.delay = delay;
     }
 
     @Override
@@ -72,17 +66,48 @@ public class DefaultClock extends Clock implements Runnable{
     @Override
     public void pause() {
         running = false;
+
+        // wait for the run loop actually to be paused
+        lock.lock();
+        lock.unlock();
     }
 
     @Override
     public void resume() {
-        running = true;
+        if(!running) {
+            lock.lock();
+            try {
+                running = true;
+                shouldRunCondition.signal();
+            } finally {
+                lock.unlock();
+            }
+        }
     }
 
     @Override
     public void run() {
-        while (true)
-            if (running)
-                manager.onClock();
+        boolean interrupted = false;
+
+        while (!interrupted) {
+            lock.lock();
+            try {
+
+                while (!running)
+                    shouldRunCondition.await();
+
+                if(delay != 0)
+                    Thread.sleep(delay);
+
+                if (running)
+                    manager.onClock();
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                interrupted = true;
+            } finally {
+                lock.unlock();
+            }
+        }
     }
 }
