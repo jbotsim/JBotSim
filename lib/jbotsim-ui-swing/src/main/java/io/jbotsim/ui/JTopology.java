@@ -352,14 +352,4 @@ public class JTopology extends JPanel implements ActionListener {
 
         }
     }
-
-    public static void main(String[] args) {
-        Topology tp = new Topology();
-        if (args.length > 0) {
-            String topologyAsString = tp.getFileManager().read(args[0]);
-            tp.getTopologySerializer().importTopology(tp, topologyAsString);
-        }
-        new JViewer(tp);
-        tp.start();
-    }
 }

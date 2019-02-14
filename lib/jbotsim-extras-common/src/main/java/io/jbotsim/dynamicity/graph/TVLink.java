@@ -45,12 +45,4 @@ public class TVLink extends Link{
         }
         return super.toString()+" : "+s;
     }
-    public static void main(String args[]){
-        TVLink l=new TVLink(new Node(), new Node());
-        l.appearanceDates.add(2);
-        l.disappearanceDates.add(4);
-        l.appearanceDates.add(5);
-        l.disappearanceDates.add(7);
-        System.out.println(l);
-    }
 }
