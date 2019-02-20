@@ -5,7 +5,7 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.core.event.StartListener;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.topology.TopologyGenerator;
+import io.jbotsim.topology.TopologyGenerators;
 
 import io.jbotsim.core.Color;
 import java.util.List;
@@ -50,7 +50,7 @@ public class CentralizedRW2 implements ClockListener, StartListener {
 
     public static void main(String[] args) {
         Topology tp = new Topology();
-        TopologyGenerator.generateLine(tp, 10);
+        TopologyGenerators.generateLine(tp, 10);
         new CentralizedRW2(tp);
         new JViewer(tp);
         tp.start();

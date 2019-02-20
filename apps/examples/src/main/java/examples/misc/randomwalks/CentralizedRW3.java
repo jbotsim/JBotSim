@@ -4,7 +4,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.core.event.StartListener;
-import io.jbotsim.topology.TopologyGenerator;
+import io.jbotsim.topology.TopologyGenerators;
 
 import java.util.List;
 import java.util.Random;
@@ -43,7 +43,7 @@ public class CentralizedRW3 implements ClockListener, StartListener {
 
     public static void main(String[] args) {
         Topology tp = new Topology();
-        TopologyGenerator.generateLine(tp, 10);
+        TopologyGenerators.generateLine(tp, 10);
         new CentralizedRW3(tp);
         tp.setClockSpeed(1);
         tp.start();

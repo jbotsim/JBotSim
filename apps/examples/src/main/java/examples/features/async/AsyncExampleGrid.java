@@ -5,7 +5,7 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
 import io.jbotsim.messaging.AsyncMessageEngine;
-import io.jbotsim.topology.TopologyGenerator;
+import io.jbotsim.topology.TopologyGenerators;
 
 import io.jbotsim.core.Color;
 
@@ -40,7 +40,7 @@ public class AsyncExampleGrid extends Node {
         tp.setClockSpeed(200);
         tp.setDefaultNodeModel(AsyncExampleGrid.class);
         tp.setMessageEngine(new AsyncMessageEngine(20, AsyncMessageEngine.Type.FIFO));
-        TopologyGenerator.generateGrid(tp, 5, 4);
+        TopologyGenerators.generateGrid(tp, 5, 4);
         new JViewer(tp);
     }
 }
