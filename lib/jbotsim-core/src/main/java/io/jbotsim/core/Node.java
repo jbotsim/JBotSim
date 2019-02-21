@@ -26,7 +26,7 @@ import static io.jbotsim.core.Node.PropString.*;
  */
 public class Node extends Properties implements ClockListener, Comparable<Node> {
     public static final Color DEFAULT_COLOR = null;
-    public static final int DEFAULT_ICON_SIZE = 12;
+    public static final int DEFAULT_ICON_SIZE = 10;
     public static final double DEFAULT_DIRECTION =  -Math.PI / 2;
     List<Message> mailBox = new ArrayList<>();
     List<Message> sendQueue = new ArrayList<>();

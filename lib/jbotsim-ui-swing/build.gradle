@@ -3,7 +3,9 @@ def displayName = "JBotSim UI Swing"
 def displayDescription = "Swing-dependent UI classes for JBotSim."
 
 dependencies {
-    api project(':lib:jbotsim-core'), project(':lib:jbotsim-serialization-common'), project(':lib:jbotsim-ui-common'), project(':lib:jbotsim-icons')
+    api project(':lib:jbotsim-core'),
+            project(':lib:jbotsim-serialization-common'), 
+            project(':lib:jbotsim-ui-common')
 }
 
 publishing {
