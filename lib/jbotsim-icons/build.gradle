@@ -1,6 +1,6 @@
 description = "JBotSim Icons: generates/publish a jar containing a set of icons usable with JBotSim."
 def displayName = "JBotSim Icons"
-def displayDescription = "Jar containing a set of icons usable with JBotSim."
+def displayDescription = "Extra set of icons for JBotSim."
 
 dependencies {
 }

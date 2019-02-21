@@ -1,7 +1,7 @@
 description = "JBotSim Common: phony target which publishes a minimal artifact with dependency declarations for " +
         "'common' artifacts of JBotSim."
 def displayName = "JBotSim Common"
-def displayDescription = "Pulls all 'common' jars for JBotSim."
+def displayDescription = "Platform-independent components for JBotSim."
 
 dependencies {
 //    api project(':lib:jbotsim-core')

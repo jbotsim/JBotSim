@@ -1,6 +1,6 @@
 description = "JBotSim Core: generates/publish a jar containing the core of JBotSim."
 def displayName = "JBotSim Core"
-def displayDescription = "Jar containing the core of JBotSim."
+def displayDescription = "JBotSim's core files."
 
 publishing {
     publications {

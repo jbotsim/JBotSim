@@ -1,7 +1,7 @@
 description = "JBotSim All: phony target which publishes a minimal artifact with dependency declarations for " +
         "all artifacts (historically Swing) JBotSim."
 def displayName = "JBotSim All"
-def displayDescription = "Pulls all (historically Swing-related) jars for JBotSim."
+def displayDescription = "JBotSim's default distribution (depends on the required artifacts)."
 
 dependencies {
     api project(':lib:jbotsim-extras-swing')

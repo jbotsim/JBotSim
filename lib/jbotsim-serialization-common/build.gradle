@@ -1,6 +1,6 @@
 description = "JBotSim Serialization Common: generates/publish a jar containing extension classes for topologies serialization (import/export)."
-def displayName = "JBotSim Format Common"
-def displayDescription = "Jar containing extension classes for topologies serialization (import/export) for JBotSim."
+def displayName = "JBotSim Serialization Common"
+def displayDescription = "Platform-independent classes allowing topology serialization for JBotSim."
 
 dependencies {
   api project(':lib:jbotsim-core')

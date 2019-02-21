@@ -1,6 +1,6 @@
 description = "JBotSim Extras Swing: generates/publish a jar containing AWT/Swing-specific classes for several \"extra\" features (e.g.: Connectivity testing)."
 def displayName = "JBotSim Extras Swing"
-def displayDescription = "Jar containing AWT/Swing-specific classes for several \"extra\" features (e.g.: Connectivity testing) for JBotSim."
+def displayDescription = "Swing-dependent classes for JBotSim's extra features (contrib)."
 
 dependencies {
     api project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-common')
