@@ -13,6 +13,11 @@ description = "JBotSim : a simulation library for distributed algorithms in dyna
 def currentVersion = project.findProperty('jBotSimVersion')
 println("Current version: " + currentVersion)
 
+def currentJvm = org.gradle.internal.jvm.Jvm.current()
+println "Current Jvm: " + currentJvm
+println "Current java version: " + JavaVersion.current()
+
+
 subprojects {
 
     apply plugin: "java"
