@@ -1,24 +1,33 @@
 /*
+ * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ *
+ *
  * This file is part of JBotSim.
  *
- *    JBotSim is free software: you can redistribute it and/or modify it
- *    under the terms of the GNU Lesser General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
+ * JBotSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *    Authors:
- *    Arnaud Casteigts        <arnaud.casteigts@labri.fr>
+ * JBotSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
+ *
  */
 package io.jbotsim.ui;
 
-import io.jbotsim.core.Topology;
 import io.jbotsim.core.Properties;
+import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.PropertyListener;
+import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
 import io.jbotsim.serialization.dot.DotTopologySerializer;
-import io.jbotsim.serialization.tikz.TikzTopologySerializer;
-import io.jbotsim.serialization.TopologySerializer;
 import io.jbotsim.serialization.plain.PlainTopologySerializer;
+import io.jbotsim.serialization.tikz.TikzTopologySerializer;
 import io.jbotsim.serialization.xml.XMLTopologySerializer;
 
 import javax.swing.*;
