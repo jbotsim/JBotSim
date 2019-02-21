@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class NodeTest {
 
-    public static final int DEFAULT_ICON_SIZE = 12;
+    public static final int DEFAULT_ICON_SIZE = 10;
 
     private Node createDefaultNode() {
         return new Node();
