@@ -101,7 +101,7 @@ public class BuilderParserTest {
         for (int i = 0; i < nbNodes; i++) {
             Node n = getRandomNode();
             T.addNode(-1, -1, n);
-            n.setRandomColor();
+            n.setColor(Color.getRandomColor());
         }
         if (!enableWireless) {
             List<Node> nodes = T.getNodes();

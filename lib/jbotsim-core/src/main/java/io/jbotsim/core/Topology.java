@@ -274,18 +274,6 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
     }
 
     /**
-     * Gets a reference on the associated JTopology (if any, null otherwise).
-     *
-     * @return the JTopology, as an {@link Object}.
-     * @deprecated was indirectly a dependency to Swing (through JTopology);
-     * The method still returns it, but only as an "Object" for this reason.
-     */
-    @Deprecated
-    public Object getJTopology() {
-        return getProperty("jtopology");
-    }
-
-    /**
      * Gets a reference on the scheduler.
      * @return the current {@link Scheduler}.
      */

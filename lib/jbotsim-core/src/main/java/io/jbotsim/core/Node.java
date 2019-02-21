@@ -221,40 +221,6 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Returns the color of this node.
-     * @return the color of this node, as an integer.
-     *
-     * @deprecated Please use {@link Color#indexOf(Color)} on the result of {@link Node#getColor()}. See
-     * {@link Node#setIntColor(Integer)} for more explanation.
-     */
-    public int getIntColor() {
-        return Color.indexedColors.indexOf(color);
-    }
-
-    /**
-     * Sets the color of this node.
-     * @param intColor an integer
-     *
-     * @deprecated Please use {@link Node#setColor(Color)} in associated with {@link Color#getColorAt(Integer)} instead.
-     */
-    public void setIntColor(Integer intColor) {
-        while (Color.indexedColors.size() <= intColor)
-            Color.indexedColors.add(Color.getRandomColor());
-        setColor(Color.indexedColors.get(intColor));
-    }
-
-    /**
-     * Assign a random color to this node.
-     *
-     * @deprecated Please use {@link #setColor(Color)} with {@link Color#getRandomColor()} instead.
-     */
-    @Deprecated
-    public void setRandomColor() {
-        Random r = new Random();
-        setColor(new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255)));
-    }
-
-    /**
      * Sets the icon of this node. The argument must be an absolute path to
      * either a file in the file system, or a resource in the application.
      * Examples:
