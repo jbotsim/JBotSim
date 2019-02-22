@@ -51,6 +51,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     Object label = null;
     Integer ID = -1;
     int iconSize = DEFAULT_ICON_SIZE;
+    private boolean die = false;
 
     enum PropString {
         COLOR("color"),
@@ -186,6 +187,21 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * @param node the {@link Node} that is not sensed anymore.
      */
     public void onSensingOut(Node node) {
+    }
+
+    /**
+     * Request the {@link Node} to die by the end of the round.
+     */
+    public void die() {
+        die = true;
+    }
+
+    /**
+     * Returns the dying status of the {@link Node}.
+     * @return {@code true} if the {@link Node} is dying or already dead; returns {@code false} otherwise.
+     */
+    public boolean isDying() {
+        return die;
     }
 
     /**
