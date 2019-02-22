@@ -1018,6 +1018,19 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
                 update(node);
             toBeUpdated.clear();
         }
+
+        removeDyingNodes();
+    }
+
+    private void removeDyingNodes() {
+        List<Node> dyingNodes = new ArrayList<>();
+        for (Node node : nodes)
+            if(node.isDying())
+                dyingNodes.add(node);
+
+        for (Node node : dyingNodes)
+            removeNode(node);
+
     }
 
     void touch(Node n) {
