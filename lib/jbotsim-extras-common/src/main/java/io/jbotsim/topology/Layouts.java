@@ -8,6 +8,37 @@ import java.util.List;
 public class Layouts {
     public static final double DEFAULT_MARGIN = 10.0 / 100.0;
 
+
+    /**
+     * <p>Automatically scales the position of the {@link Node}s of the {@link Topology} to match its boundaries.</p>
+     * <p>Note that this method changes the {@link Node}s' position without respect for their
+     * {@link io.jbotsim.core.Link}s.</p>
+     * @param topology the {@link Topology} to scale
+     */
+    private static void autoscale(Topology topology){
+        double Xmax = 0, Ymax = 0, Xmin = Double.MAX_VALUE, Ymin = Double.MAX_VALUE;
+        for (Node node : topology.getNodes()){
+            if (node.getX() > Xmax)
+                Xmax = node.getX();
+            if (node.getY() > Ymax)
+                Ymax = node.getY();
+            if (node.getX() < Xmin)
+                Xmin = node.getX();
+            if (node.getY() < Ymin)
+                Ymin = node.getY();
+        }
+        //FIXME: strange behaviour expected with single Node Topology (zero division)
+        double width = Xmax - Xmin;
+        double height = Ymax - Ymin;
+        double availableWidth = topology.getWidth()*0.8;
+        double availableHeight = topology.getHeight()*0.8;
+        double scale = Math.min(availableWidth/width, availableHeight/height);
+        for (Node node : topology.getNodes()){
+            node.setLocation(node.getX() - Xmin, node.getY() - Ymin);
+            node.setLocation(node.getX()*scale + topology.getWidth()*0.1, node.getY()*scale + topology.getHeight()*0.1);
+        }
+    }
+
     public static void circle(Topology tp, double margin) {
         List<Node> nodes = tp.getNodes();
         if (nodes.isEmpty())
