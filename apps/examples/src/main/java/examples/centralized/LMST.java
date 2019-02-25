@@ -8,7 +8,7 @@ import io.jbotsim.core.event.ConnectivityListener;
 import io.jbotsim.core.event.MovementListener;
 import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.Algorithms;
+import io.jbotsim.contrib.algos.Algorithms;
 
 import java.util.HashMap;
 import java.util.List;

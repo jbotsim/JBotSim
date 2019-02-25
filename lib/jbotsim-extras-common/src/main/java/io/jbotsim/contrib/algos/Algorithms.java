@@ -19,7 +19,7 @@
  *
  */
 
-package io.jbotsim;
+package io.jbotsim.contrib.algos;
 
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
