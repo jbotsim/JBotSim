@@ -3,7 +3,7 @@ package examples.tools;
 import io.jbotsim.core.Topology;
 import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
 import io.jbotsim.io.format.tikz.TikzTopologySerializer;
-import io.jbotsim.io.format.TopologySerializer;
+import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.dot.DotTopologySerializer;
 import io.jbotsim.io.format.plain.PlainTopologySerializer;
 import io.jbotsim.io.format.xml.XMLTopologySerializer;

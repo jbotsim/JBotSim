@@ -21,7 +21,7 @@
 package io.jbotsim.io.format.xml;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.format.TopologySerializer;
+import io.jbotsim.io.TopologySerializer;
 
 public class XMLTopologySerializer implements TopologySerializer {
     private boolean validateDocument;

@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.io.format;
+package io.jbotsim.io;
 
 import io.jbotsim.core.Topology;
 

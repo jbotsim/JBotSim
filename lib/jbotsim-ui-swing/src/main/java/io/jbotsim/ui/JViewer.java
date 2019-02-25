@@ -23,7 +23,7 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Properties;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.io.format.TopologySerializer;
+import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
 import io.jbotsim.io.format.dot.DotTopologySerializer;
 import io.jbotsim.io.format.plain.PlainTopologySerializer;

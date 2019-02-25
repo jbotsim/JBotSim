@@ -24,7 +24,7 @@ import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.format.TopologySerializer;
+import io.jbotsim.io.TopologySerializer;
 
 import java.util.HashMap;
 

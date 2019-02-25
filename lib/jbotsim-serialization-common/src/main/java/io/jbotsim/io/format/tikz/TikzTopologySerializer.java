@@ -24,7 +24,7 @@ import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.io.format.TopologySerializer;
+import io.jbotsim.io.TopologySerializer;
 
 /**
  *  Tikz export for objects of type Topology in JBotSim.

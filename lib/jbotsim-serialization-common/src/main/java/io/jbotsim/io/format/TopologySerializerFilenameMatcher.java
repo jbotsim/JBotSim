@@ -20,6 +20,8 @@
  */
 package io.jbotsim.io.format;
 
+import io.jbotsim.io.TopologySerializer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
