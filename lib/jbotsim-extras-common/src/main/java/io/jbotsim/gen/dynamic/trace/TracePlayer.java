@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.dynamicity.movement.trace;
+package io.jbotsim.gen.dynamic.trace;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;

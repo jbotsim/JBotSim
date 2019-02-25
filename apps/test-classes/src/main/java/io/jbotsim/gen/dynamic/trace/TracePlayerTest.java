@@ -18,18 +18,23 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.dynamicity.movement.trace;
 
-/**
- * The {@link TraceFileReader} is able to parse a file content and put it into a {@link TracePlayer}.
- */
-public interface TraceFileReader {
+package io.jbotsim.gen.dynamic.trace;
 
-    /**
-     * Parse the content of the file named filename and put it in the provided {@link TracePlayer}.
-     * @param filename the filename of the source file
-     * @param tracePlayer the {@link TracePlayer} which must be populated
-     * @throws Exception in case of error
-     */
-    void parse(String filename, TracePlayer tracePlayer) throws Exception;
+import io.jbotsim.core.Topology;
+import io.jbotsim.io.format.xml.XMLTraceParser;
+import io.jbotsim.ui.JViewer;
+
+public class TracePlayerTest {
+    public static void main(String[] args) {
+        try {
+            Topology topology = new Topology();
+            new JViewer(topology);
+            TracePlayer tp = new TracePlayer(topology, new XMLTraceParser(topology, true));
+            tp.loadAndStart(args[0]);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
 }

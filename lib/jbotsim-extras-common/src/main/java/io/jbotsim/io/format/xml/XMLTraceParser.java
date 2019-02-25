@@ -23,9 +23,9 @@ package io.jbotsim.io.format.xml;
 import io.jbotsim.core.Topology;
 import io.jbotsim.io.FileAsStream;
 import io.jbotsim.io.FileManagerProvider;
-import io.jbotsim.dynamicity.movement.trace.TraceEvent;
-import io.jbotsim.dynamicity.movement.trace.TraceFileReader;
-import io.jbotsim.dynamicity.movement.trace.TracePlayer;
+import io.jbotsim.gen.dynamic.trace.TraceEvent;
+import io.jbotsim.gen.dynamic.trace.TraceFileReader;
+import io.jbotsim.gen.dynamic.trace.TracePlayer;
 import org.w3c.dom.Element;
 
 /**

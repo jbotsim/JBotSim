@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.dynamicity.movement.trace;
+package io.jbotsim.gen.dynamic.trace;
 
 /**
  * The {@link TraceFileWriter} is store a sequence of {@link TraceEvent}s and store them in a file.
