@@ -954,7 +954,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      * Provides a {@link TopologySerializer}.
      * @return a {@link TopologySerializer}.
      */
-    public TopologySerializer getTopologySerializer() {
+    public TopologySerializer getSerializer() {
         return topologySerializer;
     }
 
@@ -962,7 +962,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      *  Sets the new {@link TopologySerializer} to use.
      * @param topologySerializer the new {@link TopologySerializer} to use.
      */
-    public void setTopologySerializer(TopologySerializer topologySerializer) {
+    public void setSerializer(TopologySerializer topologySerializer) {
         this.topologySerializer = topologySerializer;
     }
 

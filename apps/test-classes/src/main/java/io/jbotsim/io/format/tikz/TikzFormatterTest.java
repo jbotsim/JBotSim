@@ -28,7 +28,7 @@ public class TikzFormatterTest {
     // Test
     public static void main(String[] args) {
         Topology tp = new Topology();
-        tp.setTopologySerializer(new TikzTopologySerializer());
+        tp.setSerializer(new TikzTopologySerializer());
 //        new FileTopologySerializer().importFromFile();
         new JViewer(tp);
     }

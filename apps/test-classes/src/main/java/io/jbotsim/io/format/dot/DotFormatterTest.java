@@ -30,8 +30,8 @@ public class DotFormatterTest {
         Topology tp = new Topology();
         tp.disableWireless();
         String filename = "/home/acasteig/test.dot"; // to be updated
-        tp.setTopologySerializer(new DotTopologySerializer());
-        tp.getTopologySerializer().importTopology(tp, tp.getFileManager().read(filename));
+        tp.setSerializer(new DotTopologySerializer());
+        tp.getSerializer().importTopology(tp, tp.getFileManager().read(filename));
         new JViewer(tp);
     }
 }
