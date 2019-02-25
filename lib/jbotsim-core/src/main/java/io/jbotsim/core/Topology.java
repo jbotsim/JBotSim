@@ -158,6 +158,8 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
             e.printStackTrace();
             System.err.println("(is your class of node public?)");
         } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("(does your Node belong to a Topology?)");
         } catch (Exception e) {
             e.printStackTrace();
         }
