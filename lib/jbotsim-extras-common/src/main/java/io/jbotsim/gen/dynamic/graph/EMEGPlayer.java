@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.dynamicity.graph;
+package io.jbotsim.gen.dynamic.graph;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
