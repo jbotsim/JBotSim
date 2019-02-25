@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.core.io;
+package io.jbotsim.io;
 
 /**
  * This simple interface defines basic methods to get a {@link FileManager}.

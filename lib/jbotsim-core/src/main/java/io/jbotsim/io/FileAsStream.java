@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.core.io;
+package io.jbotsim.io;
 
 import java.io.*;
 

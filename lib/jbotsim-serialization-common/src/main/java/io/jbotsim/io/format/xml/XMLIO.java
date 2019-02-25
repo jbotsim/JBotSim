@@ -20,7 +20,7 @@
  */
 package io.jbotsim.io.format.xml;
 
-import io.jbotsim.core.io.FileAsStream;
+import io.jbotsim.io.FileAsStream;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 

@@ -23,8 +23,8 @@ package io.jbotsim.core;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
 import io.jbotsim.core.event.*;
-import io.jbotsim.core.io.FileManager;
-import io.jbotsim.core.io.FileManagerProvider;
+import io.jbotsim.io.FileManager;
+import io.jbotsim.io.FileManagerProvider;
 import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.plain.PlainTopologySerializer;
 
