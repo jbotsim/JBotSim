@@ -94,7 +94,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      */
     public Topology(int width, int height) {
         setMessageEngine(new MessageEngine());
-        setScheduler(new DefaultScheduler());
+        setScheduler(new Scheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
     }

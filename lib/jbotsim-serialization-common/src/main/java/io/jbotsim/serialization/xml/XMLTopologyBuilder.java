@@ -98,7 +98,7 @@ public class XMLTopologyBuilder extends XMLBuilder {
         addNodeModels(doc, tp, classes);
         addModel(doc, classes, XMLKeys.MESSAGE_ENGINE, "default", tp.getMessageEngine(), MessageEngine.class);
         addModel(doc, classes, XMLKeys.LINK_RESOLVER, "default", tp.getLinkResolver(), LinkResolver.class);
-        addModel(doc, classes, XMLKeys.SCHEDULER, "default", tp.getScheduler(), DefaultScheduler.class);
+        addModel(doc, classes, XMLKeys.SCHEDULER, "default", tp.getScheduler(), Scheduler.class);
         addModel(doc, classes, XMLKeys.CLOCKCLASS, "default", tp.getClockModel(), DefaultClock.class);
 
         return classes;

@@ -4,7 +4,7 @@
     <classes>
       <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
-      <scheduler class="io.jbotsim.core.DefaultScheduler" id="default"/>
+      <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
       <node class="io.jbotsim.core.Node" color="ffffffff" id="0" x="216.43200000000002" y="467.02"/>
