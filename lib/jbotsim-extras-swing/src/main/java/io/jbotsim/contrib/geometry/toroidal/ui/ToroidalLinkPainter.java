@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.geometry.toroidal.ui;
+package io.jbotsim.contrib.geometry.toroidal.ui;
 
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Point;

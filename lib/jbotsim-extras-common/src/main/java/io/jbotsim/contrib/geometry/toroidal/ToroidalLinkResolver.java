@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.geometry.toroidal;
+package io.jbotsim.contrib.geometry.toroidal;
 
 
 import io.jbotsim.core.LinkResolver;
