@@ -24,7 +24,7 @@ import io.jbotsim.core.Color;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.topology.TopologyGenerators;
+import io.jbotsim.gen.basic.TopologyGenerators;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

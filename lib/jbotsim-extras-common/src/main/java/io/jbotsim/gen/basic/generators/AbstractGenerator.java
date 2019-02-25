@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.topology.generators;
+package io.jbotsim.gen.basic.generators;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;

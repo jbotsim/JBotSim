@@ -18,11 +18,11 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.topology;
+package io.jbotsim.gen.basic;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.topology.generators.*;
+import io.jbotsim.gen.basic.generators.*;
 
 /**
  * {@link TopologyGenerators} is a convenience class providing methods used to generate different patterns with default
