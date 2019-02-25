@@ -11,7 +11,7 @@ public class Drone extends VectorNode {
     public void onStart() {
         super.onStart();
         setSensingRange(20);
-        setIcon("/io/jbotsim/ui/drone.png"); // To be adapted (package path)
+        setIcon("/io/jbotsim/ui/icons/drone.png"); // To be adapted (package path)
         setIconSize(14);
         onPointReached(getLocation());
     }
