@@ -26,7 +26,7 @@ import io.jbotsim.core.Topology;
 
 import java.util.List;
 
-public class Layouts {
+public class TopologyLayouts {
     public static final double DEFAULT_MARGIN = 10.0 / 100.0;
 
 
