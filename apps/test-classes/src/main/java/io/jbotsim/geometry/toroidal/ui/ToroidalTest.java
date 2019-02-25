@@ -12,7 +12,7 @@ public class ToroidalTest {
         Topology tp = new Topology();
         tp.setLinkResolver(new ToroidalLinkResolver());
         JViewer jv = new JViewer(tp);
-        jv.getJTopology().setLinkPainter(new ToroidalLinkPainter());
+        jv.getJTopology().setDefaultLinkPainter(new ToroidalLinkPainter());
         for (int i = 0; i < 10; i++)
             tp.addNode(-1, -1);
     }
