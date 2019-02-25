@@ -2,8 +2,8 @@
 <jbotsim version="1.0">
     <topology wireless-enabled="true">
         <classes>
-            <node-class class="io.jbotsim.format.xml.XMLParserTest$DummyNode1" id="foo"/>
-            <node-class class="io.jbotsim.format.xml.XMLParserTest$DummyNode2" id="bar"/>
+            <node-class class="io.jbotsim.io.format.xml.XMLParserTest$DummyNode1" id="foo"/>
+            <node-class class="io.jbotsim.io.format.xml.XMLParserTest$DummyNode2" id="bar"/>
             <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
             <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
             <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
