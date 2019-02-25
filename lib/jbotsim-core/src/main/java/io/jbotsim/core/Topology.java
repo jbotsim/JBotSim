@@ -25,8 +25,8 @@ import io.jbotsim.core.Link.Type;
 import io.jbotsim.core.event.*;
 import io.jbotsim.core.io.FileManager;
 import io.jbotsim.core.io.FileManagerProvider;
-import io.jbotsim.serialization.TopologySerializer;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
+import io.jbotsim.format.TopologySerializer;
+import io.jbotsim.format.plain.PlainTopologySerializer;
 
 import java.util.*;
 

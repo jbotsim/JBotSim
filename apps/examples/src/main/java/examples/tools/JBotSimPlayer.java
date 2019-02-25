@@ -2,7 +2,7 @@ package examples.tools;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
-import io.jbotsim.serialization.xml.XMLTraceParser;
+import io.jbotsim.format.xml.XMLTraceParser;
 import io.jbotsim.ui.JViewer;
 
 public class JBotSimPlayer {

@@ -3,10 +3,10 @@ package examples.features.replay;
 import io.jbotsim.core.Topology;
 import io.jbotsim.dynamicity.movement.trace.TracePlayer;
 import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
-import io.jbotsim.serialization.xml.XMLParser;
-import io.jbotsim.serialization.xml.XMLTopologyParser;
-import io.jbotsim.serialization.xml.XMLTraceBuilder;
-import io.jbotsim.serialization.xml.XMLTraceParser;
+import io.jbotsim.format.xml.XMLParser;
+import io.jbotsim.format.xml.XMLTopologyParser;
+import io.jbotsim.format.xml.XMLTraceBuilder;
+import io.jbotsim.format.xml.XMLTraceParser;
 import io.jbotsim.ui.CommandListener;
 import io.jbotsim.ui.JViewer;
 

@@ -23,12 +23,12 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Properties;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.serialization.TopologySerializer;
-import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
-import io.jbotsim.serialization.dot.DotTopologySerializer;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
-import io.jbotsim.serialization.tikz.TikzTopologySerializer;
-import io.jbotsim.serialization.xml.XMLTopologySerializer;
+import io.jbotsim.format.TopologySerializer;
+import io.jbotsim.format.TopologySerializerFilenameMatcher;
+import io.jbotsim.format.dot.DotTopologySerializer;
+import io.jbotsim.format.plain.PlainTopologySerializer;
+import io.jbotsim.format.tikz.TikzTopologySerializer;
+import io.jbotsim.format.xml.XMLTopologySerializer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

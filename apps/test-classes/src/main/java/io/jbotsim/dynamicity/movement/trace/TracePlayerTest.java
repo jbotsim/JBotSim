@@ -1,7 +1,7 @@
 package io.jbotsim.dynamicity.movement.trace;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.serialization.xml.XMLTraceParser;
+import io.jbotsim.format.xml.XMLTraceParser;
 import io.jbotsim.ui.JViewer;
 
 public class TracePlayerTest {
