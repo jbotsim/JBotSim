@@ -16,7 +16,7 @@ public class Station extends Node {
     Map<Point, Canadair> canadairByDestination = new HashMap<Point, Canadair>();
 
     public Station() {
-        setIcon("/io/jbotsim/ui/station.png");
+        setIcon("/io/jbotsim/ui/icons/station.png");
         setIconSize(25);
         setCommunicationRange(120);
     }

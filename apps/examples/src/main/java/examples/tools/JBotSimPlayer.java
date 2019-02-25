@@ -1,8 +1,8 @@
 package examples.tools;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.dynamicity.movement.trace.TracePlayer;
-import io.jbotsim.serialization.xml.XMLTraceParser;
+import io.jbotsim.gen.dynamic.trace.TracePlayer;
+import io.jbotsim.io.format.xml.XMLTraceParser;
 import io.jbotsim.ui.JViewer;
 
 public class JBotSimPlayer {
@@ -16,7 +16,7 @@ public class JBotSimPlayer {
         try {
             Topology topology = new Topology();
             new JViewer(topology);
-            TracePlayer tracePlayer = new TracePlayer(topology, new XMLTraceParser(topology, true));
+            TracePlayer tracePlayer = new TracePlayer(topology, new XMLTraceParser(topology.getFileManager(), true));
             tracePlayer.loadAndStart(filename);
         } catch (Exception e) {
             e.printStackTrace();

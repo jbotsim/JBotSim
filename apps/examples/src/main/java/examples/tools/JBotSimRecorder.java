@@ -1,8 +1,8 @@
 package examples.tools;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.dynamicity.movement.trace.TraceRecorder;
-import io.jbotsim.serialization.xml.XMLTraceBuilder;
+import io.jbotsim.gen.dynamic.trace.TraceRecorder;
+import io.jbotsim.io.format.xml.XMLTraceBuilder;
 import io.jbotsim.ui.JViewer;
 
 public class JBotSimRecorder {

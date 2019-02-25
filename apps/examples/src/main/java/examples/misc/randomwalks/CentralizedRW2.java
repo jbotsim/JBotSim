@@ -5,7 +5,7 @@ import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.core.event.StartListener;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.topology.TopologyGenerators;
+import io.jbotsim.gen.basic.TopologyGenerators;
 
 import io.jbotsim.core.Color;
 import java.util.List;

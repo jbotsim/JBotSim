@@ -4,8 +4,8 @@ import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.messaging.AsyncMessageEngine;
-import io.jbotsim.topology.TopologyGenerators;
+import io.jbotsim.contrib.messaging.AsyncMessageEngine;
+import io.jbotsim.gen.basic.TopologyGenerators;
 
 /**
  * Created by acasteig on 9/18/15.

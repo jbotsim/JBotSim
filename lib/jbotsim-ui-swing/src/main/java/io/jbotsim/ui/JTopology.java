@@ -38,7 +38,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class JTopology extends JPanel implements ActionListener {
     protected ArrayList<BackgroundPainter> backgroundPainters = new ArrayList<>();
-    protected LinkPainter linkPainter;
+    protected ArrayList<LinkPainter> linkPainters = new ArrayList<>();
     protected ArrayList<NodePainter> nodePainters = new ArrayList<>();
     protected ArrayList<CommandListener> commandListeners = new ArrayList<>();
     protected ArrayList<String> commands = new ArrayList<String>();
@@ -63,7 +63,7 @@ public class JTopology extends JPanel implements ActionListener {
         super.addComponentListener(handler);
         super.setPreferredSize(new Dimension(topo.getWidth(), topo.getHeight()));
         ToolTipManager.sharedInstance().setInitialDelay(0);
-        linkPainter = new JLinkPainter();
+        linkPainters.add(new JLinkPainter());
         nodePainters.add(new JNodePainter());
         backgroundPainters.add(new JBackgroundPainter());
     }
@@ -122,8 +122,17 @@ public class JTopology extends JPanel implements ActionListener {
         backgroundPainters.remove(painter);
     }
 
-    public void setLinkPainter(LinkPainter painter) {
-        linkPainter = painter;
+    public void addLinkPainter(LinkPainter painter) {
+        linkPainters.add(painter);
+    }
+
+    public void setDefaultLinkPainter(LinkPainter painter) {
+        linkPainters.clear();
+        addLinkPainter(painter);
+    }
+
+    public void removeLinkPainter(LinkPainter painter) {
+        linkPainters.remove(painter);
     }
 
     public void addNodePainter(NodePainter painter) {
@@ -201,7 +210,8 @@ public class JTopology extends JPanel implements ActionListener {
             painter.paintBackground(uiComponent, topo);
         if (showDrawings) {
             for (Link l : topo.getLinks(topo.hasDirectedLinks()))
-                linkPainter.paintLink(uiComponent, l);
+                for (LinkPainter linkPainter: linkPainters)
+                    linkPainter.paintLink(uiComponent, l);
         }
         //if ( ! topo.getNodes().isEmpty() && ! backgroundPainters.isEmpty() ) // FIXME
         //    updateUI();

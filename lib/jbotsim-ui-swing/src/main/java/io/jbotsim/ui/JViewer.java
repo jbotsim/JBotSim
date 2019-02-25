@@ -23,12 +23,12 @@ package io.jbotsim.ui;
 import io.jbotsim.core.Properties;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.PropertyListener;
-import io.jbotsim.serialization.TopologySerializer;
-import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
-import io.jbotsim.serialization.dot.DotTopologySerializer;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
-import io.jbotsim.serialization.tikz.TikzTopologySerializer;
-import io.jbotsim.serialization.xml.XMLTopologySerializer;
+import io.jbotsim.io.TopologySerializer;
+import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
+import io.jbotsim.io.format.dot.DotTopologySerializer;
+import io.jbotsim.io.format.plain.PlainTopologySerializer;
+import io.jbotsim.io.format.tikz.TikzTopologySerializer;
+import io.jbotsim.io.format.xml.XMLTopologySerializer;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -285,7 +285,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
 
     /**
      * <p>Search a known {@link TopologySerializer} matching with the provided filename.<br>
-     * If not found, the result of {@link Topology#getTopologySerializer()} is returned.</p>
+     * If not found, the result of {@link Topology#getSerializer()} is returned.</p>
      *
      * @param filename the filename too be matched
      * @param topology the {@link Topology} to use as fallback if no match is found
@@ -295,7 +295,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         TopologySerializer serializer = topologySerializerFilenameMatcher.getTopologySerializerFor(filename);
 
         if(serializer == null)
-            serializer = topology.getTopologySerializer();
+            serializer = topology.getSerializer();
 
         return serializer;
     }

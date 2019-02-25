@@ -23,10 +23,9 @@ package io.jbotsim.core;
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
 import io.jbotsim.core.event.*;
-import io.jbotsim.core.io.FileManager;
-import io.jbotsim.core.io.FileManagerProvider;
-import io.jbotsim.serialization.TopologySerializer;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
+import io.jbotsim.io.FileManager;
+import io.jbotsim.io.TopologySerializer;
+import io.jbotsim.io.format.plain.PlainTopologySerializer;
 
 import java.util.*;
 
@@ -36,7 +35,7 @@ import java.util.*;
  * It provides several features and convenience accessors, but at its core, it contains a set of {@link Node} objects
  * which can be linked two by two with a set of {@link Link} objects.
  */
-public class Topology extends Properties implements ClockListener, FileManagerProvider {
+public class Topology extends Properties implements ClockListener {
     public static final int DEFAULT_WIDTH = 600;
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
@@ -94,7 +93,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      */
     public Topology(int width, int height) {
         setMessageEngine(new MessageEngine());
-        setScheduler(new DefaultScheduler());
+        setScheduler(new Scheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
     }
@@ -158,6 +157,8 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
             e.printStackTrace();
             System.err.println("(is your class of node public?)");
         } catch (NullPointerException e) {
+            e.printStackTrace();
+            System.err.println("(does your Node belong to a Topology?)");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -938,12 +939,10 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
         clockManager.removeClockListener(listener);
     }
 
-    @Override
     public void setFileManager(FileManager fileManager) {
         this.fileManager = fileManager;
     }
 
-    @Override
     public FileManager getFileManager() {
         return fileManager;
     }
@@ -952,7 +951,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      * Provides a {@link TopologySerializer}.
      * @return a {@link TopologySerializer}.
      */
-    public TopologySerializer getTopologySerializer() {
+    public TopologySerializer getSerializer() {
         return topologySerializer;
     }
 
@@ -960,7 +959,7 @@ public class Topology extends Properties implements ClockListener, FileManagerPr
      *  Sets the new {@link TopologySerializer} to use.
      * @param topologySerializer the new {@link TopologySerializer} to use.
      */
-    public void setTopologySerializer(TopologySerializer topologySerializer) {
+    public void setSerializer(TopologySerializer topologySerializer) {
         this.topologySerializer = topologySerializer;
     }
 

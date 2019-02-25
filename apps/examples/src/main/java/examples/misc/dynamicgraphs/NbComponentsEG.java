@@ -3,9 +3,9 @@ import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
 import io.jbotsim.ui.JViewer;
-import io.jbotsim.Connectivity;
-import io.jbotsim.dynamicity.graph.EMEGPlayer;
-import io.jbotsim.dynamicity.graph.TVG;
+import io.jbotsim.contrib.algos.Connectivity;
+import io.jbotsim.gen.dynamic.graph.EMEGPlayer;
+import io.jbotsim.gen.dynamic.graph.TVG;
 
 
 public class NbComponentsEG implements ClockListener{

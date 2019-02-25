@@ -10,7 +10,7 @@ public class Wolf extends Node {
 
     @Override
     public void onStart() {
-        setIcon("/io/jbotsim/ui/wolf.png");
+        setIcon("/io/jbotsim/ui/icons/wolf.png");
         setIconSize(20);
         setSensingRange(50);
         setDirection(Math.random() * Math.PI * 2);

@@ -9,6 +9,6 @@ public class Cherry extends Node {
     @Override
     public void onStart() {
         disableWireless();
-        setIcon("/io/jbotsim/ui/cherry.png");
+        setIcon("/io/jbotsim/ui/icons/cherry.png");
     }
 }

@@ -1,12 +1,12 @@
 package examples.tools;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.serialization.TopologySerializerFilenameMatcher;
-import io.jbotsim.serialization.tikz.TikzTopologySerializer;
-import io.jbotsim.serialization.TopologySerializer;
-import io.jbotsim.serialization.dot.DotTopologySerializer;
-import io.jbotsim.serialization.plain.PlainTopologySerializer;
-import io.jbotsim.serialization.xml.XMLTopologySerializer;
+import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
+import io.jbotsim.io.format.tikz.TikzTopologySerializer;
+import io.jbotsim.io.TopologySerializer;
+import io.jbotsim.io.format.dot.DotTopologySerializer;
+import io.jbotsim.io.format.plain.PlainTopologySerializer;
+import io.jbotsim.io.format.xml.XMLTopologySerializer;
 import io.jbotsim.ui.JViewer;
 
 public class JBotSimViewer {

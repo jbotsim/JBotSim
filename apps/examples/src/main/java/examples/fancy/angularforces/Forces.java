@@ -2,7 +2,7 @@ package examples.fancy.angularforces;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
-import io.jbotsim.Algorithms;
+import io.jbotsim.contrib.algos.Algorithms;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

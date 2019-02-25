@@ -1,7 +1,7 @@
 package examples.centralized;
 
-import io.jbotsim.Algorithms;
-import io.jbotsim.Connectivity;
+import io.jbotsim.contrib.algos.Algorithms;
+import io.jbotsim.contrib.algos.Connectivity;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.ClockListener;
