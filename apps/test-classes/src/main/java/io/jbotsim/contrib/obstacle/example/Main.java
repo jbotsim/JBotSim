@@ -1,4 +1,4 @@
-package io.jbotsim.obstacle.example;
+package io.jbotsim.contrib.obstacle.example;
 
 import io.jbotsim.core.Point;
 import io.jbotsim.core.Topology;

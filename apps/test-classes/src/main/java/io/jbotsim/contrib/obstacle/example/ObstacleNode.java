@@ -1,4 +1,4 @@
-package io.jbotsim.obstacle.example;
+package io.jbotsim.contrib.obstacle.example;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Point;
@@ -22,7 +22,7 @@ public class ObstacleNode extends Node implements ObstacleListener{
 
     @Override
     public void onStart() {
-        setIcon("/io/jbotsim/obstacle/example/cleaner.png");
+        setIcon("/io/jbotsim/contrib/obstacle/example/cleaner.png");
         ObstacleManager.addObstacleListener(this, getTopology());
     }
 
