@@ -18,51 +18,38 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.messaging;
+package io.jbotsim.contrib.messaging;
 
 import io.jbotsim.core.Message;
 import io.jbotsim.core.MessageEngine;
-import io.jbotsim.core.Node;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Random;
 
-public class AsyncMessageEngine extends MessageEngine {
-    public static enum Type{FIFO, NONFIFO};
-
-    protected HashMap<Message, Integer> delays = new LinkedHashMap<Message, Integer>();
-    protected double average;
+public class DelayMessageEngine extends MessageEngine {
+    protected HashMap<Message, Integer> delays = new HashMap<Message,Integer>();
+    protected int delay = 1; // messages sent in round i are delivered in round i+delay
     protected Random r = new Random();
-    protected Type type = Type.FIFO;
+    protected boolean isRandom = false;
 
-    public AsyncMessageEngine(double averageDuration, Type type){
-        assert(average > 0);
-        this.average = averageDuration;
-        this.type = type;
+    public DelayMessageEngine(int delay){
+        this(false, delay);
     }
-
-    protected int drawDelay(Message m){
-        if (type == Type.FIFO){
-            int max = 0;
-            Node sender = m.getSender();
-            Node destination = m.getDestination();
-            for (Message m2 : delays.keySet())
-                if (m2.getSender() == sender && m2.getDestination() == destination)
-                    max = Math.max(max, delays.get(m2));
-
-            return (int) (max + Math.round(Math.log(1 - Math.random()) / (-1.0/average)));
-        }else{
-            return r.nextInt((int)Math.round(average));
-        }
+    public DelayMessageEngine(boolean randomDelay, int maxDelay){
+        assert(maxDelay > 0);
+        this.delay = maxDelay;
+        this.isRandom = randomDelay;
     }
 
     public void onClock(){
         for (Message m : delays.keySet())
             delays.put(m, delays.get(m)-1);
         for (Message m : super.collectMessages())
-            delays.put(m, drawDelay(m));
+            if (isRandom)
+                delays.put(m, r.nextInt(delay));
+            else
+                delays.put(m,delay);
         for (Message m : new ArrayList<Message>(delays.keySet()))
             if (delays.get(m)==0)
                 deliverMessage(m);
