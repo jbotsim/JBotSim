@@ -22,7 +22,6 @@ package io.jbotsim.io.format.xml;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.io.FileAsStream;
-import io.jbotsim.io.FileManagerProvider;
 import io.jbotsim.gen.dynamic.trace.TraceEvent;
 import io.jbotsim.gen.dynamic.trace.TraceFileReader;
 import io.jbotsim.gen.dynamic.trace.TracePlayer;
@@ -40,17 +39,17 @@ import org.w3c.dom.Element;
  */
 public class XMLTraceParser extends XMLParser implements TraceFileReader {
     private TracePlayer tracePlayer;
-    private final FileManagerProvider fileManagerProvider;
+    private final FileAsStream fileAsStream;
 
     /**
      * Creates a parser for the given {@link TracePlayer}.
      *
-     * @param fileManagerProvider the {@link TracePlayer} that is populated by the parser.
+     * @param fileAsStream the {@link TracePlayer} that is populated by the parser.
      * @param validateDocument enable or disable the validation of the document using an XSD schema.
      */
-    public XMLTraceParser(FileManagerProvider fileManagerProvider, boolean validateDocument) {
+    public XMLTraceParser(FileAsStream fileAsStream, boolean validateDocument) {
         super(validateDocument);
-        this.fileManagerProvider = fileManagerProvider;
+        this.fileAsStream = fileAsStream;
     }
 
     /**
@@ -71,7 +70,7 @@ public class XMLTraceParser extends XMLParser implements TraceFileReader {
     }
 
     protected FileAsStream getFileAccessor() {
-        return fileManagerProvider.getFileManager();
+        return fileAsStream;
     }
 
     @Override

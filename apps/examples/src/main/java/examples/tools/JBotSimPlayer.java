@@ -16,7 +16,7 @@ public class JBotSimPlayer {
         try {
             Topology topology = new Topology();
             new JViewer(topology);
-            TracePlayer tracePlayer = new TracePlayer(topology, new XMLTraceParser(topology, true));
+            TracePlayer tracePlayer = new TracePlayer(topology, new XMLTraceParser(topology.getFileManager(), true));
             tracePlayer.loadAndStart(filename);
         } catch (Exception e) {
             e.printStackTrace();

@@ -50,7 +50,7 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
                     recorder = null;
                 }
                 topology.clear();
-                player = new TracePlayer(topology, new XMLTraceParser(topology, true));
+                player = new TracePlayer(topology, new XMLTraceParser(topology.getFileManager(), true));
                 player.loadAndStart(TRACE_FILENAME);
             }
         } catch (Exception e) {
