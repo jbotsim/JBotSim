@@ -5,7 +5,7 @@ def displayDescription = "JBotSim's default distribution (depends on the require
 
 dependencies {
     api project(':lib:jbotsim-extras-swing')
-    api project(':lib:jbotsim-ui-swing')
+    api project(':lib:jbotsim-icons')
 }
 
 publishing {
