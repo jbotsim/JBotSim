@@ -67,14 +67,35 @@ subprojects {
         required { !version.endsWith('SNAPSHOT') }
     }
 
+    def renameCOPYINGClosure =  {
+        String fileName ->
+            if (fileName.startsWith("COPYING"))
+                fileName += "-" + project.name + ".txt"
+    }
+
+    jar {
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
+    }
+
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
     }
 
     task javadocJar(type: Jar, dependsOn: javadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
     }
 
     artifacts {
