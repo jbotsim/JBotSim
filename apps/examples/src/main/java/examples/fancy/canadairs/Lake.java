@@ -9,7 +9,7 @@ public class Lake extends Node {
 
     public Lake(){
         disableWireless();
-        setIcon("/examples/fancy/canadairs/lake.png");
+        setIcon("/io/jbotsim/ui/icons/lake.png");
         setIconSize(45);
     }
 }
