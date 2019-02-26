@@ -57,7 +57,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
         COLOR("color"),
         ICON("icon"),
         LABEL("label"),
-        SIZE("iconSize");
+        SIZE("size");
 
         PropString(String str) { value = str; };
 
