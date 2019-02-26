@@ -30,7 +30,7 @@ public class PlainFormatterTest {
         String filename = "/home/acasteig/test.plain"; // to be updated
         Topology tp = new Topology();
         tp.setSerializer(new PlainTopologySerializer()); // is actually the default
-        tp.getSerializer().importTopology(tp, tp.getFileManager().read(filename));
+        tp.getSerializer().importFromString(tp, tp.getFileManager().read(filename));
         new JViewer(tp);
     }
 }

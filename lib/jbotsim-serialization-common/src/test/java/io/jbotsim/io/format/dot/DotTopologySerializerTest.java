@@ -64,10 +64,10 @@ public class DotTopologySerializerTest {
         Topology tp = new Topology();
 
         String fileContent = tp.getFileManager().read(url.getPath());
-        new DotTopologySerializer().importTopology(tp, fileContent);
+        new DotTopologySerializer().importFromString(tp, fileContent);
         assertNotNull(tp);
 
-        String xmlTp = new XMLTopologySerializer(true).exportTopology(tp);
+        String xmlTp = new XMLTopologySerializer(true).exportToString(tp);
         assertNotNull(xmlTp);
 //        String bkupFileName = url.getPath() + "-res.xml";
 //        System.out.println(bkupFileName);

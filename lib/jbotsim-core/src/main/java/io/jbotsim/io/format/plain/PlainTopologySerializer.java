@@ -29,51 +29,51 @@ import io.jbotsim.io.TopologySerializer;
 import java.util.HashMap;
 
 public class PlainTopologySerializer implements TopologySerializer {
-    public void importTopology(Topology tp, String s){
-        tp.clear();
-        tp.setCommunicationRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
-        tp.setSensingRange(Double.parseDouble(s.substring(s.indexOf(" ") + 1, s.indexOf("\n"))));
-        s = s.substring(s.indexOf("\n") + 1);
+    public void importFromString(Topology topology, String data){
+        topology.clear();
+        topology.setCommunicationRange(Double.parseDouble(data.substring(data.indexOf(" ") + 1, data.indexOf("\n"))));
+        data = data.substring(data.indexOf("\n") + 1);
+        topology.setSensingRange(Double.parseDouble(data.substring(data.indexOf(" ") + 1, data.indexOf("\n"))));
+        data = data.substring(data.indexOf("\n") + 1);
         HashMap<String, Node> nodeTable = new HashMap<>();
-        while (s.indexOf("[") > 0) {
-            double x = new Double(s.substring(s.indexOf("x") + 3, s.indexOf(", y")));
+        while (data.indexOf("[") > 0) {
+            double x = new Double(data.substring(data.indexOf("x") + 3, data.indexOf(", y")));
             double y = 0;
             double z = 0;
-            if (s.contains("z")) {
-                y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf(", z")));
-                z = new Double(s.substring(s.indexOf("z") + 3, s.indexOf("]")));
+            if (data.contains("z")) {
+                y = new Double(data.substring(data.indexOf("y") + 3, data.indexOf(", z")));
+                z = new Double(data.substring(data.indexOf("z") + 3, data.indexOf("]")));
             }else{
-                y = new Double(s.substring(s.indexOf("y") + 3, s.indexOf("]")));
+                y = new Double(data.substring(data.indexOf("y") + 3, data.indexOf("]")));
             }
             try {
-                Node node = tp.newInstanceOfModel("default");
+                Node node = topology.newInstanceOfModel("default");
                 node.setLocation(x, y, z);
-                tp.addNode(node);
-                String id = s.substring(0, s.indexOf(" "));
+                topology.addNode(node);
+                String id = data.substring(0, data.indexOf(" "));
                 node.setProperty("id", id);
                 nodeTable.put(id, node);
-                s = s.substring(s.indexOf("\n") + 1);
+                data = data.substring(data.indexOf("\n") + 1);
             } catch (Exception e) {}
         }
-        while (s.indexOf("--") > 0) {
-            Node n1 = nodeTable.get(s.substring(0, s.indexOf(" ")));
-            Node n2 = nodeTable.get(s.substring(s.indexOf(">") + 2, s.indexOf("\n")));
-            Link.Type type = (s.indexOf("<") > 0 && s.indexOf("<") < s.indexOf("\n")) ? Link.Type.UNDIRECTED : Link.Type.DIRECTED;
-            tp.addLink(new Link(n1, n2, type, Link.Mode.WIRED));
-            s = s.substring(s.indexOf("\n") + 1);
+        while (data.indexOf("--") > 0) {
+            Node n1 = nodeTable.get(data.substring(0, data.indexOf(" ")));
+            Node n2 = nodeTable.get(data.substring(data.indexOf(">") + 2, data.indexOf("\n")));
+            Link.Type type = (data.indexOf("<") > 0 && data.indexOf("<") < data.indexOf("\n")) ? Link.Type.UNDIRECTED : Link.Type.DIRECTED;
+            topology.addLink(new Link(n1, n2, type, Link.Mode.WIRED));
+            data = data.substring(data.indexOf("\n") + 1);
         }
     }
-    public String exportTopology(Topology tp){
+    public String exportToString(Topology topology){
         StringBuffer res = new StringBuffer();
-        res.append("cR " + tp.getCommunicationRange() + "\n");
-        res.append("sR " + tp.getSensingRange() + "\n");
-        for (Node n : tp.getNodes()) {
+        res.append("cR " + topology.getCommunicationRange() + "\n");
+        res.append("sR " + topology.getSensingRange() + "\n");
+        for (Node n : topology.getNodes()) {
             Point p2d = new Point();
             p2d.setLocation(n.getLocation().getX(), n.getLocation().getY());
             res.append(n.toString() + " " + p2d.toString().substring(p2d.toString().indexOf("[") -1) + "\n");
         }
-        for (Link l : tp.getLinks())
+        for (Link l : topology.getLinks())
             if (!l.isWireless())
                 res.append(l.toString() + "\n");
         return res.toString();

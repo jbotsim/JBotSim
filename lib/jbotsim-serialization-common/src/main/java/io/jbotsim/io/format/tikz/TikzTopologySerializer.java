@@ -62,13 +62,13 @@ public class TikzTopologySerializer implements TopologySerializer {
     }
 
     @Override
-    public void importTopology(Topology tp, String s) {
+    public void importFromString(Topology topology, String data) {
         return;
     }
 
     @Override
-    public String exportTopology(Topology tp){
-        return exportTopology(tp, 50);
+    public String exportToString(Topology topology){
+        return exportTopology(topology, 50);
     }
 
     public String exportTopology(Topology tp, double scale){

@@ -24,7 +24,7 @@ public class JBotSimViewer {
         String fileContent = tp.getFileManager().read(filename);
 
         TopologySerializer serializer = getProperSerializer(filename);
-        serializer.importTopology(tp, fileContent);
+        serializer.importFromString(tp, fileContent);
     }
 
     private static TopologySerializer getProperSerializer(String filename) {
