@@ -22,6 +22,7 @@ package io.jbotsim.ui;
 
 import io.jbotsim.core.Properties;
 import io.jbotsim.core.Topology;
+import io.jbotsim.core.event.CommandListener;
 import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
@@ -85,6 +86,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         this(jtopo, true);
     }
 
+
     /**
      * Creates a viewer encapsulating the specified jtopology. If
      * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created
@@ -99,15 +101,17 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      */
     public JViewer(JTopology jtopo, boolean windowed) {
         jtp = jtopo;
-        jtp.addCommand("Set communication range");
-        jtp.addCommand("Set sensing range");
-        jtp.addCommand("Set clock speed");
-        jtp.addCommand("Pause or resume execution");
-        jtp.addCommand("Execute a single step");
-        jtp.addCommand("Restart nodes");
-        jtp.addCommand("Load topology");
-        jtp.addCommand("Save topology");
-        jtp.addCommandListener(this);
+        Topology tp = jtp.topo;
+
+        tp.addCommand(Commands.SET_COMMUNICATION_RANGE);
+        tp.addCommand(Commands.SET_SENSING_RANGE);
+        tp.addCommand(Commands.SET_SYSTEM_SPEED);
+        tp.addCommand(Topology.COMMAND_SEPARATOR);
+        tp.addCommand(Commands.LOAD_TOPOLOGY);
+        tp.addCommand(Commands.SAVE_TOPOLOGY);
+        tp.addCommand(Topology.COMMAND_SEPARATOR);
+        tp.addCommandListener(this);
+
         jtp.topo.addPropertyListener(this);
         if (windowed) { // This JViewer creates its own window
             window = new JFrame();
@@ -181,29 +185,16 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
 
     @Override
     public void onCommand(String command) {
-        if (command.equals("Set communication range")) {
+        if (command.equals(Commands.SET_COMMUNICATION_RANGE)) {
             executeSetCommunicationRange();
-        } else if (command.equals("Set sensing range")) {
+        } else if (command.equals(Commands.SET_SENSING_RANGE)) {
             executeSetSensingRange();
-        } else if (command.equals("Set clock speed")) {
+        } else if (command.equals(Commands.SET_SYSTEM_SPEED)) {
             executeSetClockSpeed();
-        } else if (command.equals("Pause or resume execution")) {
-            if (!jtp.topo.isStarted())
-                jtp.topo.start();
-            else {
-                if (jtp.topo.isRunning())
-                    jtp.topo.pause();
-                else
-                    jtp.topo.resume();
-            }
-        } else if (command.equals("Restart nodes")) {
-            jtp.topo.restart();
-        } else if (command.equals("Execute a single step")) {
-            jtp.topo.step();
         } else {
-            if (command.equals("Load topology")) {
+            if (command.equals(Commands.LOAD_TOPOLOGY)) {
                 executeLoadTopology();
-            } else if (command.equals("Save topology")) {
+            } else if (command.equals(Commands.SAVE_TOPOLOGY)) {
                 executeSaveTopology();
             }
         }
@@ -447,6 +438,14 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
             y /= conversionFactor;
             return Math.exp(-decreaseSpeed*Math.log((y+shift)/unShiftedValueAtZero));
         }
+    }
+
+    private class Commands {
+        private static final String SET_COMMUNICATION_RANGE = "Set communication range";
+        private static final String SET_SENSING_RANGE = "Set sensing range";
+        private static final String SET_SYSTEM_SPEED = "Set system speed";
+        private static final String LOAD_TOPOLOGY = "Load topology";
+        private static final String SAVE_TOPOLOGY = "Save topology";
     }
     // endregion
 }

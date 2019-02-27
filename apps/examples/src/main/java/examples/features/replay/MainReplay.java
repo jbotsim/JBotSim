@@ -7,7 +7,7 @@ import io.jbotsim.io.format.xml.XMLParser;
 import io.jbotsim.io.format.xml.XMLTopologyParser;
 import io.jbotsim.io.format.xml.XMLTraceBuilder;
 import io.jbotsim.io.format.xml.XMLTraceParser;
-import io.jbotsim.ui.CommandListener;
+import io.jbotsim.core.event.CommandListener;
 import io.jbotsim.ui.JViewer;
 
 public class MainReplay implements CommandListener, TracePlayer.ReplayTerminatedListener {
@@ -28,10 +28,10 @@ public class MainReplay implements CommandListener, TracePlayer.ReplayTerminated
         parser.parse(getClass().getResourceAsStream("/examples/features/replay/network.xml"));
 
         jViewer = new JViewer(topology);
-        jViewer.getJTopology().addCommandListener(this);
-        jViewer.getJTopology().addCommand(START_RECORDER);
-        jViewer.getJTopology().addCommand(STOP_RECORDER);
-        jViewer.getJTopology().addCommand(REPLAY_TRACE);
+        topology.addCommandListener(this);
+        topology.addCommand(START_RECORDER);
+        topology.addCommand(STOP_RECORDER);
+        topology.addCommand(REPLAY_TRACE);
     }
 
     @Override

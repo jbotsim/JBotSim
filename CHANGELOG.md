@@ -242,6 +242,41 @@ Some color related behaviours have been moved from Node, to Color ([[issue 33]][
 
 [issue: #44]: https://github.com/jbotsim/JBotSim/issues/44
 
+### Command management modifications
+
+The command management has been moved from `JTopology` to `Topology`
+
+***Moved interface:***
+
+`jbotsimx.ui.CommandListener` -> `jbotsim-core`/`io.jbotsim.core.event.CommandListener`
+
+***Moved methods:***
+* `JTopology.addCommandListener()` -> `Topology.addCommandListener()`
+* `JTopology.removeCommandListener()` ->  `Topology.removeCommandListener()` 
+* `JTopology.removeCommand()` ->  `Topology.removeCommand()` 
+* `JTopology.removeAllCommands()` ->  `Topology.removeAllCommands()` 
+* `JTopology.addCommand()` ->  `Topology.addCommand()` 
+  
+  A specific string (`Topology.COMMAND_SEPARATOR`) is provided to be used as separator. 
+  It is simply ignored for command execution.
+
+***New methods:***
+* `Topology.getCommands()` has been created
+ 
+  This methods computes the current list of commands. It merges the commands added via `Topology.addCommand()` 
+  to a set of default commands. The default commands can be disabled using `Topology.disableDefaultCommands()`
+
+* `Topology.disableDefaultCommands()` has been created
+
+  Disables the default commands. They are enabled by default?
+* `Topology.enableDefaultCommands()` has been created
+
+  Enables the default commands. They are enabled by default?
+
+* `Topology.executeCommand()` has been created
+ 
+  This method tries to execute the provided command (as a default command) and then passes it to all `CommandListner`s. 
+
 ### Topology class modifications
 
 **Removal in Topology:**

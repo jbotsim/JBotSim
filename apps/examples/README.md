@@ -56,7 +56,7 @@ public class HelloWorld{
 simulation.
 2. We pass it to a `JViewer`, which will display the simulation elements and allow the user to interact with it.
 3. And eventually, we start the simulation (`tp.start();`). Since we use a `JViewer`, this step could also be done by 
-the user by selecting *"Pause or resume execution"* in the `JViewer`'s contextual menu (right click anywhere).
+the user by selecting *"Start execution"* in the `JViewer`'s contextual menu (right click anywhere).
 
 
 

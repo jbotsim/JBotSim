@@ -18,7 +18,7 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.ui;
+package io.jbotsim.core.event;
 
 /**
  * <p>The {@link CommandListener} is an element which is used to be called when a command arises.</p>
