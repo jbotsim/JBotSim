@@ -14,5 +14,6 @@ public class Main {
 
 		new JViewer(tp);
 		new RWP(tp, true);
+		tp.start();
 	}
 }

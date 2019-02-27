@@ -45,6 +45,7 @@ public class BoundedRecurrent implements ClockListener, SelectionListener {
 		Topology tp=new Topology();
 		new BoundedRecurrent(tp);
 		new JViewer(tp);
+		tp.start();
 	}
 
 	@Override

@@ -12,7 +12,7 @@ public class TestSendRetry extends Node{
 	public void onSelection() {
         setColor(Color.black);
 		List<Node> nodes = getTopology().getNodes();
-		Node other = nodes.get(nodes.indexOf(this) + 1 % 2);
+		Node other = nodes.get((nodes.indexOf(this) + 1) % 2);
         other.setColor(Color.green);
         sendRetry (other, new Message());
 	}
@@ -24,5 +24,6 @@ public class TestSendRetry extends Node{
 		Topology tp = new Topology();
         tp.setDefaultNodeModel(TestSendRetry.class);
 		new JViewer(tp);
+		tp.start();
 	}
 }

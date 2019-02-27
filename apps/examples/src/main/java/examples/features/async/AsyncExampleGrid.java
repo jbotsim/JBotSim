@@ -42,5 +42,6 @@ public class AsyncExampleGrid extends Node {
         tp.setMessageEngine(new AsyncMessageEngine(20, AsyncMessageEngine.Type.FIFO));
         TopologyGenerators.generateGrid(tp, 5, 4);
         new JViewer(tp);
+        tp.start();
     }
 }

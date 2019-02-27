@@ -23,5 +23,6 @@ public class NbComponentsEG implements ClockListener{
 		TVG tvg=new TVG(Node.class); tvg.buildCompleteGraph(6);
 		(new EMEGPlayer(tvg, tp, .05, .6)).start();
 		tp.addClockListener(new NbComponentsEG());
+		tp.start();
 	}
 }

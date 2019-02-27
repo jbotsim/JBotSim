@@ -18,5 +18,7 @@ public class Main {
             tp.addNode(-1, -1, new Sheep());
         }
         new JViewer(tp);
+        tp.start();
+        tp.pause();
     }
 }

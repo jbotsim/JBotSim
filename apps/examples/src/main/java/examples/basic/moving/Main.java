@@ -11,5 +11,6 @@ public class Main {
         Topology tp = new Topology();
         tp.setDefaultNodeModel(MovingNode.class);
         new JViewer(tp);
+        tp.start();
     }
 }

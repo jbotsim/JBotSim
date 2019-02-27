@@ -13,6 +13,7 @@ public class Main {
         tp.setTimeUnit(500); // slow on purpose (500 ms per round)
         deployNodes(tp); // optional
         new JViewer(tp);
+        tp.start();
     }
 
     // Deploy a few nodes to save the user some time

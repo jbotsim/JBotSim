@@ -14,5 +14,8 @@ public class EdgeMarkovian {
 		TVG tvg=new TVG(Node.class);
 		tvg.buildCompleteGraph(10);
 		(new EMEGPlayer(tvg, tp, .02, .6)).start();
+
+		tp.start();
+		tp.pause();
 	}
 }

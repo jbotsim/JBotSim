@@ -11,12 +11,14 @@ public class Fire extends Node {
     static ArrayList<Fire> allFires = new ArrayList<Fire>();
     Random r=new Random();
 
-	public Fire(){
+    @Override
+	public void onStart(){
         disableWireless();
         allFires.add(this);
         setIcon(Icons.FIRE);
         setIconSize(10);
 	}
+    @Override
 	public void onClock(){
         if (Math.random() < 0.01)
             propagate();
@@ -31,8 +33,10 @@ public class Fire extends Node {
             getTopology().addNode(x, y, new Fire());
         }
     }
+
+    @Override
     public void die(){
+        super.die();
         allFires.remove(this);
-        getTopology().removeNode(this);
     }
 }

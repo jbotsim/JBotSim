@@ -23,6 +23,7 @@ public class Main {
         });
         deployNodes(tp); // optional
         new JViewer(tp);
+        tp.start();
     }
 
     // Deploy a few nodes to save the user some time

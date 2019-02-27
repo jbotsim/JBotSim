@@ -29,5 +29,6 @@ public class DavidNode extends Node{
 		Topology tp = new Topology();
 		tp.setDefaultNodeModel(DavidNode.class);
 		new JViewer(tp);
+		tp.start();
 	}
 }

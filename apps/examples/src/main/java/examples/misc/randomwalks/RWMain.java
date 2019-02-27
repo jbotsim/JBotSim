@@ -11,5 +11,6 @@ public class RWMain {
         Topology tp = new Topology();
         tp.setDefaultNodeModel(RWNode1.class);
         new JViewer(tp);
+        tp.start();
     }
 }

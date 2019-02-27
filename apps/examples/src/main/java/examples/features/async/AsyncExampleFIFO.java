@@ -39,5 +39,6 @@ public class AsyncExampleFIFO extends Node {
         tp.setDefaultNodeModel(AsyncExampleFIFO.class);
         TopologyGenerators.generateLine(tp, 2);
         new JViewer(tp);
+        tp.start();
     }
 }
