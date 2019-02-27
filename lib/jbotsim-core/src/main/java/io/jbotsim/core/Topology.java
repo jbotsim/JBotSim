@@ -536,6 +536,11 @@ public class Topology extends Properties implements ClockListener {
         resume();
     }
 
+    /**
+     * Selects the specified {@link Node} in this {@link Topology}.
+     *
+     * @param n The {@link Node} to be selected.
+     */
     public void selectNode(Node n) {
         selectedNode = n;
         n.onSelection();
