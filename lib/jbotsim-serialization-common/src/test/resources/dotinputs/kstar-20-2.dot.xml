@@ -7,26 +7,26 @@
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="0" x="295.86" y="115.82"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="1" x="166.094" y="415.36199999999997"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="2" x="260.16" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="3" x="96.75800000000001" y="114.75999999999999"/>
-      <node class="io.jbotsim.core.Node" color="ffffffff" id="4" x="280.0" y="260.844"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="5" x="405.16" y="152.01999999999998"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="6" x="164.632" y="69.44"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="7" x="219.42399999999998" y="366.402"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="8" x="96.03399999999999" y="282.998"/>
-      <node class="io.jbotsim.core.Node" color="ffee82ee" id="9" x="215.34199999999998" y="264.59999999999997"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="10" x="340.64" y="400.864"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="11" x="103.72800000000001" y="362.126"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="12" x="378.78000000000003" y="329.03999999999996"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="13" x="363.32" y="92.25999999999999"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="14" x="115.306" y="187.09999999999997"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="15" x="421.3" y="297.734"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="16" x="269.78" y="429.64"/>
-      <node class="io.jbotsim.core.Node" color="ff808000" id="17" x="229.43" y="179.73999999999995"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="18" x="50.0" y="217.65999999999997"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="19" x="411.94" y="228.09999999999997"/>
+      <node color="ffff0000" id="0" x="295.86" y="115.82"/>
+      <node color="ffff0000" id="1" x="166.094" y="415.36199999999997"/>
+      <node color="ffff0000" id="2" x="260.16" y="50.0"/>
+      <node color="ffff0000" id="3" x="96.75800000000001" y="114.75999999999999"/>
+      <node color="ffffffff" id="4" x="280.0" y="260.844"/>
+      <node color="ffff0000" id="5" x="405.16" y="152.01999999999998"/>
+      <node color="ffff0000" id="6" x="164.632" y="69.44"/>
+      <node color="ffff0000" id="7" x="219.42399999999998" y="366.402"/>
+      <node color="ffff0000" id="8" x="96.03399999999999" y="282.998"/>
+      <node color="ffee82ee" id="9" x="215.34199999999998" y="264.59999999999997"/>
+      <node color="ffff0000" id="10" x="340.64" y="400.864"/>
+      <node color="ffff0000" id="11" x="103.72800000000001" y="362.126"/>
+      <node color="ffff0000" id="12" x="378.78000000000003" y="329.03999999999996"/>
+      <node color="ffff0000" id="13" x="363.32" y="92.25999999999999"/>
+      <node color="ffff0000" id="14" x="115.306" y="187.09999999999997"/>
+      <node color="ffff0000" id="15" x="421.3" y="297.734"/>
+      <node color="ffff0000" id="16" x="269.78" y="429.64"/>
+      <node color="ff808000" id="17" x="229.43" y="179.73999999999995"/>
+      <node color="ffff0000" id="18" x="50.0" y="217.65999999999997"/>
+      <node color="ffff0000" id="19" x="411.94" y="228.09999999999997"/>
       <link directed="true" dst="17" src="4"/>
       <link directed="true" dst="4" src="17"/>
       <link directed="true" dst="9" src="4"/>

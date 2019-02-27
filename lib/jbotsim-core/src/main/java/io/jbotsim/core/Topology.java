@@ -104,6 +104,9 @@ public class Topology extends Properties implements ClockListener {
      * @return the node model registered for the provided modelName.
      */
     public Class<? extends Node> getNodeModel(String modelName) {
+        if(nodeModels == null || nodeModels.isEmpty())
+            return Node.class;
+
         return nodeModels.get(modelName);
     }
 

@@ -7,16 +7,16 @@
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node class="io.jbotsim.core.Node" color="fff0e68c" id="0" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ff4b0082" id="1" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ffffffff" id="2" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="fff0e68c" id="3" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ff00ffff" id="4" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ff00ffff" id="5" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="6" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="fffa8072" id="7" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="ffff0000" id="8" x="50.0" y="50.0"/>
-      <node class="io.jbotsim.core.Node" color="fffa8072" id="9" x="50.0" y="50.0"/>
+      <node color="fff0e68c" id="0" x="50.0" y="50.0"/>
+      <node color="ff4b0082" id="1" x="50.0" y="50.0"/>
+      <node color="ffffffff" id="2" x="50.0" y="50.0"/>
+      <node color="fff0e68c" id="3" x="50.0" y="50.0"/>
+      <node color="ff00ffff" id="4" x="50.0" y="50.0"/>
+      <node color="ff00ffff" id="5" x="50.0" y="50.0"/>
+      <node color="ffff0000" id="6" x="50.0" y="50.0"/>
+      <node color="fffa8072" id="7" x="50.0" y="50.0"/>
+      <node color="ffff0000" id="8" x="50.0" y="50.0"/>
+      <node color="fffa8072" id="9" x="50.0" y="50.0"/>
       <link directed="true" dst="9" src="0"/>
       <link directed="true" dst="0" src="9"/>
       <link directed="true" dst="5" src="1"/>
