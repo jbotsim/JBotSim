@@ -128,14 +128,19 @@ For more details, please see the implementation of the `JBackgroundPainter.paint
 
 ### jbotsim-icons module
 
-[[issue 26]][issue: #26]
+
 
 `jbotsim-icons`/`io.jbotsim.ui.icons`
 
 A specific resources module has been added to provide a limited set of extra icons.
-They can be browsed in the corresponding folder.
+They can be browsed in the corresponding folder. [[issue 26]][issue: #26]
+
+
+This module contains the `io.jbotsim.ui.icons.Icons` class which provides a set of constants matching the paths of the 
+provided icons. [[issue 46]][issue: #46]
 
 [issue: #26]: https://github.com/jbotsim/JBotSim/issues/26
+[issue: #46]: https://github.com/jbotsim/JBotSim/issues/46
 
 ### Color class modifications
 

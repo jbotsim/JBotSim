@@ -1,6 +1,7 @@
 package examples.fancy.canadairs;
 
 import io.jbotsim.core.Node;
+import io.jbotsim.ui.icons.Icons;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,7 +14,7 @@ public class Fire extends Node {
 	public Fire(){
         disableWireless();
         allFires.add(this);
-        setIcon("/io/jbotsim/ui/icons/fire.png");
+        setIcon(Icons.FIRE);
         setIconSize(10);
 	}
 	public void onClock(){

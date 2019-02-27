@@ -2,6 +2,7 @@ package examples.funny.wolfsheep;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
+import io.jbotsim.ui.icons.Icons;
 
 /**
  * Created by acasteig on 31/08/16.
@@ -12,7 +13,7 @@ public class Sheep extends Node {
 
     @Override
     public void onStart() {
-        setIcon("/io/jbotsim/ui/icons/sheep.png");
+        setIcon(Icons.SHEEP);
         setIconSize(12);
         setDirection(Math.random() * Math.PI * 2);
     }
