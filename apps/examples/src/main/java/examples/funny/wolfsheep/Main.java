@@ -9,7 +9,7 @@ import io.jbotsim.ui.JViewer;
 public class Main {
     public static void main(String[] args) {
         Topology tp = new Topology(800,600);
-        tp.setClockSpeed(20);
+        tp.setTimeUnit(20);
         tp.disableWireless();
         tp.pause();
         for (int i = 0; i < 5; i++){

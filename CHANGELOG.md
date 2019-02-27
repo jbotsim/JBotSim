@@ -259,6 +259,11 @@ Some color related behaviours have been moved from Node, to Color ([[issue 33]][
   
   It removes the provided `LinkPainter` from the internal list of `LinkPainter`s.
 
+
+**Topology methods renaming:**
+
+* `Topology.setClockSpeed()` is now `Node.setTimeUnit()`
+* `Topology.getClockSpeed()` is now `Node.getTimeUnit()`
   
 ### JConsole class removal
 

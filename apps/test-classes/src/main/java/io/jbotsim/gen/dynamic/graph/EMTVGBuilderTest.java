@@ -23,9 +23,6 @@ package io.jbotsim.gen.dynamic.graph;
 
 import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
-import io.jbotsim.gen.dynamic.graph.EMTVGBuilder;
-import io.jbotsim.gen.dynamic.graph.TVG;
-import io.jbotsim.gen.dynamic.graph.TVGPlayer;
 import io.jbotsim.ui.JViewer;
 
 import java.util.Vector;
@@ -40,7 +37,7 @@ public class EMTVGBuilderTest {
         TVG tvg= EMTVGBuilder.createGraph(nodes, 0.1, 0.1, 20);
         System.out.println(tvg);
         Topology tp=new Topology();
-        tp.setClockSpeed(100);
+        tp.setTimeUnit(100);
         new JViewer(tp);
         TVGPlayer player=new TVGPlayer(tvg, tp, 20);
         player.start();

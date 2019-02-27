@@ -76,8 +76,8 @@ public class XMLTopologyParser extends XMLParser {
                 tp.disableWireless();
         }
 
-        if (XMLKeys.CLOCK_SPEED_ATTR.isAttributeOf(topo)) {
-            tp.setClockSpeed(XMLKeys.CLOCK_SPEED_ATTR.getValueFor(topo, XMLKeys.IntegerFromString));
+        if (XMLKeys.TIME_UNIT_ATTR.isAttributeOf(topo)) {
+            tp.setTimeUnit(XMLKeys.TIME_UNIT_ATTR.getValueFor(topo, XMLKeys.IntegerFromString));
         }
 
         int width = XMLKeys.WIDTH_ATTR.getValueFor(topo, Topology.DEFAULT_WIDTH);

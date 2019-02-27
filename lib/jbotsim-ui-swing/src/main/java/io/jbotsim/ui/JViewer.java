@@ -211,7 +211,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
 
     private void executeSetClockSpeed() {
         // The clock speed is linked by a specific law to the range of the slider
-        int value = getSliderValueFromClockSpeed(slideBar.getMaximum(), jtp.topo.getClockSpeed());
+        int value = getSliderValueFromClockSpeed(slideBar.getMaximum(), jtp.topo.getTimeUnit());
         reactToSlideBarCommand(BarType.SPEED, value);
     }
 
@@ -341,7 +341,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         } else if (slideBarType == BarType.SENSING) {
             jtp.topo.setSensingRange(slideBar.getValue());
         } else if (slideBarType == BarType.SPEED) {
-            jtp.topo.setClockSpeed(getClockSpeedFromSlideBarValue(slideBar.getMaximum(), slideBar.getValue()));
+            jtp.topo.setTimeUnit(getClockSpeedFromSlideBarValue(slideBar.getMaximum(), slideBar.getValue()));
         }
         jtp.updateUI();
     }

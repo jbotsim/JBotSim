@@ -307,7 +307,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @return The duration
      */
-    public int getClockSpeed() {
+    public int getTimeUnit() {
         return clockManager.getTimeUnit();
     }
 
@@ -316,7 +316,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @param period The desired duration
      */
-    public void setClockSpeed(int period) {
+    public void setTimeUnit(int period) {
         clockManager.setTimeUnit(period);
     }
 

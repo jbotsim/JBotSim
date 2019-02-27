@@ -45,7 +45,7 @@ public class CentralizedRW3 implements ClockListener, StartListener {
         Topology tp = new Topology();
         TopologyGenerators.generateLine(tp, 10);
         new CentralizedRW3(tp);
-        tp.setClockSpeed(1);
+        tp.setTimeUnit(1);
         tp.start();
     }
 }

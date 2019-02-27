@@ -9,7 +9,7 @@ import io.jbotsim.gen.dynamic.graph.TVG;
 public class EdgeMarkovian {
 	public static void main(String args[]){
 		Topology tp=new Topology();
-		tp.setClockSpeed(100);
+		tp.setTimeUnit(100);
 		new JViewer(tp);
 		TVG tvg=new TVG(Node.class);
 		tvg.buildCompleteGraph(10);

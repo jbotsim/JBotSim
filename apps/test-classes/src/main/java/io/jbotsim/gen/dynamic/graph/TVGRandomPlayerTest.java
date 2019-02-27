@@ -22,8 +22,6 @@
 package io.jbotsim.gen.dynamic.graph;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.gen.dynamic.graph.TVG;
-import io.jbotsim.gen.dynamic.graph.TVGRandomPlayer;
 import io.jbotsim.ui.JViewer;
 
 public class TVGRandomPlayerTest {
@@ -34,7 +32,7 @@ public class TVGRandomPlayerTest {
         new JViewer(tp);
         tp.resetTime();
         tp.pause();
-        tp.setClockSpeed(50);
+        tp.setTimeUnit(50);
         TVGRandomPlayer player = new TVGRandomPlayer(tvg, tp, 100);
         player.start();
         tp.resume();
