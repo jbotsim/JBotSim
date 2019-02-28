@@ -19,6 +19,6 @@ See [project structure](#project-structure) for existing ones.
  
 ## Project structure
 The submodules are listed below:
-* [`jbotsim-full`](./jbotsim-full/README.md): a *fat jar* containing all JBotSim *jars*.
-* [`jbotsim-common`](./jbotsim-common/README.md): a *fat jar* containing all non-specific classes from JBotSim.
+* [`fat-jbotsim-full`](./fat-jbotsim-full/README.md): a *fat jar* containing all JBotSim *jars*.
+* [`fat-jbotsim-common`](./fat-jbotsim-common/README.md): a *fat jar* containing all non-specific classes from JBotSim.
 
