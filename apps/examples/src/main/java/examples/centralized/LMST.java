@@ -22,7 +22,7 @@ public class LMST implements ConnectivityListener, MovementListener, PropertyLis
         tp.addConnectivityListener(this);
 	}
 	@Override
-	public void onMove(Node n) {
+	public void onMovement(Node n) {
 		updateLMST();
 	}
     @Override

@@ -53,7 +53,7 @@ public class ObstacleDetector implements MovementListener {
     
     @SuppressWarnings("unchecked")
     @Override
-    public void onMove(Node arg0) {
+    public void onMovement(Node arg0) {
         List<ObstacleListener> obstacleListeners = (List<ObstacleListener>) topology.getProperty("obstaclelisteners");
         for(ObstacleListener listener:obstacleListeners){
             if(listener==arg0){

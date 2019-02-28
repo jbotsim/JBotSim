@@ -205,7 +205,7 @@ public class JTopology extends JPanel implements ActionListener {
             updateUI();
         }
 
-        public void onMove(Node n) {
+        public void onMovement(Node n) {
             Toolkit.getDefaultToolkit().sync();
             updateUI();
             if (n.hasProperty("jnode"))

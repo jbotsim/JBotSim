@@ -137,7 +137,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Override this method to perform some action when the node moves.
      */
-    public void onMove() {
+    public void onMovement() {
     }
 
     /**
@@ -826,10 +826,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     protected void notifyNodeMoved() {
-        onMove();
+        onMovement();
         if (topo != null)
             for (MovementListener ml : new ArrayList<>(topo.movementListeners))
-                ml.onMove(this);
+                ml.onMovement(this);
     }
 
     @Override

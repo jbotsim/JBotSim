@@ -378,6 +378,14 @@ The content of the new `ui.jbotsim.gen.basic.generators` package is listed there
 
 [issue: #40]: https://github.com/jbotsim/JBotSim/issues/40
 
+
+### MovementListener interface modifications
+
+
+**MovementListener method renaming:**
+
+* `MovementListener.onMove()` is now `MovementListener.onMovement()`
+
 ## API CHANGES FROM 1.0-ALPHA TO 1.0-BETA
 
 JBotSim is advancing towards the release of version 1.0.
