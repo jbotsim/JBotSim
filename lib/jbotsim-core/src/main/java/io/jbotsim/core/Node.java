@@ -717,7 +717,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      *
      * @param destination The non-null destination.
      * @param content     The object to be sent.
+     *
+     * @deprecated Please use {@link #send(Node, Message)} instead.
      */
+    @Deprecated
     public void send(Node destination, Object content) {
         send(destination, new Message(content));
     }
@@ -743,7 +746,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      *
      * @param destination The non-null destination.
      * @param content     The object to be sent.
+     *
+     * @deprecated Please use {@link #sendRetry(Node, Message)} instead.
      */
+    @Deprecated
     public void sendRetry(Node destination, Object content) {
         sendRetry(destination, new Message(content));
     }
@@ -767,7 +773,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * (a message will be created to contain it).
      *
      * @param content The object to be sent.
+     *
+     * @deprecated Please use {@link #sendAll(Message)} instead.
      */
+    @Deprecated
     public void sendAll(Object content) {
         send(null, new Message(content));
     }

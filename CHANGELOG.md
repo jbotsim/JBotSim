@@ -200,6 +200,21 @@ Some color related behaviours have been moved from Node, to Color ([[issue 33]][
 
   Please use `Node.setColor()` with a color from `Color.getRandomColor()` instead.
 
+**Deprecations in Node:**
+
+* Send methods taking `Object` as a payload have been deprecated for clarity sake:
+  * `Node.send(Node, Object)` has been deprecated
+  
+    Please use `Node.send(Node, Message)` instead.
+    
+  * `Node.sendAll(Node, Object)` has been deprecated
+  
+    Please use `Node.sendAll(Node, Message)` instead.
+  
+  * `Node.sendAll(Object)` has been deprecated
+  
+    Please use `Node.sendAll(Message)` instead.
+
 **New methods in Node:**
 
 * `Node.die()` has been added [[issue 45]][issue: #45]
@@ -303,8 +318,8 @@ The command management has been moved from `JTopology` to `Topology`
 
 **Topology methods renaming:**
 
-* `Topology.setClockSpeed()` is now `Node.setTimeUnit()`
-* `Topology.getClockSpeed()` is now `Node.getTimeUnit()`
+* `Topology.setClockSpeed()` is now `Topology.setTimeUnit()`
+* `Topology.getClockSpeed()` is now `Topology.getTimeUnit()`
   
 ### JConsole class removal
 
