@@ -1191,12 +1191,12 @@ public class Topology extends Properties implements ClockListener {
      */
     public static final String COMMAND_SEPARATOR = "-";
 
-    private class DefaultCommands {
-        private static final String START_EXECUTION = "Start execution";
-        private static final String PAUSE_EXECUTION = "Pause execution";
-        private static final String RESUME_EXECUTION = "Resume execution";
-        private static final String EXECUTE_A_SINGLE_STEP = "Execute a single step";
-        private static final String RESTART_NODES = "Restart nodes";
+    public class DefaultCommands {
+        public static final String START_EXECUTION = "Start execution";
+        public static final String PAUSE_EXECUTION = "Pause execution";
+        public static final String RESUME_EXECUTION = "Resume execution";
+        public static final String EXECUTE_A_SINGLE_STEP = "Execute a single step";
+        public static final String RESTART_NODES = "Restart nodes";
     }
 
     /**
@@ -1213,21 +1213,23 @@ public class Topology extends Properties implements ClockListener {
      */
     public void executeCommand(String command) {
 
-        if (command.equals(DefaultCommands.START_EXECUTION)) {
-            if (!isStarted())
-                start();
-        } else if (command.equals(DefaultCommands.PAUSE_EXECUTION)) {
-            if (isStarted() && isRunning())
-                pause();
-        } else if (command.equals(DefaultCommands.RESUME_EXECUTION)) {
-            if (isStarted() && !isRunning())
-                resume();
-        } else if (command.equals(DefaultCommands.RESTART_NODES)) {
-            if(isStarted())
-                restart();
-        } else if (command.equals(DefaultCommands.EXECUTE_A_SINGLE_STEP)) {
-            if(!isStarted() || (isStarted() && !isRunning()))
-                step();
+        if(defaultCommandsEnabled) {
+            if (command.equals(DefaultCommands.START_EXECUTION)) {
+                if (!isStarted())
+                    start();
+            } else if (command.equals(DefaultCommands.PAUSE_EXECUTION)) {
+                if (isStarted() && isRunning())
+                    pause();
+            } else if (command.equals(DefaultCommands.RESUME_EXECUTION)) {
+                if (isStarted() && !isRunning())
+                    resume();
+            } else if (command.equals(DefaultCommands.RESTART_NODES)) {
+                if (isStarted())
+                    restart();
+            } else if (command.equals(DefaultCommands.EXECUTE_A_SINGLE_STEP)) {
+                if (!isStarted() || (isStarted() && !isRunning()))
+                    step();
+            }
         }
 
         for (CommandListener cl : commandListeners)

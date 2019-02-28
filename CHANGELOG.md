@@ -264,7 +264,8 @@ The command management has been moved from `JTopology` to `Topology`
 * `Topology.getCommands()` has been created
  
   This methods computes the current list of commands. It merges the commands added via `Topology.addCommand()` 
-  to a set of default commands. The default commands can be disabled using `Topology.disableDefaultCommands()`
+  to a set of default commands (see Topology.DefaultCommands). 
+  The default commands can be disabled using `Topology.disableDefaultCommands()`
 
 * `Topology.disableDefaultCommands()` has been created
 
