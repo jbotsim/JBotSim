@@ -18,6 +18,9 @@ println "Current Jvm: " + currentJvm
 println "Current java version: " + JavaVersion.current()
 
 
+version = currentVersion
+ext.depVersion = currentVersion
+
 subprojects {
 
     apply plugin: "java"
@@ -87,6 +90,41 @@ task checkAll {
 }
 
 /**
+ * Copies the content of the monolithic jars which we later want to merge into a common directory.
+ */
+task copyMonolithicJarsContent {
+    dependsOn 'lib:monolithicSourcesJar'
+    dependsOn 'fats:fat-jbotsim-full:shadowJar'
+
+    String copyDir = "${buildDir}/jarMerges"
+    outputs.files(copyDir)
+
+    doLast {
+
+        FileTree sourcesJar = zipTree(project("lib").tasks["monolithicSourcesJar"].outputs.files[0])
+        FileTree classesJar = zipTree(project("fats").project("fat-jbotsim-full").tasks["shadowJar"].outputs.files[0])
+
+        copy {
+            from sourcesJar
+            from classesJar
+
+            into copyDir
+        }
+    }
+}
+
+/**
+ * Merges the content of the required monolithic jars into one jar.
+ */
+task mergeRequiredMonolithicJars(type:Jar) {
+    dependsOn 'copyMonolithicJarsContent'
+
+    from copyMonolithicJarsContent
+
+    archiveName = "jbotsim-standalone-${version}-classes-sources.${extension}"
+}
+
+/**
  * This task builds and gathers the jars generated for the standalone versions of JBotSim.
  * The jars are put in the "/dist" directory.
  */
@@ -97,6 +135,7 @@ task distStandalone (type:Copy) {
     from rootProject.project("fats").tasks.matching {it.name == "jars"}
     from rootProject.project("lib").tasks.matching {it.name == "monolithicJavadocJar"}
     from rootProject.project("lib").tasks.matching {it.name == "monolithicSourcesJar"}
+    from rootProject.tasks.matching {it.name == "mergeRequiredMonolithicJars"}
 
     into "${buildDir}/dist"
     include '*.jar'
