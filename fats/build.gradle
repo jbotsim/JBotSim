@@ -44,7 +44,16 @@ subprojects {
     shadowJar {
         exclude (
                 // files we want to exclude from the fat-jars should be listed here
+                'COPYING-jbotsim*',
+                'COPYING.LESSER-jbotsim*'
         )
+
+        from(rootDir){
+            include(
+                    'COPYING',
+                    'COPYING.LESSER'
+            )
+        }
 
         def displayName = new String(baseName).substring(4) // get rid of "fat-" prefix
         archiveName = "${displayName}-standalone-${version}.${extension}"
