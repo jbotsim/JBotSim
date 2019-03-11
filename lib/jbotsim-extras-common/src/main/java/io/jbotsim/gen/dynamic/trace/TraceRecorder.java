@@ -51,7 +51,7 @@ public class TraceRecorder implements MovementListener, SelectionListener, Topol
     }
 
     @Override
-    public void onMove(Node node) {
+    public void onMovement(Node node) {
         story.add(TraceEvent.newMoveNode(tp.getTime(), node.getID(), node.getX(), node.getY()));
     }
 

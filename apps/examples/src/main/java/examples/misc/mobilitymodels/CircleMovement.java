@@ -15,5 +15,6 @@ public class CircleMovement extends Node implements ClockListener{
 		Topology tp=new Topology();
 		tp.setDefaultNodeModel(CircleMovement.class);
 		new JViewer(tp);
+		tp.start();
 	}
 }

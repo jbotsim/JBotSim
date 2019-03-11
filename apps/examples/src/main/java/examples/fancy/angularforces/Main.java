@@ -13,7 +13,7 @@ public class Main {
         Forces.Dth=tp.getCommunicationRange()*0.851;
         tp.setSensingRange(Forces.Dth / 2);
         tp.setDefaultNodeModel(Robot.class);
-        tp.setClockSpeed(6);
+        tp.setTimeUnit(6);
         new JViewer(tp);
         tp.start();
     }

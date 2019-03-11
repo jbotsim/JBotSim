@@ -28,7 +28,7 @@ public class JBotSimConvert {
 
     private static void exportTopology(String filename, Topology tp) {
         TopologySerializer serializer = getProperSerializer(filename);
-        String exportedTopology = serializer.exportTopology(tp);
+        String exportedTopology = serializer.exportToString(tp);
 
         if(exportedTopology != null)
             tp.getFileManager().write(filename, exportedTopology);
@@ -38,7 +38,7 @@ public class JBotSimConvert {
         String fileContent = tp.getFileManager().read(filename);
 
         TopologySerializer serializer = getProperSerializer(filename);
-        serializer.importTopology(tp, fileContent);
+        serializer.importFromString(tp, fileContent);
     }
 
     private static TopologySerializer getProperSerializer(String filename) {

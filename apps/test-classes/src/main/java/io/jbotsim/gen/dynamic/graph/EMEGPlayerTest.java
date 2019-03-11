@@ -22,8 +22,6 @@
 package io.jbotsim.gen.dynamic.graph;
 
 import io.jbotsim.core.Topology;
-import io.jbotsim.gen.dynamic.graph.EMEGPlayer;
-import io.jbotsim.gen.dynamic.graph.TVG;
 import io.jbotsim.ui.JViewer;
 
 public class EMEGPlayerTest {
@@ -34,6 +32,6 @@ public class EMEGPlayerTest {
         tvg.buildCompleteGraph(30);
         (new EMEGPlayer(tvg, tp, .2, .4)).start();
         //new TopologyObserver(tp);
-        tp.setClockSpeed(10);
+        tp.setTimeUnit(10);
     }
 }

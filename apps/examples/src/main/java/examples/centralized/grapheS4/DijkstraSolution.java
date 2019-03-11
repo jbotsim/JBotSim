@@ -92,7 +92,7 @@ public class DijkstraSolution implements SelectionListener,MovementListener {
 	}
 
 	@Override
-	public void onMove(Node arg0) {
+	public void onMovement(Node arg0) {
 		computeDijkstraFrom(selectedNode);
 	}
 

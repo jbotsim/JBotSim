@@ -28,5 +28,6 @@ public class GlobalRWP implements ClockListener{
 		Topology tp = new Topology(400,300);
 		new GlobalRWP(tp);
 		new JViewer(tp);
+		tp.start();
 	}
 }

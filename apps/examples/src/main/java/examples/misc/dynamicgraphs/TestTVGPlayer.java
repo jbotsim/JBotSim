@@ -11,8 +11,9 @@ public class TestTVGPlayer {
         new JViewer(tp);
 
 		TVG tvg=new TVG();
-		tvg.buildFromFile("triangle.tvg");
+		tvg.buildFromFile("./apps/examples/src/main/resources/examples/misc/dynamicgraphs/triangle.tvg");
 
         (new TVGPlayer(tvg, tp, 100)).start();
+        tp.start();
 	}
 }

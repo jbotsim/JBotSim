@@ -1,3 +1,3 @@
-# JBotSim Images submodule
+# JBotSim Icons submodule
 
 TODO: add specifics

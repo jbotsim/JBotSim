@@ -11,5 +11,7 @@ public class Main {
         Topology tp = new Topology();
         tp.setDefaultNodeModel(MobileBroadcastNode.class);
         new JViewer(tp);
+        tp.start();
+        tp.pause();
     }
 }

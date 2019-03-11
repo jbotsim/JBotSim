@@ -52,5 +52,6 @@ public class RandomWayPoint implements TopologyListener, ClockListener{
 		Topology tp=new Topology();
 		new RandomWayPoint(tp);
 		new JViewer(tp);
+		tp.start();
 	}
 }

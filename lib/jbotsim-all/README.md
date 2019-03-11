@@ -24,16 +24,19 @@ It currently declares the following dependencies:
 
 These result in the following dependency graph containing all modules:
 ```
-+--- project :lib:jbotsim-extras-swing
-|    +--- project :lib:jbotsim-ui-swing
-|    |    +--- project :lib:jbotsim-core
-|    |    +--- project :lib:jbotsim-serialization-common
-|    |    |    +--- project :lib:jbotsim-core
-|    |    \--- project :lib:jbotsim-ui-common
-|    |         \--- project :lib:jbotsim-core
-|    \--- project :lib:jbotsim-extras-common
-|         +--- project :lib:jbotsim-core
-|         \--- project :lib:jbotsim-serialization-common (*)
+\--- project :lib:jbotsim-extras-swing
+     +--- project :lib:jbotsim-ui-swing
+     |    +--- project :lib:jbotsim-core
+     |    +--- project :lib:jbotsim-serialization-common
+     |    |    +--- project :lib:jbotsim-core
+     |    |    \--- # external dependency
+     |    +--- project :lib:jbotsim-ui-common
+     |    |    \--- project :lib:jbotsim-core
+     |    \--- project :lib:jbotsim-icons
+     \--- project :lib:jbotsim-extras-common
+          +--- project :lib:jbotsim-core
+          \--- project :lib:jbotsim-serialization-common (*)
+
 ```
 
 

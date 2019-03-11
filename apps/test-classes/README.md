@@ -7,7 +7,7 @@ This is the place to add new *main* classes when adding new features to JBotSim.
 
 ## Dependency management
 
-The module currently declare project dependencies on `:lib::lib:jbotsimx-ui-swing` and `:lib:jbotsimx-ui-swing`. 
+The module currently declare project dependencies on `:lib::lib:jbotsim-ui-swing` and `:lib:jbotsim-ui-swing`. 
 
 Amongst other points, this means that:
 * it currently uses all submodules;

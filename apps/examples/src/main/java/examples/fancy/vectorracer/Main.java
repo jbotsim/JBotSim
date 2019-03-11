@@ -23,7 +23,7 @@ public class Main implements ClockListener, BackgroundPainter{
         tp.addClockListener(this);
         JViewer jv = new JViewer(tp);
         jv.getJTopology().addBackgroundPainter(this);
-        tp.setClockSpeed(10);
+        tp.setTimeUnit(10);
         CherrySets.distribute(tp);
         tp.addNode(500, 400, new Drone());
         tp.start();

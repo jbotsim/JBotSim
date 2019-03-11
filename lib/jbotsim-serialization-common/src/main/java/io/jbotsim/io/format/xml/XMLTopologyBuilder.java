@@ -63,7 +63,7 @@ public class XMLTopologyBuilder extends XMLBuilder {
         Element topo = XMLKeys.TOPOLOGY.createElement(doc);
 
         XMLKeys.WIRELESS_ENABLED_ATTR.setAttribute(topo, tp.getWirelessStatus());
-        XMLKeys.CLOCK_SPEED_ATTR.setAttribute(topo, tp.getClockSpeed());
+        XMLKeys.TIME_UNIT_ATTR.setAttribute(topo, tp.getTimeUnit());
 
         XMLKeys.WIDTH_ATTR.setNotDefaultAttribute(topo, tp.getWidth(),
                 Topology.DEFAULT_WIDTH);

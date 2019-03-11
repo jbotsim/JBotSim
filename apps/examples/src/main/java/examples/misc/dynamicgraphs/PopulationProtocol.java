@@ -40,5 +40,6 @@ public class PopulationProtocol implements ClockListener{
         Topology tp = new Topology();
         new PopulationProtocol(tp);
         new JViewer(tp);
+        tp.start();
     }
 }

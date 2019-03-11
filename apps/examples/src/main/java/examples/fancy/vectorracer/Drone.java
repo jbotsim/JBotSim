@@ -3,6 +3,7 @@ package examples.fancy.vectorracer;
 import io.jbotsim.core.Node;
 
 import io.jbotsim.core.Point;
+import io.jbotsim.ui.icons.Icons;
 
 public class Drone extends VectorNode {
     Point nextCherry;
@@ -11,7 +12,7 @@ public class Drone extends VectorNode {
     public void onStart() {
         super.onStart();
         setSensingRange(20);
-        setIcon("/io/jbotsim/ui/icons/drone.png"); // To be adapted (package path)
+        setIcon(Icons.DRONE);
         setIconSize(14);
         onPointReached(getLocation());
     }

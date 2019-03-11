@@ -52,5 +52,6 @@ public class Main implements ClockListener, BackgroundPainter {
         tp.addNode(-1,-1, new Cow());
         JViewer jv = new JViewer(tp);
         jv.getJTopology().addBackgroundPainter(new Main(tp));
+        tp.start();
     }
 }

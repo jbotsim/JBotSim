@@ -40,8 +40,6 @@ public class JTopology extends JPanel implements ActionListener {
     protected ArrayList<BackgroundPainter> backgroundPainters = new ArrayList<>();
     protected ArrayList<LinkPainter> linkPainters = new ArrayList<>();
     protected ArrayList<NodePainter> nodePainters = new ArrayList<>();
-    protected ArrayList<CommandListener> commandListeners = new ArrayList<>();
-    protected ArrayList<String> commands = new ArrayList<String>();
     protected Topology topo;
     protected JTopology jtopo = this;
     protected EventHandler handler = new EventHandler();
@@ -149,49 +147,6 @@ public class JTopology extends JPanel implements ActionListener {
     }
 
     /**
-     * Registers the specified action listener to this JTopology.
-     *
-     * @param al The listener to add.
-     */
-    public void addCommandListener(CommandListener al) {
-        commandListeners.add(al);
-    }
-
-    /**
-     * Unregisters the specified action listener to this JTopology.
-     *
-     * @param al The listener to remove.
-     */
-    public void removeCommandListener(CommandListener al) {
-        commandListeners.remove(al);
-    }
-
-    /**
-     * Adds the specified action command to this JTopology.
-     *
-     * @param command The command name to add.
-     */
-    public void addCommand(String command) {
-        commands.add(command);
-    }
-
-    /**
-     * Removes the specified action command from this JTopology.
-     *
-     * @param command The command name to remove.
-     */
-    public void removeCommand(String command) {
-        commands.remove(command);
-    }
-
-    /**
-     * Removes all commands from this JTopology.
-     */
-    public void removeAllCommands() {
-        commands.clear();
-    }
-
-    /**
      * Disables the drawing of links and sensing radius (if any).
      */
     public void disableDrawings() {
@@ -250,7 +205,7 @@ public class JTopology extends JPanel implements ActionListener {
             updateUI();
         }
 
-        public void onMove(Node n) {
+        public void onMovement(Node n) {
             Toolkit.getDefaultToolkit().sync();
             updateUI();
             if (n.hasProperty("jnode"))
@@ -300,10 +255,14 @@ public class JTopology extends JPanel implements ActionListener {
                 }
             } else if (e.getButton() == MouseEvent.BUTTON3) {
                 JPopupMenu popup = new JPopupMenu();
-                for (String command : commands) {
-                    JMenuItem jitem = new JMenuItem(command);
-                    jitem.addActionListener(this);
-                    popup.add(jitem);
+                for (String command : topo.getCommands()) {
+                    if(command.equals(Topology.COMMAND_SEPARATOR))
+                        popup.addSeparator();
+                    else {
+                        JMenuItem jitem = new JMenuItem(command);
+                        jitem.addActionListener(this);
+                        popup.add(jitem);
+                    }
                 }
                 popupRunning = true;
                 popup.show(jtopo, e.getX(), e.getY());
@@ -318,8 +277,8 @@ public class JTopology extends JPanel implements ActionListener {
                 int y = Integer.parseInt(args[3]);
                 topo.addNode(x, y, topo.newInstanceOfModel(args[1]));
             } else {
-                for (CommandListener cl : commandListeners)
-                    cl.onCommand(arg0.getActionCommand());
+                topo.executeCommand(arg0.getActionCommand());
+
                 updateUI();
             }
         }

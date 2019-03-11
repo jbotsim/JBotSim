@@ -36,5 +36,6 @@ public class CentralizedRW1 implements ClockListener {
         TopologyGenerators.generateLine(tp, 10);
         new CentralizedRW1(tp);
         new JViewer(tp);
+        tp.start();
     }
 }

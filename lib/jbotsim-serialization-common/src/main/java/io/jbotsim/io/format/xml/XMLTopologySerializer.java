@@ -31,11 +31,11 @@ public class XMLTopologySerializer implements TopologySerializer {
     }
 
     @Override
-    public String exportTopology(Topology tp) {
+    public String exportToString(Topology topology) {
         String result;
 
         try {
-            XMLTopologyBuilder builder = new XMLTopologyBuilder(tp);
+            XMLTopologyBuilder builder = new XMLTopologyBuilder(topology);
             result = builder.writeToString();
         } catch (XMLBuilder.BuilderException e) {
             result = null;
@@ -46,10 +46,10 @@ public class XMLTopologySerializer implements TopologySerializer {
     }
 
     @Override
-    public void importTopology(Topology tp, String s) {
+    public void importFromString(Topology topology, String data) {
         try {
-            XMLTopologyParser parser = new XMLTopologyParser(tp, validateDocument);
-            parser.parseFromString(s);
+            XMLTopologyParser parser = new XMLTopologyParser(topology, validateDocument);
+            parser.parseFromString(data);
         } catch (XMLParser.ParserException e) {
             e.printStackTrace();
         }

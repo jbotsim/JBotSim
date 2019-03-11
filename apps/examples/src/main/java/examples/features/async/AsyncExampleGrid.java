@@ -37,10 +37,11 @@ public class AsyncExampleGrid extends Node {
 
     public static void main(String[] args) {
         Topology tp = new Topology();
-        tp.setClockSpeed(200);
+        tp.setTimeUnit(200);
         tp.setDefaultNodeModel(AsyncExampleGrid.class);
         tp.setMessageEngine(new AsyncMessageEngine(20, AsyncMessageEngine.Type.FIFO));
         TopologyGenerators.generateGrid(tp, 5, 4);
         new JViewer(tp);
+        tp.start();
     }
 }

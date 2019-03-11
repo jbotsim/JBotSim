@@ -39,5 +39,6 @@ public class SimpleHighway implements ClockListener, TopologyListener{
 		Topology tp=new Topology();
 		new SimpleHighway(tp);
 		new JViewer(tp);
+		tp.start();
 	}
 }

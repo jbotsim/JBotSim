@@ -49,22 +49,22 @@ public class DotTopologySerializer implements TopologySerializer {
     }
 
     @Override
-    public void importTopology(Topology tp, String s) {
-        tp.disableWireless();
+    public void importFromString(Topology topology, String data) {
+        topology.disableWireless();
 
-        GraphParser parser = new GraphParser(new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8)));
+        GraphParser parser = new GraphParser(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
         Map<String, GraphNode> nodes = parser.getNodes();
         if(nodes.isEmpty())
             return;
 
         Map<String, GraphEdge> edges = parser.getEdges();
 
-        makeTopologyFromGraph(nodes, edges, tp);
-        organize(tp, scale, margin);
+        makeTopologyFromGraph(nodes, edges, topology);
+        organize(topology, scale, margin);
     }
 
     @Override
-    public String exportTopology(Topology tp) {
+    public String exportToString(Topology topology) {
         return null;
     }
 

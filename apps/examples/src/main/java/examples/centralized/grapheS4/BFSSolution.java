@@ -44,7 +44,7 @@ public class BFSSolution implements MovementListener{
 	}
 	
 	@Override
-	public void onMove(Node node) {
+	public void onMovement(Node node) {
 		reset();
 		buildFrom(node);
 	}

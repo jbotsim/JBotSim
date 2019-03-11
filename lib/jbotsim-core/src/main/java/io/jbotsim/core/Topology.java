@@ -22,6 +22,7 @@ package io.jbotsim.core;
 
 import io.jbotsim.core.Link.Mode;
 import io.jbotsim.core.Link.Type;
+import io.jbotsim.core.event.CommandListener;
 import io.jbotsim.core.event.*;
 import io.jbotsim.io.FileManager;
 import io.jbotsim.io.TopologySerializer;
@@ -104,6 +105,9 @@ public class Topology extends Properties implements ClockListener {
      * @return the node model registered for the provided modelName.
      */
     public Class<? extends Node> getNodeModel(String modelName) {
+        if(nodeModels == null || nodeModels.isEmpty())
+            return Node.class;
+
         return nodeModels.get(modelName);
     }
 
@@ -304,7 +308,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @return The duration
      */
-    public int getClockSpeed() {
+    public int getTimeUnit() {
         return clockManager.getTimeUnit();
     }
 
@@ -313,7 +317,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @param period The desired duration
      */
-    public void setClockSpeed(int period) {
+    public void setTimeUnit(int period) {
         clockManager.setTimeUnit(period);
     }
 
@@ -454,6 +458,9 @@ public class Topology extends Properties implements ClockListener {
     public void step() {
         resume();
         step = true;
+
+        if(!isStarted())
+            start();
     }
 
     /**
@@ -533,6 +540,11 @@ public class Topology extends Properties implements ClockListener {
         resume();
     }
 
+    /**
+     * Selects the specified {@link Node} in this {@link Topology}.
+     *
+     * @param n The {@link Node} to be selected.
+     */
     public void selectNode(Node n) {
         selectedNode = n;
         n.onSelection();
@@ -1080,4 +1092,149 @@ public class Topology extends Properties implements ClockListener {
         return super.toString();
     }
 
+    // region Command management
+
+    protected ArrayList<CommandListener> commandListeners = new ArrayList<>();
+    protected ArrayList<String> commands = new ArrayList<String>();
+    protected boolean defaultCommandsEnabled = true;
+
+    /**
+     * Registers the specified action listener to this {@link Topology}.
+     *
+     * @param al The listener to add.
+     */
+    public void addCommandListener(CommandListener al) {
+        commandListeners.add(al);
+    }
+
+    /**
+     * Unregisters the specified action listener to this {@link Topology}.
+     *
+     * @param al The listener to remove.
+     */
+    public void removeCommandListener(CommandListener al) {
+        commandListeners.remove(al);
+    }
+
+    /**
+     * Adds the specified action command to this {@link Topology}.
+     *
+     * @param command The command name to add.
+     */
+    public void addCommand(String command) {
+        ((List<String>) commands).add(command);
+    }
+
+    /**
+     * Removes the specified action command from this {@link Topology}.
+     *
+     * @param command The command name to remove.
+     */
+    public void removeCommand(String command) {
+        commands.remove(command);
+    }
+
+    /**
+     * Disables the set of default commands provided by the {@link Topology} when using {@link #getCommands()}.
+     */
+    public void disableDefaultCommands() {
+        defaultCommandsEnabled = false;
+    }
+
+    /**
+     * Enables the set of default commands provided by the {@link Topology} when using {@link #getCommands()}.
+     */
+    public void enableDefaultCommands() {
+        defaultCommandsEnabled = true;
+    }
+
+    /**
+     * <p>Recompute the current list of commands.</p>
+     * <p>This list contains:</p>
+     * <ul>
+     *     <li>The list of default commands managed by the {@link Topology}.
+     *     Please use {@link #disableDefaultCommands()} to if you dont want them.</li>
+     *     <li>The list of commands which have been added by {@link #addCommand(String)}.</li>
+     * </ul>
+     * @return the current list of commands
+     */
+    public Iterable<String> getCommands() {
+        List<String> retList = new ArrayList<>();
+        retList = addDefaultCommands(retList);
+        retList.addAll(commands);
+        return retList;
+    }
+
+    private List<String> addDefaultCommands(List<String> commands) {
+        if(!defaultCommandsEnabled)
+            return commands;
+
+        if(!isStarted()) {
+            commands.add(DefaultCommands.START_EXECUTION);
+            commands.add(DefaultCommands.EXECUTE_A_SINGLE_STEP);
+        } else {
+            if (isRunning())
+                commands.add(DefaultCommands.PAUSE_EXECUTION);
+            else {
+                commands.add(DefaultCommands.RESUME_EXECUTION);
+                commands.add(DefaultCommands.EXECUTE_A_SINGLE_STEP);
+            }
+            commands.add(DefaultCommands.RESTART_NODES);
+        }
+
+        commands.add(COMMAND_SEPARATOR);
+        return commands;
+    }
+
+    /**
+     * The character used as command separator.
+     */
+    public static final String COMMAND_SEPARATOR = "-";
+
+    public class DefaultCommands {
+        public static final String START_EXECUTION = "Start execution";
+        public static final String PAUSE_EXECUTION = "Pause execution";
+        public static final String RESUME_EXECUTION = "Resume execution";
+        public static final String EXECUTE_A_SINGLE_STEP = "Execute a single step";
+        public static final String RESTART_NODES = "Restart nodes";
+    }
+
+    /**
+     * Removes all commands from this {@link Topology}.
+     */
+    public void removeAllCommands() {
+        commands.clear();
+    }
+
+    /**
+     * Executes a command.
+     *
+     * @param command the command to be executed
+     */
+    public void executeCommand(String command) {
+
+        if(defaultCommandsEnabled) {
+            if (command.equals(DefaultCommands.START_EXECUTION)) {
+                if (!isStarted())
+                    start();
+            } else if (command.equals(DefaultCommands.PAUSE_EXECUTION)) {
+                if (isStarted() && isRunning())
+                    pause();
+            } else if (command.equals(DefaultCommands.RESUME_EXECUTION)) {
+                if (isStarted() && !isRunning())
+                    resume();
+            } else if (command.equals(DefaultCommands.RESTART_NODES)) {
+                if (isStarted())
+                    restart();
+            } else if (command.equals(DefaultCommands.EXECUTE_A_SINGLE_STEP)) {
+                if (!isStarted() || (isStarted() && !isRunning()))
+                    step();
+            }
+        }
+
+        for (CommandListener cl : commandListeners)
+            cl.onCommand(command);
+    }
+
+    // endregion
 }

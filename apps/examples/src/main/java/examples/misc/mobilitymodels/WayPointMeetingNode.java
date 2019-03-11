@@ -35,5 +35,7 @@ public class WayPointMeetingNode extends Node implements ArrivalListener {
         Topology tp = new Topology();
         tp.setDefaultNodeModel(WayPointMeetingNode.class);
         new JViewer(tp);
+        tp.start();
+        tp.pause();
     }
 }

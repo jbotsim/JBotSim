@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         int unit = 6;
         Topology tp = new Topology(105*unit+200, 68*unit+200);
-        tp.setClockSpeed(50);
+        tp.setTimeUnit(50);
         tp.addNode(100, 100, new Ball());
         tp.setDefaultNodeModel(Robot.class);
         JTopology jtp = new JTopology(tp);

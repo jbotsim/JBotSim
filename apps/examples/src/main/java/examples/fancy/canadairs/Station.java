@@ -4,6 +4,8 @@ import io.jbotsim.core.Message;
 import io.jbotsim.core.Node;
 
 import io.jbotsim.core.Point;
+import io.jbotsim.ui.icons.Icons;
+
 import java.util.*;
 
 /**
@@ -16,7 +18,7 @@ public class Station extends Node {
     Map<Point, Canadair> canadairByDestination = new HashMap<Point, Canadair>();
 
     public Station() {
-        setIcon("/io/jbotsim/ui/icons/station.png");
+        setIcon(Icons.STATION);
         setIconSize(25);
         setCommunicationRange(120);
     }

@@ -83,7 +83,9 @@ public class TracePlayer implements ClockListener {
 
     public static void main(String[] args) {
         Topology tp = new Topology();
-        new TracePlayer(tp, "/home/acasteig/trace").start();
+        // The trace file can be generated with the TraceRecorder example
+        new TracePlayer(tp, "/tmp/trace").start();
         new JViewer(tp);
+        tp.start();
     }
 }

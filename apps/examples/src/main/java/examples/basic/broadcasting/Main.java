@@ -10,9 +10,10 @@ public class Main {
     public static void main(String[] args) {
         Topology tp = new Topology();
         tp.setDefaultNodeModel(BroadcastingNode.class);
-        tp.setClockSpeed(500); // slow on purpose (500 ms per round)
+        tp.setTimeUnit(500); // slow on purpose (500 ms per round)
         deployNodes(tp); // optional
         new JViewer(tp);
+        tp.start();
     }
 
     // Deploy a few nodes to save the user some time

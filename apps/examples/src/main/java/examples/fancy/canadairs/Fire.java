@@ -1,6 +1,7 @@
 package examples.fancy.canadairs;
 
 import io.jbotsim.core.Node;
+import io.jbotsim.ui.icons.Icons;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -10,12 +11,14 @@ public class Fire extends Node {
     static ArrayList<Fire> allFires = new ArrayList<Fire>();
     Random r=new Random();
 
-	public Fire(){
+    @Override
+	public void onStart(){
         disableWireless();
         allFires.add(this);
-        setIcon("/io/jbotsim/ui/icons/fire.png");
+        setIcon(Icons.FIRE);
         setIconSize(10);
 	}
+    @Override
 	public void onClock(){
         if (Math.random() < 0.01)
             propagate();
@@ -30,8 +33,10 @@ public class Fire extends Node {
             getTopology().addNode(x, y, new Fire());
         }
     }
+
+    @Override
     public void die(){
+        super.die();
         allFires.remove(this);
-        getTopology().removeNode(this);
     }
 }

@@ -1,10 +1,12 @@
 package examples.basic.icons;
 
+import io.jbotsim.ui.icons.Icons;
+
 public class MovingNodeDefault extends RandomMovingNode {
     @Override
     public void onStart() {
         super.onStart();
-        setIcon("/io/jbotsim/ui/icons/default-node-icon.png");
+        setIcon(Icons.DEFAULT_NODE_ICON);
     }
 
 }

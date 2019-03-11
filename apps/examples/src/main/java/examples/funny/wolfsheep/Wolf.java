@@ -1,6 +1,7 @@
 package examples.funny.wolfsheep;
 
 import io.jbotsim.core.Node;
+import io.jbotsim.ui.icons.Icons;
 
 /**
  * Created by acasteig on 31/08/16.
@@ -10,7 +11,7 @@ public class Wolf extends Node {
 
     @Override
     public void onStart() {
-        setIcon("/io/jbotsim/ui/icons/wolf.png");
+        setIcon(Icons.WOLF);
         setIconSize(20);
         setSensingRange(50);
         setDirection(Math.random() * Math.PI * 2);

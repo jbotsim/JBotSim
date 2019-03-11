@@ -57,7 +57,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
         COLOR("color"),
         ICON("icon"),
         LABEL("label"),
-        SIZE("iconSize");
+        SIZE("size");
 
         PropString(String str) { value = str; };
 
@@ -137,7 +137,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Override this method to perform some action when the node moves.
      */
-    public void onMove() {
+    public void onMovement() {
     }
 
     /**
@@ -717,7 +717,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      *
      * @param destination The non-null destination.
      * @param content     The object to be sent.
+     *
+     * @deprecated Please use {@link #send(Node, Message)} instead.
      */
+    @Deprecated
     public void send(Node destination, Object content) {
         send(destination, new Message(content));
     }
@@ -743,7 +746,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      *
      * @param destination The non-null destination.
      * @param content     The object to be sent.
+     *
+     * @deprecated Please use {@link #sendRetry(Node, Message)} instead.
      */
+    @Deprecated
     public void sendRetry(Node destination, Object content) {
         sendRetry(destination, new Message(content));
     }
@@ -767,7 +773,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * (a message will be created to contain it).
      *
      * @param content The object to be sent.
+     *
+     * @deprecated Please use {@link #sendAll(Message)} instead.
      */
+    @Deprecated
     public void sendAll(Object content) {
         send(null, new Message(content));
     }
@@ -826,10 +835,10 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     protected void notifyNodeMoved() {
-        onMove();
+        onMovement();
         if (topo != null)
             for (MovementListener ml : new ArrayList<>(topo.movementListeners))
-                ml.onMove(this);
+                ml.onMovement(this);
     }
 
     @Override

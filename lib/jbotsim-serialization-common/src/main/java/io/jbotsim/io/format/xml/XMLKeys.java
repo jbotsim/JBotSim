@@ -52,7 +52,7 @@ public enum XMLKeys {
     SOURCE_ATTR("src"),
     DESTINATION_ATTR("dst"),
     DIRECTION_ATTR("direction"),
-    CLOCK_SPEED_ATTR("speed"),
+    TIME_UNIT_ATTR("speed"),
 
     NODECLASS_ATTR("node-class"),
 

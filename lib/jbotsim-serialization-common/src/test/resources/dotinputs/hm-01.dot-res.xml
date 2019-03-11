@@ -7,8 +7,8 @@
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node class="io.jbotsim.core.Node" color="ff800080" id="0" x="50.0" y="219.78000000000003"/>
-      <node class="io.jbotsim.core.Node" color="ffffff00" id="1" x="145.12" y="50.0"/>
+      <node color="ff800080" id="0" x="50.0" y="219.78000000000003"/>
+      <node color="ffffff00" id="1" x="145.12" y="50.0"/>
       <link directed="true" dst="1" src="0"/>
       <link directed="true" dst="0" src="1"/>
     </graph>

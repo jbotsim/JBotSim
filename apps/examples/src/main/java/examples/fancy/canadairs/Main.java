@@ -38,7 +38,7 @@ public class Main extends LinkResolver {
         topology.setLinkResolver(new Main());
         topology.getMessageEngine().setSpeed(10);
         createMap(topology);
-        topology.setClockSpeed(30);
+        topology.setTimeUnit(30);
         topology.setDefaultNodeModel(Fire.class);
         new JViewer(topology);
         topology.start();
