@@ -1,0 +1,12 @@
+include 'lib:jbotsim-core',
+        'lib:jbotsim-serialization-common',
+        'lib:jbotsim-extras-common', 'lib:jbotsim-extras-swing',
+        'lib:jbotsim-ui-common', 'lib:jbotsim-ui-swing',
+        'lib:jbotsim-icons',
+        'lib:jbotsim-common', 'lib:jbotsim-all',
+        'apps:examples', 'apps:test-classes',
+        'fats:fat-jbotsim-full', 'fats:fat-jbotsim-common'
+
+
+// https://docs.gradle.org/4.8/userguide/publishing_maven.html#publishing_maven:deferred_configuration
+enableFeaturePreview('STABLE_PUBLISHING')

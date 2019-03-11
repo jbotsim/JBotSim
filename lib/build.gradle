@@ -1,0 +1,246 @@
+description = "Sub project regrouping each 'unitary' jar."
+
+
+String localRepositoryName = "LocalRepo"
+String sonatypeRepositoryName = "Sonatype"
+String nexusDockerRepositoryName = "NexusDocker"
+String remoteRepositoryName = nexusDockerRepositoryName
+
+subprojects {
+
+    apply plugin: "java-library"
+    apply plugin: "idea"
+    apply plugin: "maven-publish"
+    apply plugin: 'signing'
+
+    compileJava   {
+        sourceCompatibility = '1.8'
+        targetCompatibility = '1.8'
+    }
+    
+    publishing {
+
+        repositories {
+            maven {
+                name = nexusDockerRepositoryName
+
+                def releasesRepoUrl = "http://localhost:8081/nexus/content/repositories/releases/"
+                def snapshotsRepoUrl = "http://localhost:8081/nexus/content/repositories/snapshots/"
+
+                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                url = repoUrl
+
+                credentials {
+                    username "admin"
+                    password "admin123"
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = sonatypeRepositoryName
+
+                def stagingRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+
+                def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : stagingRepoUrl
+                url = repoUrl
+
+                credentials {
+                    username sonatypeJBotSimUsername
+                    password sonatypeJBotSimPassword
+                }
+            }
+        }
+
+        repositories {
+            maven {
+                name = localRepositoryName
+                url = "file://${rootDir}/repo"
+            }
+        }
+    }
+
+    signing {
+        // No need to configure signing if in snapshot
+        required { !version.endsWith('SNAPSHOT') }
+    }
+
+    def renameCOPYINGClosure =  {
+        String fileName ->
+            if (fileName.startsWith("COPYING"))
+                fileName += "-" + project.name + ".txt"
+    }
+
+    jar {
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
+    }
+
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+        from (rootProject.getRootDir()) {
+            include 'COPYING*'
+        }
+        rename renameCOPYINGClosure
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
+    javadoc {
+        options.addStringOption('Xdoclint:all', '-quiet')
+    }
+}
+
+/**
+ * This task generates a monolithic javadoc based on the classes of all its subprojects.
+ * The resulting javadoc can be used for online publication.
+ */
+task monolithicJavadoc(type: Javadoc) {
+    group = 'documentation'
+    source subprojects.collect { it.sourceSets.main.allJava }
+
+    title = "JBotSim Project documentation"
+
+    classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
+}
+
+/**
+ * This task generates a jar containing all javadoc based on the classes of all its subprojects.
+ */
+task monolithicJavadocJar(type: Jar, dependsOn: monolithicJavadoc) {
+    group = 'documentation'
+    from monolithicJavadoc.destinationDir
+
+    archiveName = "jbotsim-standalone-${version}-javadoc.${extension}"
+}
+
+/**
+ * This task generates a jar containing all sources based on the classes of all its subprojects.
+ */
+task monolithicSourcesJar(type: Jar) {
+    classifier = 'sources'
+    from subprojects.collect { it.sourceSets.main.allJava }
+    
+    archiveName = "jbotsim-standalone-${version}-sources.${extension}"
+}
+
+task publishToTestRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the test (project root) Maven repository.'
+
+    String bestEffortTaskName = "PublicationTo" + localRepositoryName
+    dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
+    dependsOn subprojects.collect {it.tasks
+            .withType(PublishToMavenRepository)
+            .matching {it.name.contains(bestEffortTaskName)} }
+}
+
+task publishToRemoteRepository {
+    group = 'publishing'
+    description = "Publishes all Maven publications to the configured remote Maven repository (currently: $remoteRepositoryName)."
+
+    String bestEffortTaskName = "PublicationTo" + remoteRepositoryName
+    dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
+    dependsOn subprojects.collect {it.tasks
+            .withType(PublishToMavenRepository)
+            .matching {it.name.contains(bestEffortTaskName)} }
+}
+
+task publishToSonatypeRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the Sonatype Maven repository.'
+
+    String bestEffortTaskName = "PublicationTo" + sonatypeRepositoryName
+    dependsOn tasks.withType(PublishToMavenRepository).matching {it.name.contains(bestEffortTaskName)}
+    dependsOn subprojects.collect {it.tasks
+            .withType(PublishToMavenRepository)
+            .matching {it.name.contains(bestEffortTaskName)} }
+}
+
+task jars {
+    group = 'build'
+    description = 'Assembles a jar archive for all sub projects.'
+
+    dependsOn tasks.withType(Jar)
+    dependsOn subprojects.collect {it.tasks
+            .withType(Jar)}
+}
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("clean")}}
+}
+task tests {
+    group = 'verification'
+    description = 'Runs the unit tests for all sub projects.'
+
+    dependsOn test
+    dependsOn subprojects.collect {it.tasks.withType(Test)}
+}
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "started", "skipped", "passed", "failed"
+        showStandardStreams true
+    }
+}
+/**
+ * This methods helps modifying the pom for each submodule.
+ * The common part is defined here. Only the parameters are to be provided by the submodule.
+ * @param nameStr the display name of the submodule
+ * @param descriptionStr the description of the submodule
+ * @return
+ */
+Action<? super MavenPom> createConfigureActionForPom (String nameStr, String descriptionStr) {
+    return new Action() {
+        void execute(Object pom) {
+            pom.licenses {
+                license {
+                    name = 'GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0'
+                    url = 'https://www.gnu.org/licenses/lgpl-3.0.txt'
+                }
+            }
+
+            pom.developers {
+                developer {
+                    id = 'acasteigts'
+                    name = 'Arnaud Casteigts'
+                    email = 'acasteigts@labri.fr'
+                }
+                developer {
+                    id = 'rlaplace'
+                    name = 'Remi Laplace'
+                    email = 'remi.laplace@labri.fr'
+                }
+            }
+            pom.scm {
+                connection = 'scm:git:git://github.com/acasteigts/jbotsim.git'
+                developerConnection = 'scm:git:ssh://github.com/acasteigts/jbotsim.git'
+                url = 'https://github.com/acasteigts/jbotsim/tree/master'
+            }
+
+            pom.name = nameStr
+            pom.description = descriptionStr
+            pom.url = 'https://jbotsim.io/'
+        }
+    }
+}

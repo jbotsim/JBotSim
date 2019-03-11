@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jbotsim version="1.0">
+    <topology wireless-enabled="true">
+        <classes>
+            <node-class class="io.jbotsim.io.format.xml.BroadcastingNode" id="default"/>
+            <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
+            <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
+            <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
+            <clock-class class="io.jbotsim.core.DefaultClock" id="default"/>
+        </classes>
+        <graph>
+            <node class="io.jbotsim.io.format.xml.XMLParserTest$NoDefaultConstructor" color="ffff0000" id="0" x="50.0"
+                  y="50.0"/>
+            <node color="0000ffff" id="2" x="50.0" y="210.0"/>
+            <link src="0" dst="2" color="0012345678"/>
+        </graph>
+    </topology>
+</jbotsim>

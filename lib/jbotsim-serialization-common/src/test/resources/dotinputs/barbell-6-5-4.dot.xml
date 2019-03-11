@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jbotsim version="1.0">
+  <topology height="401" speed="10" width="1024" wireless-enabled="false">
+    <classes>
+      <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
+      <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
+      <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
+    </classes>
+    <graph>
+      <node color="ffee82ee" id="0" x="810.62" y="258.878"/>
+      <node color="ffff0000" id="1" x="510.7" y="244.30399999999997"/>
+      <node color="ffee82ee" id="2" x="50.0" y="114.80000000000001"/>
+      <node color="ffee82ee" id="3" x="106.75" y="50.0"/>
+      <node color="ffee82ee" id="4" x="55.352599999999995" y="198.91199999999998"/>
+      <node color="ffffffff" id="5" x="217.272" y="174.26799999999997"/>
+      <node color="ff808000" id="6" x="887.86" y="351.82"/>
+      <node color="ff808000" id="7" x="895.5600000000001" y="173.92000000000002"/>
+      <node color="ffee82ee" id="8" x="177.702" y="81.88"/>
+      <node color="ff808000" id="9" x="974.38" y="216.106"/>
+      <node color="ffee82ee" id="10" x="127.71" y="230.978"/>
+      <node color="ffff0000" id="11" x="365.42" y="217.262"/>
+      <node color="ff808000" id="12" x="969.38" y="313.25"/>
+      <node color="ffff0000" id="13" x="657.94" y="254.67399999999998"/>
+      <link directed="true" dst="6" src="0"/>
+      <link directed="true" dst="0" src="6"/>
+      <link directed="true" dst="7" src="0"/>
+      <link directed="true" dst="0" src="7"/>
+      <link directed="true" dst="12" src="0"/>
+      <link directed="true" dst="0" src="12"/>
+      <link directed="true" dst="9" src="0"/>
+      <link directed="true" dst="0" src="9"/>
+      <link directed="true" dst="13" src="1"/>
+      <link directed="true" dst="1" src="13"/>
+      <link directed="true" dst="3" src="2"/>
+      <link directed="true" dst="2" src="3"/>
+      <link directed="true" dst="5" src="2"/>
+      <link directed="true" dst="2" src="5"/>
+      <link directed="true" dst="5" src="3"/>
+      <link directed="true" dst="3" src="5"/>
+      <link directed="true" dst="8" src="4"/>
+      <link directed="true" dst="4" src="8"/>
+      <link directed="true" dst="10" src="4"/>
+      <link directed="true" dst="4" src="10"/>
+      <link directed="true" dst="2" src="4"/>
+      <link directed="true" dst="4" src="2"/>
+      <link directed="true" dst="3" src="4"/>
+      <link directed="true" dst="4" src="3"/>
+      <link directed="true" dst="5" src="4"/>
+      <link directed="true" dst="4" src="5"/>
+      <link directed="true" dst="11" src="5"/>
+      <link directed="true" dst="5" src="11"/>
+      <link directed="true" dst="7" src="6"/>
+      <link directed="true" dst="6" src="7"/>
+      <link directed="true" dst="12" src="6"/>
+      <link directed="true" dst="6" src="12"/>
+      <link directed="true" dst="9" src="6"/>
+      <link directed="true" dst="6" src="9"/>
+      <link directed="true" dst="12" src="7"/>
+      <link directed="true" dst="7" src="12"/>
+      <link directed="true" dst="9" src="7"/>
+      <link directed="true" dst="7" src="9"/>
+      <link directed="true" dst="10" src="8"/>
+      <link directed="true" dst="8" src="10"/>
+      <link directed="true" dst="2" src="8"/>
+      <link directed="true" dst="8" src="2"/>
+      <link directed="true" dst="3" src="8"/>
+      <link directed="true" dst="8" src="3"/>
+      <link directed="true" dst="5" src="8"/>
+      <link directed="true" dst="8" src="5"/>
+      <link directed="true" dst="2" src="10"/>
+      <link directed="true" dst="10" src="2"/>
+      <link directed="true" dst="3" src="10"/>
+      <link directed="true" dst="10" src="3"/>
+      <link directed="true" dst="5" src="10"/>
+      <link directed="true" dst="10" src="5"/>
+      <link directed="true" dst="1" src="11"/>
+      <link directed="true" dst="11" src="1"/>
+      <link directed="true" dst="9" src="12"/>
+      <link directed="true" dst="12" src="9"/>
+      <link directed="true" dst="0" src="13"/>
+      <link directed="true" dst="13" src="0"/>
+    </graph>
+  </topology>
+</jbotsim>

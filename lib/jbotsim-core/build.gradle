@@ -1,0 +1,19 @@
+description = "JBotSim Core: generates/publish a jar containing the core of JBotSim."
+def displayName = "JBotSim Core"
+def displayDescription = "JBotSim's core files."
+
+publishing {
+    publications {
+        core(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  displayDescription)
+        }
+    }
+    signing {
+        sign publishing.publications.core
+    }
+}

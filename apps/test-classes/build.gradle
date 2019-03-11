@@ -1,0 +1,12 @@
+description = "Collection of Main classes for several jbotsim classes."
+
+dependencies {
+    implementation project(':lib:jbotsim-core'), project(':lib:jbotsim-ui-swing'), project(':lib:jbotsim-extras-swing')
+}
+
+processResources {
+    from("src/main/java")
+    excludes = ["**/*.java"]
+}
+
+

@@ -1,0 +1,25 @@
+description = "JBotSim All: phony target which publishes a minimal artifact with dependency declarations for " +
+        "all artifacts (historically Swing) JBotSim."
+def displayName = "JBotSim All"
+def displayDescription = "JBotSim's default distribution (depends on the required artifacts)."
+
+dependencies {
+    api project(':lib:jbotsim-extras-swing')
+    api project(':lib:jbotsim-icons')
+}
+
+publishing {
+    publications {
+        all(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  displayDescription)
+        }
+    }
+    signing {
+        sign publishing.publications.all
+    }
+}

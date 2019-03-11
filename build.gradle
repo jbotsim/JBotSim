@@ -1,0 +1,150 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+}
+
+apply plugin: 'base'
+
+description = "JBotSim : a simulation library for distributed algorithms in dynamic networks."
+
+def currentVersion = project.findProperty('jBotSimVersion')
+println("Current version: " + currentVersion)
+
+def currentJvm = org.gradle.internal.jvm.Jvm.current()
+println "Current Jvm: " + currentJvm
+println "Current java version: " + JavaVersion.current()
+
+
+version = currentVersion
+ext.depVersion = currentVersion
+
+subprojects {
+
+    apply plugin: "java"
+    apply plugin: "idea"
+
+    sourceCompatibility = 1.8 // java 8
+    targetCompatibility = 1.8
+
+    group = "io.jbotsim"
+
+    version = currentVersion
+    ext.depVersion = currentVersion
+
+    repositories {
+        mavenLocal()
+        jcenter()
+    }
+
+    repositories {
+        maven {
+            name = 'NexusDockerRelease'
+            url = "http://localhost:8081/nexus/content/repositories/releases/"
+        }
+        maven {
+            name = 'NexusDockerSnapshot'
+            url = "http://localhost:8081/nexus/content/repositories/snapshots/"
+        }
+    }
+
+    repositories {
+        maven {
+            name = 'LocalRepo'
+            url = "file://${rootDir}/repo"
+        }
+    }
+
+
+    dependencies{
+        testImplementation(
+                'org.junit.jupiter:junit-jupiter-api:5.1.0',
+                "junit:junit:4+"
+        )
+        testRuntimeOnly(
+                'org.junit.jupiter:junit-jupiter-engine:5.1.0',
+                'org.junit.vintage:junit-vintage-engine:5.1.0'
+        )
+    }
+    test {
+        useJUnitPlatform()
+    }
+}
+
+task publishToInternalRepository {
+    group = 'publishing'
+    description = 'Publishes all Maven publications to the internal Maven repository.'
+    dependsOn tasks.withType(PublishToMavenLocal)
+    dependsOn subprojects.collect { it.tasks.withType(PublishToMavenLocal) }
+}
+
+task checkAll {
+    group = 'verification'
+    description = 'Checks that the project is in a good shape (everythings builds properly)'
+    dependsOn ':lib:jars'
+    dependsOn ':lib:tests'
+    dependsOn ':apps:buildAllSubprojects'
+
+}
+
+/**
+ * Copies the content of the monolithic jars which we later want to merge into a common directory.
+ */
+task copyMonolithicJarsContent {
+    dependsOn 'lib:monolithicSourcesJar'
+    dependsOn 'fats:fat-jbotsim-full:shadowJar'
+
+    String copyDir = "${buildDir}/jarMerges"
+    outputs.files(copyDir)
+
+    doLast {
+
+        FileTree sourcesJar = zipTree(project("lib").tasks["monolithicSourcesJar"].outputs.files[0])
+        FileTree classesJar = zipTree(project("fats").project("fat-jbotsim-full").tasks["shadowJar"].outputs.files[0])
+
+        copy {
+            from sourcesJar
+            from classesJar
+
+            into copyDir
+        }
+    }
+}
+
+/**
+ * Merges the content of the required monolithic jars into one jar.
+ */
+task mergeRequiredMonolithicJars(type:Jar) {
+    dependsOn 'copyMonolithicJarsContent'
+
+    from copyMonolithicJarsContent
+
+    archiveName = "jbotsim-standalone-${version}-classes-sources.${extension}"
+}
+
+/**
+ * This task builds and gathers the jars generated for the standalone versions of JBotSim.
+ * The jars are put in the "/dist" directory.
+ */
+task distStandalone (type:Copy) {
+    group = 'build'
+    description = 'Retrieve all standalone artifacts'
+
+    from rootProject.project("fats").tasks.matching {it.name == "jars"}
+    from rootProject.project("lib").tasks.matching {it.name == "monolithicJavadocJar"}
+    from rootProject.project("lib").tasks.matching {it.name == "monolithicSourcesJar"}
+    from rootProject.tasks.matching {it.name == "mergeRequiredMonolithicJars"}
+
+    into "${buildDir}/dist"
+    include '*.jar'
+}
+
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("cleans")}}
+}

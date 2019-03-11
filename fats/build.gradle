@@ -1,0 +1,79 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+    }
+}
+
+description = "Sub project regrouping fat-jars generators."
+
+subprojects {
+
+    apply plugin: "com.github.johnrengelman.shadow"
+    apply plugin: "java-library"
+    apply plugin: "maven-publish"
+    apply plugin: "idea"
+
+
+    repositories {
+        maven {
+            name = 'NexusDocker'
+
+            def releasesRepoUrl = "http://localhost:8081/nexus/content/repositories/releases/"
+            def snapshotsRepoUrl = "http://localhost:8081/nexus/content/repositories/snapshots/"
+
+            def repoUrl = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+            url = repoUrl
+
+        }
+
+        maven {
+            name = 'LocalRepo'
+            url = "file://${rootDir}/repo"
+        }
+
+
+        mavenCentral()
+        maven {
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+    }
+
+    shadowJar {
+        exclude (
+                // files we want to exclude from the fat-jars should be listed here
+                'COPYING-jbotsim*',
+                'COPYING.LESSER-jbotsim*'
+        )
+
+        from(rootDir){
+            include(
+                    'COPYING',
+                    'COPYING.LESSER'
+            )
+        }
+
+        def displayName = new String(baseName).substring(4) // get rid of "fat-" prefix
+        archiveName = "${displayName}-standalone-${version}.${extension}"
+    }
+}
+
+task jars (type:Copy) {
+    group = 'build'
+    description = 'Create a combined JARs for all sub projects.'
+
+    from subprojects.collect {it.tasks.matching {it.name.equals("shadowJar")}}
+    into "${buildDir}/dist"
+    include '*.jar'
+}
+
+task cleans {
+    group = 'build'
+    description = 'Deletes the build directory for all sub projects.'
+
+    dependsOn clean
+    dependsOn subprojects.collect {it.tasks.matching {it.name.equals("clean")}}
+}
+

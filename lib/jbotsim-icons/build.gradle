@@ -1,0 +1,22 @@
+description = "JBotSim Icons: generates/publish a jar containing a set of icons usable with JBotSim."
+def displayName = "JBotSim Icons"
+def displayDescription = "Extra set of icons for JBotSim."
+
+dependencies {
+}
+
+publishing {
+    publications {
+        images(MavenPublication) {
+
+            from components.java
+            artifact javadocJar
+            artifact sourcesJar
+
+            pom createConfigureActionForPom (displayName,  displayDescription)
+        }
+    }
+    signing {
+        sign publishing.publications.images
+    }
+}
