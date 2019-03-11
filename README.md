@@ -46,7 +46,7 @@ It is that simple!
 
 
 For this HelloWorld, we will simply retrieve the `jbotsim-all` artifact 
-(See [Which artifact should I use?](../../lib/README.md#which-artifact-should-i-use) section to easily find out which 
+(See [Which artifact should I use?](lib/README.md#which-artifact-should-i-use) section to easily find out which 
 artifact will best suit your project's needs):
   * Open the _Project Structure_ popup
 
