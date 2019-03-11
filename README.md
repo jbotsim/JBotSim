@@ -1,7 +1,7 @@
 
-[![Build Status](https://travis-ci.org/jbotsim/JBotSim.svg?branch=master)][github-jbotsim]
-[![Maven Central](https://img.shields.io/badge/maven%20central-1.0.0-red.svg)](https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.0.0)
-[![License](https://img.shields.io/badge/license-LGPL%20&ge;%203.0-blue.svg)][lgpl3]
+[![Build Status](https://travis-ci.org/jbotsim/JBotSim.svg?branch=master)][travis-jbotsim]
+[![Maven Central](https://img.shields.io/badge/maven%20central-1.0.0-informational.svg)][mavencentral-jbotsim-1-0-0]
+[![License](https://img.shields.io/badge/license-LGPL%20&ge;%203.0-informational.svg)][lgpl3]
   
 
   
@@ -9,7 +9,7 @@
 
   * [Introduction](#introduction)
   * [Hello World example](#hello-world-example)
-  * [Current Version](#current-version)
+  * [Current version](#current-version)
   * [*Maven* dependency](#maven-dependency)
     + [Using Gradle](#using-gradle)
     + [Using Maven](#using-maven)
@@ -42,11 +42,11 @@ It is that simple!
 
 ### Declaring the dependency
 > Here, we work with a IntelliJ IDEA Java project, fetching dependencies from Maven Central.
-> For other project configurations, see TODO. 
+> Other configurations are detailed [here](apps/examples/CreateUserProject.md).
 
 
 For this HelloWorld, we will simply retrieve the `jbotsim-all` artifact 
-(See [Which artifact should I use?](../../lib/README.md#which-artifact-should-i-use) section to easily find out which 
+(See [Which artifact should I use?](lib/README.md#which-artifact-should-i-use) section to easily find out which 
 artifact will best suit your project's needs):
   * Open the _Project Structure_ popup
 
@@ -95,12 +95,12 @@ the user by selecting *"Start execution"* in the `JViewer`'s contextual menu (ri
 > Please see the [*Examples*](http://jbotsim.io/?p=examples) section of [JBotSim's website](http://jbotsim.io) for more
 examples.
 
-## Current Version
+## Current version
 
 > Note: As of version `1.0.0`, the JBotSim project will try and follow the rules provided by the 
 [Semantic Versioning](https://semver.org/).
  
-The latest public version is [`1.0-beta03`](https://sourceforge.net/projects/jbotsim/files/latest/download). 
+The latest public version is [`1.0.0`][mavencentral-jbotsim-1-0-0]. 
 Please see the [CHANGELOG.md](CHANGELOG.md) for previous versions modifications.
 
 
@@ -150,7 +150,7 @@ If your build system uses *Maven*, you will want to add something like this to y
 
 If you use a _Java Project_ in _IntelliJ IDEA_, add the following dependency (as explained [here](#declaring-the-dependency)):
  ```
-     "io.jbotsim:jbotsim-all:1.0.0"
+ io.jbotsim:jbotsim-all:1.0.0
  ```
 
 
@@ -160,7 +160,7 @@ The JBotSim project is separated in three main modules.
 Please follow the links to each of them for more information:
 * [`apps`](./apps/README.md): contains some sample apps and mains using modules from `lib`. 
 * [`lib`](./lib/README.md): contains submodules responsible for the generation and publication of unitary *jars* files 
-on [Maven Central](https://search.maven.org/search?q=g:io.jbotsim).
+on [Maven Central][mavencentral-jbotsim].
 * [`fats`](./fats/README.md): contains submodules responsible for the generation of standalone *fat jars* by using 
 existing published JBotSim jars (published by `lib`).
 
@@ -206,6 +206,9 @@ gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys DFA48EDB1EDEBA6F
 ```
 
 
+[travis-jbotsim]: https://travis-ci.org/jbotsim/JBotSim
 [github-jbotsim]: https://github.com/jbotsim/JBotSim
+[mavencentral-jbotsim-1-0-0]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.0.0
+[mavencentral-jbotsim]: https://search.maven.org/search?q=g:io.jbotsim
 [github-jbotsim-issues]: https://github.com/jbotsim/JBotSim/issues
 [lgpl3]: http://www.gnu.org/licenses/lgpl-3.0.html

@@ -1200,7 +1200,7 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Removes all commands from this JTopology.
+     * Removes all commands from this {@link Topology}.
      */
     public void removeAllCommands() {
         commands.clear();

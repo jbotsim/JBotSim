@@ -8,7 +8,7 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 * empty
 
-## [1.0.0] - 2019/0X/XX
+## [1.0.0] - 2019/02/28
 
 This first official version introduces several changes. They are listed here.
 
