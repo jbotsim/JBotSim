@@ -26,32 +26,33 @@ import java.util.*;
  * * Original code AWT
  */
 public class Color {
-    public static Color white = new Color(255, 255, 255, 255);
-    public static Color WHITE = white;
-    public static Color lightGray = new Color(192, 192, 192);
-    public static Color LIGHT_GRAY = lightGray;
-    public static Color gray = new Color(128, 128, 128);
-    public static Color GRAY = gray;
-    public static Color darkGray = new Color(64, 64, 64);
-    public static Color DARK_GRAY = darkGray;
-    public static Color black = new Color(0, 0, 0);
-    public static Color BLACK = black;
-    public static Color red = new Color(255, 0, 0);
-    public static Color RED = red;
-    public static Color pink = new Color(255, 175, 175);
-    public static Color PINK = pink;
-    public static Color orange = new Color(255, 200, 0);
-    public static Color ORANGE = orange;
-    public static Color yellow = new Color(255, 255, 0);
-    public static Color YELLOW = yellow;
-    public static Color green = new Color(0, 255, 0);
-    public static Color GREEN = green;
-    public static Color magenta = new Color(255, 0, 255);
-    public static Color MAGENTA = magenta;
-    public static Color cyan = new Color(0, 255, 255);
-    public static Color CYAN = cyan;
-    public static Color blue = new Color(0, 0, 255);
-    public static Color BLUE = blue;
+    public static final Color white = new Color(255, 255, 255, 255);
+    public static final Color WHITE = white;
+    public static final Color lightGray = new Color(192, 192, 192);
+    public static final Color LIGHT_GRAY = lightGray;
+    public static final Color gray = new Color(128, 128, 128);
+    public static final Color GRAY = gray;
+    public static final Color darkGray = new Color(64, 64, 64);
+    public static final Color DARK_GRAY = darkGray;
+    public static final Color black = new Color(0, 0, 0);
+    public static final Color BLACK = black;
+    public static final Color red = new Color(255, 0, 0);
+    public static final Color RED = red;
+    public static final Color pink = new Color(255, 175, 175);
+    public static final Color PINK = pink;
+    public static final Color orange = new Color(255, 200, 0);
+    public static final Color ORANGE = orange;
+    public static final Color yellow = new Color(255, 255, 0);
+    public static final Color YELLOW = yellow;
+    public static final Color green = new Color(0, 255, 0);
+    public static final Color GREEN = green;
+    public static final Color magenta = new Color(255, 0, 255);
+    public static final Color MAGENTA = magenta;
+    public static final Color cyan = new Color(0, 255, 255);
+    public static final Color CYAN = cyan;
+    public static final Color blue = new Color(0, 0, 255);
+    public static final Color BLUE = blue;
+
     static ArrayList<Color> indexedColors = new ArrayList<>(Arrays.asList(
             Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
             Color.black, Color.white, Color.gray, Color.orange, Color.cyan,
