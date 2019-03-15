@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jbotsim version="1.0">
-  <topology height="388" speed="10" width="384" wireless-enabled="false">
+  <topology communication-range="200.0" height="408" speed="10" width="404" wireless-enabled="false">
     <classes>
       <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node color="ffffffff" id="0" x="50.0" y="130.20000000000005"/>
-      <node color="ffff0000" id="1" x="256.76" y="75.36000000000001"/>
-      <node color="ff00ffff" id="2" x="259.22" y="196.61800000000005"/>
-      <node color="ffff0000" id="3" x="250.72000000000003" y="316.6"/>
-      <node color="ff4b0082" id="4" x="50.481" y="279.20000000000005"/>
-      <node color="ff00ffff" id="5" x="94.97800000000001" y="83.25999999999999"/>
-      <node color="fffa8072" id="6" x="196.156" y="50.0"/>
-      <node color="fff0e68c" id="7" x="334.26" y="198.57000000000005"/>
-      <node color="fffa8072" id="8" x="183.668" y="338.22"/>
-      <node color="fff0e68c" id="9" x="111.486" y="238.19600000000003"/>
+      <node color="ffffffff" id="0" x="60.0" y="140.20000000000005"/>
+      <node color="ffff0000" id="1" x="266.76" y="85.36000000000001"/>
+      <node color="ff00ffff" id="2" x="269.22" y="206.61800000000005"/>
+      <node color="ffff0000" id="3" x="260.72" y="326.6"/>
+      <node color="ff4b0082" id="4" x="60.481" y="289.20000000000005"/>
+      <node color="ff00ffff" id="5" x="104.97800000000001" y="93.25999999999999"/>
+      <node color="fffa8072" id="6" x="206.156" y="60.0"/>
+      <node color="fff0e68c" id="7" x="344.26" y="208.57000000000005"/>
+      <node color="fffa8072" id="8" x="193.668" y="348.22"/>
+      <node color="fff0e68c" id="9" x="121.486" y="248.19600000000003"/>
       <link directed="true" dst="1" src="0"/>
       <link directed="true" dst="0" src="1"/>
       <link directed="true" dst="4" src="0"/>

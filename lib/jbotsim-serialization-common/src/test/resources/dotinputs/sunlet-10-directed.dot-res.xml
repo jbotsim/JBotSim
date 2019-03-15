@@ -1,72 +1,72 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jbotsim version="1.0">
-  <topology height="965" speed="10" width="992" wireless-enabled="false">
+  <topology communication-range="200.0" height="985" speed="10" width="1012" wireless-enabled="false">
     <classes>
       <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node color="ffffffff" id="0" x="216.43200000000002" y="467.02"/>
-      <node color="ffffffff" id="1" x="260.48" y="634.96"/>
-      <node color="ffff0000" id="2" x="50.0" y="457.64"/>
-      <node color="ffff0000" id="3" x="119.214" y="723.36"/>
-      <node color="ffff0000" id="4" x="333.52000000000004" y="900.15"/>
-      <node color="ffff0000" id="5" x="610.64" y="915.38"/>
-      <node color="ffff0000" id="6" x="842.78" y="765.26"/>
-      <node color="ffff0000" id="7" x="942.6800000000001" y="507.47999999999996"/>
-      <node color="ffff0000" id="8" x="872.02" y="240.10000000000002"/>
-      <node color="ffff0000" id="9" x="657.72" y="65.29999999999995"/>
-      <node color="ffff0000" id="10" x="381.54" y="50.0"/>
-      <node color="ffff0000" id="11" x="149.272" y="200.15999999999997"/>
-      <node color="ffffffff" id="12" x="394.40000000000003" y="745.2139999999999"/>
-      <node color="ffffffff" id="13" x="567.76" y="754.386"/>
-      <node color="ffffffff" id="14" x="713.52" y="660.12"/>
-      <node color="ffffffff" id="15" x="776.34" y="498.32"/>
-      <node color="ffffffff" id="16" x="732.0600000000001" y="330.48"/>
-      <node color="ffffffff" id="17" x="597.6800000000001" y="220.69999999999993"/>
-      <node color="ffffffff" id="18" x="424.42" y="210.98000000000002"/>
-      <node color="ffffffff" id="19" x="278.66" y="305.1"/>
+      <node color="ffffffff" id="0" x="226.43200000000002" y="477.02"/>
+      <node color="ffffffff" id="1" x="270.48" y="644.96"/>
+      <node color="ffff0000" id="10" x="60.0" y="467.64"/>
+      <node color="ffff0000" id="11" x="129.214" y="733.36"/>
+      <node color="ffff0000" id="12" x="343.52000000000004" y="910.15"/>
+      <node color="ffff0000" id="13" x="620.64" y="925.38"/>
+      <node color="ffff0000" id="14" x="852.78" y="775.26"/>
+      <node color="ffff0000" id="15" x="952.6800000000001" y="517.48"/>
+      <node color="ffff0000" id="16" x="882.02" y="250.10000000000002"/>
+      <node color="ffff0000" id="17" x="667.72" y="75.29999999999995"/>
+      <node color="ffff0000" id="18" x="391.54" y="60.0"/>
+      <node color="ffff0000" id="19" x="159.272" y="210.15999999999997"/>
+      <node color="ffffffff" id="2" x="404.40000000000003" y="755.2139999999999"/>
+      <node color="ffffffff" id="3" x="577.76" y="764.386"/>
+      <node color="ffffffff" id="4" x="723.52" y="670.12"/>
+      <node color="ffffffff" id="5" x="786.34" y="508.32"/>
+      <node color="ffffffff" id="6" x="742.0600000000001" y="340.48"/>
+      <node color="ffffffff" id="7" x="607.6800000000001" y="230.69999999999993"/>
+      <node color="ffffffff" id="8" x="434.42" y="220.98000000000002"/>
+      <node color="ffffffff" id="9" x="288.66" y="315.1"/>
       <link directed="true" dst="1" src="0"/>
       <link directed="true" dst="0" src="1"/>
-      <link directed="true" dst="2" src="0"/>
-      <link directed="true" dst="0" src="2"/>
-      <link directed="true" dst="19" src="0"/>
-      <link directed="true" dst="0" src="19"/>
-      <link directed="true" dst="3" src="1"/>
-      <link directed="true" dst="1" src="3"/>
-      <link directed="true" dst="12" src="1"/>
-      <link directed="true" dst="1" src="12"/>
-      <link directed="true" dst="4" src="12"/>
-      <link directed="true" dst="12" src="4"/>
-      <link directed="true" dst="13" src="12"/>
-      <link directed="true" dst="12" src="13"/>
-      <link directed="true" dst="5" src="13"/>
-      <link directed="true" dst="13" src="5"/>
-      <link directed="true" dst="14" src="13"/>
-      <link directed="true" dst="13" src="14"/>
-      <link directed="true" dst="6" src="14"/>
-      <link directed="true" dst="14" src="6"/>
-      <link directed="true" dst="15" src="14"/>
-      <link directed="true" dst="14" src="15"/>
-      <link directed="true" dst="7" src="15"/>
-      <link directed="true" dst="15" src="7"/>
-      <link directed="true" dst="16" src="15"/>
-      <link directed="true" dst="15" src="16"/>
-      <link directed="true" dst="8" src="16"/>
-      <link directed="true" dst="16" src="8"/>
-      <link directed="true" dst="17" src="16"/>
-      <link directed="true" dst="16" src="17"/>
-      <link directed="true" dst="9" src="17"/>
-      <link directed="true" dst="17" src="9"/>
-      <link directed="true" dst="18" src="17"/>
-      <link directed="true" dst="17" src="18"/>
-      <link directed="true" dst="10" src="18"/>
-      <link directed="true" dst="18" src="10"/>
-      <link directed="true" dst="19" src="18"/>
-      <link directed="true" dst="18" src="19"/>
-      <link directed="true" dst="11" src="19"/>
-      <link directed="true" dst="19" src="11"/>
+      <link directed="true" dst="10" src="0"/>
+      <link directed="true" dst="0" src="10"/>
+      <link directed="true" dst="9" src="0"/>
+      <link directed="true" dst="0" src="9"/>
+      <link directed="true" dst="11" src="1"/>
+      <link directed="true" dst="1" src="11"/>
+      <link directed="true" dst="2" src="1"/>
+      <link directed="true" dst="1" src="2"/>
+      <link directed="true" dst="12" src="2"/>
+      <link directed="true" dst="2" src="12"/>
+      <link directed="true" dst="3" src="2"/>
+      <link directed="true" dst="2" src="3"/>
+      <link directed="true" dst="13" src="3"/>
+      <link directed="true" dst="3" src="13"/>
+      <link directed="true" dst="4" src="3"/>
+      <link directed="true" dst="3" src="4"/>
+      <link directed="true" dst="14" src="4"/>
+      <link directed="true" dst="4" src="14"/>
+      <link directed="true" dst="5" src="4"/>
+      <link directed="true" dst="4" src="5"/>
+      <link directed="true" dst="15" src="5"/>
+      <link directed="true" dst="5" src="15"/>
+      <link directed="true" dst="6" src="5"/>
+      <link directed="true" dst="5" src="6"/>
+      <link directed="true" dst="16" src="6"/>
+      <link directed="true" dst="6" src="16"/>
+      <link directed="true" dst="7" src="6"/>
+      <link directed="true" dst="6" src="7"/>
+      <link directed="true" dst="17" src="7"/>
+      <link directed="true" dst="7" src="17"/>
+      <link directed="true" dst="8" src="7"/>
+      <link directed="true" dst="7" src="8"/>
+      <link directed="true" dst="18" src="8"/>
+      <link directed="true" dst="8" src="18"/>
+      <link directed="true" dst="9" src="8"/>
+      <link directed="true" dst="8" src="9"/>
+      <link directed="true" dst="19" src="9"/>
+      <link directed="true" dst="9" src="19"/>
     </graph>
   </topology>
 </jbotsim>

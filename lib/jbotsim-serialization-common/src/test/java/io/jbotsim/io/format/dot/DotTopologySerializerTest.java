@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -33,6 +35,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static io.jbotsim.io.format.dot.DotImportExportCoherencyTest.reorderLines;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -57,6 +60,14 @@ public class DotTopologySerializerTest {
                 "sunlet-10-directed.dot");
     }
 
+    private void updateExpectedResult(String result) throws IOException {
+        File resFile = new File(dotFileName + "-res.xml");
+        FileOutputStream out = new FileOutputStream(resFile);
+        out.write(result.getBytes());
+        out.flush();
+        out.close();
+    }
+
     @Test
     public void dotParserTest() throws IOException {
         URL url = getClass().getResource(TEST_RC_ROOT + dotFileName);
@@ -69,12 +80,9 @@ public class DotTopologySerializerTest {
 
         String xmlTp = new XMLTopologySerializer(true).exportToString(tp);
         assertNotNull(xmlTp);
-//        String bkupFileName = url.getPath() + "-res.xml";
-//        System.out.println(bkupFileName);
-//        Format.exportToFile(tp, bkupFileName);
 
         String expectedXml = new String(Files.readAllBytes(Paths.get(url.getPath()+"-res.xml")));
 
-        assertEquals(expectedXml, xmlTp);
+        assertEquals(reorderLines(expectedXml), reorderLines(xmlTp));
     }
 }
