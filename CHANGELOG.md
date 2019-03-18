@@ -6,7 +6,12 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
-* empty
+
+### Modifications in TopologyLayouts
+
+* `TopologyLayouts.autoscale(Topology)` is now `public` [[issue 51]][issue: #51]
+
+[issue: #51]: https://github.com/jbotsim/JBotSim/issues/51
 
 ## [1.0.0] - 2019/02/28
 

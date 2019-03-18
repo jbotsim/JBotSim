@@ -36,7 +36,7 @@ public class TopologyLayouts {
      * {@link io.jbotsim.core.Link}s.</p>
      * @param topology the {@link Topology} to scale
      */
-    private static void autoscale(Topology topology){
+    public static void autoscale(Topology topology){
         double Xmax = 0, Ymax = 0, Xmin = Double.MAX_VALUE, Ymin = Double.MAX_VALUE;
         for (Node node : topology.getNodes()){
             if (node.getX() > Xmax)
