@@ -48,7 +48,11 @@ import java.util.List;
  * points, as a {@link TopologyBoundaries} object.</p>
  */
 public class TopologyLayouts {
-    public static final double DEFAULT_MARGIN = 10.0 / 100.0;
+
+    /**
+     * The default margin ratio (value: {@value #DEFAULT_MARGIN}).
+     */
+    public static final double DEFAULT_MARGIN = 0.1;
 
     // region auto-scale
 
@@ -59,7 +63,7 @@ public class TopologyLayouts {
         /**
          * Default margin ratio: {@value #DEFAULT_AUTOSCALE_MARGIN_RATIO}.
          */
-        public static final double DEFAULT_AUTOSCALE_MARGIN_RATIO = 0.1;
+        public static final double DEFAULT_AUTOSCALE_MARGIN_RATIO = DEFAULT_MARGIN;
         /**
          * Default centering behaviour: {@value #DEFAULT_AUTOSCALE_CENTER}.
          */
@@ -246,16 +250,26 @@ public class TopologyLayouts {
     }
     // endregion autoscale
 
-    public static void circle(Topology tp, double margin) {
-        List<Node> nodes = tp.getNodes();
+    // region shapes
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a circle with
+     * a margin on all sides.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param marginRatio the margin ratio used to compute the margin which should be kept on all sides (up, down,
+     *                    right, and left). A double in [0:1].
+     */
+    public static void circle(Topology topology, double marginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double xc = w / 2.0;
         double yc = h / 2.0;
-        double radius = ((w < h ? w : h) * (1.0 - margin)) / 2.0;
+        double radius = ((w < h ? w : h) * (1.0 - marginRatio)) / 2.0;
 
         double angle = 0.0;
         double angleinc = 2.0 * Math.PI / nodes.size();
@@ -265,21 +279,38 @@ public class TopologyLayouts {
         }
     }
 
-    public static void circle(Topology tp) {
-        circle(tp, DEFAULT_MARGIN);
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a circle.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void circle(Topology topology) {
+        circle(topology, DEFAULT_MARGIN);
     }
 
-    public static void ellipse(Topology tp, double xmargin, double ymargin) {
-        List<Node> nodes = tp.getNodes();
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a ellipse with
+     * a margin on all sides.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param xMarginRatio the margin ratio used to compute the margin which should be kept on horizontal sides (right
+     *                     and left). A double in [0:1].
+     * @param yMarginRatio the margin ratio used to compute the margin which should be kept on vertical sides (up
+     *                     and down). A double in [0:1].
+     */
+    public static void ellipse(Topology topology, double xMarginRatio, double yMarginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double xc = w / 2.0;
         double yc = h / 2.0;
-        double xradius = w * (1.0 - xmargin) / 2.0;
-        double yradius = h * (1.0 - ymargin) / 2.0;
+        double xradius = w * (1.0 - xMarginRatio) / 2.0;
+        double yradius = h * (1.0 - yMarginRatio) / 2.0;
 
         double angle = 0.0;
         double angleinc = 2.0 * Math.PI / nodes.size();
@@ -289,33 +320,51 @@ public class TopologyLayouts {
         }
     }
 
-    public static void ellipse(Topology tp) {
-        ellipse(tp, DEFAULT_MARGIN, DEFAULT_MARGIN);
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a ellipse.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void ellipse(Topology topology) {
+        ellipse(topology, DEFAULT_MARGIN, DEFAULT_MARGIN);
     }
 
-    public static void line(Topology tp, double margin) {
-        List<Node> nodes = tp.getNodes();
+
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a line with
+     * a margin on all sides.</p>
+     * <p>A vertical line will be created if the {@link Topology}'s height is greater than its width. Otherwise, an
+     * horizontal line will be created.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param marginRatio the margin ratio used to compute the margin which should be kept on all sides (up, down,
+     *                    right, and left). A double in [0:1].
+     */
+    public static void line(Topology topology, double marginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double x, y, dx, dy;
 
         if (w < h) {
             // vertical line
             x = w / 2.0;
-            y = h * margin;
+            y = h * marginRatio;
             dx = dy = 0.0;
             if (nodes.size() > 1)
-                dy = h * (1.0 - 2.0 * margin) / (nodes.size() - 1);
+                dy = h * (1.0 - 2.0 * marginRatio) / (nodes.size() - 1);
         } else {
             // horizontal line
-            x = w * margin;
+            x = w * marginRatio;
             y = h / 2.0;
             dx = dy = 0.0;
             if (nodes.size() > 1)
-                dx = w * (1.0 - 2.0 * margin) / (nodes.size() - 1);
+                dx = w * (1.0 - 2.0 * marginRatio) / (nodes.size() - 1);
         }
 
         for (Node n : nodes) {
@@ -325,7 +374,17 @@ public class TopologyLayouts {
         }
     }
 
-    public static void line(Topology tp) {
-        line(tp, DEFAULT_MARGIN);
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a line.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>A vertical line will be created if the {@link Topology}'s height is greater than its width. Otherwise, an
+     * horizontal line will be created.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void line(Topology topology) {
+        line(topology, DEFAULT_MARGIN);
     }
+
+    // endregion
 }
