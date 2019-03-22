@@ -37,6 +37,60 @@ class ColorTest {
         color255 = Color.getColorAt(255);
     }
 
+    // region constructors
+
+    @Test
+    void constructor_rgbaValues_matchesAWT() {
+        int r = 1;
+        int g = 2;
+        int b = 3;
+        int a = 4;
+        Color color = new Color(r, g, b, a);
+        java.awt.Color awtColor = new java.awt.Color(r, g, b, a);
+        System.err.println(awtColor.getAlpha());
+        checkColorWithAWT(awtColor, color);
+    }
+    @Test
+    void constructor_rgbValues_matchesAWT() {
+        int r = 1;
+        int g = 2;
+        int b = 3;
+        Color color = new Color(r, g, b);
+        java.awt.Color awtColor = new java.awt.Color(r, g, b);
+
+        checkColorWithAWT(awtColor, color);
+    }
+
+    @Test
+    void constructor_intValueWithAlpha_matchesAWT() {
+        int value = 0x77AABBCC;
+        Color color = new Color(value, true);
+        java.awt.Color awtColor = new java.awt.Color(value, true);
+
+        checkColorWithAWT(awtColor, color);
+    }
+
+    @Test
+    void constructor_intValueWithoutAlpha_matchesAWT() {
+        int value = 0x77AABBCC;
+        java.awt.Color awtColor = new java.awt.Color(value);
+
+        Color color1 = new Color(value);
+        checkColorWithAWT(awtColor, color1);
+
+        Color color2 = new Color(value, false);
+        checkColorWithAWT(awtColor, color2);
+    }
+
+    private void checkColorWithAWT(java.awt.Color expectedColor, Color color) {
+        assertEquals(expectedColor.getRed(), color.getRed(), "Incorrect R component");
+        assertEquals(expectedColor.getGreen(), color.getGreen(), "Incorrect G component");
+        assertEquals(expectedColor.getBlue(), color.getBlue(), "Incorrect B component");
+        assertEquals(expectedColor.getAlpha(), color.getAlpha(), "Incorrect A component");
+        assertEquals(expectedColor.getRGB(), color.getRGB(), "Incorrect RGB value");
+    }
+
+    // endregion
 
     // region indexOf(Color)
 

@@ -68,7 +68,7 @@ public class Color {
     static private Random intColorsRandom = new Random(0);
 
     public Color(int r, int g, int b, int a) {
-        value = ((255 & 0xFF) << 24) |
+        value = ((a & 0xFF) << 24) |
                 ((r & 0xFF) << 16) |
                 ((g & 0xFF) << 8) |
                 ((b & 0xFF) << 0);
@@ -79,13 +79,7 @@ public class Color {
     }
 
     public Color(int r, int g, int b) {
-        value = ((255 & 0xFF) << 24) |
-                ((r & 0xFF) << 16) |
-                ((g & 0xFF) << 8) |
-                ((b & 0xFF) << 0);
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this(r, g ,b, 255);
     }
 
 
@@ -99,6 +93,10 @@ public class Color {
             value |= ALPHA_MASK;
 
         this.value = value;
+        this.a = (value >> 24) & 0xFF;
+        this.r = (value >> 16) & 0xFF;
+        this.g = (value >>  8) & 0xFF;
+        this.b = (value >>  0) & 0xFF;
     }
 
     public Color(Color color) {
