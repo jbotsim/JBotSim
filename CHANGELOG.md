@@ -6,7 +6,36 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
-* empty
+
+###  TopologyLayouts class modifications
+
+**Method modifications in Color:**
+* `TopologyLayouts.autoscale(Topology)` is now `public` [[issue 51]][issue: #51]
+
+
+**New methods in Color:**
+* `TopologyLayouts.autoscale(Topology, AutoScaleParams)` created [[issue 52]][issue: #52]
+
+  This method allows to control the scaling process more precisely than the previous default, thanks to the 
+  `AutoScaleParams` object.
+  The parameters used with the default method are:
+  * *margin ratios*: `0.1`
+  * *centering*: enabled
+  * *communication ranges scaling*: enabled
+  * *sensing ranges scaling*: enabled
+  
+* `TopologyLayouts.center(Topology)` created [[issue 52]][issue: #52]
+
+  This method centers the content of the `Topology` inside its boundaries (without scaling it).
+  
+* `TopologyBoundaries TopologyLayouts.computeBoundaries(Topology)` created [[issue 52]][issue: #52]
+
+  This method computes the boundaries of a `Topology`. These are represented by `TopologyBoundaries` object, with 
+  minimum and maximum coordinates on 3 axes.
+  
+
+[issue: #51]: https://github.com/jbotsim/JBotSim/issues/51
+[issue: #52]: https://github.com/jbotsim/JBotSim/issues/52
 
 ## [1.0.0] - 2019/02/28
 
