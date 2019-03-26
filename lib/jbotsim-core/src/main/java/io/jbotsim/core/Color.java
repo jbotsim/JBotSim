@@ -76,6 +76,7 @@ public class Color {
         this.g = g;
         this.b = b;
         this.a = a;
+        testColorValueRange(r, g, b, a);
     }
 
     public Color(int r, int g, int b) {
