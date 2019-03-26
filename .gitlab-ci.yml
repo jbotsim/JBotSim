@@ -39,6 +39,15 @@ run-unit-tests:
   - java -version
   - ./gradlew lib:cleans lib:tests
   artifacts:
+    reports:
+      junit:
+        - lib/jbotsim-core/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-extras-common/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-extras-swing/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-icons/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-ui-common/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-ui-swing/build/test-results/test/TEST-*.xml
+        - lib/jbotsim-serialization-common/build/test-results/test/TEST-*.xml
     paths:
     - lib/jbotsim-core/build/test-results
     - lib/jbotsim-extras-common/build/test-results
