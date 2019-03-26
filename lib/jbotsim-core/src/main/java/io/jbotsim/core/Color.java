@@ -289,25 +289,14 @@ public class Color {
 
     @Override
     public int hashCode() {
-        return Objects.hash(r, g, b, a, value);
+        return value;
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj)
-            return true;
-
         if(!(obj instanceof Color))
             return false;
 
-        Color color = (Color) obj;
-
-        if(r != color.r || g != color.g || b != color.b || a != color.a)
-            return false;
-
-        if(value != color.value)
-            return false;
-
-        return true;
+        return getRGB() == ((Color) obj).getRGB();
     }
 }
