@@ -49,15 +49,15 @@ public class DotTopologySerializerTest {
     @Parameterized.Parameters(name="{index}: {0}")
     public static Collection<String> makers() {
         return Arrays.asList(
-                "hm-01.dot",
-                "arboricity-100-2.dot",
-                "barbell-6-5-4.dot",
-                "cactus-20.dot",
-                "kstar-20-2.dot",
-                "gabriel-50.dot",
-                "paley-10.dot",
+                "hm-01.gv",
+                "arboricity-100-2.gv",
+                "barbell-6-5-4.gv",
+                "cactus-20.gv",
+                "kstar-20-2.gv",
+                "gabriel-50.gv",
+                "paley-10.gv",
                 "paley-10.xdot",
-                "sunlet-10-directed.dot");
+                "sunlet-10-directed.gv");
     }
 
     private void updateExpectedResult(String result) throws IOException {

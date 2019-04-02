@@ -56,6 +56,8 @@ public class DotTopologySerializer implements TopologySerializer {
     public static final double DEFAULT_SCALE = 2.0;
     public static final int DEFAULT_MARGIN = 50;
 
+    public static final String[] DOT_FILENAME_EXTENSIONS = new String[] {"gv", "dot", "xdot" };
+
     public DotTopologySerializer() {
         this(DEFAULT_SCALE, DEFAULT_MARGIN);
     }
@@ -115,6 +117,8 @@ public class DotTopologySerializer implements TopologySerializer {
                 out.print("style = \"filled\", fillcolor = \"" + getStringForColor(c) + "\", ");
             }
             out.print("pos = \"" + pos.getX() + "," + pos.getY() + "!\", ");
+            out.print("width = \"" + n.getIconSize() + "\", ");
+            out.print("height = \"" + n.getIconSize() + "\", ");
             out.print(JBOTSIM_ATTR_NODE_CLASS + " = \"" + n.getClass().getName() + "\", ");
             out.print("label = \"" + n.getID() + "\"");
             out.println("];");
@@ -222,6 +226,23 @@ public class DotTopologySerializer implements TopologySerializer {
             String[] xy = pos.replace("!", "").split(",");
             node.setLocation(Double.valueOf(xy[0]), Double.valueOf(xy[1]));
         }
+
+        String w = (String) mn.getAttribute("width");
+        if (w != null) {
+            try {
+                node.setIconSize(Integer.valueOf(w));
+            } catch (NumberFormatException e) {
+
+            }
+        } else {
+            String h = (String) mn.getAttribute("height");
+            try {
+                node.setIconSize(Integer.valueOf(h));
+            } catch (NumberFormatException e) {
+
+            }
+        }
+
 
         String c = (String) mn.getAttribute("color");
         if (c != null) {
