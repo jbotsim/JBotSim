@@ -25,7 +25,10 @@ import io.jbotsim.core.Topology;
 
 import java.awt.*;
 
-
+/**
+ * <p>The {@link JLinkPainter} is JBotSim's default {@link LinkPainter} for AWT.</p>
+ *
+ */
 public class JLinkPainter implements LinkPainter {
     @Override
     public void paintLink(UIComponent uiComponent, Link link) {
@@ -33,8 +36,15 @@ public class JLinkPainter implements LinkPainter {
         Integer width = link.getWidth();
         if (width == 0)
             return;
-        g2d.setColor(new java.awt.Color(link.getColor().getRGB()));
-        g2d.setStroke(new BasicStroke(width));
+
+        setColor(g2d, link);
+        setStroke(g2d, link);
+        setRenderingHints(g2d, link);
+
+        drawLink(g2d, link);
+    }
+
+    protected void drawLink(Graphics2D g2d, Link link) {
         int srcX = (int) link.source.getX(), srcY = (int) link.source.getY();
         int destX = (int) link.destination.getX(), destY = (int) link.destination.getY();
         g2d.drawLine(srcX, srcY, (srcX + (destX - srcX)), (srcY + (destY - srcY)));
@@ -44,5 +54,39 @@ public class JLinkPainter implements LinkPainter {
             int y = srcY + 4 * (destY - srcY) / 5 - 2;
             g2d.drawOval(x, y, 4, 4);
         }
+    }
+
+
+    /**
+     * <p>Sets the proper {@link java.awt.Color} on the provided {@link Graphics2D} object, with respect to the provided
+     * {@link Link}.</p>
+     * <p>You can override this method if you need to change the {@link JLinkPainter}'s default color management.</p>
+     * @param g2d a {@link Graphics2D} object.
+     * @param link the associated {@link Link}.
+     */
+    protected void setColor(Graphics2D g2d, Link link) {
+        g2d.setColor(new Color(link.getColor().getRGB()));
+    }
+
+    /**
+     * <p>Sets the proper {@link Stroke} on the provided {@link Graphics2D} object, with respect to the provided
+     * {@link Link}.</p>
+     * <p>You can override this method if you need to change the {@link JLinkPainter}'s default {@link Stroke}.</p>
+     * @param g2d a {@link Graphics2D} object.
+     * @param link the associated {@link Link}.
+     */
+    protected void setStroke(Graphics2D g2d, Link link) {
+        g2d.setStroke(new BasicStroke(link.getWidth()));
+    }
+
+    /**
+     * <p>Sets the proper {@link RenderingHints} on the provided {@link Graphics2D} object, with respect to the provided
+     * {@link Link}.</p>
+     * <p>You can override this method if you need to change the {@link JLinkPainter} rendering behavior.</p>
+     * @param g2d a {@link Graphics2D} object.
+     * @param link the associated {@link Link}.
+     */
+    protected void setRenderingHints(Graphics2D g2d, Link link) {
+        // default does nothing
     }
 }

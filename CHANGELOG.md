@@ -6,6 +6,19 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+### JBackgroundPainter, JLinkPainter, JNodePainter classes modifications
+
+In order to ease behavior modifications by inheritance, `JBackgroundPainter`, `JLinkPainter` and `JNodePainter` have 
+been modified so that they all expose a `protected` variant of:
+* `setColor()`: this method is called by the object when it needs to set the AWT `Color` of the element;
+* `setStroke()`: this method is called by the object when it needs to set the AWT `Stroke` used to draw the element;
+* `setRenderingHints()`: this method is called by the object when it needs to set the AWT `RenderingHints` used to draw 
+the element.
+
+Overriding these methods should be fairly straightforward.
+
+The behaviors associated to each class stay unchanged.
+
 ###  MessageEngine class modifications
 
 [[issue 58]][issue: #58]
