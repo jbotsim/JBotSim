@@ -53,7 +53,7 @@ public class DotTopologySerializer implements TopologySerializer {
     private static final String JBOTSIM_ATTR_IS_WIRELESS = "jbotsimIsWireless";
     private static final String JBOTSIM_ATTR_IS_DIRECTED = "jbotsimIsDirected";
 
-    public static final double DEFAULT_SCALE = 2.0;
+    public static final double DEFAULT_SCALE = 1.0;
     public static final int DEFAULT_MARGIN = 50;
 
     public static final String[] DOT_FILENAME_EXTENSIONS = new String[] {"gv", "dot", "xdot" };
@@ -87,8 +87,13 @@ public class DotTopologySerializer implements TopologySerializer {
         Map<String, GraphEdge> edges = parser.getEdges();
 
         makeTopologyFromGraph(nodes, edges, topology);
-        if (reorganize)
+        if (reorganize) {
             organize(topology, scale, margin);
+        } else {
+            int height = topology.getHeight();
+            for (Node node : topology.getNodes())
+                node.setLocation(node.getX(), height - node.getY());
+        }
     }
 
     @Override
@@ -109,6 +114,7 @@ public class DotTopologySerializer implements TopologySerializer {
             out.print("graph");
         }
         out.println('{');
+        int height = topology.getHeight();
         for (Node n : topology.getNodes()) {
             Color c = n.getColor();
             Point pos = n.getLocation();
@@ -116,7 +122,7 @@ public class DotTopologySerializer implements TopologySerializer {
             if (c != null) {
                 out.print("style = \"filled\", fillcolor = \"" + getStringForColor(c) + "\", ");
             }
-            out.print("pos = \"" + pos.getX() + "," + pos.getY() + "!\", ");
+            out.print("pos = \"" + pos.getX() + "," + (height - pos.getY()) + "!\", ");
             out.print("width = \"" + n.getIconSize() + "\", ");
             out.print("height = \"" + n.getIconSize() + "\", ");
             out.print(JBOTSIM_ATTR_NODE_CLASS + " = \"" + n.getClass().getName() + "\", ");

@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jbotsim version="1.0">
-  <topology communication-range="200.0" height="968" speed="10" width="834" wireless-enabled="false">
+  <topology height="544" speed="10" width="477" wireless-enabled="false">
     <classes>
       <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node color="fff0e68c" id="0" x="480.58000000000004" y="251.96000000000004"/>
-      <node color="fff0e68c" id="1" x="553.4" y="100.82000000000005"/>
-      <node color="fff0e68c" id="10" x="721.38" y="491.88"/>
-      <node color="fff0e68c" id="11" x="713.4" y="385.26"/>
-      <node color="fff0e68c" id="12" x="613.96" y="649.62"/>
-      <node color="fff0e68c" id="13" x="688.46" y="786.644"/>
-      <node color="ffff0000" id="14" x="774.6800000000001" y="908.1"/>
-      <node color="fffa8072" id="15" x="213.952" y="377.48"/>
-      <node color="ffff0000" id="16" x="72.758" y="295.03999999999996"/>
-      <node color="ffff0000" id="17" x="108.096" y="549.48"/>
-      <node color="ff00ffff" id="18" x="240.904" y="462.12"/>
-      <node color="ffff0000" id="19" x="60.0" y="485.18"/>
-      <node color="fff0e68c" id="2" x="425.7" y="60.0"/>
-      <node color="ff00ffff" id="3" x="351.18" y="214.86"/>
-      <node color="ffff0000" id="4" x="247.072" y="84.70000000000005"/>
-      <node color="ffffffff" id="5" x="386.58000000000004" y="390.84000000000003"/>
-      <node color="fff0e68c" id="6" x="327.12" y="546.0"/>
-      <node color="fff0e68c" id="7" x="414.44" y="537.04"/>
-      <node color="fff0e68c" id="8" x="511.04" y="394.52"/>
-      <node color="ff4b0082" id="9" x="566.26" y="484.26"/>
+      <node color="fff0e68c" id="0" x="270.29" y="155.97999999999996"/>
+      <node color="fff0e68c" id="1" x="306.7" y="80.40999999999997"/>
+      <node color="fff0e68c" id="10" x="390.69" y="275.93999999999994"/>
+      <node color="fff0e68c" id="11" x="386.7" y="222.62999999999994"/>
+      <node color="fff0e68c" id="12" x="336.98" y="354.80999999999995"/>
+      <node color="fff0e68c" id="13" x="374.23" y="423.32199999999995"/>
+      <node color="ffff0000" id="14" x="417.34000000000003" y="484.04999999999995"/>
+      <node color="fffa8072" id="15" x="136.976" y="218.73999999999995"/>
+      <node color="ffff0000" id="16" x="66.379" y="177.51999999999992"/>
+      <node color="ffff0000" id="17" x="84.048" y="304.73999999999995"/>
+      <node color="ff00ffff" id="18" x="150.452" y="261.05999999999995"/>
+      <node color="ffff0000" id="19" x="60.0" y="272.59"/>
+      <node color="fff0e68c" id="2" x="242.85" y="59.99999999999994"/>
+      <node color="ff00ffff" id="3" x="205.59" y="137.42999999999995"/>
+      <node color="ffff0000" id="4" x="153.536" y="72.34999999999997"/>
+      <node color="ffffffff" id="5" x="223.29000000000002" y="225.41999999999996"/>
+      <node color="fff0e68c" id="6" x="193.56" y="302.99999999999994"/>
+      <node color="fff0e68c" id="7" x="237.22" y="298.52"/>
+      <node color="fff0e68c" id="8" x="285.52" y="227.25999999999993"/>
+      <node color="ff4b0082" id="9" x="313.13" y="272.12999999999994"/>
       <link directed="true" dst="1" src="0"/>
       <link directed="true" dst="0" src="1"/>
       <link directed="true" dst="5" src="0"/>

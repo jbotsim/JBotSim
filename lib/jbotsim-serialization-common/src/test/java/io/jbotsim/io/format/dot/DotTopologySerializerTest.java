@@ -41,6 +41,7 @@ import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class DotTopologySerializerTest {
+    private static final boolean UPDATE_RESULTS = false;
     private static final String TEST_RC_ROOT = "/dotinputs/";
 
     @Parameterized.Parameter
@@ -80,7 +81,8 @@ public class DotTopologySerializerTest {
 
         String xmlTp = new XMLTopologySerializer(true).exportToString(tp);
         assertNotNull(xmlTp);
-
+        if (UPDATE_RESULTS)
+            updateExpectedResult(xmlTp);
         String expectedXml = new String(Files.readAllBytes(Paths.get(url.getPath()+"-res.xml")));
 
         assertEquals(reorderLines(expectedXml), reorderLines(xmlTp));

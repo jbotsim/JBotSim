@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <jbotsim version="1.0">
-  <topology communication-range="200.0" height="289" speed="10" width="215" wireless-enabled="false">
+  <topology height="204" speed="10" width="167" wireless-enabled="false">
     <classes>
       <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>
     <graph>
-      <node color="ff800080" id="0" x="60.0" y="229.78000000000003"/>
-      <node color="ffffff00" id="1" x="155.12" y="60.0"/>
+      <node color="ff800080" id="0" x="60.0" y="144.89000000000001"/>
+      <node color="ffffff00" id="1" x="107.56" y="60.0"/>
       <link directed="true" dst="1" src="0"/>
       <link directed="true" dst="0" src="1"/>
     </graph>
