@@ -6,14 +6,58 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+###  JViewer class modifications
+
+**Behavior modifications in JViewer:**
+
+* The `JViewer` now also detects `.gv` and `.xdot` files as to be handled with the `DotTopologySerializer`. [[issue 48]][issue: #48]
+
+###  DotTopologySerializer class modifications
+
+[[issue 48]][issue: #48]
+
+**Behavior modifications in DotTopologySerializer:**
+
+* `DotTopologySerializer.exportToString(Topology)` is now implemented (`null` was knowingly returned in the previous 
+  version).
+
+  Amongst other implementation points:
+  * node positions are output with the `pos = "x, y!"` syntax;
+  * the Y-coordinates are exported flipped, to be consistent with `DotTopologySerializer.importFromString()`;
+  * the exportation is done without respect to the `scale` member.
+
+* By default, the `DotTopologySerializer.importFromString(Topology , String)` does not scale anymore (it formerly 
+  doubled distances).
+     
+  The former behavior can be achieved by either:
+    * using the `DotTopologySerializer(double scale, int margin, boolean reorganize)` constructor or
+    * using `TopologyLayouts.autoscale()`.
+
+**Method symbols in DotTopologySerializer:**
+
+  * `DotTopologySerializer.DEFAULT_SCALE` has been added
+   
+     The previous default scale factor was `2.0`. It is now set to `1.0`. 
+ 
+  * `DotTopologySerializer.DEFAULT_MARGIN` has been added
+   
+     The default value is unchanged: `50`.
+  
+  * `DotTopologySerializer.DOT_FILENAME_EXTENSIONS` has been added
+  
+    This array contains known extensions for DOT files. It currently contains `"gv"`, `"dot"` and  `"xdot"`.
+    Please [prefer][graphviz-gv-extension] the `.gv` extension.
+    
+[graphviz-gv-extension]: https://marc.info/?l=graphviz-devel&m=129418103126092
+[issue: #48]: https://github.com/jbotsim/JBotSim/issues/48
 
 ###  TopologyLayouts class modifications
 
-**Method modifications in Color:**
+**Method modifications in TopologyLayouts:**
 * `TopologyLayouts.autoscale(Topology)` is now `public` [[issue 51]][issue: #51]
 
 
-**New methods in Color:**
+**New methods in TopologyLayouts:**
 * `TopologyLayouts.autoscale(Topology, AutoScaleParams)` created [[issue 52]][issue: #52]
 
   This method allows to control the scaling process more precisely than the previous default, thanks to the 

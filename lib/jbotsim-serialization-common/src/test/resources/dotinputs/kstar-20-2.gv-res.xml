@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jbotsim version="1.0">
+  <topology height="309" speed="10" width="305" wireless-enabled="false">
+    <classes>
+      <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
+      <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
+      <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
+    </classes>
+    <graph>
+      <node color="ffffffff" id="0" x="175.0" y="165.422"/>
+      <node color="ff808000" id="1" x="149.715" y="124.86999999999998"/>
+      <node color="ffff0000" id="10" x="169.89" y="249.82"/>
+      <node color="ffff0000" id="11" x="144.712" y="218.201"/>
+      <node color="ffff0000" id="12" x="83.017" y="176.499"/>
+      <node color="ffff0000" id="13" x="240.97" y="149.04999999999998"/>
+      <node color="ffff0000" id="14" x="237.58" y="111.00999999999999"/>
+      <node color="ffff0000" id="15" x="182.93" y="92.91"/>
+      <node color="ffff0000" id="16" x="205.32" y="235.432"/>
+      <node color="ffff0000" id="17" x="60.0" y="143.82999999999998"/>
+      <node color="ffff0000" id="18" x="224.39000000000001" y="199.51999999999998"/>
+      <node color="ffff0000" id="19" x="117.316" y="69.72"/>
+      <node color="ffee82ee" id="2" x="142.671" y="167.29999999999998"/>
+      <node color="ffff0000" id="3" x="165.08" y="60.0"/>
+      <node color="ffff0000" id="4" x="216.66" y="81.13"/>
+      <node color="ffff0000" id="5" x="92.65299999999999" y="128.54999999999998"/>
+      <node color="ffff0000" id="6" x="86.864" y="216.063"/>
+      <node color="ffff0000" id="7" x="245.65" y="183.867"/>
+      <node color="ffff0000" id="8" x="118.047" y="242.68099999999998"/>
+      <node color="ffff0000" id="9" x="83.379" y="92.38"/>
+      <link directed="true" dst="1" src="0"/>
+      <link directed="true" dst="0" src="1"/>
+      <link directed="true" dst="10" src="0"/>
+      <link directed="true" dst="0" src="10"/>
+      <link directed="true" dst="11" src="0"/>
+      <link directed="true" dst="0" src="11"/>
+      <link directed="true" dst="12" src="0"/>
+      <link directed="true" dst="0" src="12"/>
+      <link directed="true" dst="13" src="0"/>
+      <link directed="true" dst="0" src="13"/>
+      <link directed="true" dst="14" src="0"/>
+      <link directed="true" dst="0" src="14"/>
+      <link directed="true" dst="15" src="0"/>
+      <link directed="true" dst="0" src="15"/>
+      <link directed="true" dst="16" src="0"/>
+      <link directed="true" dst="0" src="16"/>
+      <link directed="true" dst="18" src="0"/>
+      <link directed="true" dst="0" src="18"/>
+      <link directed="true" dst="2" src="0"/>
+      <link directed="true" dst="0" src="2"/>
+      <link directed="true" dst="3" src="0"/>
+      <link directed="true" dst="0" src="3"/>
+      <link directed="true" dst="4" src="0"/>
+      <link directed="true" dst="0" src="4"/>
+      <link directed="true" dst="5" src="0"/>
+      <link directed="true" dst="0" src="5"/>
+      <link directed="true" dst="6" src="0"/>
+      <link directed="true" dst="0" src="6"/>
+      <link directed="true" dst="7" src="0"/>
+      <link directed="true" dst="0" src="7"/>
+      <link directed="true" dst="8" src="0"/>
+      <link directed="true" dst="0" src="8"/>
+      <link directed="true" dst="11" src="1"/>
+      <link directed="true" dst="1" src="11"/>
+      <link directed="true" dst="12" src="1"/>
+      <link directed="true" dst="1" src="12"/>
+      <link directed="true" dst="14" src="1"/>
+      <link directed="true" dst="1" src="14"/>
+      <link directed="true" dst="17" src="1"/>
+      <link directed="true" dst="1" src="17"/>
+      <link directed="true" dst="18" src="1"/>
+      <link directed="true" dst="1" src="18"/>
+      <link directed="true" dst="19" src="1"/>
+      <link directed="true" dst="1" src="19"/>
+      <link directed="true" dst="2" src="1"/>
+      <link directed="true" dst="1" src="2"/>
+      <link directed="true" dst="3" src="1"/>
+      <link directed="true" dst="1" src="3"/>
+      <link directed="true" dst="4" src="1"/>
+      <link directed="true" dst="1" src="4"/>
+      <link directed="true" dst="9" src="1"/>
+      <link directed="true" dst="1" src="9"/>
+      <link directed="true" dst="10" src="2"/>
+      <link directed="true" dst="2" src="10"/>
+      <link directed="true" dst="13" src="2"/>
+      <link directed="true" dst="2" src="13"/>
+      <link directed="true" dst="15" src="2"/>
+      <link directed="true" dst="2" src="15"/>
+      <link directed="true" dst="16" src="2"/>
+      <link directed="true" dst="2" src="16"/>
+      <link directed="true" dst="17" src="2"/>
+      <link directed="true" dst="2" src="17"/>
+      <link directed="true" dst="19" src="2"/>
+      <link directed="true" dst="2" src="19"/>
+      <link directed="true" dst="5" src="2"/>
+      <link directed="true" dst="2" src="5"/>
+      <link directed="true" dst="6" src="2"/>
+      <link directed="true" dst="2" src="6"/>
+      <link directed="true" dst="7" src="2"/>
+      <link directed="true" dst="2" src="7"/>
+      <link directed="true" dst="8" src="2"/>
+      <link directed="true" dst="2" src="8"/>
+      <link directed="true" dst="9" src="2"/>
+      <link directed="true" dst="2" src="9"/>
+    </graph>
+  </topology>
+</jbotsim>

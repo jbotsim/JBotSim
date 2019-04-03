@@ -35,8 +35,8 @@ public class JBotSimViewer {
 
     private static TopologySerializerFilenameMatcher getConfiguredTopologyFileNameMatcher() {
         TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
-        filenameMatcher.addTopologySerializer(".*\\.dot$",new DotTopologySerializer());
-        filenameMatcher.addTopologySerializer(".*\\.xdot$",new DotTopologySerializer());
+        for(String ext : DotTopologySerializer.DOT_FILENAME_EXTENSIONS)
+            filenameMatcher.addTopologySerializer(".*\\."+ext+"$",new DotTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologySerializer(true));
         filenameMatcher.addTopologySerializer(".*\\.tikz$",new TikzTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.plain$",new PlainTopologySerializer());

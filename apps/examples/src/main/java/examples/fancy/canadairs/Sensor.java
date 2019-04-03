@@ -23,13 +23,14 @@ public class Sensor extends Node {
         setIconSize(16);
         setCommunicationRange(120);
         setSensingRange(60);
+        sensedFires = new ArrayList<Fire>();
     }
 
     @Override
     public void onStart() {
         parent = null;
         lastReceivedTime = 0;
-        sensedFires = new ArrayList<Fire>();
+        sensedFires.clear();
     }
 
     @Override

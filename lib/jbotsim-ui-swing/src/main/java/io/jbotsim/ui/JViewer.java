@@ -297,8 +297,8 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     private void initFilenameMatcher() {
         topologySerializerFilenameMatcher = new TopologySerializerFilenameMatcher();
         addTopologySerializer(".*\\.tikz", new TikzTopologySerializer());
-        addTopologySerializer(".*\\.dot", new DotTopologySerializer());
-        addTopologySerializer(".*\\.xdot", new DotTopologySerializer());
+        for(String ext : DotTopologySerializer.DOT_FILENAME_EXTENSIONS)
+            addTopologySerializer(".*\\."+ext+"$",new DotTopologySerializer());
         addTopologySerializer(".*\\.xml", new XMLTopologySerializer(false));
         addTopologySerializer(".*\\.plain", new PlainTopologySerializer());
     }
