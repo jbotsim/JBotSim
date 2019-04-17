@@ -21,7 +21,7 @@ public class AsyncExampleGrid extends Node {
 
     @Override
     public void onSelection() {
-        setColor(Color.red);
+        setColor(Color.RED);
         sendAll(new Message());
     }
 
@@ -29,7 +29,7 @@ public class AsyncExampleGrid extends Node {
     public void onMessage(Message message) {
         if (getColor()==null)
             getCommonLinkWith(message.getSender()).setWidth(4);
-        setColor(Color.red);
+        setColor(Color.RED);
         for (Node node : getNeighbors())
             if (node != message.getSender())
                 send(node, message);
@@ -39,7 +39,8 @@ public class AsyncExampleGrid extends Node {
         Topology tp = new Topology();
         tp.setTimeUnit(200);
         tp.setDefaultNodeModel(AsyncExampleGrid.class);
-        tp.setMessageEngine(new AsyncMessageEngine(20, AsyncMessageEngine.Type.FIFO));
+        AsyncMessageEngine messageEngine = new AsyncMessageEngine(tp, 10, AsyncMessageEngine.Type.NONFIFO);
+        tp.setMessageEngine(messageEngine);
         TopologyGenerators.generateGrid(tp, 5, 4);
         new JViewer(tp);
         tp.start();

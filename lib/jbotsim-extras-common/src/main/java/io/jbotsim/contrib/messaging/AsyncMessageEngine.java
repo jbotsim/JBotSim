@@ -23,55 +23,144 @@ package io.jbotsim.contrib.messaging;
 import io.jbotsim.core.Message;
 import io.jbotsim.core.MessageEngine;
 import io.jbotsim.core.Node;
+import io.jbotsim.core.Topology;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Random;
-
+/**
+ * <p>The {@link AsyncMessageEngine} is an asynchronous alternative to JBotSim's default {@link MessageEngine}.</p>
+ * <p>It is made to work either as {@link Type#FIFO} or {@link Type#NONFIFO}. Currently, for each new message:</p>
+ * <ul>
+ *     <li>the {@link Type#NONFIFO} mode uses the provided average duration to compute the delay (<code>f</code>
+ *     function discussed thereafter);</li>
+ *     <li>the {@link Type#FIFO} mode also uses the <code>f</code> function to compute a theoretical delay, but also
+ *     takes the current maximum delay time between the two nodes in order to guaranty a proper FIFO behavior.</li>
+ * </ul>
+ * <p>In both cases, the <code>f</code> function used to compute the random delay is defined as follows:<br>
+ *
+ * <code>f(r) = -log(1-r) * {@link AsyncMessageEngine#getAverageDuration()}</code>, where <code>r</code> is a value
+ * returned by {@link Math#random()}.</p>
+ */
 public class AsyncMessageEngine extends MessageEngine {
-    public static enum Type{FIFO, NONFIFO};
 
-    protected HashMap<Message, Integer> delays = new LinkedHashMap<Message, Integer>();
-    protected double average;
-    protected Random r = new Random();
-    protected Type type = Type.FIFO;
+    /**
+     * The default average duration; value: {@value #DEFAULT_AVERAGE_DURATION}.
+     */
+    public static final int DEFAULT_AVERAGE_DURATION = 10;
 
-    public AsyncMessageEngine(double averageDuration, Type type){
-        assert(average > 0);
-        this.average = averageDuration;
+    /**
+     * The default delivery queue type; value: {@link Type#FIFO}.
+     */
+    public static final Type DEFAULT_TYPE = Type.FIFO;
+
+    /**
+     * Delivery queue type.
+     */
+    public enum Type{FIFO, NONFIFO}
+
+    protected int averageDuration;
+    protected Type type;
+
+    /**
+     * <p>Creates a {@link AsyncMessageEngine} object.</p>
+     * <p>The default used are:</p>
+     * <ul>
+     *     <li>{@link #DEFAULT_AVERAGE_DURATION} as default average duration;</li>
+     *     <li>{@link #DEFAULT_TYPE} as default type.</li>
+     *</ul>
+     *
+     * @param topology the {@link Topology} to use.
+     */
+    public AsyncMessageEngine(Topology topology){
+        this(topology, DEFAULT_AVERAGE_DURATION, DEFAULT_TYPE);
+    }
+
+    /**
+     * <p>Creates a {@link AsyncMessageEngine} object.</p>
+     *
+     * @param topology the {@link Topology} to use.
+     * @param averageDuration the desired average number of rounds needed for a message to be delivered to its
+     *                        destination, as an integer.
+     * @param type the {@link Type} of the delivery queue.
+     */
+    public AsyncMessageEngine(Topology topology, int averageDuration, Type type){
+        super(topology);
+        assert(this.averageDuration > 0);
+        this.averageDuration = averageDuration;
         this.type = type;
+    }
+
+    @Override
+    protected int getDelayForMessage(Message message) {
+        return drawDelay(message);
     }
 
     protected int drawDelay(Message m){
         if (type == Type.FIFO){
-            int max = 0;
             Node sender = m.getSender();
             Node destination = m.getDestination();
-            for (Message m2 : delays.keySet())
-                if (m2.getSender() == sender && m2.getDestination() == destination)
-                    max = Math.max(max, delays.get(m2));
+            int currentMax = computeCurrentMaximumDelay(sender, destination);
+            int delayFunction = computeDelayFunction(getAverageDuration());
 
-            return (int) (max + Math.round(Math.log(1 - Math.random()) / (-1.0/average)));
+            int delay = Math.max(currentMax, delayFunction);
+            if(debug)
+                System.err.println("FIFO delay " + delay + " (currentMax:"+currentMax+", random:"+ delayFunction+")");
+            return delay;
         }else{
-            return r.nextInt((int)Math.round(average));
+            int delay = computeDelayFunction(getAverageDuration());
+            if(debug)
+                System.err.println("NON-FIFO delay " + delay);
+            return delay;
         }
     }
 
-    public void onClock(){
-        for (Message m : delays.keySet())
-            delays.put(m, delays.get(m)-1);
-        for (Message m : super.collectMessages())
-            delays.put(m, drawDelay(m));
-        for (Message m : new ArrayList<Message>(delays.keySet()))
-            if (delays.get(m)==0)
-                deliverMessage(m);
+    protected int computeCurrentMaximumDelay(Node sender, Node destination) {
+        int max = 0;
+        for (Message m2 : delayedMessages.keySet())
+            if (m2.getSender() == sender && m2.getDestination() == destination)
+                max = Math.max(max, delayedMessages.get(m2));
+        return max;
     }
 
+    protected static int computeDelayFunction(int lambda) {
+        return (int) Math.round(Math.log(1 - Math.random()) / (-1.0 / lambda));
+    }
+
+    /**
+     * Gets the desired average number of rounds needed for a message to be delivered to its destination.
+     * @return the desired average number of rounds needed for a message to be delivered to its destination, as
+     * an Integer.
+     */
+    public int getAverageDuration() {
+        return averageDuration;
+    }
+
+    /**
+     * Sets the desired average number of rounds needed for a message to be delivered to its destination.
+     * @param averageDuration the desired average number of rounds needed for a message to be delivered to its
+     *                        destination, as an Integer.
+     */
+    public void setAverageDuration(int averageDuration) {
+        this.averageDuration = averageDuration;
+    }
+
+    /**
+     * Please prefer using {@link #setAverageDuration(int)}.
+     * @deprecated
+     * @see #setAverageDuration(int)
+     */
     @Override
-    protected void deliverMessage(Message m) {
-        if (m.getSender().getOutLinkTo(m.getDestination()) != null)
-            super.deliverMessage(m);
-        delays.remove(m);
+    @Deprecated
+    public void setDelay(int delay) {
+        setAverageDuration(delay);
+    }
+
+    /**
+     * Please prefer using {@link #getAverageDuration()}.
+     * @deprecated
+     * @see #getAverageDuration()
+     */
+    @Override
+    @Deprecated
+    public int getDelay() {
+        return getAverageDuration();
     }
 }

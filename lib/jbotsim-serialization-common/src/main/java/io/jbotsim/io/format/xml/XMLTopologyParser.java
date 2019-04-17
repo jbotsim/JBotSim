@@ -110,7 +110,7 @@ public class XMLTopologyParser extends XMLParser {
                 tp.setLinkResolver(cls.getConstructor().newInstance());
             } else if (XMLKeys.MESSAGE_ENGINE.labelsElement(C)) {
                 Class<? extends MessageEngine> cls = c.asSubclass(MessageEngine.class);
-                tp.setMessageEngine(cls.getConstructor().newInstance());
+                tp.setMessageEngine(cls.getConstructor(Topology.class).newInstance(tp));
             } else if (XMLKeys.SCHEDULER.labelsElement(C)) {
                 Class<? extends Scheduler> cls = c.asSubclass(Scheduler.class);
                 tp.setScheduler(cls.getConstructor().newInstance());
