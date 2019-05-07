@@ -6,6 +6,120 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+###  MessageEngine class modifications
+
+[[issue 58]][issue: #58]
+
+**Fix in MessageEngine:**
+
+* A call to the now deprecated `MessageEngine.setSpeed()` (now `MessageEngine.setDelay()`) method does not duplicate
+  messages delivery anymore. 
+
+**Behavior modifications in MessageEngine:**
+
+* The delay feature from the former `DelayMessageEngine` has finally been integrated in the `MessageEngine`.
+
+  Modifying the `MessageEngine`'s delay (`setDelay()`) will only affect messages sent during this round and the 
+  following ones. Already queued messages retain their counters. 
+
+* A message will now be dropped if the link between its sender and destination is broken, while the message is queued.
+
+  In order for a message to be delivered, a link from the sender to the destination must be present during each round,
+  while the message is queued. If at some point the `MessageEngine` can't find such a link, the message will be dropped.
+   
+  Note that if `Message.retryMode` is set to `true`, the `MessageEngine` will try requeue it, with a new delay.
+
+* Concurrent messages delivery is now consistent with insertion order. 
+
+  When several messages between a sender and a destination are supposed to be delivered during the same round (they 
+  have possibly been queued during different rounds, but with different delays), they will now consistently be delivered
+  according to their queuing order.
+    
+
+**New symbols in MessageEngine:**
+
+* The `MessageEngine.setDelay(int)` and `MessageEngine.getDelay()` have been created
+
+  These methods allow you to control the delay (in rounds) applied before actually trying to deliver a message.
+
+* The `MessageEngine.DELAY_INSTANT` constant has been added
+
+  This constant sets the value of the delay use for the quickest possible delivery.
+
+* The `MessageEngine.DEFAULT_DELAY` constant has been added
+
+  This constant sets the delay's default value. It actually matches `MessageEngine.DELAY_INSTANT`.
+
+* The explicit constructors `MessageEngine(Topology)` and `MessageEngine(Topology, int)` have been created
+
+  * It is thus now mandatory to provide at least a `Topology` when creating a `MessageEngine`.
+  * `MessageEngine.setTopology(Topology)` has however been kept.
+  * No default constructor is available. Please check that your code do not use it (reflection calls included).
+
+**Deprecations in MessageEngine:**
+
+* The `MessageEngine.setSpeed(int)` method has been deprecated
+
+  Please use `MessageEngine.setDelay(int)` instead.
+
+###  DelayMessageEngine/RandomMessageEngine class modifications
+
+[[issue 58]][issue: #58]
+
+Since the base `MessageEngine` now handles the _delay_ feature:
+
+* `DelayMessageEngine` has been renamed to `RandomMessageEngine`
+   
+   `jbotsim-extras-common`/`io.jbotsim.contrib.messaging.DelayMessageEngine` -> `io.jbotsim.contrib.messaging.RandomMessageEngine`
+   
+* The `RandomMessageEngine` inherits from all delay-related improvements in `MessageEngine`:
+  
+  * the delay applied to message delivery is now modifiable during the object's lifecycle;
+  * concurrent messages delivery is now consistent with insertion order;
+  * a broken link leads to message dropping;
+  * `Message.retryMode` is now taken into account.
+    
+
+###  AsyncMessageEngine class modifications
+
+[[issue 58]][issue: #58]
+
+**Behavior modifications in AsyncMessageEngine:**
+
+* The _average_ feature is now better handled and documented.
+
+  In non-FIFO cases, the delay is drawn randomly according to an exponential law with average value 
+    `AsyncMessageEngine.getAverageDuration()`.
+    
+  In FIFO cases, the theoretical random delay is drawn the same way as for non-FIFO cases, but also taking care that the 
+  new message won't be delivered before a pre-existing one.
+
+
+**New symbols in AsyncMessageEngine:**
+
+* The `AsyncMessageEngine.setAverageDuration(int)` and `AsyncMessageEngine.getAverageDuration()` have been created
+
+  These methods allow you to control the delay (in rounds) applied before actually trying to deliver a message.
+
+* The `AsyncMessageEngine.DEFAULT_TYPE` constant has been added
+
+  This constant sets the default queue type value: `AsyncMessageEngine.Type.FIFO`.
+
+* The `AsyncMessageEngine.DEFAULT_AVERAGE_DURATION` constant has been added
+
+  This constant sets the desired average delivery duration's default value: `10` rounds.
+  
+* The explicit constructors `AsyncMessageEngine(Topology, double, Type)` and `AsyncMessageEngine(Topology)` have been created
+
+**Removals in AsyncMessageEngine:**
+
+* The explicit constructor `AsyncMessageEngine(double, Type)` has been removed
+
+  Please use  `AsyncMessageEngine(Topology, double, Type)` instead.
+
+
+[issue: #58]: https://github.com/jbotsim/JBotSim/issues/58
+
 ###  JViewer class modifications
 
 **Behavior modifications in JViewer:**
