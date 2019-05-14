@@ -6,6 +6,18 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+###  Color class modifications
+
+* Some internal fixes have been provided, and unit tests added, to better match AWT's implementation regarding 
+  constructors and the alpha component. 
+  
+* `Color.getColor()` variants now better match their AWT counter parts.
+
+  JBotSim's implementations used to directly consider the provided String as a RGB value, instead of trying to get the 
+  said value from a system property.  
+
+* General documentation effort.
+
 ### JBackgroundPainter, JLinkPainter, JNodePainter classes modifications
 
 In order to ease behavior modifications by inheritance, `JBackgroundPainter`, `JLinkPainter` and `JNodePainter` have 
