@@ -6,6 +6,19 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+
+### New icon in the jbotsim-icons module
+
+`jbotsim-icons`/`io.jbotsim.ui.icons`
+
+A new icon suitable for servers/mainframes has been added [[issue 59]][issue: #59] 
+  * `jbotsim-icons`/`io/jbotsim/ui/icons/server.png` 
+
+As usual, it's path can be accessed using the corresponding constant `Icons.SERVER`. 
+
+
+[issue: #59]: https://github.com/jbotsim/JBotSim/issues/59
+
 ###  Color class modifications
 
 * Some internal fixes have been provided, and unit tests added, to better match AWT's implementation regarding 
