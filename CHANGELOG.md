@@ -160,6 +160,12 @@ Since the base `MessageEngine` now handles the _delay_ feature:
 
 ###  JViewer class modifications
 
+**Bug fix in JViewer:**
+
+* Fixed a truncation issue when importing a Topology via the *Load Topology* command. [[issue 60]][issue: #60]
+
+[issue: #60]: https://github.com/jbotsim/JBotSim/issues/60
+
 **Behavior modifications in JViewer:**
 
 * The `JViewer` now also detects `.gv` and `.xdot` files as to be handled with the `DotTopologySerializer`. [[issue 48]][issue: #48]

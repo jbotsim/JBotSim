@@ -254,8 +254,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
         String fileContent = jtp.topo.getFileManager().read(filename);
         serializer.importFromString(jtp.topo, fileContent);
-        if(window != null)
-            window.setSize(jtp.topo.getWidth(), jtp.topo.getHeight());
+        setSize(jtp.topo.getWidth(), jtp.topo.getHeight());
     }
 
     /**
