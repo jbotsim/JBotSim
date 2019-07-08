@@ -21,7 +21,7 @@
 package io.jbotsim.core;
 
 import io.jbotsim.core.Link.Mode;
-import io.jbotsim.core.Link.Type;
+import io.jbotsim.core.Link.Orientation;
 import io.jbotsim.core.event.CommandListener;
 import io.jbotsim.core.event.*;
 import io.jbotsim.io.FileManager;
@@ -37,6 +37,7 @@ import java.util.*;
  * which can be linked two by two with a set of {@link Link} objects.
  */
 public class Topology extends Properties implements ClockListener {
+    public static final Link.Orientation DEFAULT_ORIENTATION = Link.DEFAULT_ORIENTATION;
     public static final int DEFAULT_WIDTH = 600;
     public static final int DEFAULT_HEIGHT = 400;
     public static final double DEFAULT_COMMUNICATION_RANGE = 100;
@@ -75,6 +76,7 @@ public class Topology extends Properties implements ClockListener {
     private FileManager fileManager = new FileManager();
     private TopologySerializer topologySerializer = new PlainTopologySerializer();
 
+    private Link.Orientation orientation = DEFAULT_ORIENTATION;
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
@@ -525,7 +527,7 @@ public class Topology extends Properties implements ClockListener {
     public void removeNode(Node n) {
         pause();
         n.onStop();
-        for (Link l : n.getLinks(true))
+        for (Link l : n.getLinks(Orientation.DIRECTED))
             removeLink(l);
         notifyNodeRemoved(n);
         nodes.remove(n);
@@ -571,11 +573,11 @@ public class Topology extends Properties implements ClockListener {
      * @param silent <code>true</code> to disable notifications of this adding.
      */
     public void addLink(Link l, boolean silent) {
-        if (l.type == Type.DIRECTED) {
+        if (l.orientation == Orientation.DIRECTED) {
             arcs.add(l);
             l.source.outLinks.put(l.destination, l);
             if (l.destination.outLinks.containsKey(l.source)) {
-                Link edge = new Link(l.source, l.destination, Type.UNDIRECTED, l.mode);
+                Link edge = new Link(l.source, l.destination, Orientation.UNDIRECTED, l.mode);
                 edges.add(edge);
                 if (!silent)
                     notifyLinkAdded(edge);
@@ -584,7 +586,7 @@ public class Topology extends Properties implements ClockListener {
             Link arc1 = l.source.outLinks.get(l.destination);
             Link arc2 = l.destination.outLinks.get(l.source);
             if (arc1 == null) {
-                arc1 = new Link(l.source, l.destination, Type.DIRECTED);
+                arc1 = new Link(l.source, l.destination, Orientation.DIRECTED);
                 arcs.add(arc1);
                 arc1.source.outLinks.put(arc1.destination, arc1);
                 if (!silent)
@@ -593,7 +595,7 @@ public class Topology extends Properties implements ClockListener {
                 arc1.mode = l.mode;
             }
             if (arc2 == null) {
-                arc2 = new Link(l.destination, l.source, Type.DIRECTED);
+                arc2 = new Link(l.destination, l.source, Orientation.DIRECTED);
                 arcs.add(arc2);
                 arc2.source.outLinks.put(arc2.destination, arc2);
                 if (!silent)
@@ -615,17 +617,17 @@ public class Topology extends Properties implements ClockListener {
      * @param l The link to be removed.
      */
     public void removeLink(Link l) {
-        if (l.type == Type.DIRECTED) {
+        if (l.orientation == Orientation.DIRECTED) {
             arcs.remove(l);
             l.source.outLinks.remove(l.destination);
-            Link edge = getLink(l.source, l.destination, false);
+            Link edge = getLink(l.source, l.destination, Orientation.UNDIRECTED);
             if (edge != null) {
                 edges.remove(edge);
                 notifyLinkRemoved(edge);
             }
         } else {
-            Link arc1 = getLink(l.source, l.destination, true);
-            Link arc2 = getLink(l.destination, l.source, true);
+            Link arc1 = getLink(l.source, l.destination, Orientation.DIRECTED);
+            Link arc2 = getLink(l.destination, l.source, Orientation.DIRECTED);
             arcs.remove(arc1);
             arc1.source.outLinks.remove(arc1.destination);
             notifyLinkRemoved(arc1);
@@ -640,9 +642,19 @@ public class Topology extends Properties implements ClockListener {
     /**
      * Returns true if this topology has at least one directed link.
      * @return <code>true</code> if the {@link Topology} has at least one directed link, <code>false</code> otherwise.
+     * @deprecated see {@link #isDirected()}
      */
+    @Deprecated
     public boolean hasDirectedLinks() {
         return arcs.size() > 2 * edges.size();
+    }
+
+    /**
+     * @return true if the orientation of the topology is
+     * {@link Link.Orientation#DIRECTED}
+     */
+    public boolean isDirected() {
+        return getOrientation() == Orientation.DIRECTED;
     }
 
     /**
@@ -679,13 +691,46 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Returns a list containing all undirected links in this topology. The
-     * returned ArrayList can be subsequently modified without effect on the
-     * topology.
+     * Returns the orientation of the topology.
+     *
+     * @return the orientation status of the topology.
+     */
+    public Link.Orientation getOrientation() {
+        return orientation;
+    }
+
+    /**
+     * Set the orientation of the topology.
+     *
+     * @param orientation the enforced orientation
+     */
+    public void setOrientation(Link.Orientation orientation) {
+        this.orientation = orientation;
+    }
+
+    /**
+     * Returns a list containing all links in this topology with respect to its
+     * orientation. The returned ArrayList can be subsequently modified without
+     * effect on the topology.
+     *
      * @return the {@link List} of {@link Link}s.
+     * @see #getOrientation()
+     * @see #setOrientation(Link.Orientation)
      */
     public List<Link> getLinks() {
-        return getLinks(false);
+        return getLinks(orientation);
+    }
+
+    /**
+     * Returns a list containing all links with the specified orientation.
+     * The returned ArrayList can be subsequently modified without effect on
+     * the topology.
+     *
+     * @param orientation the kind of links to return.
+     * @return the {@link List} of {@link Link}s.
+     */
+    public List<Link> getLinks(Link.Orientation orientation) {
+        return new ArrayList<>(((orientation == Orientation.DIRECTED) ? arcs : edges));
     }
 
     /**
@@ -696,14 +741,16 @@ public class Topology extends Properties implements ClockListener {
      * @param directed <code>true</code> for directed links, <code>false</code> for
      *                 undirected links.
      * @return the {@link List} of {@link Link}s.
+     * @deprecated use {@link Topology#getLinks(Link.Orientation)} instead.
      */
+    @Deprecated
     public List<Link> getLinks(boolean directed) {
-        return new ArrayList<>(directed ? arcs : edges);
+        return getLinks(directed ? Orientation.DIRECTED : Orientation.UNDIRECTED);
     }
 
-    List<Link> getLinks(boolean directed, Node n, int pos) {
+    List<Link> getLinks(Orientation orientation, Node n, int pos) {
         List<Link> result = new ArrayList<>();
-        List<Link> allLinks = (directed) ? arcs : edges;
+        List<Link> allLinks = getLinks(orientation);
         for (Link l : allLinks)
             switch (pos) {
                 case 0:
@@ -723,38 +770,54 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Returns the undirected link shared the specified nodes, if any.
+     * Returns the link shared by the specified nodes, if any. The link
+     * orientation is selected according to the orientation of the topology.
      *
      * @param n1 the first {@link Node}.
      * @param n2 the second {@link Node}.
      * @return The requested link, if such a link exists, <code>null</code>
      * otherwise.
+     * @see Topology#getOrientation()
      */
     public Link getLink(Node n1, Node n2) {
-        return getLink(n1, n2, false);
+        return getLink(n1, n2, orientation);
+    }
+
+    /**
+     * Returns the link with the specified orientation between the given nodes,
+     * if any.
+     *
+     * @param from        the source {@link Node}.
+     * @param to          the destination {@link Node}.
+     * @param orientation the expected orientation of the link.
+     * @return The requested link, if such a link exists, <code>null</code>
+     * otherwise.
+     */
+    public Link getLink(Node from, Node to, Orientation orientation) {
+        if (orientation == Orientation.DIRECTED) {
+            return from.outLinks.get(to);
+        } else {
+            Link l = new Link(from, to, Orientation.UNDIRECTED);
+            int pos = edges.indexOf(l);
+            return (pos != -1) ? edges.get(pos) : null;
+        }
     }
 
     /**
      * Returns the link of the specified type between the specified nodes, if
      * any.
-     * @param from the source {@link Node}.
-     * @param to the destination {@link Node}.
-     * @param directed <code>true</code> if the searched {@link Link} is directed, <code>false</code> otherwise.
      *
+     * @param from     the source {@link Node}.
+     * @param to       the destination {@link Node}.
+     * @param directed <code>true</code> if the searched {@link Link} is directed, <code>false</code> otherwise.
      * @return The requested link, if such a link exists, <code>null</code>
      * otherwise.
+     * @deprecated use {@link #getLink(Node, Node, Link.Orientation)} instead.
      */
+    @Deprecated
     public Link getLink(Node from, Node to, boolean directed) {
-        if (directed) {
-            return from.outLinks.get(to);
-            //Link l=new Link(from, to,Link.Type.DIRECTED);
-            //int pos=arcs.indexOf(l);
-            //return (pos != -1)?arcs.get(pos):null;
-        } else {
-            Link l = new Link(from, to, Type.UNDIRECTED);
-            int pos = edges.indexOf(l);
-            return (pos != -1) ? edges.get(pos) : null;
-        }
+        return getLink(from, to,
+                directed ? Orientation.DIRECTED : Orientation.UNDIRECTED);
     }
 
     /**
@@ -976,7 +1039,7 @@ public class Topology extends Properties implements ClockListener {
 
     protected void notifyLinkAdded(Link l) {
         List<ConnectivityListener> listeners;
-        if (l.type == Type.DIRECTED) {
+        if (l.orientation == Orientation.DIRECTED) {
             l.endpoint(0).onDirectedLinkAdded(l);
             l.endpoint(1).onDirectedLinkAdded(l);
             listeners = cxDirectedListeners;
@@ -991,7 +1054,7 @@ public class Topology extends Properties implements ClockListener {
 
     protected void notifyLinkRemoved(Link l) {
         List<ConnectivityListener> listeners;
-        if (l.type == Type.DIRECTED) {
+        if (l.orientation == Orientation.DIRECTED) {
             l.endpoint(0).onDirectedLinkRemoved(l);
             l.endpoint(1).onDirectedLinkRemoved(l);
             listeners = cxDirectedListeners;
@@ -1071,7 +1134,7 @@ public class Topology extends Properties implements ClockListener {
         boolean linkExisted = (l == null) ? false : true;
         boolean linkExists = linkResolver.isHeardBy(n1, n2);
         if (!linkExisted && linkExists)
-            addLink(new Link(n1, n2, Type.DIRECTED, Mode.WIRELESS));
+            addLink(new Link(n1, n2, Orientation.DIRECTED, Mode.WIRELESS));
         else if (linkExisted && l.isWireless() && !linkExists)
             removeLink(l);
     }

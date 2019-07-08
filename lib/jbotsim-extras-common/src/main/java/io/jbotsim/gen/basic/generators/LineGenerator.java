@@ -61,9 +61,9 @@ public class LineGenerator extends AbstractGenerator {
             int nbNodes = getNbNodes();
             Node[] nodes = generateNodes(topology, nbNodes);
             if (wired) {
-                Link.Type type = directed ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
+                Link.Orientation orientation = directed ? Link.Orientation.DIRECTED : Link.Orientation.UNDIRECTED;
                 for (int i = 1; i < nbNodes; i++) {
-                    topology.addLink(new Link(nodes[i-1], nodes[i], type, Link.Mode.WIRED));
+                    topology.addLink(new Link(nodes[i-1], nodes[i], orientation, Link.Mode.WIRED));
                 }
             }
         } catch (ReflectiveOperationException e) {

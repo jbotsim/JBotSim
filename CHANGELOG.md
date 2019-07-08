@@ -6,6 +6,35 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+### Topology, Node and Link classes modifications
+
+[[issue 49]][issue: #49]
+
+* The enum class `Link.Type` has been **renamed** as `Link.Orientation`.
+
+* The enum class `Link.DEFAULT_TYPE` has been **renamed** into `Link.DEFAULT_ORIENTATION`.
+
+* The class `Topology` is augmented with an instance variable `orientation` that contains the default orientation of 
+the topology. Accessors/Actuators have been added as `Topology.setOrientation()` and `Topology.getOrientation()`.
+
+* A new helper method is added `Topology.isDirected()` that is a simple test of the value returned by 
+`Topology.getOrientation()`.  
+
+* Accessors to links `Topology.getLinks()`, `Topology.getLink()` and `Node.getLinks()` now return links whose type is 
+determined with respect to `Topology.getOrientation()`.
+
+* Accessors to links based on a Boolean specification of the orientation i.e., `Topology.getLinks(boolean)`, 
+`Topology.getLink(Node,Node,boolean)` and `Node.getLinks(boolean)` are marked **deprecated** and replaced by methods 
+where the Boolean is replaced by a `Link.Orientation` parameter.  
+ 
+* The method `Topology.hasDirectedLinks()` is marked as **deprecated**; `Topology.isDirected()` should be used instead.
+
+* Implementation of `Node.getCommonLinkWith()` and `Node.getNeighbors()` is changed to explicitly request undirected 
+links. 
+  
+* Add a test suite to check behaviors of `Topology.getLinks()` w.r.t. topology orientation.
+
+[issue: #49]: https://github.com/jbotsim/JBotSim/issues/49
 
 ### Javadoc modifications 
 

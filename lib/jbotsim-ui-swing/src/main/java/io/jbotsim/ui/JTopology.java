@@ -164,7 +164,7 @@ public class JTopology extends JPanel implements ActionListener {
         for (BackgroundPainter painter : backgroundPainters)
             painter.paintBackground(uiComponent, topo);
         if (showDrawings) {
-            for (Link l : topo.getLinks(topo.hasDirectedLinks()))
+            for (Link l : topo.getLinks(topo.getOrientation()))
                 for (LinkPainter linkPainter: linkPainters)
                     linkPainter.paintLink(uiComponent, l);
         }

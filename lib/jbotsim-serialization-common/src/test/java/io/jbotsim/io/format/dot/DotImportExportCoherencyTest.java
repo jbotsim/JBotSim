@@ -82,7 +82,9 @@ public class DotImportExportCoherencyTest {
         Node[] nodes = tp.getNodes().toArray(new Node[0]);
 
         if (nbNodes == 1) {
-            tp.getLink(nodes[0], nodes[0], rnd.nextBoolean());
+            Link.Orientation orientation = rnd.nextBoolean()
+                    ? Link.Orientation.DIRECTED : Link.Orientation.UNDIRECTED;
+            tp.getLink(nodes[0], nodes[0], orientation);
         } else {
             for (int src = 0; src < nbNodes; src++) {
                 Node srcNode = nodes[src];
@@ -94,12 +96,15 @@ public class DotImportExportCoherencyTest {
                     } while (srcNode == dstNode);
 
 
-                    if (srcNode.getCommonLinkWith(dstNode) == null && srcNode.getOutLinkTo(dstNode) == null &&
+                    if (srcNode.getCommonLinkWith(dstNode) == null &&
+                            srcNode.getOutLinkTo(dstNode) == null &&
                             dstNode.getOutLinkTo(srcNode) == null) {
-                        Link.Type type = rnd.nextBoolean() ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
-                        tp.addLink(new Link(srcNode, dstNode, type));
+                        Link.Orientation orientation = rnd.nextBoolean()
+                                ? Link.Orientation.DIRECTED
+                                : Link.Orientation.UNDIRECTED;
+                        tp.addLink(new Link(srcNode, dstNode, orientation));
                     } else if (dstNode.getOutLinkTo(dstNode) != null) {
-                        tp.addLink(new Link(srcNode, dstNode, Link.Type.DIRECTED));
+                        tp.addLink(new Link(srcNode, dstNode, Link.Orientation.DIRECTED));
                     }
                 }
             }
@@ -110,8 +115,10 @@ public class DotImportExportCoherencyTest {
 
     public void checkTopologyGraph(Topology tp1, Topology tp2) {
         assertEquals(tp1.getNodes().size(), tp2.getNodes().size());
-        assertEquals(tp1.getLinks(true).size(), tp2.getLinks(true).size());
-        assertEquals(tp1.getLinks(false).size(), tp2.getLinks(false).size());
+        assertEquals(tp1.getLinks(Link.Orientation.DIRECTED).size(),
+                tp2.getLinks(Link.Orientation.DIRECTED).size());
+        assertEquals(tp1.getLinks(Link.Orientation.UNDIRECTED).size(),
+                tp2.getLinks(Link.Orientation.UNDIRECTED).size());
 
         HashMap<Integer, Node> nodes1 = new HashMap<>();
         for (Node n : tp1.getNodes()) {

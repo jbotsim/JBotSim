@@ -75,10 +75,10 @@ public class RingGenerator extends AbstractGenerator {
 
     protected void addLinks(Topology tp, int nbNodes, Node[] nodes) {
         if (wired) {
-            Link.Type type = directed ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
+            Link.Orientation orientation = directed ? Link.Orientation.DIRECTED : Link.Orientation.UNDIRECTED;
             for (int i = 1; i < nbNodes; i++)
-                tp.addLink(new Link(nodes[i - 1], nodes[i], type));
-            tp.addLink(new Link(nodes[nbNodes - 1], nodes[0], type));
+                tp.addLink(new Link(nodes[i - 1], nodes[i], orientation));
+            tp.addLink(new Link(nodes[nbNodes - 1], nodes[0], orientation));
         } else {
             for (int i = 0; i < nbNodes; i++) {
                 Node pred = (i == 0) ? nodes[nbNodes - 1] : nodes[i - 1];

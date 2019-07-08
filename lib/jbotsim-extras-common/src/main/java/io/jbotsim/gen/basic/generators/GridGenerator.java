@@ -63,16 +63,16 @@ public class GridGenerator extends AbstractGenerator {
 
     protected void addLinks(Topology tp, int nbRows, int nbColumns, Node[][] nodes) {
         if(wired) {
-            Link.Type type = directed ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
+            Link.Orientation orientation = directed ? Link.Orientation.DIRECTED : Link.Orientation.UNDIRECTED;
             for (int i = 0; i < nbRows; i++) {
                 for (int j = 0; j < nbColumns; j++) {
                     Node n = nodes[i][j];
                     if (i < nbRows - 1) {
-                        Link l = new Link(n, nodes[i + 1][j], type);
+                        Link l = new Link(n, nodes[i + 1][j], orientation);
                         tp.addLink(l);
                     }
                     if (j < nbColumns - 1) {
-                        Link l = new Link(n, nodes[i][j + 1], type);
+                        Link l = new Link(n, nodes[i][j + 1], orientation);
                         tp.addLink(l);
                     }
                 }
