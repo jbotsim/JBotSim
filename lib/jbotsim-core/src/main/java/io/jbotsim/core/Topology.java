@@ -781,7 +781,7 @@ public class Topology extends Properties implements ClockListener {
      * @param listener The listener to add.
      */
     public void addConnectivityListener(ConnectivityListener listener) {
-        cxUndirectedListeners.add(listener);
+        addConnectivityListener(listener, false);
     }
 
     /**
@@ -807,7 +807,7 @@ public class Topology extends Properties implements ClockListener {
      * @param listener The listener to unregister.
      */
     public void removeConnectivityListener(ConnectivityListener listener) {
-        cxUndirectedListeners.remove(listener);
+        removeConnectivityListener(listener, false);
     }
 
     /**
@@ -975,31 +975,33 @@ public class Topology extends Properties implements ClockListener {
     }
 
     protected void notifyLinkAdded(Link l) {
+        List<ConnectivityListener> listeners;
         if (l.type == Type.DIRECTED) {
             l.endpoint(0).onDirectedLinkAdded(l);
             l.endpoint(1).onDirectedLinkAdded(l);
-            for (ConnectivityListener cl : cxDirectedListeners)
-                cl.onLinkAdded(l);
+            listeners = cxDirectedListeners;
         } else {
             l.endpoint(0).onLinkAdded(l);
             l.endpoint(1).onLinkAdded(l);
-            for (ConnectivityListener cl : cxUndirectedListeners)
-                cl.onLinkAdded(l);
+            listeners = cxUndirectedListeners;
         }
+        for (ConnectivityListener cl : listeners)
+            cl.onLinkAdded(l);
     }
 
     protected void notifyLinkRemoved(Link l) {
+        List<ConnectivityListener> listeners;
         if (l.type == Type.DIRECTED) {
             l.endpoint(0).onDirectedLinkRemoved(l);
             l.endpoint(1).onDirectedLinkRemoved(l);
-            for (ConnectivityListener cl : cxDirectedListeners)
-                cl.onLinkRemoved(l);
+            listeners = cxDirectedListeners;
         } else {
             l.endpoint(0).onLinkRemoved(l);
             l.endpoint(1).onLinkRemoved(l);
-            for (ConnectivityListener cl : cxUndirectedListeners)
-                cl.onLinkRemoved(l);
+            listeners = cxUndirectedListeners;
         }
+        for (ConnectivityListener cl : listeners)
+            cl.onLinkRemoved(l);
     }
 
     protected void notifyNodeAdded(Node node) {
