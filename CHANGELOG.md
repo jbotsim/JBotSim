@@ -7,6 +7,14 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 ## [Unreleased]
 
 
+###  Link class modifications
+
+**Bug fix in Link:**
+
+* Fixed a `NullPointerException` when calling `Link.equals(null)`. [[issue 65]][issue: #65]
+
+[issue: #65]: https://github.com/jbotsim/JBotSim/issues/65
+
 ### New icon in the jbotsim-icons module
 
 `jbotsim-icons`/`io.jbotsim.ui.icons`

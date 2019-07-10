@@ -18,59 +18,56 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
+
 package io.jbotsim.core;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class NodeTest {
+class LinkTest {
 
-    public static final int DEFAULT_ICON_SIZE = 10;
+    private Node n1;
+    private Node n2;
+    private Node n3;
 
-    private Node createDefaultNode() {
-        return new Node();
+    @BeforeEach
+    void setUp() {
+        n1 = new Node();
+        n2 = new Node();
+        n3 = new Node();
     }
-
-    // region iconSize
-    @Test
-    void iconSize_defaultValue_ok() {
-        Node node = createDefaultNode();
-        assertEquals(DEFAULT_ICON_SIZE, node.getIconSize());
-    }
-
-    @Test
-    void iconSize_setZero_ok() {
-        testIconSizeGetterSetter(0);
-    }
-
-    @Test
-    void iconSize_setNegative_ok() {
-        testIconSizeGetterSetter(-15);
-    }
-
-    @Test
-    void iconSize_setPositive_ok() {
-        testIconSizeGetterSetter(15);
-    }
-
-    private void testIconSizeGetterSetter(int testedSize) {
-        Node node = createDefaultNode();
-        node.setIconSize(testedSize);
-        assertEquals(testedSize, node.getIconSize());
-    }
-
-    // endregion
-
 
     // region equals
 
     @Test
     void equals_null_notEqual() {
-        Node node = new Node();
+        Link link1 = new Link(n1, n2);
 
-        assertNotEquals(node, null);
+        assertNotEquals(link1, null);
     }
 
+    @Test
+    void equals_sameObject_equal() {
+        Link link1 = new Link(n1, n2);
+
+        assertEquals(link1, link1);
+    }
+    @Test
+    void equals_sameValues_equal() {
+        Link link1 = new Link(n1, n2);
+        Link link2 = new Link(n1, n2);
+
+        assertEquals(link1, link2);
+    }
+    @Test
+    void equals_differentNodes_notEqual() {
+        Link link1 = new Link(n1, n2);
+        Link link2 = new Link(n1, n3);
+
+        assertNotEquals(link1, link2);
+    }
     // endregion
+
 }

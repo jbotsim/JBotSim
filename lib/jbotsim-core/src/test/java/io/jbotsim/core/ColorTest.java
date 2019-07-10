@@ -245,6 +245,12 @@ class ColorTest {
     // region equals
 
     @Test
+    void equals_null_notEqual() {
+        Color color1 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, null);
+    }
+    @Test
     void equals_sameObject_equal() {
         Color color1 = new Color(125, 125 , 125, 0);
 

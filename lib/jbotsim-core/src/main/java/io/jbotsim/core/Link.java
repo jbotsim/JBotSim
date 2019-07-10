@@ -245,6 +245,9 @@ public class Link extends Properties implements Comparable<Link> {
      * undirected). The <tt>mode</tt> is not considered by the equality test.
      */
     public boolean equals(Object o) {
+        if (o == null)
+            return false;
+
         Link l = (Link) o;
         if (this.type != l.type)
             return false;
