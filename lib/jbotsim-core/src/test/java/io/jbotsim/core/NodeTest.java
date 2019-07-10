@@ -61,4 +61,16 @@ class NodeTest {
     }
 
     // endregion
+
+
+    // region equals
+
+    @Test
+    void equals_null_notEqual() {
+        Node node = new Node();
+
+        assertNotEquals(node, null);
+    }
+
+    // endregion
 }
