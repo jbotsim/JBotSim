@@ -1,14 +1,22 @@
+plugins {
+  id 'antlr'
+}
+
 description = "JBotSim Serialization Common: generates/publish a jar containing extension classes for topologies serialization (import/export)."
 def displayName = "JBotSim Serialization Common"
 def displayDescription = "Platform-independent classes allowing topology serialization for JBotSim."
+
 
 dependencies {
   api project(':lib:jbotsim-core')
 
   testImplementation project(':lib:jbotsim-extras-common')
-  testImplementation 'com.paypal.digraph:digraph-parser:1.0'
 
-  implementation 'com.paypal.digraph:digraph-parser:1.0'
+  antlr "org.antlr:antlr4:4.7.+"
+}
+
+generateGrammarSource {
+  arguments << "-visitor"  
 }
 
 publishing {
