@@ -229,7 +229,7 @@ public class TopologyLayouts {
         double originalWidth = boundaries.xMax - boundaries.xMin;
         double originalHeight = boundaries.yMax - boundaries.yMin;
         double availableWidth = topology.getWidth() * computeAvailableSpaceRatio(scaleParams.scaleMarginRatioX);
-        double availableHeight = topology.getHeight() * computeAvailableSpaceRatio(scaleParams.scaleMarginRatioZ);
+        double availableHeight = topology.getHeight() * computeAvailableSpaceRatio(scaleParams.scaleMarginRatioY);
 
         // XXX: Z coordinate is ignored
 
