@@ -50,6 +50,13 @@ public class DotTopologySerializerTest {
     @Parameterized.Parameters(name="{index}: {0}")
     public static Collection<String> makers() {
         return Arrays.asList(
+                "syntax-04.xdot",
+                "syntax-02.xdot",
+                "syntax-01.gv",
+                "syntax-02.gv",
+                "syntax-03.gv",
+                "syntax-01.xdot",
+                "syntax-03.xdot",
                 "hm-01.gv",
                 "arboricity-100-2.gv",
                 "barbell-6-5-4.gv",

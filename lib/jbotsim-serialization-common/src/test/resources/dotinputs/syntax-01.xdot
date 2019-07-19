@@ -1,0 +1,130 @@
+/*
+ * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ *
+ *
+ * This file is part of JBotSim.
+ *
+ * JBotSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JBotSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
+ */
+ /* This file was generated with dot Graphviz program */
+digraph testgraph {
+	graph [_draw_="c 9 -#fffffe00 C 7 -#ffffff P 4 0 0 0 304 499 304 499 0 ",
+		bb="0,0,499,304",
+		xdotversion=1.4
+	];
+	node [label="\N"];
+	{
+		bar		 [_draw_="c 7 -#000000 e 400 199 27 18 ",
+			_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 400 195.3 0 18 3 -bar ",
+			height=0.5,
+			kk=vv,
+			kkk=vvv,
+			pos="400,199",
+			width=0.75];
+		baz		 [_draw_="c 7 -#000000 e 472 199 27 18 ",
+			_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 472 195.3 0 20 3 -baz ",
+			height=0.5,
+			pos="472,199",
+			width=0.75];
+	}
+	xxx	 [_draw_="c 7 -#000000 e 27 286 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 27 282.3 0 22 3 -xxx ",
+		height=0.5,
+		k=v,
+		pos="27,286",
+		width=0.75];
+	yyy	 [_draw_="c 7 -#000000 e 99 286 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 99 282.3 0 22 3 -yyy ",
+		height=0.5,
+		k1=v1,
+		k2=v2,
+		pos="99,286",
+		width=0.75];
+	a	 [_draw_="c 7 -#000000 e 171 286 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 171 282.3 0 7 1 -a ",
+		height=0.5,
+		pos="171,286",
+		width=0.75];
+	b	 [_draw_="c 7 -#000000 e 171 199 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 171 195.3 0 8 1 -b ",
+		height=0.5,
+		pos="171,199",
+		width=0.75];
+	a -> b	 [_draw_="c 7 -#000000 B 4 171 267.97 171 256.19 171 240.56 171 227.16 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 174.5 227 171 217 167.5 227 ",
+		pos="e,171,217 171,267.97 171,256.19 171,240.56 171,227.16"];
+	n1	 [_draw_="c 7 -#000000 e 286 286 37.09 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 286 282.3 0 41 6 -Node 1 ",
+		height=0.5,
+		label="Node 1",
+		pos="286,286",
+		width=1.0291];
+	n2	 [_draw_="c 7 -#000000 e 253 199 37.09 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 253 195.3 0 41 6 -Node 2 ",
+		height=0.5,
+		label="Node 2",
+		pos="253,199",
+		width=1.0291];
+	n1 -> n2	 [_draw_="S 6 -dotted c 7 -#000000 B 7 260.48 272.8 252.05 267.03 243.64 259.4 239 250 235.3 242.51 236 233.9 238.44 225.91 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 241.7 227.18 242.1 216.6 235.18 224.62 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 278.5 238.8 0 79 13 -A dotted edge ",
+		label="A dotted edge",
+		lp="278.5,242.5",
+		pos="e,242.1,216.6 260.48,272.8 252.05,267.03 243.64,259.4 239,250 235.3,242.51 236,233.9 238.44,225.91",
+		style=dotted];
+	n4	 [_draw_="c 7 -#000000 e 330 145 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 330 141.3 0 15 2 -n4 ",
+		height=0.5,
+		pos="330,145",
+		width=0.75];
+	n1 -> n4	 [_draw_="c 7 -#000000 B 7 304.04 269.98 309.41 264.22 314.73 257.33 318 250 328.82 225.78 331.25 195.43 331.31 173.6 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 334.81 173.28 331.17 163.33 327.81 173.38 ",
+		pos="e,331.17,163.33 304.04,269.98 309.41,264.22 314.73,257.33 318,250 328.82,225.78 331.25,195.43 331.31,173.6"];
+	n3	 [_draw_="c 7 -#000000 e 271 91 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 271 87.3 0 15 2 -n3 ",
+		height=0.5,
+		pos="271,91",
+		width=0.75];
+	n2 -> n3	 [_draw_="c 7 -#000000 B 4 256.05 180.68 258.86 163.82 263.07 138.57 266.31 119.15 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 269.8 119.49 267.99 109.05 262.9 118.34 ",
+		pos="e,267.99,109.05 256.05,180.68 258.86,163.82 263.07,138.57 266.31,119.15"];
+	n5	 [_draw_="c 7 -#000000 e 301 18 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 301 14.3 0 15 2 -n5 ",
+		height=0.5,
+		pos="301,18",
+		width=0.75];
+	n4 -> n5	 [_draw_="c 7 -#000000 B 4 325.91 127.07 321.07 105.89 312.97 70.42 307.32 45.7 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 310.71 44.81 305.07 35.84 303.89 46.36 ",
+		pos="e,305.07,35.835 325.91,127.07 321.07,105.89 312.97,70.42 307.32,45.699"];
+	n3 -> n5	 [_draw_="c 7 -#000000 B 4 278.26 73.33 281.76 64.81 286.04 54.41 289.93 44.93 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 293.24 46.09 293.8 35.51 286.77 43.43 ",
+		pos="e,293.8,35.509 278.26,73.329 281.76,64.81 286.04,54.408 289.93,44.931"];
+	foo	 [_draw_="c 7 -#000000 e 400 286 27 18 ",
+		_ldraw_="F 14 11 -Times-Roman c 7 -#000000 T 400 282.3 0 19 3 -foo ",
+		height=0.5,
+		pos="400,286",
+		width=0.75];
+	foo -> bar	 [_draw_="c 7 -#000000 B 4 394.41 267.97 393.18 256.11 392.93 240.35 393.65 226.89 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 397.16 226.95 394.44 216.71 390.18 226.41 ",
+		ek=ev,
+		pos="e,394.44,216.71 394.41,267.97 393.18,256.11 392.93,240.35 393.65,226.89"];
+	foo -> bar	 [_draw_="c 7 -#000000 B 4 405.59 267.97 406.82 256.11 407.07 240.35 406.35 226.89 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 409.82 226.41 405.56 216.71 402.84 226.95 ",
+		fbk=fbv,
+		pos="e,405.56,216.71 405.59,267.97 406.82,256.11 407.07,240.35 406.35,226.89"];
+	foo -> baz	 [_draw_="c 7 -#000000 B 4 413.21 270.04 424.17 256.8 439.92 237.77 452.36 222.73 ",
+		_hdraw_="S 5 -solid c 7 -#000000 C 7 -#000000 P 3 455.2 224.79 458.88 214.86 449.81 220.33 ",
+		ek=ev,
+		pos="e,458.88,214.86 413.21,270.04 424.17,256.8 439.92,237.77 452.36,222.73"];
+}
