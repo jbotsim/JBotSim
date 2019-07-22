@@ -62,12 +62,12 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     /**
-     * Creates a viewer for the specified topology. If <tt>selfContained</tt>
-     * is <tt>true</tt>, a new window will be created to contain the viewer
-     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>,
+     * Creates a viewer for the specified topology. If <code>selfContained</code>
+     * is <code>true</code>, a new window will be created to contain the viewer
+     * (similarly to <code>JViewer(Topology)</code>). If it is <code>false</code>,
      * no window will be created and the viewer can be subsequently
-     * integrated to another swing container (e.g. another <tt>JFrame</tt>
-     * or a <tt>JApplet</tt>).
+     * integrated to another swing container (e.g. another <code>JFrame</code>
+     * or a <code>JApplet</code>).
      *
      * @param topo          The topology to be drawn and/or manipulated.
      * @param selfContained Set this to false to avoid creating a JFrame
@@ -89,11 +89,11 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
 
     /**
      * Creates a viewer encapsulating the specified jtopology. If
-     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created
-     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it
-     * is <tt>false</tt>, no window will be created and the viewer can be
+     * <code>selfContained</code> is <code>true</code>, a new window will be created
+     * to contain the viewer (similarly to <code>JViewer(Topology)</code>). If it
+     * is <code>false</code>, no window will be created and the viewer can be
      * subsequently integrated to another swing container (e.g. another
-     * <tt>JFrame</tt> or a <tt>JApplet</tt>).
+     * <code>JFrame</code> or a <code>JApplet</code>).
      *
      * @param jtopo    The JTopology to be encapsulated.
      * @param windowed Set this to false to avoid creating a JFrame

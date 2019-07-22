@@ -105,7 +105,7 @@ public class ClockManager {
     }
 
     /**
-     * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
+     * Unregisters the specified listener. (The <code>onClock()</code> method of this
      * listener will not longer be called.)
      *
      * @param listener The listener to unregister.
@@ -166,7 +166,7 @@ public class ClockManager {
     /**
      * Indicates whether the clock is currently running or paused.
      *
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused or not started.
+     * @return <code>true</code> if running, <code>false</code> if paused or not started.
      */
     public boolean isRunning() {
         if (clock != null)

@@ -206,8 +206,8 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Set wireless capabilities status
-     * @param enabled the new wireless status: <tt>true</tt> to enable,
-     *         <tt>false</tt> otherwise.
+     * @param enabled the new wireless status: <code>true</code> to enable,
+     *         <code>false</code> otherwise.
      */
     public void setWirelessStatus(boolean enabled) {
         if (enabled == isWirelessEnabled)
@@ -219,8 +219,8 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Returns true if wireless links are enabled.
-     * @return <tt>true</tt> if the wireless links are enabled,
-     *         <tt>false</tt> otherwise.
+     * @return <code>true</code> if the wireless links are enabled,
+     *         <code>false</code> otherwise.
      */
     public boolean getWirelessStatus() {
         return isWirelessEnabled;
@@ -348,7 +348,7 @@ public class Topology extends Properties implements ClockListener {
     /**
      * Indicates whether the internal clock is currently running or in pause.
      *
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
+     * @return <code>true</code> if running, <code>false</code> if paused.
      */
     public boolean isRunning() {
         return clockManager.isRunning();
@@ -464,7 +464,7 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Adds the specified node to this topology. The location of the node
-     * in the topology will be its current inherent location (or <tt>(0,0)</tt>
+     * in the topology will be its current inherent location (or <code>(0,0)</code>
      * if no location was prealably given to it).
      *
      * @param n The node to be added.
@@ -568,7 +568,7 @@ public class Topology extends Properties implements ClockListener {
      * communication ranges.
      *
      * @param l The link to be added.
-     * @param silent <tt>true</tt> to disable notifications of this adding.
+     * @param silent <code>true</code> to disable notifications of this adding.
      */
     public void addLink(Link l, boolean silent) {
         if (l.type == Type.DIRECTED) {
@@ -639,7 +639,7 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Returns true if this topology has at least one directed link.
-     * @return <tt>true</tt> if the {@link Topology} has at least one directed link, <tt>false</tt> otherwise.
+     * @return <code>true</code> if the {@link Topology} has at least one directed link, <code>false</code> otherwise.
      */
     public boolean hasDirectedLinks() {
         return arcs.size() > 2 * edges.size();
@@ -693,7 +693,7 @@ public class Topology extends Properties implements ClockListener {
      * topology. The returned ArrayList can be subsequently modified without
      * effect on the topology.
      *
-     * @param directed <tt>true</tt> for directed links, <tt>false</tt> for
+     * @param directed <code>true</code> for directed links, <code>false</code> for
      *                 undirected links.
      * @return the {@link List} of {@link Link}s.
      */
@@ -727,7 +727,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @param n1 the first {@link Node}.
      * @param n2 the second {@link Node}.
-     * @return The requested link, if such a link exists, <tt>null</tt>
+     * @return The requested link, if such a link exists, <code>null</code>
      * otherwise.
      */
     public Link getLink(Node n1, Node n2) {
@@ -739,9 +739,9 @@ public class Topology extends Properties implements ClockListener {
      * any.
      * @param from the source {@link Node}.
      * @param to the destination {@link Node}.
-     * @param directed <tt>true</tt> if the searched {@link Link} is directed, <tt>false</tt> otherwise.
+     * @param directed <code>true</code> if the searched {@link Link} is directed, <code>false</code> otherwise.
      *
-     * @return The requested link, if such a link exists, <tt>null</tt>
+     * @return The requested link, if such a link exists, <code>null</code>
      * otherwise.
      */
     public Link getLink(Node from, Node to, boolean directed) {
@@ -790,8 +790,8 @@ public class Topology extends Properties implements ClockListener {
      * added or removed.
      *
      * @param listener The listener to register.
-     * @param directed The type of links to be listened (<tt>true</tt> for
-     *                 directed, <tt>false</tt> for undirected).
+     * @param directed The type of links to be listened (<code>true</code> for
+     *                 directed, <code>false</code> for undirected).
      */
     public void addConnectivityListener(ConnectivityListener listener, boolean directed) {
         if (directed)
@@ -816,7 +816,7 @@ public class Topology extends Properties implements ClockListener {
      *
      * @param listener The listener to unregister.
      * @param directed The type of links that this listener was listening
-     *                 (<tt>true</tt> for directed, <tt>false</tt> for undirected).
+     *                 (<code>true</code> for directed, <code>false</code> for undirected).
      */
     public void removeConnectivityListener(ConnectivityListener listener, boolean directed) {
         if (directed)
@@ -941,7 +941,7 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Unregisters the specified listener. (The <tt>onClock()</tt> method of this
+     * Unregisters the specified listener. (The <code>onClock()</code> method of this
      * listener will not longer be called.)
      *
      * @param listener The listener to unregister.
