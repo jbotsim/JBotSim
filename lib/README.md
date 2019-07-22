@@ -60,12 +60,9 @@ As of version `1.0.0`:
     +--- io.jbotsim:jbotsim-extras-swing:1.0.0
     |    +--- io.jbotsim:jbotsim-ui-swing:1.0.0
     |    |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    |    +--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    |    |    |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    |    |    \--- com.paypal.digraph:digraph-parser:1.0
-    |    |    |         \--- org.antlr:antlr4-runtime:4.2
-    |    |    |              +--- org.abego.treelayout:org.abego.treelayout.core:1.0.1
-    |    |    |              \--- org.antlr:antlr4-annotations:4.2
+    |    |    |    \--- io.jbotsim:jbotsim-serialization-common:1.0.0
+    |    |    |         +--- io.jbotsim:jbotsim-core:1.0.0
+    |    |    |         \--- org.antlr:antlr4-runtime:4.7.2
     |    |    +--- io.jbotsim:jbotsim-ui-common:1.0.0
     |    |         \--- io.jbotsim:jbotsim-core:1.0.0
     |    \--- io.jbotsim:jbotsim-extras-common:1.0.0
@@ -98,10 +95,7 @@ As of version `1.0.0`:
     io.jbotsim:jbotsim-common:1.0.0
     +--- io.jbotsim:jbotsim-serialization-common:1.0.0
     |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    \--- com.paypal.digraph:digraph-parser:1.0
-    |         \--- org.antlr:antlr4-runtime:4.2
-    |              +--- org.abego.treelayout:org.abego.treelayout.core:1.0.1
-    |              \--- org.antlr:antlr4-annotations:4.2
+    |    \--- org.antlr:antlr4-runtime:4.7.2
     +--- io.jbotsim:jbotsim-ui-common:1.0.0
     |    \--- io.jbotsim:jbotsim-core:1.0.0
     \--- io.jbotsim:jbotsim-icons:1.0.0
@@ -131,7 +125,7 @@ As of version `1.0.0`:
   
   This "*common*" module currently does not have a platform-specific counterpart.
   
-  As stated by the following dependency tree, there is a dependency to `com.paypal.digraph:digraph-parser` 
+  As stated by the following dependency tree, there is a dependency to `org.antlr:antlr4` 
   (it is [induced](jbotsim-serialization-common/README.md#external-dependencies) by the `DotTopologySerializer`). 
   We consider that this dependency should be compatible with all platforms.
 
@@ -141,10 +135,7 @@ As of version `1.0.0`:
     ```
     io.jbotsim:jbotsim-serialization-common:1.0.0
     +--- io.jbotsim:jbotsim-core:1.0.0
-    \--- com.paypal.digraph:digraph-parser:1.0
-         \--- org.antlr:antlr4-runtime:4.2
-              +--- org.abego.treelayout:org.abego.treelayout.core:1.0.1
-              \--- org.antlr:antlr4-annotations:4.2
+    \--- org.antlr:antlr4-runtime:4.7.2
     ```
     
   </p>
@@ -181,16 +172,12 @@ As of version `1.0.0`:
   
     ```
     io.jbotsim:jbotsim-ui-swing:1.0.0
-    +--- io.jbotsim:jbotsim-core:1.0.0
+    +--- io.jbotsim::jbotsim-core:1.0.0
     +--- io.jbotsim:jbotsim-serialization-common:1.0.0
     |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    \--- com.paypal.digraph:digraph-parser:1.0
-    |         \--- org.antlr:antlr4-runtime:4.2
-    |              +--- org.abego.treelayout:org.abego.treelayout.core:1.0.1
-    |              \--- org.antlr:antlr4-annotations:4.2
-    \--- io.jbotsim:jbotsim-ui-common:1.0.0
-         \--- io.jbotsim:jbotsim-core:1.0.0
-    
+    |    \--- org.antlr:antlr4-runtime:4.7.2
+    \--- io.jbotsim::jbotsim-ui-common:1.0.0
+         \--- io.jbotsim::jbotsim-core:1.0.0    
     ```
     
   </p>
@@ -232,16 +219,12 @@ As of version `1.0.0`:
     |    +--- io.jbotsim:jbotsim-core:1.0.0
     |    +--- io.jbotsim:jbotsim-serialization-common:1.0.0
     |    |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    |    \--- com.paypal.digraph:digraph-parser:1.0
-    |    |         \--- org.antlr:antlr4-runtime:4.2
-    |    |              +--- org.abego.treelayout:org.abego.treelayout.core:1.0.1
-    |    |              \--- org.antlr:antlr4-annotations:4.2
+    |    |    \--- org.antlr:antlr4-runtime:4.7.2
     |    +--- io.jbotsim:jbotsim-ui-common:1.0.0
     |         \--- io.jbotsim:jbotsim-core:1.0.0
     \--- io.jbotsim:jbotsim-extras-common:1.0.0
          +--- io.jbotsim:jbotsim-core:1.0.0
          \--- io.jbotsim:jbotsim-serialization-common:1.0.0
-
     ```
     
   </p>
