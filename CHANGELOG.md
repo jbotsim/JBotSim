@@ -7,6 +7,16 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 ## [Unreleased]
 
 
+### Javadoc errors 
+
+[[issue 66]][issue: #66]
+
+* Prevent some errors in javadoc compilation by specifying UTF-8 encoding for javac and javadoc.
+
+* Also remove some invalid tags (i.e. \<tt\>) from comments. 
+
+[issue: #66]: https://github.com/jbotsim/JBotSim/issues/66
+
 ###  Link class modifications
 
 **Bug fix in Link:**
