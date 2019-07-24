@@ -105,6 +105,7 @@ subprojects {
 
     javadoc {
         options.addStringOption('Xdoclint:all', '-quiet')
+        options.encoding = 'UTF-8'
     }
 }
 
@@ -118,6 +119,7 @@ task monolithicJavadoc(type: Javadoc) {
 
     title = "JBotSim Project documentation"
 
+    options.encoding = 'UTF-8'
     classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
 }
 

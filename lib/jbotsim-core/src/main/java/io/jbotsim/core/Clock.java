@@ -49,7 +49,7 @@ public abstract class Clock {
     /**
      * Indicates whether the clock is currently running or paused.
      *
-     * @return <tt>true</tt> if running, <tt>false</tt> if paused.
+     * @return <code>true</code> if running, <code>false</code> if paused.
      */
     public abstract boolean isRunning();
 

@@ -42,16 +42,16 @@ public class Link extends Properties implements Comparable<Link> {
     Color color = DEFAULT_COLOR;
 
     /**
-     * Enumerates the two possible types of a link: <tt>Type.DIRECTED</tt> and
-     * <tt>Type.UNDIRECTED</tt>.
+     * Enumerates the two possible types of a link: <code>Type.DIRECTED</code> and
+     * <code>Type.UNDIRECTED</code>.
      */
     public enum Type {
         DIRECTED, UNDIRECTED
     }
 
     /**
-     * Enumerates the two possible modes of a link: <tt>Mode.WIRED</tt> and
-     * <tt>Mode.WIRELESS</tt>.
+     * Enumerates the two possible modes of a link: <code>Mode.WIRED</code> and
+     * <code>Mode.WIRELESS</code>.
      */
     public enum Mode {
         WIRED, WIRELESS
@@ -68,11 +68,11 @@ public class Link extends Properties implements Comparable<Link> {
      */
     public Node destination;
     /**
-     * The <tt>Type</tt> of this link (directed/undirected)
+     * The <code>Type</code> of this link (directed/undirected)
      */
     public Type type;
     /**
-     * The <tt>Mode</tt> of this link (wired/wireless)
+     * The <code>Mode</code> of this link (wired/wireless)
      */
     public Mode mode;
 
@@ -87,46 +87,46 @@ public class Link extends Properties implements Comparable<Link> {
     }
 
     /**
-     * Creates a wired link of the specified <tt>type</tt> between the nodes
-     * <tt>from</tt> and <tt>to</tt>. The respective order of <tt>from</tt>
-     * and <tt>to</tt> does not matter if the specified type is undirected.
+     * Creates a wired link of the specified <code>type</code> between the nodes
+     * <code>from</code> and <code>to</code>. The respective order of <code>from</code>
+     * and <code>to</code> does not matter if the specified type is undirected.
      *
      * @param from The source node.
      * @param to   The destination node.
-     * @param type The type of the link (<tt>Type.DIRECTED</tt> or
-     *             <tt>Type.UNDIRECTED</tt>).
+     * @param type The type of the link (<code>Type.DIRECTED</code> or
+     *             <code>Type.UNDIRECTED</code>).
      */
     public Link(Node from, Node to, Type type) {
         this(from, to, type, DEFAULT_MODE);
     }
 
     /**
-     * Creates a link with the specified <tt>mode</tt> between the nodes
-     * <tt>from</tt> and <tt>to</tt>. The created link is undirected by
-     * default. The respective order of <tt>from</tt> and <tt>to</tt> does not
+     * Creates a link with the specified <code>mode</code> between the nodes
+     * <code>from</code> and <code>to</code>. The created link is undirected by
+     * default. The respective order of <code>from</code> and <code>to</code> does not
      * matter.
      *
      * @param from The source node.
      * @param to   The destination node.
-     * @param mode The mode of the link (<tt>Mode.WIRED</tt> or
-     *             <tt>Mode.WIRELESS</tt>).
+     * @param mode The mode of the link (<code>Mode.WIRED</code> or
+     *             <code>Mode.WIRELESS</code>).
      */
     public Link(Node from, Node to, Mode mode) {
         this(from, to, DEFAULT_TYPE, mode);
     }
 
     /**
-     * Creates a link of the specified <tt>type</tt> with the specified
-     * <tt>mode</tt> between the nodes from and to. The created link is wired
-     * by default. The respective order of <tt>from</tt> and <tt>to</tt> does
+     * Creates a link of the specified <code>type</code> with the specified
+     * <code>mode</code> between the nodes from and to. The created link is wired
+     * by default. The respective order of <code>from</code> and <code>to</code> does
      * not matter if the type is undirected.
      *
      * @param from The source node.
      * @param to   The destination node.
-     * @param type The type of the link (<tt>Type.DIRECTED</tt> or
-     *             <tt>Type.UNDIRECTED</tt>).
-     * @param mode The mode of the link (<tt>Mode.WIRED</tt> or
-     *             <tt>Mode.WIRELESS</tt>).
+     * @param type The type of the link (<code>Type.DIRECTED</code> or
+     *             <code>Type.UNDIRECTED</code>).
+     * @param mode The mode of the link (<code>Mode.WIRED</code> or
+     *             <code>Mode.WIRELESS</code>).
      */
     public Link(Node from, Node to, Type type, Mode mode) {
         source = from;
@@ -172,7 +172,7 @@ public class Link extends Properties implements Comparable<Link> {
     /**
      * Returns the parent topology of this link, if any.
      *
-     * @return The parent topology, or <tt>null</tt> if the link has none.
+     * @return The parent topology, or <code>null</code> if the link has none.
      */
     public Topology getTopology() {
         return source.getTopology();
@@ -221,18 +221,18 @@ public class Link extends Properties implements Comparable<Link> {
     }
 
     /**
-     * Tests whether the <tt>mode</tt> is WIRELESS.
-     * @return <tt>true</tt> if the link <tt>mode</tt> is WIRELESS,
-     *         <tt>false</tt> otherwise.
+     * Tests whether the <code>mode</code> is WIRELESS.
+     * @return <code>true</code> if the link <code>mode</code> is WIRELESS,
+     *         <code>false</code> otherwise.
      */
     public boolean isWireless() {
         return mode == Mode.WIRELESS;
     }
 
     /**
-     * Tests whether the <tt>type</tt> is DIRECTED.
-     * @return <tt>true</tt> if the link <tt>type</tt> is DIRECTED,
-     *         <tt>false</tt> otherwise.
+     * Tests whether the <code>type</code> is DIRECTED.
+     * @return <code>true</code> if the link <code>type</code> is DIRECTED,
+     *         <code>false</code> otherwise.
      */
     public boolean isDirected() {
         return type == Type.DIRECTED;
@@ -240,9 +240,9 @@ public class Link extends Properties implements Comparable<Link> {
 
     /**
      * Compares the specified object with this link for equality. Returns
-     * <tt>true</tt> if both links have the same <tt>type</tt>
+     * <code>true</code> if both links have the same <code>type</code>
      * (directed/undirected) and the same endpoints (interchangeably if
-     * undirected). The <tt>mode</tt> is not considered by the equality test.
+     * undirected). The <code>mode</code> is not considered by the equality test.
      */
     public boolean equals(Object o) {
         if (o == null)

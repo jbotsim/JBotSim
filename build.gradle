@@ -71,6 +71,10 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+    }
 }
 
 task publishToInternalRepository {

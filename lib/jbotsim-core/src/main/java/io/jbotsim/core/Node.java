@@ -89,7 +89,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Returns the parent {@link Topology} of this node, if any.
      *
-     * @return The parent {@link Topology}, or <tt>null</tt> if the node is orphan.
+     * @return The parent {@link Topology}, or <code>null</code> if the node is orphan.
      */
     public Topology getTopology() {
         return topo;
@@ -327,8 +327,8 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
 
     /**
      * Indicates whether this node has wireless capabilities enabled.
-     * @return <tt>true</tt> if the wireless capabilities are enabled,
-     *         <tt>false</tt> otherwise.
+     * @return <code>true</code> if the wireless capabilities are enabled,
+     *         <code>false</code> otherwise.
      */
     public boolean isWirelessEnabled() {
         return isWirelessEnabled;
@@ -350,8 +350,8 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
 
     /**
      * Set wireless capabilities status
-     * @param enabled the new wireless status: <tt>true</tt> to enable,
-     *         <tt>false</tt> otherwise.
+     * @param enabled the new wireless status: <code>true</code> to enable,
+     *         <code>false</code> otherwise.
      */
     public void setWirelessStatus(boolean enabled) {
         if (enabled == isWirelessEnabled)
@@ -502,7 +502,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * the reference point).
      *
      * @param p The reference {@link Point}.
-     * @param opposite <tt>true</tt> if the new direction should be the opposite of the reference point.
+     * @param opposite <code>true</code> if the new direction should be the opposite of the reference point.
      */
     public void setDirection(Point p, boolean opposite) {
         Point p2 = (Point) p.clone();
@@ -533,7 +533,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * the specified node, if any such link exists.
      *
      * @param n The sender node.
-     * @return The requested link, or <tt>null</tt> if no such link is found.
+     * @return The requested link, or <code>null</code> if no such link is found.
      */
     public Link getInLinkFrom(Node n) {
         return topo.getLink(n, this, true);
@@ -544,7 +544,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * the specified node, if any such link exists.
      *
      * @param n The destination node.
-     * @return The requested link, or <tt>null</tt> if no such link is found.
+     * @return The requested link, or <code>null</code> if no such link is found.
      */
     public Link getOutLinkTo(Node n) {
         return outLinks.get(n);
@@ -555,7 +555,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * specified node, if any such link exists.
      *
      * @param n The node at the opposite endpoint.
-     * @return The requested link, or <tt>null</tt> if no such link is found.
+     * @return The requested link, or <code>null</code> if no such link is found.
      */
     public Link getCommonLinkWith(Node n) {
         return topo.getLink(this, n);
@@ -594,7 +594,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Returns a list containing all adjacent links of the specified type.
      *
-     * @param directed <tt>true</tt> for directed, <tt>false</tt> for
+     * @param directed <code>true</code> for directed, <code>false</code> for
      *                 undirected. The returned list can be subsequently modified without
      *                 effect on the topology.
      * @return the {@link List} of {@link Link}s
@@ -650,7 +650,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     /**
      * Indicates whether this node has at least one neighbor (undirected)
      *
-     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     * @return <code>true</code> if it does, <code>false</code> if it does not.
      */
     public boolean hasNeighbors() {
         return getLinks().size() > 0;
@@ -699,9 +699,9 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * The content of the
      * message is specified as an object reference, to be passed 'as is' to the
      * destination(s). The effective transmission will occur at the
-     * <tt>x<sup>th</sup></tt> following clock step, where <tt>x</tt> is the
-     * message delay specified by the static method <tt>Message.setMessageDelay
-     * </tt> (1 by default).
+     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
+     * message delay specified by the static method <code>Message.setMessageDelay
+     * </code> (1 by default).
      *
      * @param destination The destination node.
      * @param message     The message to be sent.
@@ -712,7 +712,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Same as <tt>send()</tt>, but the content is directly given as parameter
+     * Same as <code>send()</code>, but the content is directly given as parameter
      * (a message will be created to contain it).
      *
      * @param destination The non-null destination.
@@ -726,9 +726,9 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Same method as <tt>send()</tt>, but retries to send the message later
+     * Same method as <code>send()</code>, but retries to send the message later
      * if the link to the destination disappeared during transmission.
-     * (Does not work for <tt>null</tt> destinations.)
+     * (Does not work for <code>null</code> destinations.)
      *
      * @param destination The non-null destination.
      * @param message     The message.
@@ -741,7 +741,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Same as <tt>sendRetry()</tt>, but the content is directly given as parameter
+     * Same as <code>sendRetry()</code>, but the content is directly given as parameter
      * (a message will be created to contain it).
      *
      * @param destination The non-null destination.
@@ -758,9 +758,9 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * Sends a message to all neighbors. The content of the
      * message is specified as an object reference, to be passed 'as is' to the
      * destination(s). The effective transmission will occur at the
-     * <tt>x<sup>th</sup></tt> following clock step, where <tt>x</tt> is the
-     * message delay specified by the static method <tt>Message.setMessageDelay
-     * </tt> (1 by default).
+     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
+     * message delay specified by the static method <code>Message.setMessageDelay
+     * </code> (1 by default).
      *
      * @param message The message to be sent.
      */
@@ -769,7 +769,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Same as <tt>sendAll()</tt>, but the content is directly given as parameter
+     * Same as <code>sendAll()</code>, but the content is directly given as parameter
      * (a message will be created to contain it).
      *
      * @param content The object to be sent.
