@@ -6,6 +6,24 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+### TopologySerializerFilenameMatcher
+
+* Add an helper method in `TopologySerializerFilenameMatcher` that associates a set of filename extensions with a single
+`TopologySerializer`.
+
+### Graph6 file format support 
+
+[[issue 28]][issue: #28]
+
+* A new serializer `Graph6TopologySerializer` is added to `jbotsim-serialization-common`/`io.jbotsim.io.format.graph6`. 
+
+* Extensions `.d6` and `.g6` have been registered in client classes of `TopologySerializerFilenameMatcher`: 
+    * `examples.tools.JBotSimConvert` 
+    * `examples.tools.JBotSimViewer`
+    * `io.jbotsim.ui.JViewer` 
+
+[issue: #28]: https://github.com/jbotsim/JBotSim/issues/28
+
 ### New parser for DOT file format. 
 
 [[issue 55]][issue: #55]
