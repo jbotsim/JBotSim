@@ -27,8 +27,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.jbotsim.core.Link.Mode.WIRED;
-import static io.jbotsim.core.Link.Type.DIRECTED;
-import static io.jbotsim.core.Link.Type.UNDIRECTED;
+import static io.jbotsim.core.Link.Orientation.DIRECTED;
+import static io.jbotsim.core.Link.Orientation.UNDIRECTED;
 
 /**
  * Interpreter for an {@link org.w3c.dom.Document XML document} that represents a {@link Topology}.
@@ -220,7 +220,7 @@ public class XMLTopologyParser extends XMLParser {
     }
 
     private static void parseLink(Element e, Topology tp, Map<String, Node> nodeids) throws ParserException {
-        Link.Type type = XMLKeys.DIRECTED_ATTR.getValueFor(e, false) ? DIRECTED : UNDIRECTED;
+        Link.Orientation orientation = XMLKeys.DIRECTED_ATTR.getValueFor(e, false) ? DIRECTED : UNDIRECTED;
 
         Node src = nodeids.get(XMLKeys.SOURCE_ATTR.getValueFor(e));
         if (src == null)
@@ -228,7 +228,7 @@ public class XMLTopologyParser extends XMLParser {
         Node dst = nodeids.get(XMLKeys.DESTINATION_ATTR.getValueFor(e));
         if (dst == null)
             throw new ParserException("unknown node: " + XMLKeys.DESTINATION_ATTR.getValueFor(e));
-        Link l = new Link(src, dst, type, WIRED);
+        Link l = new Link(src, dst, orientation, WIRED);
 
         l.setWidth(XMLKeys.WIDTH_ATTR.getValueFor(e, Link.DEFAULT_WIDTH));
         l.setColor(parseColor(e, Link.DEFAULT_COLOR));

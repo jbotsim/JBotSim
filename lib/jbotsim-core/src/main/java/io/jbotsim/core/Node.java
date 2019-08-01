@@ -536,7 +536,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * @return The requested link, or <code>null</code> if no such link is found.
      */
     public Link getInLinkFrom(Node n) {
-        return topo.getLink(n, this, true);
+        return topo.getLink(n, this, Link.Orientation.DIRECTED);
     }
 
     /**
@@ -558,7 +558,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * @return The requested link, or <code>null</code> if no such link is found.
      */
     public Link getCommonLinkWith(Node n) {
-        return topo.getLink(this, n);
+        return topo.getLink(this, n, Link.Orientation.UNDIRECTED);
     }
 
     /**
@@ -568,7 +568,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * @return the {@link List} of inbound {@link Link}s.
      */
     public List<Link> getInLinks() {
-        return topo.getLinks(true, this, 2);
+        return topo.getLinks(Link.Orientation.DIRECTED, this, 2);
     }
 
     /**
@@ -582,25 +582,44 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Returns a list containing all undirected links adjacent to this node.
+     * Returns a list containing all links adjacent to this node. The type of
+     * links is determined according to hasDirectedLinks() method of the topology.
      * The returned list can be subsequently modified without effect on the
      * topology.
      * @return the {@link List} of {@link Link}s
      */
     public List<Link> getLinks() {
-        return getLinks(false);
+        return getLinks(topo.getOrientation());
+    }
+
+    /**
+     * Returns a list containing all adjacent links with the specified
+     * {@code orientation}.
+     *
+     * @param orientation the expected orientation of requested links. The
+     *                    returned list can be subsequently modified without
+     *                    effect on the topology.
+     * @return the {@link List} of {@link Link}s
+     */
+    public List<Link> getLinks(Link.Orientation orientation) {
+        return topo.getLinks(orientation, this, 0);
     }
 
     /**
      * Returns a list containing all adjacent links of the specified type.
      *
      * @param directed <code>true</code> for directed, <code>false</code> for
-     *                 undirected. The returned list can be subsequently modified without
-     *                 effect on the topology.
+     *                 undirected. The returned list can be subsequently
+     *                 modified without effect on the topology.
      * @return the {@link List} of {@link Link}s
+     * @deprecated use {@link #getLinks(Link.Orientation)}
      */
+    @Deprecated
     public List<Link> getLinks(boolean directed) {
-        return topo.getLinks(directed, this, 0);
+        Link.Orientation o = (directed
+                ? Link.Orientation.DIRECTED
+                : Link.Orientation.UNDIRECTED);
+        return topo.getLinks(o, this, 0);
     }
 
     /**
@@ -666,7 +685,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     public List<Node> getNeighbors() {
         LinkedHashSet<Node> neighbors = new LinkedHashSet<>();
-        for (Link l : getLinks())
+        for (Link l : getLinks(Link.Orientation.UNDIRECTED))
             neighbors.add(l.getOtherEndpoint(this));
         return new ArrayList<>(neighbors);
     }

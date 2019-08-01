@@ -106,7 +106,7 @@ public class DotTopologySerializer implements TopologySerializer {
         String edgeOp;
         StringWriter str = new StringWriter();
         PrintWriter out = new PrintWriter(str);
-        if (topology.hasDirectedLinks()) {
+        if (topology.isDirected()) {
             edgeOp = " -> ";
             out.print("digraph");
         } else {
@@ -131,7 +131,7 @@ public class DotTopologySerializer implements TopologySerializer {
         }
 
         for (int i = 0; i < 2; i++) {
-            List<Link> links = topology.getLinks(i == 0);
+            List<Link> links = topology.getLinks(Link.Orientation.DIRECTED);
             for (Link l : links) {
                 int src = 0;
                 if (!l.isDirected() && l.endpoint(1).getID() < l.endpoint(0).getID())
@@ -201,13 +201,13 @@ public class DotTopologySerializer implements TopologySerializer {
             GraphNode gn2 = edge.getNode2();
             Node tgt = nodeTable.get(gn2);
 
-            Link.Type linkType = Link.Type.UNDIRECTED;
+            Link.Orientation linkOrientation = Link.Orientation.UNDIRECTED;
             String isDirected = (String) edge.getAttribute(JBOTSIM_ATTR_IS_DIRECTED);
             if (isDirected != null && Integer.parseInt(isDirected) == 1) {
-                linkType = Link.Type.DIRECTED;
+                linkOrientation = Link.Orientation.DIRECTED;
             }
 
-            if (linkType.equals(Link.Type.UNDIRECTED)) {
+            if (linkOrientation.equals(Link.Orientation.UNDIRECTED)) {
                 if (src.getNeighbors().contains(tgt))
                     continue;
 
@@ -219,7 +219,7 @@ public class DotTopologySerializer implements TopologySerializer {
             } else if (src.getOutLinkTo(tgt) != null) {
                 continue;
             }
-            Link l = new Link(src, tgt, linkType);
+            Link l = new Link(src, tgt, linkOrientation);
             extractAttributes(edge, l);
             tp.addLink(l);
         }

@@ -116,7 +116,7 @@ public class XMLTopologyBuilder extends XMLBuilder {
         Element graph = XMLKeys.GRAPH.createElement(doc);
         for (Node n : tp.getNodes())
             addNode(doc, tp, graph, n);
-        for (Link l : tp.getLinks(true))
+        for (Link l : tp.getLinks(Link.Orientation.DIRECTED))
             if (! l.isWireless())
                 addLink(doc, graph, l);
 

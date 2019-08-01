@@ -28,24 +28,24 @@ import java.util.List;
 /**
  * <p>The {@link Link} object encodes a communication link between two {@link Node}s.</p>
  *
- * <p>Links can either be {@link Type#DIRECTED} or {@link Type#UNDIRECTED}, and either
+ * <p>Links can either be {@link Orientation#DIRECTED} or {@link Orientation#UNDIRECTED}, and either
  * {@link Mode#WIRED} or {@link Mode#WIRELESS}.
- * The by default, a link will be {@link Type#UNDIRECTED} and {@link Mode#WIRELESS}.</p>
+ * The by default, a link will be {@link Orientation#UNDIRECTED} and {@link Mode#WIRELESS}.</p>
  */
 public class Link extends Properties implements Comparable<Link> {
     public static final Color DEFAULT_COLOR = Color.darkGray;
     public static final int DEFAULT_WIDTH = 1;
-    public static final Type DEFAULT_TYPE = Type.UNDIRECTED;
+    public static final Orientation DEFAULT_ORIENTATION = Orientation.UNDIRECTED;
     public static final Mode DEFAULT_MODE = Mode.WIRED;
 
     Integer width = DEFAULT_WIDTH;
     Color color = DEFAULT_COLOR;
 
     /**
-     * Enumerates the two possible types of a link: <code>Type.DIRECTED</code> and
-     * <code>Type.UNDIRECTED</code>.
+     * Enumerates the two possible types of a link: <code>Orientation.DIRECTED</code> and
+     * <code>Orientation.UNDIRECTED</code>.
      */
-    public enum Type {
+    public enum Orientation {
         DIRECTED, UNDIRECTED
     }
 
@@ -68,9 +68,9 @@ public class Link extends Properties implements Comparable<Link> {
      */
     public Node destination;
     /**
-     * The <code>Type</code> of this link (directed/undirected)
+     * The <code>Orientation</code> of this link (directed/undirected)
      */
-    public Type type;
+    public Orientation orientation;
     /**
      * The <code>Mode</code> of this link (wired/wireless)
      */
@@ -83,21 +83,21 @@ public class Link extends Properties implements Comparable<Link> {
      * @param n2 The destination node.
      */
     public Link(Node n1, Node n2) {
-        this(n1, n2, DEFAULT_TYPE, DEFAULT_MODE);
+        this(n1, n2, DEFAULT_ORIENTATION, DEFAULT_MODE);
     }
 
     /**
-     * Creates a wired link of the specified <code>type</code> between the nodes
+     * Creates a wired link of the specified <code>orientation</code> between the nodes
      * <code>from</code> and <code>to</code>. The respective order of <code>from</code>
-     * and <code>to</code> does not matter if the specified type is undirected.
+     * and <code>to</code> does not matter if the specified orientation is undirected.
      *
      * @param from The source node.
      * @param to   The destination node.
-     * @param type The type of the link (<code>Type.DIRECTED</code> or
-     *             <code>Type.UNDIRECTED</code>).
+     * @param orientation The orientation of the link (<code>Orientation.DIRECTED</code> or
+     *             <code>Orientatino.UNDIRECTED</code>).
      */
-    public Link(Node from, Node to, Type type) {
-        this(from, to, type, DEFAULT_MODE);
+    public Link(Node from, Node to, Orientation orientation) {
+        this(from, to, orientation, DEFAULT_MODE);
     }
 
     /**
@@ -112,26 +112,26 @@ public class Link extends Properties implements Comparable<Link> {
      *             <code>Mode.WIRELESS</code>).
      */
     public Link(Node from, Node to, Mode mode) {
-        this(from, to, DEFAULT_TYPE, mode);
+        this(from, to, DEFAULT_ORIENTATION, mode);
     }
 
     /**
-     * Creates a link of the specified <code>type</code> with the specified
+     * Creates a link of the specified <code>orientation</code> with the specified
      * <code>mode</code> between the nodes from and to. The created link is wired
      * by default. The respective order of <code>from</code> and <code>to</code> does
-     * not matter if the type is undirected.
+     * not matter if the orientation is undirected.
      *
      * @param from The source node.
      * @param to   The destination node.
-     * @param type The type of the link (<code>Type.DIRECTED</code> or
-     *             <code>Type.UNDIRECTED</code>).
+     * @param orientation The orientation of the link (<code>Orientation.DIRECTED</code> or
+     *             <code>Orientation.UNDIRECTED</code>).
      * @param mode The mode of the link (<code>Mode.WIRED</code> or
      *             <code>Mode.WIRELESS</code>).
      */
-    public Link(Node from, Node to, Type type, Mode mode) {
+    public Link(Node from, Node to, Orientation orientation, Mode mode) {
         source = from;
         destination = to;
-        this.type = type;
+        this.orientation = orientation;
         this.mode = mode;
     }
 
@@ -230,17 +230,17 @@ public class Link extends Properties implements Comparable<Link> {
     }
 
     /**
-     * Tests whether the <code>type</code> is DIRECTED.
-     * @return <code>true</code> if the link <code>type</code> is DIRECTED,
+     * Tests whether the <code>orientation</code> is DIRECTED.
+     * @return <code>true</code> if the link <code>orientation</code> is DIRECTED,
      *         <code>false</code> otherwise.
      */
     public boolean isDirected() {
-        return type == Type.DIRECTED;
+        return orientation == Orientation.DIRECTED;
     }
 
     /**
      * Compares the specified object with this link for equality. Returns
-     * <code>true</code> if both links have the same <code>type</code>
+     * <code>true</code> if both links have the same <code>orientation</code>
      * (directed/undirected) and the same endpoints (interchangeably if
      * undirected). The <code>mode</code> is not considered by the equality test.
      */
@@ -249,9 +249,9 @@ public class Link extends Properties implements Comparable<Link> {
             return false;
 
         Link l = (Link) o;
-        if (this.type != l.type)
+        if (this.orientation != l.orientation)
             return false;
-        else if (this.type == Type.DIRECTED)
+        else if (this.orientation == Orientation.DIRECTED)
             return (l.source == this.source && l.destination == this.destination);
         else
             return (l.source == this.source && l.destination == this.destination) ||
@@ -269,7 +269,7 @@ public class Link extends Properties implements Comparable<Link> {
      * Returns a string representation of this link.
      */
     public String toString() {
-        if (type == Type.DIRECTED)
+        if (orientation == Orientation.DIRECTED)
             return (source + " --> " + destination);
         else
             return (source + " <--> " + destination);
