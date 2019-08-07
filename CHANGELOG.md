@@ -6,6 +6,23 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+### New parser for DOT file format. 
+
+[[issue 55]][issue: #55]
+
+* The replacement of the parser removes the dependency to [com.paypal.digraph.digraph-parser](https://github.com/paypal/digraph-parser).
+
+* The new parser has been written from the ANTLR grammar used by digraph-parser package 
+(actually it is the grammar given in "The definitive ANTLR 4 Reference" book by T. Parr).
+ 
+* ANTLR runtime classes are still required to run the parser.
+
+* The parser builds a graph structure (`DotGraph`, `DotNode`, `DotEdge`) that is translated into a topology.
+
+* The new parser permits to distinguish directed and undirected graphs.
+
+[issue: #55]: https://github.com/jbotsim/JBotSim/issues/55
+
 ### Topology, Node and Link classes modifications
 
 [[issue 49]][issue: #49]

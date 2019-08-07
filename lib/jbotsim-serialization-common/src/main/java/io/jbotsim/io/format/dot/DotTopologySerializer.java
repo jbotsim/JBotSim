@@ -20,16 +20,10 @@
  */
 package io.jbotsim.io.format.dot;
 
-import com.paypal.digraph.parser.GraphEdge;
-import com.paypal.digraph.parser.GraphNode;
-import com.paypal.digraph.parser.GraphParser;
-
 import io.jbotsim.core.*;
 import io.jbotsim.io.TopologySerializer;
 
-import java.io.ByteArrayInputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.nio.charset.StandardCharsets;
@@ -56,7 +50,7 @@ public class DotTopologySerializer implements TopologySerializer {
     public static final double DEFAULT_SCALE = 1.0;
     public static final int DEFAULT_MARGIN = 50;
 
-    public static final String[] DOT_FILENAME_EXTENSIONS = new String[] {"gv", "dot", "xdot" };
+    public static final String[] DOT_FILENAME_EXTENSIONS = new String[]{"gv", "dot", "xdot"};
 
     public DotTopologySerializer() {
         this(DEFAULT_SCALE, DEFAULT_MARGIN);
@@ -79,20 +73,20 @@ public class DotTopologySerializer implements TopologySerializer {
     @Override
     public void importFromString(Topology topology, String data) {
         topology.disableWireless();
-        GraphParser parser = new GraphParser(new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8)));
-        Map<String, GraphNode> nodes = parser.getNodes();
-        if (nodes.isEmpty())
-            return;
+        try {
+            InputStream is = new ByteArrayInputStream(data.getBytes(StandardCharsets.UTF_8));
+            DotGraph dotGraph = new GraphParser().parseGraph(is);
 
-        Map<String, GraphEdge> edges = parser.getEdges();
-
-        makeTopologyFromGraph(nodes, edges, topology);
-        if (reorganize) {
-            organize(topology, scale, margin);
-        } else {
-            int height = topology.getHeight();
-            for (Node node : topology.getNodes())
-                node.setLocation(node.getX(), height - node.getY());
+            makeTopologyFromGraph(dotGraph, topology);
+            if (reorganize) {
+                organize(topology, scale, margin);
+            } else {
+                int height = topology.getHeight();
+                for (Node node : topology.getNodes())
+                    node.setLocation(node.getX(), height - node.getY());
+            }
+        } catch (IOException | GraphParser.ParserException e) {
+            System.err.println(e.getMessage());
         }
     }
 
@@ -161,14 +155,13 @@ public class DotTopologySerializer implements TopologySerializer {
         return str.getBuffer().toString();
     }
 
-    private void makeTopologyFromGraph(Map<String, GraphNode> nodes, Map<String, GraphEdge> edges, Topology tp) {
-        HashMap<GraphNode, Node> nodeTable = new HashMap<>();
+    private void makeTopologyFromGraph(DotGraph graph, Topology tp) {
+        HashMap<DotNode, Node> nodeTable = new HashMap<>();
         boolean enableWireless = false;
 
-        for (String nname : nodes.keySet()) {
+        for (DotNode dn : graph.getAllNodes()) {
             Node node;
-            GraphNode gn = nodes.get(nname);
-            String className = (String) gn.getAttribute(JBOTSIM_ATTR_NODE_CLASS);
+            String className = dn.getAttribute(JBOTSIM_ATTR_NODE_CLASS);
             if (className == null) {
                 node = tp.newInstanceOfModel(Topology.DEFAULT_NODE_MODEL_NAME);
             } else {
@@ -179,31 +172,33 @@ public class DotTopologySerializer implements TopologySerializer {
                     node = tp.newInstanceOfModel(Topology.DEFAULT_NODE_MODEL_NAME);
                 }
             }
-            extractAttributes(gn, node);
+            extractAttributes(dn, node);
             try {
-                node.setID(Integer.parseInt(gn.getId()));
+                node.setID(Integer.parseInt(dn.getId()));
             } catch (NumberFormatException e) {
-                node.setLabel(gn.getId());
+                node.setLabel(dn.getId());
             }
             tp.addNode(node);
-            nodeTable.put(gn, node);
+            nodeTable.put(dn, node);
         }
 
-        for (GraphEdge edge : edges.values()) {
-            String isWireless = (String) edge.getAttribute(JBOTSIM_ATTR_IS_WIRELESS);
+        for (DotEdge edge : graph.getAllEdges()) {
+            String isWireless = edge.getAttribute(JBOTSIM_ATTR_IS_WIRELESS);
             if (isWireless != null && Integer.parseInt(isWireless) == 1) {
                 enableWireless = true;
                 continue;
             }
 
-            GraphNode gn1 = edge.getNode1();
+            DotNode gn1 = edge.getNode1();
             Node src = nodeTable.get(gn1);
-            GraphNode gn2 = edge.getNode2();
+            DotNode gn2 = edge.getNode2();
             Node tgt = nodeTable.get(gn2);
 
             Link.Orientation linkOrientation = Link.Orientation.UNDIRECTED;
             String isDirected = (String) edge.getAttribute(JBOTSIM_ATTR_IS_DIRECTED);
-            if (isDirected != null && Integer.parseInt(isDirected) == 1) {
+
+            if (isDirected != null && Integer.parseInt(isDirected) == 1 ||
+                edge.isDirected()) {
                 linkOrientation = Link.Orientation.DIRECTED;
             }
 
@@ -226,62 +221,62 @@ public class DotTopologySerializer implements TopologySerializer {
         tp.setWirelessStatus(enableWireless);
     }
 
-    private void extractAttributes(GraphNode mn, Node node) {
-        String pos = (String) mn.getAttribute("pos");
+    private void extractAttributes(DotNode mn, Node node) {
+        String pos = mn.getAttribute("pos");
         if (pos != null) {
             String[] xy = pos.replace("!", "").split(",");
             node.setLocation(Double.valueOf(xy[0]), Double.valueOf(xy[1]));
         }
 
-        String w = (String) mn.getAttribute("width");
+        String w = mn.getAttribute("width");
         if (w != null) {
             try {
                 node.setIconSize(Integer.valueOf(w));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         } else {
-            String h = (String) mn.getAttribute("height");
+            String h = mn.getAttribute("height");
             try {
                 node.setIconSize(Integer.valueOf(h));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         }
 
 
-        String c = (String) mn.getAttribute("color");
+        String c = mn.getAttribute("color");
         if (c != null) {
             try {
                 node.setColor(getColorFromString(c));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         }
-        c = (String) mn.getAttribute("fillcolor");
+        c = mn.getAttribute("fillcolor");
         if (c != null) {
             try {
                 node.setColor(getColorFromString(c));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         }
     }
 
-    private void extractAttributes(GraphEdge ml, Link l) {
-        String c = (String) ml.getAttribute("color");
+    private void extractAttributes(DotEdge ml, Link l) {
+        String c = ml.getAttribute("color");
         if (c != null) {
             try {
                 l.setColor(getColorFromString(c));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         }
-        String w = (String) ml.getAttribute("width");
+        String w = ml.getAttribute("width");
         if (w != null) {
             try {
                 l.setWidth(Integer.decode(w));
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException ignored) {
 
             }
         }
