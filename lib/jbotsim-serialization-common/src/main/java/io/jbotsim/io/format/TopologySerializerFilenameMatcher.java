@@ -58,6 +58,19 @@ public class TopologySerializerFilenameMatcher {
         supportedSerializers.add(new SupportedSerializer(regexp, topologySerializer));
     }
 
+    /**
+     * Records and links the provided {@link TopologySerializer} to a given array.
+     * of filename extensions.
+     *
+     * @param extensions an array if filename extensions (without the . character)
+     * @param topologySerializer the {@link TopologySerializer} to be recorded
+     */
+    public void addTopologySerializer(String[] extensions,
+                                      TopologySerializer topologySerializer) {
+        for(String ext : extensions)
+            addTopologySerializer(".*\\."+ext+"$", topologySerializer);
+    }
+
     private static class SupportedSerializer {
         String regex;
         TopologySerializer topologySerializer;
