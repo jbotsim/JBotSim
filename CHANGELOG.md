@@ -6,6 +6,15 @@ As of version 1.0.0, the project will try and follow [Semantic Versioning](https
 
 ## [Unreleased]
 
+###  JDirectedLinkPainter creation
+
+* `JDirectedLinkPainter` is added to `jbotsim-extras-swing`/`io.jbotsim.ui.painting`. [[issue 71]][issue: #71]
+  
+  It provides arrow-tips to directed links. Its implementation uses the reusable  
+  `jbotsim-extras-common`/`io.jbotsim.ui.painting.ArrowTipPathGenerator` class.
+
+[issue: #71]: https://github.com/jbotsim/JBotSim/issues/71
+
 ### TopologySerializerFilenameMatcher
 
 * Add an helper method in `TopologySerializerFilenameMatcher` that associates a set of filename extensions with a single
