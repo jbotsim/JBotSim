@@ -97,8 +97,6 @@ examples.
 
 ## Current version
 
-> Note: As of version `1.0.0`, the JBotSim project will try and follow the rules provided by the 
-[Semantic Versioning](https://semver.org/).
  
 The latest public version is [`1.0.0`][mavencentral-jbotsim-latest]. 
 Please see the [CHANGELOG.md](CHANGELOG.md) for previous versions modifications.

@@ -2,8 +2,6 @@
 
 This file lists modifications introduced by each version.
 
-As of version 1.0.0, the project will try and follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
 ## [Unreleased]
 
 ###  JDirectedLinkPainter creation
