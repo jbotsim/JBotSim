@@ -1,6 +1,6 @@
 
 [![Build Status](https://travis-ci.org/jbotsim/JBotSim.svg?branch=master)][travis-jbotsim]
-[![Maven Central](https://img.shields.io/badge/maven%20central-1.0.0-informational.svg)][mavencentral-jbotsim-latest]
+[![Maven Central](https://img.shields.io/badge/maven%20central-1.1.0-informational.svg)][mavencentral-jbotsim-latest]
 [![License](https://img.shields.io/badge/license-LGPL%20&ge;%203.0-informational.svg)][lgpl3]
   
 
@@ -58,7 +58,7 @@ artifact will best suit your project's needs):
     * choose `From Maven ...`.
   
   * In the "Download Library from Maven Repository" popup:
-    * provide the following dependence `io.jbotsim:jbotsim-all:1.0.0`
+    * provide the following dependence `io.jbotsim:jbotsim-all:1.1.0`
     * make sure to tick `JavaDocs`
     * Hit `OK`.
   * Confirm that you want to add it to your (only) module.
@@ -98,7 +98,7 @@ examples.
 ## Current version
 
  
-The latest public version is [`1.0.0`][mavencentral-jbotsim-latest]. 
+The latest public version is [`1.1.0`][mavencentral-jbotsim-latest]. 
 Please see the [CHANGELOG.md](CHANGELOG.md) for previous versions modifications.
 
 
@@ -127,7 +127,7 @@ If your build system uses *Gradle*, you will want to add something like this to 
 
 ```
 dependencies {
-    implementation "io.jbotsim:jbotsim-all:1.0.0"
+    implementation "io.jbotsim:jbotsim-all:1.1.0"
 }
 ```
 
@@ -140,7 +140,7 @@ If your build system uses *Maven*, you will want to add something like this to y
 <dependency>
   <groupId>io.jbotsim</groupId>
   <artifactId>jbotsim-all</artifactId>
-  <version>1.0.0</version>
+  <version>1.1.0</version>
 </dependency>
 ```
 
@@ -148,7 +148,7 @@ If your build system uses *Maven*, you will want to add something like this to y
 
 If you use a _Java Project_ in _IntelliJ IDEA_, add the following dependency (as explained [here](#declaring-the-dependency)):
  ```
- io.jbotsim:jbotsim-all:1.0.0
+ io.jbotsim:jbotsim-all:1.1.0
  ```
 
 
@@ -206,7 +206,7 @@ gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys DFA48EDB1EDEBA6F
 
 [travis-jbotsim]: https://travis-ci.org/jbotsim/JBotSim
 [github-jbotsim]: https://github.com/jbotsim/JBotSim
-[mavencentral-jbotsim-latest]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.0.0
+[mavencentral-jbotsim-latest]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.1.0
 [mavencentral-jbotsim-1-0-0]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.0.0
 [mavencentral-jbotsim]: https://search.maven.org/search?q=g:io.jbotsim
 [github-jbotsim-issues]: https://github.com/jbotsim/JBotSim/issues
