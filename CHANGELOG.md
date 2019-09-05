@@ -4,133 +4,43 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
-###  JDirectedLinkPainter creation
+* empty
 
-* `JDirectedLinkPainter` is added to `jbotsim-extras-swing`/`io.jbotsim.ui.painting`. [[issue 71]][issue: #71]
-  
-  It provides arrow-tips to directed links. Its implementation uses the reusable  
-  `jbotsim-extras-common`/`io.jbotsim.ui.painting.ArrowTipPathGenerator` class.
-
-[issue: #71]: https://github.com/jbotsim/JBotSim/issues/71
-
-### TopologySerializerFilenameMatcher
-
-* Add an helper method in `TopologySerializerFilenameMatcher` that associates a set of filename extensions with a single
-`TopologySerializer`.
-
-### Graph6 file format support 
-
-[[issue 28]][issue: #28]
-
-* A new serializer `Graph6TopologySerializer` is added to `jbotsim-serialization-common`/`io.jbotsim.io.format.graph6`. 
-
-* Extensions `.d6` and `.g6` have been registered in client classes of `TopologySerializerFilenameMatcher`: 
-    * `examples.tools.JBotSimConvert` 
-    * `examples.tools.JBotSimViewer`
-    * `io.jbotsim.ui.JViewer` 
-
-[issue: #28]: https://github.com/jbotsim/JBotSim/issues/28
-
-### New parser for DOT file format. 
-
-[[issue 55]][issue: #55]
-
-* The replacement of the parser removes the dependency to [com.paypal.digraph.digraph-parser](https://github.com/paypal/digraph-parser).
-
-* The new parser has been written from the ANTLR grammar used by digraph-parser package 
-(actually it is the grammar given in "The definitive ANTLR 4 Reference" book by T. Parr).
- 
-* ANTLR runtime classes are still required to run the parser.
-
-* The parser builds a graph structure (`DotGraph`, `DotNode`, `DotEdge`) that is translated into a topology.
-
-* The new parser permits to distinguish directed and undirected graphs.
-
-[issue: #55]: https://github.com/jbotsim/JBotSim/issues/55
+## [1.1.0] - 2019/09/??
 
 ### Topology, Node and Link classes modifications
 
+**Links handling clarification:**
+
 [[issue 49]][issue: #49]
 
-* The enum class `Link.Type` has been **renamed** as `Link.Orientation`.
+* The `Link.Type` enum has been **renamed** as `Link.Orientation`
+* The `Link.DEFAULT_TYPE` enum has been **renamed** into `Link.DEFAULT_ORIENTATION`
+* The `Topology` class is augmented with an instance variable `orientation` that contains the default orientation of 
+the topology
 
-* The enum class `Link.DEFAULT_TYPE` has been **renamed** into `Link.DEFAULT_ORIENTATION`.
-
-* The class `Topology` is augmented with an instance variable `orientation` that contains the default orientation of 
-the topology. Accessors/Actuators have been added as `Topology.setOrientation()` and `Topology.getOrientation()`.
-
-* A new helper method is added `Topology.isDirected()` that is a simple test of the value returned by 
-`Topology.getOrientation()`.  
-
-* Accessors to links `Topology.getLinks()`, `Topology.getLink()` and `Node.getLinks()` now return links whose type is 
-determined with respect to `Topology.getOrientation()`.
-
-* Accessors to links based on a Boolean specification of the orientation i.e., `Topology.getLinks(boolean)`, 
-`Topology.getLink(Node,Node,boolean)` and `Node.getLinks(boolean)` are marked **deprecated** and replaced by methods 
-where the Boolean is replaced by a `Link.Orientation` parameter.  
+  Accessors/Actuators have been added as `Topology.setOrientation()` and `Topology.getOrientation()`.
+* A new `Topology.isDirected()` helper method has been added
  
-* The method `Topology.hasDirectedLinks()` is marked as **deprecated**; `Topology.isDirected()` should be used instead.
-
-* Implementation of `Node.getCommonLinkWith()` and `Node.getNeighbors()` is changed to explicitly request undirected 
-links. 
-  
-* Add a test suite to check behaviors of `Topology.getLinks()` w.r.t. topology orientation.
+  It is a simple test of the value returned by `Topology.getOrientation()`.  
+* Accessors to links `Topology.getLinks()`, `Topology.getLink()` and `Node.getLinks()` now return links whose type is 
+determined with respect to `Topology.getOrientation()`
+* Accessors to links based on a `Boolean` specification of the orientation i.e., `Topology.getLinks(boolean)`, 
+`Topology.getLink(Node,Node,boolean)` and `Node.getLinks(boolean)` are marked **deprecated** and replaced by methods 
+where the `Boolean` is replaced by a `Link.Orientation` parameter
+* The method `Topology.hasDirectedLinks()` is marked as **deprecated**; `Topology.isDirected()` should be used instead
+* The implementation of `Node.getCommonLinkWith()` and `Node.getNeighbors()` is changed to explicitly request undirected 
+links
+* A test suite has been added to check behaviors of `Topology.getLinks()` w.r.t. topology orientation
 
 [issue: #49]: https://github.com/jbotsim/JBotSim/issues/49
 
-### Javadoc modifications 
-
-* Link JSE8 javadoc from javadoc. [[issue 62]][issue: #62]
-* Prevent some errors in javadoc compilation by specifying UTF-8 encoding for javac and javadoc. [[issue 66]][issue: #66]
-* Also remove some invalid tags (i.e. \<tt\>) from comments. [[issue 66]][issue: #66]
-
-[issue: #62]: https://github.com/jbotsim/JBotSim/issues/62
-[issue: #66]: https://github.com/jbotsim/JBotSim/issues/66
-
-###  Link class modifications
 
 **Bug fix in Link:**
 
-* Fixed a `NullPointerException` when calling `Link.equals(null)`. [[issue 65]][issue: #65]
+* Fixed a `NullPointerException` when calling `Link.equals(null)` [[issue 65]][issue: #65]
 
 [issue: #65]: https://github.com/jbotsim/JBotSim/issues/65
-
-### New icon in the jbotsim-icons module
-
-`jbotsim-icons`/`io.jbotsim.ui.icons`
-
-A new icon suitable for servers/mainframes has been added [[issue 59]][issue: #59] 
-  * `jbotsim-icons`/`io/jbotsim/ui/icons/server.png` 
-
-As usual, it's path can be accessed using the corresponding constant `Icons.SERVER`. 
-
-
-[issue: #59]: https://github.com/jbotsim/JBotSim/issues/59
-
-###  Color class modifications
-
-* Some internal fixes have been provided, and unit tests added, to better match AWT's implementation regarding 
-  constructors and the alpha component. 
-  
-* `Color.getColor()` variants now better match their AWT counter parts.
-
-  JBotSim's implementations used to directly consider the provided String as a RGB value, instead of trying to get the 
-  said value from a system property.  
-
-* General documentation effort.
-
-### JBackgroundPainter, JLinkPainter, JNodePainter classes modifications
-
-In order to ease behavior modifications by inheritance, `JBackgroundPainter`, `JLinkPainter` and `JNodePainter` have 
-been modified so that they all expose a `protected` variant of:
-* `setColor()`: this method is called by the object when it needs to set the AWT `Color` of the element;
-* `setStroke()`: this method is called by the object when it needs to set the AWT `Stroke` used to draw the element;
-* `setRenderingHints()`: this method is called by the object when it needs to set the AWT `RenderingHints` used to draw 
-the element.
-
-Overriding these methods should be fairly straightforward.
-
-The behaviors associated to each class stay unchanged.
 
 ###  MessageEngine class modifications
 
@@ -138,24 +48,24 @@ The behaviors associated to each class stay unchanged.
 
 **Fix in MessageEngine:**
 
-* A call to the now deprecated `MessageEngine.setSpeed()` (now `MessageEngine.setDelay()`) method does not duplicate
-  messages delivery anymore. 
+* A call to the now **deprecated** `MessageEngine.setSpeed()` (now `MessageEngine.setDelay()`) method does not duplicate
+  messages delivery anymore
 
 **Behavior modifications in MessageEngine:**
 
-* The delay feature from the former `DelayMessageEngine` has finally been integrated in the `MessageEngine`.
+* The delay feature from the former `DelayMessageEngine` has finally been integrated in the `MessageEngine`
 
   Modifying the `MessageEngine`'s delay (`setDelay()`) will only affect messages sent during this round and the 
   following ones. Already queued messages retain their counters. 
 
-* A message will now be dropped if the link between its sender and destination is broken, while the message is queued.
+* A message will now be dropped if the link between its sender and destination is broken, while the message is queued
 
   In order for a message to be delivered, a link from the sender to the destination must be present during each round,
   while the message is queued. If at some point the `MessageEngine` can't find such a link, the message will be dropped.
    
   Note that if `Message.retryMode` is set to `true`, the `MessageEngine` will try requeue it, with a new delay.
 
-* Concurrent messages delivery is now consistent with insertion order. 
+* Concurrent messages delivery is now consistent with insertion order 
 
   When several messages between a sender and a destination are supposed to be delivered during the same round (they 
   have possibly been queued during different rounds, but with different delays), they will now consistently be delivered
@@ -200,19 +110,18 @@ Since the base `MessageEngine` now handles the _delay_ feature:
    
 * The `RandomMessageEngine` inherits from all delay-related improvements in `MessageEngine`:
   
-  * the delay applied to message delivery is now modifiable during the object's lifecycle;
-  * concurrent messages delivery is now consistent with insertion order;
-  * a broken link leads to message dropping;
-  * `Message.retryMode` is now taken into account.
+  * The delay applied to message delivery is now modifiable during the object's lifecycle
+  * Concurrent messages delivery is now consistent with insertion order
+  * A broken link leads to message dropping
+  * `Message.retryMode` is now taken into account
     
-
 ###  AsyncMessageEngine class modifications
 
 [[issue 58]][issue: #58]
 
 **Behavior modifications in AsyncMessageEngine:**
 
-* The _average_ feature is now better handled and documented.
+* The _average_ feature is now better handled and documented
 
   In non-FIFO cases, the delay is drawn randomly according to an exponential law with average value 
     `AsyncMessageEngine.getAverageDuration()`.
@@ -243,21 +152,21 @@ Since the base `MessageEngine` now handles the _delay_ feature:
 
   Please use  `AsyncMessageEngine(Topology, double, Type)` instead.
 
-
 [issue: #58]: https://github.com/jbotsim/JBotSim/issues/58
 
 ###  JViewer class modifications
 
 **Bug fix in JViewer:**
 
-* Fixed a truncation issue when importing a Topology via the *Load Topology* command. [[issue 60]][issue: #60]
+* Fixed a truncation issue when importing a Topology via the *Load Topology* command [[issue 60]][issue: #60]
 
 [issue: #60]: https://github.com/jbotsim/JBotSim/issues/60
 
 **Behavior modifications in JViewer:**
 
-* The `JViewer` now also detects `.gv` and `.xdot` files as to be handled with the `DotTopologySerializer`. [[issue 48]][issue: #48]
-
+* The `JViewer` now also detects `.gv` and `.xdot` files as to be handled with the `DotTopologySerializer` [[issue 48]][issue: #48]
+* The `JViewer` now detects `.d6` and `.g6` files as to be handled with the new `Graph6TopologySerializer` [[issue 28]][issue: #28]
+ 
 ###  DotTopologySerializer class modifications
 
 [[issue 48]][issue: #48]
@@ -265,19 +174,19 @@ Since the base `MessageEngine` now handles the _delay_ feature:
 **Behavior modifications in DotTopologySerializer:**
 
 * `DotTopologySerializer.exportToString(Topology)` is now implemented (`null` was knowingly returned in the previous 
-  version).
+  version)
 
   Amongst other implementation points:
-  * node positions are output with the `pos = "x, y!"` syntax;
-  * the Y-coordinates are exported flipped, to be consistent with `DotTopologySerializer.importFromString()`;
-  * the exportation is done without respect to the `scale` member.
+  * Node positions are output with the `pos = "x, y!"` syntax
+  * The Y-coordinates are exported flipped, to be consistent with `DotTopologySerializer.importFromString()`
+  * The exportation is done without respect to the `scale` member
 
 * By default, the `DotTopologySerializer.importFromString(Topology , String)` does not scale anymore (it formerly 
   doubled distances).
      
   The former behavior can be achieved by either:
-    * using the `DotTopologySerializer(double scale, int margin, boolean reorganize)` constructor or
-    * using `TopologyLayouts.autoscale()`.
+  * using the `DotTopologySerializer(double scale, int margin, boolean reorganize)` constructor or
+  * using `TopologyLayouts.autoscale()`.
 
 **Method symbols in DotTopologySerializer:**
 
@@ -296,6 +205,75 @@ Since the base `MessageEngine` now handles the _delay_ feature:
     
 [graphviz-gv-extension]: https://marc.info/?l=graphviz-devel&m=129418103126092
 [issue: #48]: https://github.com/jbotsim/JBotSim/issues/48
+
+### DotTopologySerializer new parser implementation
+
+[[issue 55]][issue: #55]
+
+* The replacement of the parser removes the dependency to [com.paypal.digraph.digraph-parser](https://github.com/paypal/digraph-parser)
+
+* The new parser has been written from the ANTLR grammar used by digraph-parser package 
+(actually it is the grammar given in "The definitive ANTLR 4 Reference" book by T. Parr)
+ 
+* ANTLR runtime classes are still required to run the parser
+
+* The parser builds a graph structure (`DotGraph`, `DotNode`, `DotEdge`) that is translated into a topology
+
+* The new parser permits to distinguish directed and undirected graphs
+
+[issue: #55]: https://github.com/jbotsim/JBotSim/issues/55
+
+### Graph6 file format support 
+
+[[issue 28]][issue: #28]
+
+* A new serializer `Graph6TopologySerializer` is added to `jbotsim-serialization-common`/`io.jbotsim.io.format.graph6`.
+
+* Extensions `.d6` and `.g6` have been registered in client classes of `TopologySerializerFilenameMatcher`: 
+    * `examples.tools.JBotSimConvert` 
+    * `examples.tools.JBotSimViewer`
+    * `io.jbotsim.ui.JViewer` 
+
+[issue: #28]: https://github.com/jbotsim/JBotSim/issues/28
+
+### TopologySerializerFilenameMatcher
+
+* An helper method has been added in `TopologySerializerFilenameMatcher` that associates a set of filename extensions 
+  with a single `TopologySerializer`
+
+###  Color class modifications
+
+* Some internal fixes have been provided, and unit tests added, to better match AWT's implementation regarding 
+  constructors and the alpha component
+  
+* `Color.getColor()` variants now better match their AWT counter parts
+
+  JBotSim's implementations used to directly consider the provided String as a RGB value, instead of trying to get the 
+  said value from a system property.  
+
+* General documentation effort
+
+### JBackgroundPainter, JLinkPainter, JNodePainter classes modifications
+
+In order to ease behavior modifications by inheritance, `JBackgroundPainter`, `JLinkPainter` and `JNodePainter` have 
+been modified so that they all expose a `protected` variant of:
+* `setColor()`: this method is called by the object when it needs to set the AWT `Color` of the element
+* `setStroke()`: this method is called by the object when it needs to set the AWT `Stroke` used to draw the element
+* `setRenderingHints()`: this method is called by the object when it needs to set the AWT `RenderingHints` used to draw 
+the element
+
+Overriding these methods should be fairly straightforward.
+
+The behaviors associated to each class stay unchanged.
+
+###  JDirectedLinkPainter creation
+
+* `JDirectedLinkPainter` is added to `jbotsim-extras-swing`/`io.jbotsim.ui.painting` [[issue 71]][issue: #71]
+  
+  It provides arrow-tips to directed links. Its implementation uses the reusable  
+  `jbotsim-extras-common`/`io.jbotsim.ui.painting.ArrowTipPathGenerator` class.
+
+[issue: #71]: https://github.com/jbotsim/JBotSim/issues/71
 
 ###  TopologyLayouts class modifications
 
@@ -326,6 +304,28 @@ Since the base `MessageEngine` now handles the _delay_ feature:
 
 [issue: #51]: https://github.com/jbotsim/JBotSim/issues/51
 [issue: #52]: https://github.com/jbotsim/JBotSim/issues/52
+
+### New icon in the jbotsim-icons module
+
+`jbotsim-icons`/`io.jbotsim.ui.icons`
+
+* A new icon suitable for servers/mainframes has been added [[issue 59]][issue: #59] 
+  * `jbotsim-icons`/`io/jbotsim/ui/icons/server.png` 
+
+  As usual, it's path can be accessed using the corresponding constant `Icons.SERVER`. 
+
+
+[issue: #59]: https://github.com/jbotsim/JBotSim/issues/59
+
+
+### Javadoc modifications 
+
+* Link JSE8 javadoc from javadoc [[issue 62]][issue: #62]
+* Prevent some errors in javadoc compilation by specifying UTF-8 encoding for javac and javadoc [[issue 66]][issue: #66]
+* Also remove some invalid tags (i.e. \<tt\>) from comments [[issue 66]][issue: #66]
+
+[issue: #62]: https://github.com/jbotsim/JBotSim/issues/62
+[issue: #66]: https://github.com/jbotsim/JBotSim/issues/66
 
 ## [1.0.0] - 2019/02/28
 
@@ -765,4 +765,5 @@ on your topology immediately followed by a call to pause().
 (Eventually we will provide an atomic call to this effect.)
 
 [Unreleased]: https://github.com/acasteigts/JBotSim/compare/v1.1.0...develop
+[1.1.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0-beta03...v1.0.0
