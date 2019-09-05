@@ -10,7 +10,7 @@ dependencies {
 //    implementation "io.jbotsim:jbotsim-ui-swing:$version"
 //    implementation "io.jbotsim:jbotsim-icons:$version"
 
-    implementation project(':lib:jbotsim-extras-common'),
+    implementation project(':lib:jbotsim-extras-swing'),
             project(':lib:jbotsim-ui-swing'),
             project(':lib:jbotsim-icons')
 }

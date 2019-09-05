@@ -21,7 +21,6 @@
 package io.jbotsim.ui.painting;
 
 import io.jbotsim.core.Link;
-import io.jbotsim.core.Topology;
 
 import java.awt.*;
 
@@ -45,17 +44,36 @@ public class JLinkPainter implements LinkPainter {
     }
 
     protected void drawLink(Graphics2D g2d, Link link) {
+        drawEdgePart(g2d, link);
+
+        drawDestinationPartIfNeeded(g2d, link);
+    }
+
+    private void drawEdgePart(Graphics2D g2d, Link link) {
         int srcX = (int) link.source.getX(), srcY = (int) link.source.getY();
         int destX = (int) link.destination.getX(), destY = (int) link.destination.getY();
         g2d.drawLine(srcX, srcY, (srcX + (destX - srcX)), (srcY + (destY - srcY)));
-        Topology topology = link.source.getTopology();
-        if (topology.isDirected()) { // FIXME sometimes topology is null here
-            int x = srcX + 4 * (destX - srcX) / 5 - 2;
-            int y = srcY + 4 * (destY - srcY) / 5 - 2;
-            g2d.drawOval(x, y, 4, 4);
+    }
+
+    protected void drawDestinationPartIfNeeded(Graphics2D g2d, Link link) {
+        if (isDirected(link)) {
+            io.jbotsim.core.Point source = link.source.getLocation();
+            io.jbotsim.core.Point destination = link.destination.getLocation();
+            drawDirectedDestinationEnd(g2d, source, destination);
         }
     }
 
+    protected void drawDirectedDestinationEnd(Graphics2D g2d, io.jbotsim.core.Point source, io.jbotsim.core.Point destination) {
+        int srcX = (int) source.getX(), srcY = (int) source.getY();
+        int destX = (int) destination.getX(), destY = (int) destination.getY();
+        int x = srcX + 4 * (destX - srcX) / 5 - 2;
+        int y = srcY + 4 * (destY - srcY) / 5 - 2;
+        g2d.drawOval(x, y, 4, 4);
+    }
+
+    protected boolean isDirected(Link link) {
+        return link.isDirected();
+    }
 
     /**
      * <p>Sets the proper {@link java.awt.Color} on the provided {@link Graphics2D} object, with respect to the provided
