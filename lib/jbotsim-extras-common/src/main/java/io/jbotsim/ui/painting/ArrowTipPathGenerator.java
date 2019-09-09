@@ -30,7 +30,7 @@ import java.util.List;
  * <p>The {@link ArrowTipPathGenerator} creates a path corresponding to an arrow tip.</p>
  *
  * <p>The path provided by {@link #getPath(Point, Point, double)} is properly oriented relative to the underlying arrow.
- * When the length of the underlying arrow gets shorter then the desired one, a shrinking ratio is gradually applied
+ * When the length of the underlying arrow gets shorter than the desired one, a shrinking ratio is gradually applied
  * so that the arrow tip remains visible.</p>
  */
 public class ArrowTipPathGenerator {
