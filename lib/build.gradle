@@ -105,7 +105,9 @@ subprojects {
 
     javadoc {
         options.addStringOption('Xdoclint:all', '-quiet')
-        options.addStringOption('link', 'https://docs.oracle.com/javase/8/docs/api/')
+        options.addMultilineStringsOption('link').setValue([
+                'https://docs.oracle.com/javase/8/docs/api/',
+                'https://www.antlr.org/api/Java/'])
         options.encoding = 'UTF-8'
     }
 }
@@ -121,7 +123,9 @@ task monolithicJavadoc(type: Javadoc) {
     title = "JBotSim Project documentation"
 
     options.addStringOption('Xdoclint:all', '-quiet')
-    options.addStringOption('link', 'https://docs.oracle.com/javase/8/docs/api/')
+    options.addMultilineStringsOption('link').setValue([
+            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://www.antlr.org/api/Java/'])
     options.encoding = 'UTF-8'
 
     classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
