@@ -1,5 +1,0 @@
-graph {
-	1	 [ fillcolor="#ffff00", pos="306.63,334.92", style=filled];
-	0	 [ fillcolor="#800080", pos="259.07,250.03", style=filled];
-	0 -- 1;
-}

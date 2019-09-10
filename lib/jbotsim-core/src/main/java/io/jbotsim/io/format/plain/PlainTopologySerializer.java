@@ -59,8 +59,8 @@ public class PlainTopologySerializer implements TopologySerializer {
         while (data.indexOf("--") > 0) {
             Node n1 = nodeTable.get(data.substring(0, data.indexOf(" ")));
             Node n2 = nodeTable.get(data.substring(data.indexOf(">") + 2, data.indexOf("\n")));
-            Link.Type type = (data.indexOf("<") > 0 && data.indexOf("<") < data.indexOf("\n")) ? Link.Type.UNDIRECTED : Link.Type.DIRECTED;
-            topology.addLink(new Link(n1, n2, type, Link.Mode.WIRED));
+            Link.Orientation orientation = (data.indexOf("<") > 0 && data.indexOf("<") < data.indexOf("\n")) ? Link.Orientation.UNDIRECTED : Link.Orientation.DIRECTED;
+            topology.addLink(new Link(n1, n2, orientation, Link.Mode.WIRED));
             data = data.substring(data.indexOf("\n") + 1);
         }
     }

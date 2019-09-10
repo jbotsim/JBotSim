@@ -26,50 +26,250 @@ import io.jbotsim.core.Topology;
 
 import java.util.List;
 
+/**
+ * <p>{@link TopologyLayouts} offers functions allowing to manipulate the content of a {@link Topology}:</p>
+ * <ul>
+ *     <li>{@link #center(Topology)}: centers the {@link Node}s of a {@link Topology}.</li>
+ *     <li>{@link #autoscale(Topology)}: scales (up) elements ({@link Node}'s positions, communication ranges, sensing
+ *     ranges) from a {@link Topology} to fill its boundaries at best. It also centers the elements inside the
+ *     {@link Topology}. To do this, {@link #autoscale(Topology, AutoScaleParams)} is called with the default
+ *     parameters.</li>
+ *     <li>{@link #autoscale(Topology, AutoScaleParams)}:  scales (up) elements from a {@link Topology} as specified
+ *     in the provided {@link AutoScaleParams} object.</li>
+ * </ul>
+ * <p>Some methods allow to modify the shape of the {@link Topology} (without respect with connectivity):
+ * <ul>
+ *     <li>as circles: {@link #circle(Topology)}, {@link #circle(Topology, double)}; </li>
+ *     <li>as ellipses: {@link #ellipse(Topology)}, {@link #ellipse(Topology, double, double)};</li>
+ *     <li>as lines: {@link #line(Topology)}, {@link #line(Topology, double)}.</li>
+ * </ul>
+ *
+ * <p>The {@link #computeBoundaries(Topology)} provides a easy way to retrieve the provided {@link Topology}'s extreme
+ * points, as a {@link TopologyBoundaries} object.</p>
+ */
 public class TopologyLayouts {
-    public static final double DEFAULT_MARGIN = 10.0 / 100.0;
 
+    /**
+     * The default margin ratio (value: {@value #DEFAULT_MARGIN}).
+     */
+    public static final double DEFAULT_MARGIN = 0.1;
+
+    // region auto-scale
+
+    /**
+     * The {@link AutoScaleParams} object is used to configure scaling operations.
+     */
+    public static class AutoScaleParams {
+        /**
+         * Default margin ratio: {@value #DEFAULT_AUTOSCALE_MARGIN_RATIO}.
+         */
+        public static final double DEFAULT_AUTOSCALE_MARGIN_RATIO = DEFAULT_MARGIN;
+        /**
+         * Default centering behaviour: {@value #DEFAULT_AUTOSCALE_CENTER}.
+         */
+        public static final boolean DEFAULT_AUTOSCALE_CENTER = true;
+        /**
+         * Default communication range scaling behaviour: {@value #DEFAULT_AUTOSCALE_COMMUNICATION_RANGE}.
+         */
+        public static final boolean DEFAULT_AUTOSCALE_COMMUNICATION_RANGE = true;
+        /**
+         * Default sensing range scaling behaviour: {@value #DEFAULT_AUTOSCALE_SENSING_RANGE}.
+         */
+        public static final boolean DEFAULT_AUTOSCALE_SENSING_RANGE = true;
+
+        /**
+         * The desired minimum scale factor of each margin on the X axis. A double in [0:1].
+         */
+        public double scaleMarginRatioX = DEFAULT_AUTOSCALE_MARGIN_RATIO;
+        /**
+         * The desired minimum scale factor of each margin on the Y axis. A double in [0:1].
+         */
+        public double scaleMarginRatioY = DEFAULT_AUTOSCALE_MARGIN_RATIO;
+        /**
+         * The desired minimum scale factor of each margin on the Z axis. A double in [0:1].
+         */
+        public double scaleMarginRatioZ = DEFAULT_AUTOSCALE_MARGIN_RATIO;
+
+        /**
+         * Specifies whether centering should be applied.
+         */
+        public boolean center = DEFAULT_AUTOSCALE_CENTER;
+
+        /**
+         * Specifies whether the communication range should be scaled.
+         */
+        public boolean scaleCommunicationRange = DEFAULT_AUTOSCALE_COMMUNICATION_RANGE;
+
+        /**
+         * Specifies whether the sensing range should be scaled.
+         */
+        public boolean scaleSensingRange = DEFAULT_AUTOSCALE_SENSING_RANGE;
+    }
+
+    /**
+     * <p>Automatically scales the position of the {@link Node}s of the {@link Topology} to match its boundaries.</p>
+     * <p>A margin ratio of {@value AutoScaleParams#DEFAULT_AUTOSCALE_MARGIN_RATIO} is used on all sides to keep boudaries clean.</p>
+     * <p>For more control on the margins, please use {@link #autoscale(Topology, AutoScaleParams)}.</p>
+     * <p>Note that this method changes the {@link Node}s' position without respect for their
+     * {@link io.jbotsim.core.Link}s.</p>
+     * @param topology the {@link Topology} to scale.
+     */
+    public static void autoscale(Topology topology){
+        autoscale(topology, new AutoScaleParams());
+    }
 
     /**
      * <p>Automatically scales the position of the {@link Node}s of the {@link Topology} to match its boundaries.</p>
      * <p>Note that this method changes the {@link Node}s' position without respect for their
      * {@link io.jbotsim.core.Link}s.</p>
-     * @param topology the {@link Topology} to scale
+     *
+     * @param topology the {@link Topology} to scale.
+     * @param autoScaleParams the {@link AutoScaleParams} object specifying the scaling process.
      */
-    private static void autoscale(Topology topology){
-        double Xmax = 0, Ymax = 0, Xmin = Double.MAX_VALUE, Ymin = Double.MAX_VALUE;
+    public static void autoscale(Topology topology, AutoScaleParams autoScaleParams){
+
+        TopologyBoundaries boundaries = computeBoundaries(topology);
+
+        double scaleFactor = computeScaleFactor(topology, boundaries, autoScaleParams);
+
+        double newMarginX = topology.getWidth() * autoScaleParams.scaleMarginRatioX;
+        double newMarginY = topology.getHeight() * autoScaleParams.scaleMarginRatioY;
+
         for (Node node : topology.getNodes()){
-            if (node.getX() > Xmax)
-                Xmax = node.getX();
-            if (node.getY() > Ymax)
-                Ymax = node.getY();
-            if (node.getX() < Xmin)
-                Xmin = node.getX();
-            if (node.getY() < Ymin)
-                Ymin = node.getY();
+            double normalizedX = node.getX() - boundaries.xMin;
+            double normalizedY = node.getY() - boundaries.yMin;
+
+            node.setLocation(normalizedX * scaleFactor + newMarginX,
+                    normalizedY * scaleFactor + newMarginY, node.getZ());
         }
-        //FIXME: strange behaviour expected with single Node Topology (zero division)
-        double width = Xmax - Xmin;
-        double height = Ymax - Ymin;
-        double availableWidth = topology.getWidth()*0.8;
-        double availableHeight = topology.getHeight()*0.8;
-        double scale = Math.min(availableWidth/width, availableHeight/height);
-        for (Node node : topology.getNodes()){
-            node.setLocation(node.getX() - Xmin, node.getY() - Ymin);
-            node.setLocation(node.getX()*scale + topology.getWidth()*0.1, node.getY()*scale + topology.getHeight()*0.1);
-        }
+
+        if(autoScaleParams.center)
+            center(topology);
+
+        if(autoScaleParams.scaleCommunicationRange)
+            topology.setCommunicationRange(topology.getCommunicationRange() * scaleFactor);
+
+        if(autoScaleParams.scaleSensingRange)
+            topology.setSensingRange(topology.getSensingRange() * scaleFactor);
     }
 
-    public static void circle(Topology tp, double margin) {
-        List<Node> nodes = tp.getNodes();
+    /**
+     * <p>Automatically centers the {@link Node}s of the {@link Topology} inside its boundaries.</p>
+     * <p>Note that nodes positions are supposed to be inside the boundaries of the {@link Topology}.</p>
+     *
+     * @param topology the {@link Topology} to center.
+     */
+    public static void center(Topology topology) {
+        TopologyBoundaries boundaries = computeBoundaries(topology);
+
+        double optimalMarginX = (topology.getWidth() - (boundaries.xMax - boundaries.xMin)) / 2;
+        double shiftX = optimalMarginX - boundaries.xMin;
+
+        double optimalMarginY = (topology.getHeight() - (boundaries.yMax - boundaries.yMin)) / 2;
+        double shiftY = optimalMarginY - boundaries.yMin;
+
+        // The topology has no "depth" dimension, so, nothing to center
+
+        for(Node node :topology.getNodes())
+            node.setLocation(node.getX() + shiftX, node.getY() + shiftY, node.getZ());
+
+    }
+
+    /**
+     * The {@link TopologyLayouts} represents the boundaries of a topology.
+     */
+    public static class TopologyBoundaries {
+        public double xMax = 0;
+        public double yMax = 0;
+        public double zMax = 0;
+        public double xMin = 0;
+        public double yMin = 0;
+        public double zMin = 0;
+    }
+
+    /**
+     * Computes the boundaries of a {@link Topology}.
+     *
+     * @param topology the {@link Topology} to be examined?
+     * @return a {@link TopologyBoundaries}.
+     */
+    public static TopologyBoundaries computeBoundaries (Topology topology) {
+        TopologyBoundaries boundaries = new TopologyBoundaries();
+
+        if(topology.getNodes().isEmpty())
+            return boundaries;
+
+        boundaries.xMin = Double.MAX_VALUE;
+        boundaries.yMin = Double.MAX_VALUE;
+        boundaries.zMin = Double.MAX_VALUE;
+        boundaries.xMax = -Double.MAX_VALUE;
+        boundaries.yMax = -Double.MAX_VALUE;
+        boundaries.zMax = -Double.MAX_VALUE;
+
+        for (Node node : topology.getNodes()){
+            if (node.getX() > boundaries.xMax)
+                boundaries.xMax = node.getX();
+            if (node.getY() > boundaries.yMax)
+                boundaries.yMax = node.getY();
+            if (node.getZ() > boundaries.zMax)
+                boundaries.zMax = node.getZ();
+
+            if (node.getX() < boundaries.xMin)
+                boundaries.xMin = node.getX();
+            if (node.getY() < boundaries.yMin)
+                boundaries.yMin = node.getY();
+            if (node.getZ() < boundaries.zMin)
+                boundaries.zMin = node.getZ();
+        }
+
+        return boundaries;
+    }
+
+    protected static double computeScaleFactor(Topology topology, TopologyBoundaries boundaries, AutoScaleParams scaleParams) {
+        double originalWidth = boundaries.xMax - boundaries.xMin;
+        double originalHeight = boundaries.yMax - boundaries.yMin;
+        double availableWidth = topology.getWidth() * computeAvailableSpaceRatio(scaleParams.scaleMarginRatioX);
+        double availableHeight = topology.getHeight() * computeAvailableSpaceRatio(scaleParams.scaleMarginRatioY);
+
+        // XXX: Z coordinate is ignored
+
+        if(originalWidth == 0 && originalHeight == 0)
+            return 1;
+
+        if(originalWidth == 0)
+            return availableHeight / originalHeight;
+
+        if(originalHeight == 0)
+            return availableWidth / originalWidth;
+
+        return Math.min(availableWidth / originalWidth, availableHeight/originalHeight);
+    }
+
+    protected static double computeAvailableSpaceRatio(double marginRatio) {
+        return 1 - marginRatio * 2;
+    }
+    // endregion autoscale
+
+    // region shapes
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a circle with
+     * a margin on all sides.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param marginRatio the margin ratio used to compute the margin which should be kept on all sides (up, down,
+     *                    right, and left). A double in [0:1].
+     */
+    public static void circle(Topology topology, double marginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double xc = w / 2.0;
         double yc = h / 2.0;
-        double radius = ((w < h ? w : h) * (1.0 - margin)) / 2.0;
+        double radius = ((w < h ? w : h) * (1.0 - marginRatio)) / 2.0;
 
         double angle = 0.0;
         double angleinc = 2.0 * Math.PI / nodes.size();
@@ -79,21 +279,38 @@ public class TopologyLayouts {
         }
     }
 
-    public static void circle(Topology tp) {
-        circle(tp, DEFAULT_MARGIN);
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a circle.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void circle(Topology topology) {
+        circle(topology, DEFAULT_MARGIN);
     }
 
-    public static void ellipse(Topology tp, double xmargin, double ymargin) {
-        List<Node> nodes = tp.getNodes();
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a ellipse with
+     * a margin on all sides.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param xMarginRatio the margin ratio used to compute the margin which should be kept on horizontal sides (right
+     *                     and left). A double in [0:1].
+     * @param yMarginRatio the margin ratio used to compute the margin which should be kept on vertical sides (up
+     *                     and down). A double in [0:1].
+     */
+    public static void ellipse(Topology topology, double xMarginRatio, double yMarginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double xc = w / 2.0;
         double yc = h / 2.0;
-        double xradius = w * (1.0 - xmargin) / 2.0;
-        double yradius = h * (1.0 - ymargin) / 2.0;
+        double xradius = w * (1.0 - xMarginRatio) / 2.0;
+        double yradius = h * (1.0 - yMarginRatio) / 2.0;
 
         double angle = 0.0;
         double angleinc = 2.0 * Math.PI / nodes.size();
@@ -103,33 +320,51 @@ public class TopologyLayouts {
         }
     }
 
-    public static void ellipse(Topology tp) {
-        ellipse(tp, DEFAULT_MARGIN, DEFAULT_MARGIN);
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a ellipse.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void ellipse(Topology topology) {
+        ellipse(topology, DEFAULT_MARGIN, DEFAULT_MARGIN);
     }
 
-    public static void line(Topology tp, double margin) {
-        List<Node> nodes = tp.getNodes();
+
+
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a line with
+     * a margin on all sides.</p>
+     * <p>A vertical line will be created if the {@link Topology}'s height is greater than its width. Otherwise, an
+     * horizontal line will be created.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     * @param marginRatio the margin ratio used to compute the margin which should be kept on all sides (up, down,
+     *                    right, and left). A double in [0:1].
+     */
+    public static void line(Topology topology, double marginRatio) {
+        List<Node> nodes = topology.getNodes();
         if (nodes.isEmpty())
             return;
 
-        double w = tp.getWidth();
-        double h = tp.getHeight();
+        double w = topology.getWidth();
+        double h = topology.getHeight();
         double x, y, dx, dy;
 
         if (w < h) {
             // vertical line
             x = w / 2.0;
-            y = h * margin;
+            y = h * marginRatio;
             dx = dy = 0.0;
             if (nodes.size() > 1)
-                dy = h * (1.0 - 2.0 * margin) / (nodes.size() - 1);
+                dy = h * (1.0 - 2.0 * marginRatio) / (nodes.size() - 1);
         } else {
             // horizontal line
-            x = w * margin;
+            x = w * marginRatio;
             y = h / 2.0;
             dx = dy = 0.0;
             if (nodes.size() > 1)
-                dx = w * (1.0 - 2.0 * margin) / (nodes.size() - 1);
+                dx = w * (1.0 - 2.0 * marginRatio) / (nodes.size() - 1);
         }
 
         for (Node n : nodes) {
@@ -139,7 +374,17 @@ public class TopologyLayouts {
         }
     }
 
-    public static void line(Topology tp) {
-        line(tp, DEFAULT_MARGIN);
+    /**
+     * <p>Modifies the location of the {@link Node Nodes} of provided {@link Topology} so that they form a line.
+     * Margins are applied on all sides (up, down, right, and left) with a margin ratio of {@link #DEFAULT_MARGIN}.</p>
+     * <p>A vertical line will be created if the {@link Topology}'s height is greater than its width. Otherwise, an
+     * horizontal line will be created.</p>
+     * <p>Note that the modification are applied without respect to the existing {@link io.jbotsim.core.Link Links}.</p>
+     * @param topology the {@link Topology} to be modified.
+     */
+    public static void line(Topology topology) {
+        line(topology, DEFAULT_MARGIN);
     }
+
+    // endregion
 }

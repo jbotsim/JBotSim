@@ -25,8 +25,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ColorTest {
     private Color color255;
@@ -37,6 +36,111 @@ class ColorTest {
         color255 = Color.getColorAt(255);
     }
 
+    // region constructors
+
+    @Test
+    void constructor_rgbaValues_matchesAWT() {
+        int r = 1;
+        int g = 2;
+        int b = 3;
+        int a = 4;
+        Color color = new Color(r, g, b, a);
+        java.awt.Color awtColor = new java.awt.Color(r, g, b, a);
+        System.err.println(awtColor.getAlpha());
+        checkColorWithAWT(awtColor, color);
+    }
+    @Test
+    void constructor_rgbValues_matchesAWT() {
+        int r = 1;
+        int g = 2;
+        int b = 3;
+        Color color = new Color(r, g, b);
+        java.awt.Color awtColor = new java.awt.Color(r, g, b);
+
+        checkColorWithAWT(awtColor, color);
+    }
+
+    @Test
+    void constructor_intValueWithAlpha_matchesAWT() {
+        int value = 0x77AABBCC;
+        Color color = new Color(value, true);
+        java.awt.Color awtColor = new java.awt.Color(value, true);
+
+        checkColorWithAWT(awtColor, color);
+    }
+
+    @Test
+    void constructor_intValueWithoutAlpha_matchesAWT() {
+        int value = 0x77AABBCC;
+        java.awt.Color awtColor = new java.awt.Color(value);
+
+        Color color1 = new Color(value);
+        checkColorWithAWT(awtColor, color1);
+
+        Color color2 = new Color(value, false);
+        checkColorWithAWT(awtColor, color2);
+    }
+
+    private void checkColorWithAWT(java.awt.Color expectedColor, Color color) {
+        assertEquals(expectedColor.getRed(), color.getRed(), "Incorrect R component");
+        assertEquals(expectedColor.getGreen(), color.getGreen(), "Incorrect G component");
+        assertEquals(expectedColor.getBlue(), color.getBlue(), "Incorrect B component");
+        assertEquals(expectedColor.getAlpha(), color.getAlpha(), "Incorrect A component");
+        assertEquals(expectedColor.getRGB(), color.getRGB(), "Incorrect RGB value");
+    }
+
+    // region incorrect parameters
+    @Test
+    void constructor_incorrectComponents_throwsIllegalArgumentException() {
+        checkBadComponentR(-1);
+        checkBadComponentG(-1);
+        checkBadComponentB(-1);
+        checkBadComponentA(-1);
+
+        checkBadComponentR(256);
+        checkBadComponentG(256);
+        checkBadComponentB(256);
+        checkBadComponentA(256);
+    }
+
+    private void checkBadComponentR(int badComponentValue) {
+        int good = 1;
+        assertColorConstructor4ThrowsIllegalArgumentException(badComponentValue, good, good, good);
+        assertColorConstructor4ThrowsIllegalArgumentException(badComponentValue, good, good);
+    }
+
+
+    private void checkBadComponentG(int badComponentValue) {
+        int good = 1;
+        assertColorConstructor4ThrowsIllegalArgumentException(good, badComponentValue, good, good);
+        assertColorConstructor4ThrowsIllegalArgumentException(good, badComponentValue, good);
+    }
+
+
+    private void checkBadComponentB(int badComponentValue) {
+        int good = 1;
+        assertColorConstructor4ThrowsIllegalArgumentException(good, good, badComponentValue, good);
+        assertColorConstructor4ThrowsIllegalArgumentException(good, good, badComponentValue);
+    }
+
+    private void checkBadComponentA(int badComponentValue) {
+        int good = 1;
+        assertColorConstructor4ThrowsIllegalArgumentException(good, good, good, badComponentValue);
+    }
+
+    private void assertColorConstructor4ThrowsIllegalArgumentException(int r, int g, int b, int a) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Color(r, g, b, a);
+        });
+    }
+    private void assertColorConstructor4ThrowsIllegalArgumentException(int r, int g, int b) {
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Color(r, g, b);
+        });
+    }
+
+    // endregion incorrect parameters
+    // endregion
 
     // region indexOf(Color)
 
@@ -66,7 +170,7 @@ class ColorTest {
     @Test
     void indexOf_notPresent_returnMinus1() {
 
-        testIndexOf( -1, new Color(-1, -1, -1));
+        testIndexOf( -1, new Color(2, 2, 2));
 
     }
 
@@ -140,6 +244,12 @@ class ColorTest {
 
     // region equals
 
+    @Test
+    void equals_null_notEqual() {
+        Color color1 = new Color(125, 125 , 125, 0);
+
+        assertNotEquals(color1, null);
+    }
     @Test
     void equals_sameObject_equal() {
         Color color1 = new Color(125, 125 , 125, 0);

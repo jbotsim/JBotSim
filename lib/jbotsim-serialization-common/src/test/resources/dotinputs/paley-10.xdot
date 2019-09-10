@@ -1,3 +1,7 @@
+/*
+ * This file has been generated automatically with gengraph tool by C. Gavoille.
+ * See http://dept-info.labri.fr/~gavoille/gengraph.html
+ */
 graph {
 	graph [_draw_="c 9 -#fffffe00 C 7 -#ffffff P 4 0 0 0 152.75 150.77 152.75 150.77 0 ",
 		bb="0,0,150.77,152.75",

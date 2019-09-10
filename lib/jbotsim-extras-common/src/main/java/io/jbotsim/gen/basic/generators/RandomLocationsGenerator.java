@@ -50,12 +50,12 @@ public class RandomLocationsGenerator extends AbstractGenerator {
             Node[] nodes = generateNodes(topology, nbNodes);
 
             if (wired) {
-                Link.Type type = directed ? Link.Type.DIRECTED : Link.Type.UNDIRECTED;
+                Link.Orientation orientation = directed ? Link.Orientation.DIRECTED : Link.Orientation.UNDIRECTED;
 
                 for (int i = 0; i < nbNodes; i++)
                     for (int j = i+1; j < nbNodes; j++)
                         if (rnd.nextDouble() > 0.2)
-                            topology.addLink(new Link(nodes[i], nodes[j], type, Link.Mode.WIRED));
+                            topology.addLink(new Link(nodes[i], nodes[j], orientation, Link.Mode.WIRED));
 
             }
         } catch (ReflectiveOperationException e) {

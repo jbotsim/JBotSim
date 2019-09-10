@@ -118,7 +118,7 @@ Any JBotSim classes, source code and documentation will automatically be downloa
     * choose `From Maven ...`.
   
   * In the "Download Library from Maven Repository" popup:
-    * provide the following dependency: `io.jbotsim:jbotsim-all:1.0.0`
+    * provide the following dependency: `io.jbotsim:jbotsim-all:1.1.0`
     * make sure to tick `JavaDocs`
     * Hit `OK`.
   * Confirm that you want to add it to your (only) module.
@@ -141,7 +141,7 @@ Simply add the following line to your `build.gradle`:
 
 ```
 dependencies {
-    implementation "io.jbotsim:jbotsim-all:1.0.0"
+    implementation "io.jbotsim:jbotsim-all:1.1.0"
 }
 ```
 
@@ -201,7 +201,7 @@ dependencies {
    
     ```
     dependencies {
-        compile files('mylibs/jbotsim-full-1.0.0.jar')
+        compile files('mylibs/jbotsim-full-1.1.0.jar')
     }
     ``` 
     

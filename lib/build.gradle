@@ -105,6 +105,10 @@ subprojects {
 
     javadoc {
         options.addStringOption('Xdoclint:all', '-quiet')
+        options.addMultilineStringsOption('link').setValue([
+                'https://docs.oracle.com/javase/8/docs/api/',
+                'https://www.antlr.org/api/Java/'])
+        options.encoding = 'UTF-8'
     }
 }
 
@@ -117,6 +121,12 @@ task monolithicJavadoc(type: Javadoc) {
     source subprojects.collect { it.sourceSets.main.allJava }
 
     title = "JBotSim Project documentation"
+
+    options.addStringOption('Xdoclint:all', '-quiet')
+    options.addMultilineStringsOption('link').setValue([
+            'https://docs.oracle.com/javase/8/docs/api/',
+            'https://www.antlr.org/api/Java/'])
+    options.encoding = 'UTF-8'
 
     classpath = files(subprojects.collect { it.sourceSets.main.compileClasspath })
 }
@@ -241,6 +251,19 @@ Action<? super MavenPom> createConfigureActionForPom (String nameStr, String des
             pom.name = nameStr
             pom.description = descriptionStr
             pom.url = 'https://jbotsim.io/'
+
+            
+            // Related issues with antlr plugin 
+            // - https://github.com/gradle/gradle/issues/820
+            // - https://stackoverflow.com/a/40277742/2668011
+            pom.withXml {
+                Node pomNode = asNode()
+                pomNode.dependencies.'*'.findAll() {
+                    it.artifactId.text() == 'antlr4'
+                }.each() {
+                    it.parent().remove(it)
+                }
+            }
         }
     }
 }

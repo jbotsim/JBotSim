@@ -2,6 +2,7 @@ package examples.tools;
 
 import io.jbotsim.core.Topology;
 import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
+import io.jbotsim.io.format.graph6.Graph6TopologySerializer;
 import io.jbotsim.io.format.tikz.TikzTopologySerializer;
 import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.dot.DotTopologySerializer;
@@ -49,11 +50,13 @@ public class JBotSimConvert {
 
     private static TopologySerializerFilenameMatcher getConfiguredTopologyFileNameMatcher() {
         TopologySerializerFilenameMatcher filenameMatcher = new TopologySerializerFilenameMatcher();
-        filenameMatcher.addTopologySerializer(".*\\.dot$",new DotTopologySerializer());
-        filenameMatcher.addTopologySerializer(".*\\.xdot$",new DotTopologySerializer());
+        filenameMatcher.addTopologySerializer(DotTopologySerializer.DOT_FILENAME_EXTENSIONS,
+                                              new DotTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.xml$",new XMLTopologySerializer(true));
         filenameMatcher.addTopologySerializer(".*\\.tikz$",new TikzTopologySerializer());
         filenameMatcher.addTopologySerializer(".*\\.plain$",new PlainTopologySerializer());
+        filenameMatcher.addTopologySerializer(Graph6TopologySerializer.GRAPH6_FILENAME_EXTENSIONS,
+                                              new Graph6TopologySerializer());
         return filenameMatcher;
     }
 

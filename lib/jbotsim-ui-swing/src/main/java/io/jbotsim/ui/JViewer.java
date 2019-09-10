@@ -27,6 +27,7 @@ import io.jbotsim.core.event.PropertyListener;
 import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.TopologySerializerFilenameMatcher;
 import io.jbotsim.io.format.dot.DotTopologySerializer;
+import io.jbotsim.io.format.graph6.Graph6TopologySerializer;
 import io.jbotsim.io.format.plain.PlainTopologySerializer;
 import io.jbotsim.io.format.tikz.TikzTopologySerializer;
 import io.jbotsim.io.format.xml.XMLTopologySerializer;
@@ -62,12 +63,12 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     }
 
     /**
-     * Creates a viewer for the specified topology. If <tt>selfContained</tt>
-     * is <tt>true</tt>, a new window will be created to contain the viewer
-     * (similarly to <tt>JViewer(Topology)</tt>). If it is <tt>false</tt>,
+     * Creates a viewer for the specified topology. If <code>selfContained</code>
+     * is <code>true</code>, a new window will be created to contain the viewer
+     * (similarly to <code>JViewer(Topology)</code>). If it is <code>false</code>,
      * no window will be created and the viewer can be subsequently
-     * integrated to another swing container (e.g. another <tt>JFrame</tt>
-     * or a <tt>JApplet</tt>).
+     * integrated to another swing container (e.g. another <code>JFrame</code>
+     * or a <code>JApplet</code>).
      *
      * @param topo          The topology to be drawn and/or manipulated.
      * @param selfContained Set this to false to avoid creating a JFrame
@@ -89,11 +90,11 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
 
     /**
      * Creates a viewer encapsulating the specified jtopology. If
-     * <tt>selfContained</tt> is <tt>true</tt>, a new window will be created
-     * to contain the viewer (similarly to <tt>JViewer(Topology)</tt>). If it
-     * is <tt>false</tt>, no window will be created and the viewer can be
+     * <code>selfContained</code> is <code>true</code>, a new window will be created
+     * to contain the viewer (similarly to <code>JViewer(Topology)</code>). If it
+     * is <code>false</code>, no window will be created and the viewer can be
      * subsequently integrated to another swing container (e.g. another
-     * <tt>JFrame</tt> or a <tt>JApplet</tt>).
+     * <code>JFrame</code> or a <code>JApplet</code>).
      *
      * @param jtopo    The JTopology to be encapsulated.
      * @param windowed Set this to false to avoid creating a JFrame
@@ -254,8 +255,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
         TopologySerializer serializer = getTopologySerializerForFilename(filename, jtp.topo);
         String fileContent = jtp.topo.getFileManager().read(filename);
         serializer.importFromString(jtp.topo, fileContent);
-        if(window != null)
-            window.setSize(jtp.topo.getWidth(), jtp.topo.getHeight());
+        setSize(jtp.topo.getWidth(), jtp.topo.getHeight());
     }
 
     /**
@@ -297,10 +297,12 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     private void initFilenameMatcher() {
         topologySerializerFilenameMatcher = new TopologySerializerFilenameMatcher();
         addTopologySerializer(".*\\.tikz", new TikzTopologySerializer());
-        addTopologySerializer(".*\\.dot", new DotTopologySerializer());
-        addTopologySerializer(".*\\.xdot", new DotTopologySerializer());
+        topologySerializerFilenameMatcher.addTopologySerializer(DotTopologySerializer.DOT_FILENAME_EXTENSIONS,
+                new DotTopologySerializer());
         addTopologySerializer(".*\\.xml", new XMLTopologySerializer(false));
         addTopologySerializer(".*\\.plain", new PlainTopologySerializer());
+        topologySerializerFilenameMatcher.addTopologySerializer(Graph6TopologySerializer.GRAPH6_FILENAME_EXTENSIONS,
+                new Graph6TopologySerializer());
     }
 
     /**

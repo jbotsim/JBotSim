@@ -163,11 +163,12 @@ Here is what happens during a release:
 1. The `release/x-y-z` release branch from `develop` by the release manager when it contains all features for next 
 release (*e.g.* `release/1-0-0`).
    * The `x-y-z` version number is decided upon creation of the release branch. 
-2. All tests, debugging, etc. are done on branch `release/x-y-z`.
+2. The new version number is applied to the project (with the [`bump-version.sh`](bump-version.sh) script).
+3. All tests, debugging, etc. are done on branch `release/x-y-z`.
    * This allows for new features to be merged into `develop` without interfering with the release.
-3. Branch `release/x-y-z` is merged into `master` after version `x-y-z` is officially published on Maven Central.
-4. The merge commit on the `master` branch is tagged `vx.y.z` (*e.g.* `v1.0.0`).
-5. After release, the new content of `master` is merged into `develop`.
+4. Branch `release/x-y-z` is merged into `master` after version `x-y-z` is officially published on Maven Central.
+5. The merge commit on the `master` branch is tagged `vx.y.z` (*e.g.* `v1.0.0`).
+6. After release, the new content of `master` is merged into `develop`.
    * This allows for developers on `develop` to benefit from fixes made during the release.
 
 ## Pull / Merge requests

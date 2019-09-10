@@ -45,7 +45,7 @@ public class KNGenerator extends RingGenerator {
         if (wired) {
             for (int i = 0; i < nbNodes; i++)
                 for (int j = i + 1; j < nbNodes; j++)
-                    tp.addLink(new Link(nodes[i], nodes[j], Link.Type.UNDIRECTED));
+                    tp.addLink(new Link(nodes[i], nodes[j], Link.Orientation.UNDIRECTED));
         } else {
             for (Node n : nodes) {
                 n.setCommunicationRange(Math.max(getAbsoluteHeight(tp), getAbsoluteWidth(tp)));

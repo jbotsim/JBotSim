@@ -60,8 +60,8 @@ public abstract class Properties {
     }
 
     /**
-     * Stores the specified property (<tt>value</tt>) under the specified name
-     * (<tt>key</tt>).
+     * Stores the specified property (<code>value</code>) under the specified name
+     * (<code>key</code>).
      *
      * @param key   The property name.
      * @param value The property value.
@@ -85,7 +85,7 @@ public abstract class Properties {
      * Returns the property stored under the specified key.
      *
      * @param key The property key.
-     * @return <tt>true</tt> is the provided key corresponds to a known propery, <tt>false</tt> otherwise.
+     * @return <code>true</code> is the provided key corresponds to a known propery, <code>false</code> otherwise.
      */
     public boolean hasProperty(String key) {
         return properties.containsKey(key);

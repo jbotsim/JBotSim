@@ -26,6 +26,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -33,11 +35,13 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
 
+import static io.jbotsim.io.format.dot.DotImportExportCoherencyTest.reorderLines;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class DotTopologySerializerTest {
+    private static final boolean UPDATE_RESULTS = false;
     private static final String TEST_RC_ROOT = "/dotinputs/";
 
     @Parameterized.Parameter
@@ -46,15 +50,30 @@ public class DotTopologySerializerTest {
     @Parameterized.Parameters(name="{index}: {0}")
     public static Collection<String> makers() {
         return Arrays.asList(
-                "hm-01.dot",
-                "arboricity-100-2.dot",
-                "barbell-6-5-4.dot",
-                "cactus-20.dot",
-                "kstar-20-2.dot",
-                "gabriel-50.dot",
-                "paley-10.dot",
+                "syntax-04.xdot",
+                "syntax-02.xdot",
+                "syntax-01.gv",
+                "syntax-02.gv",
+                "syntax-03.gv",
+                "syntax-01.xdot",
+                "syntax-03.xdot",
+                "hm-01.gv",
+                "arboricity-100-2.gv",
+                "barbell-6-5-4.gv",
+                "cactus-20.gv",
+                "kstar-20-2.gv",
+                "gabriel-50.gv",
+                "paley-10.gv",
                 "paley-10.xdot",
-                "sunlet-10-directed.dot");
+                "sunlet-10-directed.gv");
+    }
+
+    private void updateExpectedResult(String result) throws IOException {
+        File resFile = new File(dotFileName + "-res.xml");
+        FileOutputStream out = new FileOutputStream(resFile);
+        out.write(result.getBytes());
+        out.flush();
+        out.close();
     }
 
     @Test
@@ -69,12 +88,10 @@ public class DotTopologySerializerTest {
 
         String xmlTp = new XMLTopologySerializer(true).exportToString(tp);
         assertNotNull(xmlTp);
-//        String bkupFileName = url.getPath() + "-res.xml";
-//        System.out.println(bkupFileName);
-//        Format.exportToFile(tp, bkupFileName);
-
+        if (UPDATE_RESULTS)
+            updateExpectedResult(xmlTp);
         String expectedXml = new String(Files.readAllBytes(Paths.get(url.getPath()+"-res.xml")));
 
-        assertEquals(expectedXml, xmlTp);
+        assertEquals(reorderLines(expectedXml), reorderLines(xmlTp));
     }
 }
