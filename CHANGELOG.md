@@ -6,7 +6,7 @@ This file lists modifications introduced by each version.
 
 * empty
 
-## [1.1.0] - 2019/09/??
+## [1.1.0] - 2019/09/10
 
 ### Topology, Node and Link classes modifications
 
