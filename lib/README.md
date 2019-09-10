@@ -56,19 +56,19 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-all:1.0.0
-    +--- io.jbotsim:jbotsim-extras-swing:1.0.0
-    |    +--- io.jbotsim:jbotsim-ui-swing:1.0.0
-    |    |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    |    |    \--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    |    |    |         +--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-all:1.1.0
+    +--- io.jbotsim:jbotsim-extras-swing:1.1.0
+    |    +--- io.jbotsim:jbotsim-ui-swing:1.1.0
+    |    |    +--- io.jbotsim:jbotsim-core:1.1.0
+    |    |    |    \--- io.jbotsim:jbotsim-serialization-common:1.1.0
+    |    |    |         +--- io.jbotsim:jbotsim-core:1.1.0
     |    |    |         \--- org.antlr:antlr4-runtime:4.7.2
-    |    |    +--- io.jbotsim:jbotsim-ui-common:1.0.0
-    |    |         \--- io.jbotsim:jbotsim-core:1.0.0
-    |    \--- io.jbotsim:jbotsim-extras-common:1.0.0
-    |         +--- io.jbotsim:jbotsim-core:1.0.0
-    |         \--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    \--- io.jbotsim:jbotsim-icons:1.0.0
+    |    |    +--- io.jbotsim:jbotsim-ui-common:1.1.0
+    |    |         \--- io.jbotsim:jbotsim-core:1.1.0
+    |    \--- io.jbotsim:jbotsim-extras-common:1.1.0
+    |         +--- io.jbotsim:jbotsim-core:1.1.0
+    |         \--- io.jbotsim:jbotsim-serialization-common:1.1.0
+    \--- io.jbotsim:jbotsim-icons:1.1.0
 
     ```
 
@@ -92,13 +92,13 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-common:1.0.0
-    +--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    |    +--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-common:1.1.0
+    +--- io.jbotsim:jbotsim-serialization-common:1.1.0
+    |    +--- io.jbotsim:jbotsim-core:1.1.0
     |    \--- org.antlr:antlr4-runtime:4.7.2
-    +--- io.jbotsim:jbotsim-ui-common:1.0.0
-    |    \--- io.jbotsim:jbotsim-core:1.0.0
-    \--- io.jbotsim:jbotsim-icons:1.0.0
+    +--- io.jbotsim:jbotsim-ui-common:1.1.0
+    |    \--- io.jbotsim:jbotsim-core:1.1.0
+    \--- io.jbotsim:jbotsim-icons:1.1.0
     
     ```
 
@@ -113,7 +113,7 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-core:1.1.0
     ```
     
   </p>
@@ -133,8 +133,8 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-serialization-common:1.0.0
-    +--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-serialization-common:1.1.0
+    +--- io.jbotsim:jbotsim-core:1.1.0
     \--- org.antlr:antlr4-runtime:4.7.2
     ```
     
@@ -152,8 +152,8 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-ui-common:1.0.0
-    \--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-ui-common:1.1.0
+    \--- io.jbotsim:jbotsim-core:1.1.0
     ```
     
   </p>
@@ -171,13 +171,13 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-ui-swing:1.0.0
-    +--- io.jbotsim::jbotsim-core:1.0.0
-    +--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    |    +--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-ui-swing:1.1.0
+    +--- io.jbotsim::jbotsim-core:1.1.0
+    +--- io.jbotsim:jbotsim-serialization-common:1.1.0
+    |    +--- io.jbotsim:jbotsim-core:1.1.0
     |    \--- org.antlr:antlr4-runtime:4.7.2
-    \--- io.jbotsim::jbotsim-ui-common:1.0.0
-         \--- io.jbotsim::jbotsim-core:1.0.0    
+    \--- io.jbotsim::jbotsim-ui-common:1.1.0
+         \--- io.jbotsim::jbotsim-core:1.1.0    
     ```
     
   </p>
@@ -195,7 +195,7 @@ As of version `1.0.0`:
   <p>
   
     ```
-    +--- io.jbotsim:jbotsim-icons:1.0.0
+    +--- io.jbotsim:jbotsim-icons:1.1.0
     
     ```
     
@@ -214,17 +214,17 @@ As of version `1.0.0`:
   <p>
   
     ```
-    io.jbotsim:jbotsim-extras-swing:1.0.0
-    +--- io.jbotsim:jbotsim-ui-swing:1.0.0
-    |    +--- io.jbotsim:jbotsim-core:1.0.0
-    |    +--- io.jbotsim:jbotsim-serialization-common:1.0.0
-    |    |    +--- io.jbotsim:jbotsim-core:1.0.0
+    io.jbotsim:jbotsim-extras-swing:1.1.0
+    +--- io.jbotsim:jbotsim-ui-swing:1.1.0
+    |    +--- io.jbotsim:jbotsim-core:1.1.0
+    |    +--- io.jbotsim:jbotsim-serialization-common:1.1.0
+    |    |    +--- io.jbotsim:jbotsim-core:1.1.0
     |    |    \--- org.antlr:antlr4-runtime:4.7.2
-    |    +--- io.jbotsim:jbotsim-ui-common:1.0.0
-    |         \--- io.jbotsim:jbotsim-core:1.0.0
-    \--- io.jbotsim:jbotsim-extras-common:1.0.0
-         +--- io.jbotsim:jbotsim-core:1.0.0
-         \--- io.jbotsim:jbotsim-serialization-common:1.0.0
+    |    +--- io.jbotsim:jbotsim-ui-common:1.1.0
+    |         \--- io.jbotsim:jbotsim-core:1.1.0
+    \--- io.jbotsim:jbotsim-extras-common:1.1.0
+         +--- io.jbotsim:jbotsim-core:1.1.0
+         \--- io.jbotsim:jbotsim-serialization-common:1.1.0
     ```
     
   </p>

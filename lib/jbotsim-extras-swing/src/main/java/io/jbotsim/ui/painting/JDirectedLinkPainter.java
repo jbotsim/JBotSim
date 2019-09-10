@@ -11,12 +11,12 @@ import java.awt.*;
 import java.awt.geom.GeneralPath;
 
 /**
- * <p>The {@link JDirectedLinkPainter} is able allows to draw directed links with arrow-tips at the destination end of
+ * <p>The {@link JDirectedLinkPainter} allows to draw directed links with arrow-tips at the destination end of
  * directed links.</p>
  * <p>The default length of the arrow-tip is {@link JDirectedLinkPainter#DEFAULT_HEAD_LENGTH} and its opening angle is
  * defined by {@link JDirectedLinkPainter#DEFAULT_HEAD_OPENING_ANGLE}.</p>
- * <p>When the link's length gets too small, the arrow-tip is gradually shrunken up to the
- * {@link JDirectedLinkPainter#DEFAULT_SHRUNKEN_ARROW_RATIO} radio.</p>
+ * <p>When the link's length gets too small for the arrow to be properly displayed, the arrow-tip is gradually shrunken,
+ * stopping at the {@link JDirectedLinkPainter#DEFAULT_SHRUNKEN_ARROW_RATIO} ratio.</p>
  * <p>Note: the process of drawing the arrow-tip consumes more resources than the default behavior proposed by the
  * {@link JLinkPainter}.</p>
  */
