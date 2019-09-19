@@ -37,6 +37,7 @@ public class Icons {
     public static final String FIRE = "/io/jbotsim/ui/icons/fire.png";
     public static final String FLAG = "/io/jbotsim/ui/icons/flag.png";
     public static final String LAKE = "/io/jbotsim/ui/icons/lake.png";
+    public static final String PLUS = "/io/jbotsim/ui/icons/plus.png";
     public static final String ROBOT = "/io/jbotsim/ui/icons/robot.png";
     public static final String SENSOR = "/io/jbotsim/ui/icons/sensor.png";
     public static final String SERVER = "/io/jbotsim/ui/icons/server.png";

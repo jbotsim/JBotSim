@@ -4,6 +4,17 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+### New icon in the jbotsim-icons module
+
+`jbotsim-icons`/`io.jbotsim.ui.icons`
+
+* A cross-shaped new icon has been added [[issue 73]][issue: #73] 
+  * `jbotsim-icons`/`io/jbotsim/ui/icons/plus.png` 
+
+  As usual, it's path can be accessed using the corresponding constant `Icons.PLUS`.
+
+[issue: #73]: https://github.com/jbotsim/JBotSim/issues/73
+
 ###  PlainTopologySerializer class modifications
 
 **Bug fix in PlainTopologySerializer:**
@@ -11,6 +22,8 @@ This file lists modifications introduced by each version.
 * `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
 
 [issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
+
+
 
 ## [1.1.0] - 2019/09/10
 
