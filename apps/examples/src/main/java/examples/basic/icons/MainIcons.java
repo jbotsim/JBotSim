@@ -11,6 +11,7 @@ public class MainIcons {
         deployAtCenter(topology, MovingNodeBlueOcean.class, nbNodes);
         deployAtCenter(topology, MovingNodeBlue.class, nbNodes);
         deployAtCenter(topology, MovingNodeFormer.class, nbNodes);
+        deployAtCenter(topology, MovingNodePlus.class, nbNodes);
         deployAtCenter(topology, MovingNodeDefault.class, nbNodes);
 
         new JViewer(topology);
