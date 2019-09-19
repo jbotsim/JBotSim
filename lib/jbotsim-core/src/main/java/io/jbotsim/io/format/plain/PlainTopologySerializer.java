@@ -30,7 +30,6 @@ import java.util.HashMap;
 
 public class PlainTopologySerializer implements TopologySerializer {
     public void importFromString(Topology topology, String data){
-        topology.clear();
         topology.setCommunicationRange(Double.parseDouble(data.substring(data.indexOf(" ") + 1, data.indexOf("\n"))));
         data = data.substring(data.indexOf("\n") + 1);
         topology.setSensingRange(Double.parseDouble(data.substring(data.indexOf(" ") + 1, data.indexOf("\n"))));

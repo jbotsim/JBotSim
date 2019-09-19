@@ -4,7 +4,13 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
-* empty
+###  PlainTopologySerializer class modifications
+
+**Bug fix in PlainTopologySerializer:**
+
+* `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
+
+[issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
 
 ## [1.1.0] - 2019/09/10
 
