@@ -838,26 +838,44 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Registers the specified topology listener to this topology. The listener
-     * will be notified whenever an undirected link is added or removed.
+     * <p>Registers the specified topology listener to this topology.</p>
+     *
+     * <p>The listener will be notified whenever a link is added or removed.
+     * It will either receive notifications for directed or undirected links, according to the orientation of the
+     * topology when it was registered.</p>
      *
      * @param listener The listener to add.
+     * @see #getOrientation()
      */
     public void addConnectivityListener(ConnectivityListener listener) {
-        addConnectivityListener(listener, false);
+        addConnectivityListener(listener, getOrientation());
     }
 
     /**
-     * Registers the specified connectivity listener to this topology. The
-     * listener will be notified whenever a link of the specified type is
-     * added or removed.
+     * <p>Registers the specified connectivity listener to this topology.</p>
+     *
+     * <p>The listener will be notified whenever a link of the specified orientation is added or removed.</p>
      *
      * @param listener The listener to register.
-     * @param directed The type of links to be listened (<code>true</code> for
+     * @param directed The orientation of links to be listened, as a boolean (<code>true</code> for
      *                 directed, <code>false</code> for undirected).
+     * @deprecated use {@link Topology#addConnectivityListener(ConnectivityListener, Orientation)} instead.
      */
+    @Deprecated
     public void addConnectivityListener(ConnectivityListener listener, boolean directed) {
-        if (directed)
+        addConnectivityListener(listener, isDirected());
+    }
+
+    /**
+     * <p>Registers the specified connectivity listener to this topology.</p>
+     *
+     * <p>The listener will be notified whenever a link of the specified orientation is added or removed.</p>
+     *
+     * @param listener The listener to register.
+     * @param orientation The type of orientation to be listened, as an {@link Orientation}.
+     */
+    public void addConnectivityListener(ConnectivityListener listener, Orientation orientation) {
+        if (orientation == Orientation.DIRECTED)
             cxDirectedListeners.add(listener);
         else
             cxUndirectedListeners.add(listener);

@@ -4,6 +4,25 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+###  Topology class modifications
+
+[[issue 74]][issue: #74]
+
+In order to better match the behavior introduced around `Topology.getOrientation()` in [[issue 49]][issue: #49], the
+following modifications have been applied:
+* `Topology.addConnectivityListener(ConnectivityListener, Orientation)` has been added 
+* `Topology.addConnectivityListener(ConnectivityListener, boolean)` has been marked **deprecated**
+
+  Please use `Topology.addConnectivityListener(ConnectivityListener, Orientation)` instead.
+* `Topology.addConnectivityListener(ConnectivityListener)`'s behavior is changed
+
+  It now takes `Topology.getOrientation()` into account when registering a new listener.
+  Previously, it always registered to undirected events.
+
+
+[issue: #74]: https://github.com/jbotsim/JBotSim/issues/74
+
+
 ### New icon in the jbotsim-icons module
 
 `jbotsim-icons`/`io.jbotsim.ui.icons`
