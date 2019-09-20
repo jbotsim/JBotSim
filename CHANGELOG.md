@@ -4,6 +4,10 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+* empty
+
+##  [1.1.1] - ??
+
 ###  Topology class modifications
 
 [[issue 74]][issue: #74]
@@ -19,9 +23,15 @@ following modifications have been applied:
   It now takes `Topology.getOrientation()` into account when registering a new listener.
   Previously, it always registered to undirected events.
 
-
 [issue: #74]: https://github.com/jbotsim/JBotSim/issues/74
 
+###  PlainTopologySerializer class modifications
+
+**Bug fix in PlainTopologySerializer:**
+
+* `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
+
+[issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
 
 ### New icon in the jbotsim-icons module
 
@@ -33,15 +43,6 @@ following modifications have been applied:
   As usual, it's path can be accessed using the corresponding constant `Icons.PLUS`.
 
 [issue: #73]: https://github.com/jbotsim/JBotSim/issues/73
-
-###  PlainTopologySerializer class modifications
-
-**Bug fix in PlainTopologySerializer:**
-
-* `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
-
-[issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
-
 
 
 ## [1.1.0] - 2019/09/10
@@ -803,5 +804,6 @@ on your topology immediately followed by a call to pause().
 (Eventually we will provide an atomic call to this effect.)
 
 [Unreleased]: https://github.com/jbotsim/JBotSim/compare/v1.1.1...develop
+[1.1.1]: https://github.com/jbotsim/JBotSim/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0-beta03...v1.0.0
