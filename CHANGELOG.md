@@ -14,14 +14,18 @@ This file lists modifications introduced by each version.
 
 In order to better match the behavior introduced around `Topology.getOrientation()` in [[issue 49]][issue: #49], the
 following modifications have been applied:
-* `Topology.addConnectivityListener(ConnectivityListener, Orientation)` has been added 
-* `Topology.addConnectivityListener(ConnectivityListener, boolean)` has been marked **deprecated**
+* `Topology.addConnectivityListener(ConnectivityListener, Orientation)` and 
+`Topology.removeConnectivityListener(ConnectivityListener, Orientation)` have been added 
+* `Topology.addConnectivityListener(ConnectivityListener, boolean)` and 
+`Topology.removeConnectivityListener(ConnectivityListener, boolean)` have been marked **deprecated**
 
-  Please use `Topology.addConnectivityListener(ConnectivityListener, Orientation)` instead.
-* `Topology.addConnectivityListener(ConnectivityListener)`'s behavior is changed
+  Please use `Topology.addConnectivityListener(ConnectivityListener, Orientation)` and
+   `Topology.removeConnectivityListener(ConnectivityListener, Orientation)` instead.
+* `Topology.addConnectivityListener(ConnectivityListener)` and 
+`Topology.removeConnectivityListener(ConnectivityListener)`'s behaviors are changed
 
-  It now takes `Topology.getOrientation()` into account when registering a new listener.
-  Previously, it always registered to undirected events.
+  They now takes `Topology.getOrientation()` into account when registering/unregistering a listener.
+  Previously, it always worked on undirected events.
 
 [issue: #74]: https://github.com/jbotsim/JBotSim/issues/74
 

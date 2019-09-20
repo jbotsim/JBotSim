@@ -859,11 +859,11 @@ public class Topology extends Properties implements ClockListener {
      * @param listener The listener to register.
      * @param directed The orientation of links to be listened, as a boolean (<code>true</code> for
      *                 directed, <code>false</code> for undirected).
-     * @deprecated use {@link Topology#addConnectivityListener(ConnectivityListener, Orientation)} instead.
+     * @deprecated use {@link #addConnectivityListener(ConnectivityListener, Link.Orientation)} instead.
      */
     @Deprecated
     public void addConnectivityListener(ConnectivityListener listener, boolean directed) {
-        addConnectivityListener(listener, isDirected());
+        addConnectivityListener(listener, directed?Orientation.DIRECTED:Orientation.UNDIRECTED);
     }
 
     /**
@@ -882,25 +882,41 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Unregisters the specified connectivity listener from the 'undirected'
-     * listeners.
+     * <p>Unregisters the specified connectivity listener according to the orientation of the topology.</p>
+     *
+     * <p>The listener will be removed from the list of listeners, according to the current orientation of the topology.</p>
      *
      * @param listener The listener to unregister.
+     * @see #getOrientation()
      */
     public void removeConnectivityListener(ConnectivityListener listener) {
-        removeConnectivityListener(listener, false);
+        removeConnectivityListener(listener, getOrientation());
     }
 
     /**
-     * Unregisters the specified connectivity listener from the listeners
-     * of the specified type.
+     * <p>Unregisters the specified connectivity listener from the listeners
+     * of the specified orientation.</p>
      *
      * @param listener The listener to unregister.
-     * @param directed The type of links that this listener was listening
+     * @param directed The orientation of links that this listener was listening
      *                 (<code>true</code> for directed, <code>false</code> for undirected).
+     * @deprecated use {@link #removeConnectivityListener(ConnectivityListener, Link.Orientation)} instead.
      */
+    @Deprecated
     public void removeConnectivityListener(ConnectivityListener listener, boolean directed) {
-        if (directed)
+        removeConnectivityListener(listener,  directed?Orientation.DIRECTED:Orientation.UNDIRECTED);
+    }
+
+
+    /**
+     * <p>Unregisters the specified connectivity listener from the listeners
+     * of the specified orientation.</p>
+     *
+     * @param listener The listener to unregister.
+     * @param orientation The orientation of links that this listener was listening, as an {@link Orientation}.
+     */
+    public void removeConnectivityListener(ConnectivityListener listener, Orientation orientation) {
+        if (orientation == Orientation.DIRECTED)
             cxDirectedListeners.remove(listener);
         else
             cxUndirectedListeners.remove(listener);
