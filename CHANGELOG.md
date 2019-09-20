@@ -802,6 +802,6 @@ have executed their onStart() method before that, you may simply call start()
 on your topology immediately followed by a call to pause().
 (Eventually we will provide an atomic call to this effect.)
 
-[Unreleased]: https://github.com/acasteigts/JBotSim/compare/v1.1.0...develop
+[Unreleased]: https://github.com/acasteigts/JBotSim/compare/v1.1.1...develop
 [1.1.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0-beta03...v1.0.0
