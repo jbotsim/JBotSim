@@ -207,7 +207,6 @@ gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys DFA48EDB1EDEBA6F
 [travis-jbotsim]: https://travis-ci.org/jbotsim/JBotSim
 [github-jbotsim]: https://github.com/jbotsim/JBotSim
 [mavencentral-jbotsim-latest]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.1.1
-[mavencentral-jbotsim-1-0-0]: https://search.maven.org/search?q=g:io.jbotsim%20AND%20v:1.0.0
 [mavencentral-jbotsim]: https://search.maven.org/search?q=g:io.jbotsim
 [github-jbotsim-issues]: https://github.com/jbotsim/JBotSim/issues
 [lgpl3]: http://www.gnu.org/licenses/lgpl-3.0.html
