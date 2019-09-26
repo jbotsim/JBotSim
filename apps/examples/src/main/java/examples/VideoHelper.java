@@ -18,21 +18,24 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.core;
 
-/**
- * <p>The {@link LinkResolver} determines whether a {@link Node} can send a message to another one.</p>
- */
-public class LinkResolver {
-    /**
-     * Determines whether a message sent from the first {@link Node} could be recieved by the second one.
-     *
-     * @param n1 the emitter {@link Node}
-     * @param n2 the receiver {@link Node}
-     * @return <code>true</code> if n2 can recieve a message from n1; <code>false</code> otherwise
-     */
-    public boolean isHeardBy(Node n1, Node n2) {
-        return (n1.isWirelessEnabled() && n2.isWirelessEnabled()
-                && n1.distance(n2) <= n1.getCommunicationRange());
+package examples;
+
+import io.jbotsim.core.Topology;
+
+public class VideoHelper {
+
+    public static Topology generateTopology() {
+        return generateTopology720();
+    }
+    public static Topology generateTopology720() {
+        return new Topology(1280,720);
+    }
+    public static Topology generateTopology480() {
+        return new Topology(854,480);
+    }
+
+    public static String useOpenGL() {
+        return System.setProperty("sun.java2d.opengl", "true");
     }
 }

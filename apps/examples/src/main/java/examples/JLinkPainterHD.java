@@ -18,21 +18,27 @@
  * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
-package io.jbotsim.core;
 
-/**
- * <p>The {@link LinkResolver} determines whether a {@link Node} can send a message to another one.</p>
- */
-public class LinkResolver {
-    /**
-     * Determines whether a message sent from the first {@link Node} could be recieved by the second one.
-     *
-     * @param n1 the emitter {@link Node}
-     * @param n2 the receiver {@link Node}
-     * @return <code>true</code> if n2 can recieve a message from n1; <code>false</code> otherwise
-     */
-    public boolean isHeardBy(Node n1, Node n2) {
-        return (n1.isWirelessEnabled() && n2.isWirelessEnabled()
-                && n1.distance(n2) <= n1.getCommunicationRange());
+package examples;
+
+import io.jbotsim.core.Link;
+import io.jbotsim.ui.painting.JLinkPainter;
+
+import java.awt.*;
+
+public class JLinkPainterHD extends JLinkPainter {
+    private RenderingHints rh ;
+
+    public JLinkPainterHD() {
+        rh =new RenderingHints(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        rh.add(new RenderingHints(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED));
     }
+
+    @Override
+    protected void setRenderingHints(Graphics2D g2d, Link link) {
+        g2d.setRenderingHints(rh);
+    }
+
 }
