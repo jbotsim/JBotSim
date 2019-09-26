@@ -30,7 +30,7 @@ artifact suits your needs).
 So our `build.gradle` will simply declare the dependency as follows:
 ```
 dependencies {
-    implementation "io.jbotsim:jbotsim-ui-swing:1.1.0"
+    implementation "io.jbotsim:jbotsim-ui-swing:1.1.1"
 }
 ```
 Gradle and Maven will take care of retrieving any required dependencies.

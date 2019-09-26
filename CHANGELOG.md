@@ -4,24 +4,38 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+* empty
+
+##  [1.1.1] - 2019/09/26
+
 ###  Topology class modifications
 
 [[issue 74]][issue: #74]
 
 In order to better match the behavior introduced around `Topology.getOrientation()` in [[issue 49]][issue: #49], the
 following modifications have been applied:
-* `Topology.addConnectivityListener(ConnectivityListener, Orientation)` has been added 
-* `Topology.addConnectivityListener(ConnectivityListener, boolean)` has been marked **deprecated**
+* `Topology.addConnectivityListener(ConnectivityListener, Orientation)` and 
+`Topology.removeConnectivityListener(ConnectivityListener, Orientation)` have been added 
+* `Topology.addConnectivityListener(ConnectivityListener, boolean)` and 
+`Topology.removeConnectivityListener(ConnectivityListener, boolean)` have been marked **deprecated**
 
-  Please use `Topology.addConnectivityListener(ConnectivityListener, Orientation)` instead.
-* `Topology.addConnectivityListener(ConnectivityListener)`'s behavior is changed
+  Please use `Topology.addConnectivityListener(ConnectivityListener, Orientation)` and
+   `Topology.removeConnectivityListener(ConnectivityListener, Orientation)` instead.
+* `Topology.addConnectivityListener(ConnectivityListener)` and 
+`Topology.removeConnectivityListener(ConnectivityListener)`'s behaviors are changed
 
-  It now takes `Topology.getOrientation()` into account when registering a new listener.
-  Previously, it always registered to undirected events.
-
+  They now takes `Topology.getOrientation()` into account when registering/unregistering a listener.
+  Previously, it always worked on undirected events.
 
 [issue: #74]: https://github.com/jbotsim/JBotSim/issues/74
 
+###  PlainTopologySerializer class modifications
+
+**Bug fix in PlainTopologySerializer:**
+
+* `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
+
+[issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
 
 ### New icon in the jbotsim-icons module
 
@@ -33,15 +47,6 @@ following modifications have been applied:
   As usual, it's path can be accessed using the corresponding constant `Icons.PLUS`.
 
 [issue: #73]: https://github.com/jbotsim/JBotSim/issues/73
-
-###  PlainTopologySerializer class modifications
-
-**Bug fix in PlainTopologySerializer:**
-
-* `PlainTopologySerializer.importFromString()` does not clear the `Topology` anymore [[issue 72]][issue: #72]
-
-[issue: #72]: https://github.com/jbotsim/JBotSim/issues/72
-
 
 
 ## [1.1.0] - 2019/09/10
@@ -802,6 +807,7 @@ have executed their onStart() method before that, you may simply call start()
 on your topology immediately followed by a call to pause().
 (Eventually we will provide an atomic call to this effect.)
 
-[Unreleased]: https://github.com/acasteigts/JBotSim/compare/v1.1.0...develop
-[1.1.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0...v1.1.0
-[1.0.0]: https://github.com/acasteigts/JBotSim/compare/v1.0.0-beta03...v1.0.0
+[Unreleased]: https://github.com/jbotsim/JBotSim/compare/v1.1.1...develop
+[1.1.1]: https://github.com/jbotsim/JBotSim/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0...v1.1.0
+[1.0.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0-beta03...v1.0.0
