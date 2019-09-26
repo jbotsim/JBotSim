@@ -6,7 +6,7 @@ This file lists modifications introduced by each version.
 
 * empty
 
-##  [1.1.1] - ??
+##  [1.1.1] - 2019/09/26
 
 ###  Topology class modifications
 
