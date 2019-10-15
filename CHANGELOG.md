@@ -4,7 +4,17 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
-* empty
+###  JNode class modifications
+
+[[issue 77]][issue: #77]
+
+**Bug fix in JNode:**
+
+* The wired `Link` created between two nodes using the Swing UI (start a right click on the first and drag to the second 
+before releasing the button) now takes `Topology.getOrientation()` into account instead of always creating undirected 
+links.
+ 
+[issue: #77]: https://github.com/jbotsim/JBotSim/issues/77
 
 ##  [1.1.1] - 2019/09/26
 
