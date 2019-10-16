@@ -1,0 +1,6 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (1.2,10.8) node [] (v1) {};
+  \path (1.2,10.8) node [] (v2) {};
+  \tikzstyle{every path}=[];
+\end{tikzpicture}

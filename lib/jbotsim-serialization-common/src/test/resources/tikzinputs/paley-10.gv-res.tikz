@@ -1,0 +1,39 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (1.2,10.8) node [] (v0) {};
+  \path (1.2,10.8) node [] (v1) {};
+  \path (1.2,10.8) node [] (v2) {};
+  \path (1.2,10.8) node [] (v3) {};
+  \path (1.2,10.8) node [] (v4) {};
+  \path (1.2,10.8) node [] (v5) {};
+  \path (1.2,10.8) node [] (v6) {};
+  \path (1.2,10.8) node [] (v7) {};
+  \path (1.2,10.8) node [] (v8) {};
+  \path (1.2,10.8) node [] (v9) {};
+  \tikzstyle{every path}=[];
+  \draw [darkgray] (v0)--(v1);
+  \draw [darkgray] (v0)--(v4);
+  \draw [darkgray] (v0)--(v5);
+  \draw [darkgray] (v0)--(v6);
+  \draw [darkgray] (v0)--(v9);
+  \draw [darkgray] (v1)--(v2);
+  \draw [darkgray] (v1)--(v5);
+  \draw [darkgray] (v1)--(v6);
+  \draw [darkgray] (v1)--(v7);
+  \draw [darkgray] (v2)--(v3);
+  \draw [darkgray] (v2)--(v6);
+  \draw [darkgray] (v2)--(v7);
+  \draw [darkgray] (v2)--(v8);
+  \draw [darkgray] (v3)--(v4);
+  \draw [darkgray] (v3)--(v7);
+  \draw [darkgray] (v3)--(v8);
+  \draw [darkgray] (v3)--(v9);
+  \draw [darkgray] (v4)--(v5);
+  \draw [darkgray] (v4)--(v8);
+  \draw [darkgray] (v4)--(v9);
+  \draw [darkgray] (v5)--(v6);
+  \draw [darkgray] (v5)--(v9);
+  \draw [darkgray] (v6)--(v7);
+  \draw [darkgray] (v7)--(v8);
+  \draw [darkgray] (v8)--(v9);
+\end{tikzpicture}
