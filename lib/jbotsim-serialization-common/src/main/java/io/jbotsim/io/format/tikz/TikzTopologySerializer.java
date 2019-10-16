@@ -20,10 +20,7 @@
  */
 package io.jbotsim.io.format.tikz;
 
-import io.jbotsim.core.Color;
-import io.jbotsim.core.Link;
-import io.jbotsim.core.Node;
-import io.jbotsim.core.Topology;
+import io.jbotsim.core.*;
 import io.jbotsim.io.TopologySerializer;
 
 /**
@@ -72,36 +69,82 @@ public class TikzTopologySerializer implements TopologySerializer {
     }
 
     public String exportTopology(Topology tp, double scale){
-        String delim="\n";
-        String s="\\begin{tikzpicture}[scale=1]"+delim;
-        Integer sr=(int)tp.getSensingRange();
-        if (sr!=0){
-            s=s+"  \\tikzstyle{every node}=[draw,circle,inner sep="+sr/5.0+", fill opacity=0.5,gray,fill=gray!40]"+delim;
-            for (Node n : tp.getNodes()){
-                double x=Math.round(n.getX()*100/scale)/100.0;
-                double y=Math.round((600-n.getY())*100/scale)/100.0;
-                s=s+"  \\path ("+x+","+y+") node ["+getStringColor(n.getColor())+"] (v" + n + ") {};"+delim;
-            }
-        }
-        s=s+"  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]"+delim;
-        for (Node n : tp.getNodes()){
-            String id = "v"+n.toString();
-            double x=Math.round(n.getX()*100/scale)/100.0;
-            double y=Math.round((600-n.getY())*100/scale)/100.0;
-            String color = (n.getColor()!=null)?"["+n.getColor().toString()+"]":"";
-            s=s+"  \\path ("+x+","+y+") node ["+getStringColor(n.getColor())+"] ("+id+") {};"+delim;
-        }
-        s+="  \\tikzstyle{every path}=[];"+delim;
-        for (Link l : tp.getLinks()) {
-            String width="";
-            if (l.getWidth()>1)
-                width=",ultra thick";
-            String id1 = "v"+l.source.toString();
-            String id2 = "v"+l.destination.toString();
-            s += "  \\draw ["+getStringColor(l.getColor())+width+"] (" + id1 + ")--(" + id2 + ");" + delim;
-        }
+        final String delim="\n";
+
+        String s = "\\begin{tikzpicture}[scale=1]" + delim;
+
+        s += exportSensingRanges(tp, scale, delim);
+        s += exportNodes(tp, scale, delim);
+        s += exportLinks(tp, delim);
+
         s+="\\end{tikzpicture}"+delim;
-        return s;        
+        return s;
     }
 
+    private String exportSensingRanges(Topology tp, double scale, final String delim) {
+        String result = "";
+        Integer sr = (int) tp.getSensingRange();
+        if (sr != 0) {
+            result = result + "  \\tikzstyle{every node}=[draw,circle,inner sep=" + sr / 5.0 + ", fill opacity=0.5,gray,fill=gray!40]" + delim;
+            for (Node n : tp.getNodes())
+                result = exportSensingRange(n, scale, delim);
+
+        }
+        return result;
+    }
+
+    private String exportSensingRange(Node n, double scale, final String delim) {
+        return exportNode(n, scale, delim);
+    }
+
+    private String exportNodes(Topology tp, double scale, final String delim) {
+        String result = "";
+        String header = "  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]";
+        result += header + delim;
+
+        for (Node n : tp.getNodes())
+            result += exportNode(n, scale, delim);
+
+        return result;
+    }
+
+    private String exportNode(Node n, double scale, final String delim) {
+        String id = "v"+ n;
+        Point coords = getDisplayableCoords(n, scale);
+        String color = getStringColor(n.getColor());
+        return "  \\path (" + coords.x + "," + coords.y + ") node [" + color + "] (" + id + ") {};" + delim;
+    }
+
+    private Point getDisplayableCoords(Node n, double scale) {
+        double x = Math.round(n.getX()*100/scale) / 100.0;
+        double y = Math.round((600.0 - n.getY()) * 100/scale) / 100.0;
+        return new Point(x, y);
+    }
+
+    private String exportLinks(Topology tp, final String delim) {
+        String result = "";
+        String header = "  \\tikzstyle{every path}=[];";
+        result += header+delim;
+
+        for (Link l : tp.getLinks())
+            result += exportLink(l, delim);
+        return result;
+    }
+
+    private String exportLink(Link l, final String delim) {
+        String options = "";
+        options = addOption(options, getStringColor(l.getColor()));
+        if (l.getWidth()>1)
+            options = addOption(options, "ultra thick");
+        String id1 = "v" + l.source;
+        String id2 = "v" + l.destination;
+        return "  \\draw [" + options + "] (" + id1 + ")--(" + id2 + ");" + delim;
+    }
+
+    private String addOption(String options, String option) {
+        if (options == null || options.length() == 0)
+            return option;
+
+        return options + ", " + option;
+    }
 }
