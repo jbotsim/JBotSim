@@ -21,10 +21,15 @@
 
 package io.jbotsim.io.format.tikz;
 
+import io.jbotsim.core.Color;
+import io.jbotsim.core.Link;
+import io.jbotsim.core.Node;
 import io.jbotsim.core.Topology;
+import io.jbotsim.io.TopologySerializer;
 import io.jbotsim.io.format.dot.DotTopologySerializer;
 import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
@@ -40,7 +45,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
-@RunWith(Parameterized.class)
 public class TikzTopologySerializerTest {
 
     protected static final String RESULT_EXTENSION = "-res.tikz";
@@ -48,11 +52,9 @@ public class TikzTopologySerializerTest {
     private static final boolean UPDATE_RESULTS = false;
     private static final String TEST_RC_ROOT = "/tikzinputs/";
 
-    @Parameterized.Parameter
-    public String inputFileName;
 
     @Parameterized.Parameters(name="{index}: {0}")
-    public static Collection<String> makers() {
+    public static Collection<String> classicalDotFiles() {
         return Arrays.asList(
                 "syntax-04.xdot",
                 "syntax-02.xdot",
@@ -72,8 +74,8 @@ public class TikzTopologySerializerTest {
                 "sunlet-10-directed.gv");
     }
 
-    private void updateExpectedResult(String result) throws IOException {
-        File resFile = new File(inputFileName + RESULT_EXTENSION);
+    private void updateExpectedResult(String result, String fileName) throws IOException {
+        File resFile = new File(fileName + RESULT_EXTENSION);
 
         if(!resFile.exists())
             resFile.createNewFile();
@@ -84,32 +86,55 @@ public class TikzTopologySerializerTest {
         out.close();
     }
 
-    @Test
-    public void exportToString() throws IOException {
-        URL url = getClass().getResource(TEST_RC_ROOT + inputFileName);
-        Topology tp = importTestTopology(url);
+    private String loadExpectedResult(String fileName) throws IOException {
+        URL url = getClass().getResource(TEST_RC_ROOT + fileName + RESULT_EXTENSION);
+        return new String(Files.readAllBytes(Paths.get(url.getPath())));
+    }
 
+    private Topology importTestTopology(Topology topology, TopologySerializer serializer, String fileName) {
+        URL url = getClass().getResource(TEST_RC_ROOT + fileName);
+
+        String fileContent = topology.getFileManager().read(url.getPath());
+        serializer.importFromString(topology, fileContent);
+        assertNotNull(topology);
+        return topology;
+    }
+
+    private void testExport(String fileName, Topology tp) throws IOException {
         String generatedTikz = new TikzTopologySerializer().exportToString(tp);
         assertNotNull(generatedTikz);
 
         if (UPDATE_RESULTS)
-            updateExpectedResult(generatedTikz);
+            updateExpectedResult(generatedTikz, fileName);
 
-        String expectedTikz = loadExpectedResult(url);
+        String expectedTikz = loadExpectedResult(fileName);
 
         assertEquals(expectedTikz, generatedTikz);
     }
 
-    private String loadExpectedResult(URL url) throws IOException {
-        return new String(Files.readAllBytes(Paths.get(url.getPath()+ RESULT_EXTENSION)));
+    @ParameterizedTest
+    @MethodSource("classicalDotFiles")
+    public void exportToString(String inputFileName) throws IOException {
+        Topology tp = importTestTopology(new Topology(), new DotTopologySerializer(), inputFileName);
+
+        testExport(inputFileName, tp);
     }
 
-    private Topology importTestTopology(URL url) {
+    @Test
+    public void orientedCaseTest() throws IOException {
         Topology tp = new Topology();
+        tp.setOrientation(Link.Orientation.DIRECTED);
+        tp.disableWireless();
+        Node n1 = new Node();
+        n1.setColor(Color.RED);
+        Node n2 = new Node();
+        n2.setColor(new Color(25, 25,25));
+        tp.addNode(50, 50, n1);
+        tp.addNode(100, 100, n2);
+        tp.addLink(new Link(n1, n2, tp.getOrientation(), Link.Mode.WIRED));
 
-        String fileContent = tp.getFileManager().read(url.getPath());
-        new DotTopologySerializer().importFromString(tp, fileContent);
-        assertNotNull(tp);
-        return tp;
+
+        testExport("oriented", tp);
     }
+
 }

@@ -136,6 +136,8 @@ public class TikzTopologySerializer implements TopologySerializer {
         options = addOption(options, getStringColor(l.getColor()));
         if (l.getWidth()>1)
             options = addOption(options, "ultra thick");
+        if (l.isDirected())
+            options = addOption(options, "->");
         String id1 = "v" + l.source;
         String id2 = "v" + l.destination;
         return "  \\draw [" + options + "] (" + id1 + ")--(" + id2 + ");" + delim;
