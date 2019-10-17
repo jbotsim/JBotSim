@@ -1,24 +1,24 @@
 \begin{tikzpicture}[scale=1]
   \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
-  \path (2.86,6.63) node [] (v0) {};
-  \path (3.3,4.95) node [] (v1) {};
-  \path (1.2,6.72) node [] (v10) {};
-  \path (1.89,4.07) node [] (v11) {};
-  \path (4.04,2.3) node [] (v12) {};
-  \path (6.81,2.15) node [] (v13) {};
-  \path (9.13,3.65) node [] (v14) {};
-  \path (10.13,6.23) node [] (v15) {};
-  \path (9.42,8.9) node [] (v16) {};
-  \path (7.28,10.65) node [] (v17) {};
-  \path (4.52,10.8) node [] (v18) {};
-  \path (2.19,9.3) node [] (v19) {};
-  \path (4.64,3.85) node [] (v2) {};
-  \path (6.38,3.76) node [] (v3) {};
-  \path (7.84,4.7) node [] (v4) {};
-  \path (8.46,6.32) node [] (v5) {};
-  \path (8.02,8.0) node [] (v6) {};
-  \path (6.68,9.09) node [] (v7) {};
-  \path (4.94,9.19) node [] (v8) {};
-  \path (3.49,8.25) node [] (v9) {};
+  \path (2.86,6.63) node [white] (v0) {};
+  \path (3.3,4.95) node [white] (v1) {};
+  \path (1.2,6.72) node [red] (v10) {};
+  \path (1.89,4.07) node [red] (v11) {};
+  \path (4.04,2.3) node [red] (v12) {};
+  \path (6.81,2.15) node [red] (v13) {};
+  \path (9.13,3.65) node [red] (v14) {};
+  \path (10.13,6.23) node [red] (v15) {};
+  \path (9.42,8.9) node [red] (v16) {};
+  \path (7.28,10.65) node [red] (v17) {};
+  \path (4.52,10.8) node [red] (v18) {};
+  \path (2.19,9.3) node [red] (v19) {};
+  \path (4.64,3.85) node [white] (v2) {};
+  \path (6.38,3.76) node [white] (v3) {};
+  \path (7.84,4.7) node [white] (v4) {};
+  \path (8.46,6.32) node [white] (v5) {};
+  \path (8.02,8.0) node [white] (v6) {};
+  \path (6.68,9.09) node [white] (v7) {};
+  \path (4.94,9.19) node [white] (v8) {};
+  \path (3.49,8.25) node [white] (v9) {};
   \tikzstyle{every path}=[];
 \end{tikzpicture}

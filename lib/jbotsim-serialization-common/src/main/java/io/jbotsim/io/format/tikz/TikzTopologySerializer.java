@@ -28,34 +28,40 @@ import io.jbotsim.io.TopologySerializer;
  */
 public class TikzTopologySerializer implements TopologySerializer {
     public static String getStringColor(Color color){
-        String result = "";
-        if (color == Color.black)
-            result = "black";
-        if (color == Color.red)
-            result = "red";
-        if (color == Color.blue)
-            result = "blue";
-        if (color == Color.green)
-            result = "green";
-        if (color == Color.white)
-            result = "white";
-        if (color == Color.gray)
-            result = "gray";
-        if (color == Color.cyan)
-            result = "cyan";
-        if (color == Color.magenta)
-            result = "magenta";
-        if (color == Color.orange)
-            result = "orange";
-        if (color == Color.darkGray)
-            result = "darkgray";
-        if (color == Color.lightGray)
-            result = "lightGray";
-        if (color == Color.pink)
-            result = "pink";
-        if (color == Color.yellow)
-            result = "yellow";
-        return result;
+        if (color == null)
+            return "";
+        if (color.equals(Color.BLACK))
+            return "black";
+        if (color.equals(Color.RED))
+            return "red";
+        if (color.equals(Color.BLUE))
+            return "blue";
+        if (color.equals(Color.GREEN))
+            return "green";
+        if (color.equals(Color.WHITE))
+            return "white";
+        if (color.equals(Color.GRAY))
+            return "gray";
+        if (color.equals(Color.CYAN))
+            return "cyan";
+        if (color.equals(Color.MAGENTA))
+            return "magenta";
+        if (color.equals(Color.ORANGE))
+            return "orange";
+        if (color.equals(Color.DARK_GRAY))
+            return "darkgray";
+        if (color.equals(Color.LIGHT_GRAY))
+            return "lightGray";
+        if (color.equals(Color.PINK))
+            return "pink";
+        if (color.equals(Color.YELLOW))
+            return "yellow";
+
+        return customRGBTikzColor(color);
+    }
+
+    private static String customRGBTikzColor(Color color) {
+        return "color={rgb:red,"+color.getRed()+";green,"+color.getGreen()+";blue,"+color.getBlue()+"}";
     }
 
     @Override
