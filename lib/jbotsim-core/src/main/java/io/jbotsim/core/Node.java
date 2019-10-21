@@ -101,6 +101,19 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     public void onSelection() {
     }
 
+
+    /**
+     * This method is called when the {@link Topology} is initialized.
+     * In particular:
+     * <ul>
+     *     <li>The nodes are added to the {@link Topology}</li>
+     * </ul>
+     *
+     */
+    public void onInit() {
+
+    }
+
     /**
      * Override this method to re-initialise your node (e.g. your variables).
      * This method is also called when a node is added to the topology

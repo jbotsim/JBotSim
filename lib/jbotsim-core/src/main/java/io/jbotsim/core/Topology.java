@@ -55,6 +55,7 @@ public class Topology extends Properties implements ClockListener {
     List<MovementListener> movementListeners = new ArrayList<>();
     List<MessageListener> messageListeners = new ArrayList<>();
     List<SelectionListener> selectionListeners = new ArrayList<>();
+    List<InitializationListener> initializationListeners = new ArrayList<>();
     List<StartListener> startListeners = new ArrayList<>();
     MessageEngine messageEngine = null;
     Scheduler scheduler;
@@ -71,12 +72,14 @@ public class Topology extends Properties implements ClockListener {
     Node selectedNode = null;
     ArrayList<Node> toBeUpdated = new ArrayList<>();
     private boolean step = false;
+    private boolean isInitialized = false;
     private boolean isStarted = false;
     private int nextID = 0;
     private FileManager fileManager = new FileManager();
     private TopologySerializer topologySerializer = new PlainTopologySerializer();
 
     private Link.Orientation orientation = DEFAULT_ORIENTATION;
+
 
     public enum RefreshMode {CLOCKBASED, EVENTBASED}
 
@@ -169,6 +172,10 @@ public class Topology extends Properties implements ClockListener {
             e.printStackTrace();
         }
         return new Node();
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
     }
 
     public boolean isStarted() { // FIXME Ambiguous for the user
@@ -358,6 +365,8 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Pauses the clock (or increments the pause counter).
+     *
+     * @see #resume()
      */
     public void pause() {
         clockManager.pause();
@@ -365,6 +374,8 @@ public class Topology extends Properties implements ClockListener {
 
     /**
      * Resumes the clock (or decrements the pause counter).
+     *
+     * @see #pause()
      */
     public void resume() {
         clockManager.resume();
@@ -404,18 +415,72 @@ public class Topology extends Properties implements ClockListener {
     }
 
     /**
-     * Initializes the clock.
+     * <p>Initializes the simulation.</p>
+     *
+     * <p>More precisely, it:</p>
+     * <ul>
+     *   <li>calls each {@link Node}'s {@link Node#onInit()} method</li>
+     *   <li>calls each {@link InitializationListener}'s {@link InitializationListener#onInit()} method</li>
+     * </ul>
+     * @see #start()
+     */
+    public void initialize() {
+
+        for (Node n:nodes)
+            n.onInit();
+
+        for (InitializationListener listener : initializationListeners)
+            listener.onInit();
+
+        isInitialized = true;
+        isStarted = false;
+    }
+
+    /**
+     * <p>Starts the simulation.</p>
+     *
+     * <p>More precisely, it:</p>
+     * <ul>
+     *   <li>makes sure that any previous initialization has been made (using {@link #initialize()}, if needed)</li>
+     *   <li>initializes the clock</li>
+     *   <li>calls the {@link #restart()} method</li>
+     * </ul>
+     * @see #initialize()
+     * @see #restart()
      */
     public void start() {
+        if (isStarted())
+            return;
+
+        if (!isInitialized())
+            initialize();
+
         clockManager.start();
         isStarted = true;
         restart();
     }
 
     /**
-     * (Re)init the nodes through their onStart() method (and notifies StartListeners as well)
+     * <p>(Re)starts the nodes through their onStart() method (and notifies StartListeners as well)</p>
+     *
+     * <p>More precisely, it:</p>
+     * <ul>
+     *   <li>resets the clock</li>
+     *   <li>clears any existing message</li>
+     *   <li>calls each {@link Node}'s {@link Node#onStart()} method</li>
+     *   <li>calls each {@link StartListener}'s {@link StartListener#onStart()} method</li>
+     * </ul>
+     *
+     * @see #start()
+     * @see #pause()
+     * @see #resume()
      */
     public void restart() {
+        if(!isStarted()) {
+            start();
+            return;
+        }
+
         pause();
         resetTime();
         clearMessages();
@@ -508,9 +573,12 @@ public class Topology extends Properties implements ClockListener {
             n.setID(nextID++);
         nodes.add(n);
         n.topo = this;
+        if (isInitialized) {
+            n.onInit();
+            if (isStarted)
+                n.onStart();
+        }
         notifyNodeAdded(n);
-        if (isStarted)
-            n.onStart();
         touch(n);
         resume();
     }
@@ -993,6 +1061,25 @@ public class Topology extends Properties implements ClockListener {
      */
     public void removeSelectionListener(SelectionListener listener) {
         selectionListeners.remove(listener);
+    }
+
+    /**
+     * Registers the specified initialization listener to this topology. The listener
+     * will be notified when the topology is initialized.
+     *
+     * @param listener The initialization listener.
+     */
+    public void addInitializationListener(InitializationListener listener) {
+        initializationListeners.add(listener);
+    }
+
+    /**
+     * Unregisters the specified initialization listener for this topology.
+     *
+     * @param listener The initialization listener.
+     */
+    public void removeInitializationListener(InitializationListener listener) {
+        initializationListeners.remove(listener);
     }
 
     /**

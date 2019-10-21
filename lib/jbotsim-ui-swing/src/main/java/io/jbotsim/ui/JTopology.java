@@ -75,6 +75,7 @@ public class JTopology extends JPanel implements ActionListener {
         this.topo = topology;
         topo.setProperty("jtopology", this);
         topo.setClockModel(JClock.class);
+        topo.addInitializationListener(handler);
         topo.addConnectivityListener(handler);
         topo.addTopologyListener(handler);
         topo.addMovementListener(handler);
@@ -177,7 +178,7 @@ public class JTopology extends JPanel implements ActionListener {
     }
 
     class EventHandler implements TopologyListener, MovementListener, ConnectivityListener,
-            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener, ComponentListener {
+            PropertyListener, ClockListener, MouseListener, ActionListener, KeyListener, ComponentListener, InitializationListener {
         boolean ctrlPressed = false;
 
         public void onNodeAdded(Node n) {
@@ -328,6 +329,11 @@ public class JTopology extends JPanel implements ActionListener {
         @Override
         public void componentHidden(ComponentEvent componentEvent) {
 
+        }
+
+        @Override
+        public void onInit() {
+            updateUI();
         }
     }
 }
