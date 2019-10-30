@@ -1,19 +1,19 @@
 \begin{tikzpicture}[scale=1]
   \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
-  \path (1.25,9.31) node [color={rgb:red,238;green,130;blue,238}] (v0) {};
-  \path (2.48,10.48) node [color={rgb:red,238;green,130;blue,238}] (v1) {};
-  \path (9.58,7.78) node [color={rgb:red,128;green,128;blue,0}] (v10) {};
-  \path (9.66,9.56) node [color={rgb:red,128;green,128;blue,0}] (v11) {};
-  \path (10.39,8.17) node [color={rgb:red,128;green,128;blue,0}] (v12) {};
-  \path (10.44,9.14) node [color={rgb:red,128;green,128;blue,0}] (v13) {};
-  \path (1.98,8.99) node [color={rgb:red,238;green,130;blue,238}] (v2) {};
-  \path (1.2,10.15) node [color={rgb:red,238;green,130;blue,238}] (v3) {};
-  \path (1.77,10.8) node [color={rgb:red,238;green,130;blue,238}] (v4) {};
-  \path (2.87,9.56) node [white] (v5) {};
-  \path (4.35,9.13) node [red] (v6) {};
-  \path (5.81,8.86) node [red] (v7) {};
-  \path (7.28,8.75) node [red] (v8) {};
-  \path (8.81,8.71) node [color={rgb:red,238;green,130;blue,238}] (v9) {};
+  \path (1.25,2.71) node [color={rgb:red,238;green,130;blue,238}] (v0) {};
+  \path (2.48,3.88) node [color={rgb:red,238;green,130;blue,238}] (v1) {};
+  \path (9.58,1.18) node [color={rgb:red,128;green,128;blue,0}] (v10) {};
+  \path (9.66,2.96) node [color={rgb:red,128;green,128;blue,0}] (v11) {};
+  \path (10.39,1.57) node [color={rgb:red,128;green,128;blue,0}] (v12) {};
+  \path (10.44,2.54) node [color={rgb:red,128;green,128;blue,0}] (v13) {};
+  \path (1.98,2.39) node [color={rgb:red,238;green,130;blue,238}] (v2) {};
+  \path (1.2,3.55) node [color={rgb:red,238;green,130;blue,238}] (v3) {};
+  \path (1.77,4.2) node [color={rgb:red,238;green,130;blue,238}] (v4) {};
+  \path (2.87,2.96) node [white] (v5) {};
+  \path (4.35,2.53) node [red] (v6) {};
+  \path (5.81,2.26) node [red] (v7) {};
+  \path (7.28,2.15) node [red] (v8) {};
+  \path (8.81,2.11) node [color={rgb:red,238;green,130;blue,238}] (v9) {};
   \tikzstyle{every path}=[];
   \draw [darkgray] (v0)--(v1);
   \draw [darkgray] (v0)--(v2);

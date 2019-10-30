@@ -125,6 +125,7 @@ public class TikzTopologySerializerTest {
         Topology tp = new Topology();
         tp.setOrientation(Link.Orientation.DIRECTED);
         tp.disableWireless();
+        tp.setSensingRange(30);
         Node n1 = new Node();
         n1.setColor(Color.RED);
         Node n2 = new Node();

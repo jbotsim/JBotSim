@@ -24,10 +24,56 @@ import io.jbotsim.core.*;
 import io.jbotsim.io.TopologySerializer;
 
 /**
- *  Tikz export for objects of type Topology in JBotSim.
+ *  <p>The {@link TikzTopologySerializer} exports a JBotSim {@link Topology} into TikZ format.</p>
+ *
+ *  <p>Note: {@link #importFromString(Topology, String)} is not supported.</p>
  */
 public class TikzTopologySerializer implements TopologySerializer {
-    public static String getStringColor(Color color){
+
+    /**
+     * The default End-Of-Line delimiter ({\value{DEFAULT_EOL}}.
+     */
+    public static final String DEFAULT_EOL = "\n";
+
+    /**
+     * The default scale factor that must be applied to the distance between nodes ({\value{DEFAULT_SCALE_FACTOR}}.
+     */
+    public static final double DEFAULT_SCALE_FACTOR = 1/50.;
+
+    protected String eol = DEFAULT_EOL;
+    protected double scaleFactor = DEFAULT_SCALE_FACTOR;
+
+    /**
+     * Creates {@link TikzTopologySerializer} with the default values.
+     *
+     * @see #DEFAULT_EOL
+     * @see #DEFAULT_SCALE_FACTOR
+     */
+    public TikzTopologySerializer() {
+        this(DEFAULT_EOL, DEFAULT_SCALE_FACTOR);
+    }
+
+    /**
+     * Creates A {@link TikzTopologySerializer} according to the provided parameters.
+     *
+     * @param eol The String to append at the end of each line.
+     * @param scaleFactor The scale factor to apply to each {@link Node} location, as a double.
+     *
+     * @see #DEFAULT_EOL
+     * @see #DEFAULT_SCALE_FACTOR
+     */
+    public TikzTopologySerializer(String eol, double scaleFactor) {
+        this.eol = eol;
+        this.scaleFactor = scaleFactor;
+    }
+
+    /**
+     * <p>Converts a JBotSim {@link Color} into a color string displayable with TikZ.</p>
+     *
+     * @param color a {@link Color} to be converter
+     * @return a TikZ-displayable equivalent of the provided color.
+     */
+    public static String getTikzStringColor(Color color){
         if (color == null)
             return "";
         if (color.equals(Color.BLACK))
@@ -71,82 +117,81 @@ public class TikzTopologySerializer implements TopologySerializer {
 
     @Override
     public String exportToString(Topology topology){
-        return exportTopology(topology, 50);
+        return exportTopology(topology, scaleFactor);
     }
 
-    public String exportTopology(Topology tp, double scale){
-        final String delim="\n";
+    protected String exportTopology(Topology topology, double scaleFactor){
 
-        String s = "\\begin{tikzpicture}[scale=1]" + delim;
+        StringBuilder sb = new StringBuilder();
 
-        s += exportSensingRanges(tp, scale, delim);
-        s += exportNodes(tp, scale, delim);
-        s += exportLinks(tp, delim);
+        sb.append("\\begin{tikzpicture}[scale=1]" + eol);
 
-        s+="\\end{tikzpicture}"+delim;
-        return s;
+        exportSensingRanges(sb, topology, scaleFactor);
+        exportNodes(sb, topology, scaleFactor);
+        exportLinks(sb, topology);
+
+        sb.append("\\end{tikzpicture}"+ eol);
+        return sb.toString();
     }
 
-    private String exportSensingRanges(Topology tp, double scale, final String delim) {
-        String result = "";
+    private void exportSensingRanges(StringBuilder sb, Topology tp, double scale) {
         Integer sr = (int) tp.getSensingRange();
-        if (sr != 0) {
-            result = result + "  \\tikzstyle{every node}=[draw,circle,inner sep=" + sr / 5.0 + ", fill opacity=0.5,gray,fill=gray!40]" + delim;
-            for (Node n : tp.getNodes())
-                result = exportSensingRange(n, scale, delim);
+        if (sr == 0)
+            return;
 
-        }
-        return result;
-    }
-
-    private String exportSensingRange(Node n, double scale, final String delim) {
-        return exportNode(n, scale, delim);
-    }
-
-    private String exportNodes(Topology tp, double scale, final String delim) {
-        String result = "";
-        String header = "  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]";
-        result += header + delim;
+        double innerSep = sr / 5.0;
+        sb.append("  \\tikzstyle{every node}=[draw,circle,inner sep=" + innerSep + ", fill opacity=0.5,gray,fill=gray!40]" + eol);
 
         for (Node n : tp.getNodes())
-            result += exportNode(n, scale, delim);
+            sb.append(exportSensingRange(n, scale));
 
-        return result;
     }
 
-    private String exportNode(Node n, double scale, final String delim) {
+    private String exportSensingRange(Node n, double scale) {
+        return exportNode(n, scale);
+    }
+
+    private void exportNodes(StringBuilder sb, Topology tp, double scale) {
+        String header = "  \\tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]";
+        sb.append(header + eol);
+
+        for (Node n : tp.getNodes())
+            sb.append(exportNode(n, scale));
+
+    }
+
+    private String exportNode(Node n, double scale) {
         String id = "v"+ n;
         Point coords = getDisplayableCoords(n, scale);
-        String color = getStringColor(n.getColor());
-        return "  \\path (" + coords.x + "," + coords.y + ") node [" + color + "] (" + id + ") {};" + delim;
+        String color = getTikzStringColor(n.getColor());
+        return "  \\path (" + coords.x + "," + coords.y + ") node [" + color + "] (" + id + ") {};" + eol;
     }
 
     private Point getDisplayableCoords(Node n, double scale) {
-        double x = Math.round(n.getX()*100/scale) / 100.0;
-        double y = Math.round((600.0 - n.getY()) * 100/scale) / 100.0;
+        double x = Math.round(n.getX()* 100 * scale) / 100.0;
+        double invertedY = n.getTopology().getHeight() - n.getY();
+        double y = Math.round(invertedY * 100 * scale) / 100.0;
         return new Point(x, y);
     }
 
-    private String exportLinks(Topology tp, final String delim) {
-        String result = "";
+    private void exportLinks(StringBuilder sb, Topology tp) {
         String header = "  \\tikzstyle{every path}=[];";
-        result += header+delim;
+        sb.append(header + eol);
 
         for (Link l : tp.getLinks())
-            result += exportLink(l, delim);
-        return result;
+            sb.append(exportLink(l));
     }
 
-    private String exportLink(Link l, final String delim) {
+    private String exportLink(Link l) {
         String options = "";
-        options = addOption(options, getStringColor(l.getColor()));
+        options = addOption(options, getTikzStringColor(l.getColor()));
         if (l.getWidth()>1)
             options = addOption(options, "ultra thick");
         if (l.isDirected())
             options = addOption(options, "->");
         String id1 = "v" + l.source;
         String id2 = "v" + l.destination;
-        return "  \\draw [" + options + "] (" + id1 + ")--(" + id2 + ");" + delim;
+        return "  \\draw [" + options + "] (" + id1 + ")--(" + id2 + ");" + eol;
     }
 
     private String addOption(String options, String option) {

@@ -1,15 +1,15 @@
 \begin{tikzpicture}[scale=1]
   \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
-  \path (1.2,10.8) node [white] (v0) {};
-  \path (1.2,10.8) node [red] (v1) {};
-  \path (1.2,10.8) node [cyan] (v2) {};
-  \path (1.2,10.8) node [red] (v3) {};
-  \path (1.2,10.8) node [color={rgb:red,75;green,0;blue,130}] (v4) {};
-  \path (1.2,10.8) node [cyan] (v5) {};
-  \path (1.2,10.8) node [color={rgb:red,250;green,128;blue,114}] (v6) {};
-  \path (1.2,10.8) node [color={rgb:red,240;green,230;blue,140}] (v7) {};
-  \path (1.2,10.8) node [color={rgb:red,250;green,128;blue,114}] (v8) {};
-  \path (1.2,10.8) node [color={rgb:red,240;green,230;blue,140}] (v9) {};
+  \path (1.2,1.2) node [white] (v0) {};
+  \path (1.2,1.2) node [red] (v1) {};
+  \path (1.2,1.2) node [cyan] (v2) {};
+  \path (1.2,1.2) node [red] (v3) {};
+  \path (1.2,1.2) node [color={rgb:red,75;green,0;blue,130}] (v4) {};
+  \path (1.2,1.2) node [cyan] (v5) {};
+  \path (1.2,1.2) node [color={rgb:red,250;green,128;blue,114}] (v6) {};
+  \path (1.2,1.2) node [color={rgb:red,240;green,230;blue,140}] (v7) {};
+  \path (1.2,1.2) node [color={rgb:red,250;green,128;blue,114}] (v8) {};
+  \path (1.2,1.2) node [color={rgb:red,240;green,230;blue,140}] (v9) {};
   \tikzstyle{every path}=[];
   \draw [darkgray] (v0)--(v1);
   \draw [darkgray] (v0)--(v4);
