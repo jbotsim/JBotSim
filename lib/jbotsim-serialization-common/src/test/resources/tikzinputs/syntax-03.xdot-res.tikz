@@ -1,0 +1,26 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (4.34,9.84) node [] (v1) {};
+  \path (3.78,8.4) node [] (v2) {};
+  \path (1.2,6.96) node [] (v3) {};
+  \path (4.16,6.96) node [] (v4) {};
+  \path (5.26,5.52) node [] (v5) {};
+  \path (3.06,5.52) node [] (v6) {};
+  \path (7.12,6.96) node [] (v7) {};
+  \path (4.16,4.08) node [] (v8) {};
+  \path (11.6,9.84) node [] (v11) {};
+  \path (11.6,8.4) node [] (v12) {};
+  \path (11.6,6.96) node [] (v13) {};
+  \path (14.14,5.52) node [] (v15) {};
+  \path (10.5,4.08) node [] (v16) {};
+  \path (10.5,5.52) node [] (v17) {};
+  \path (12.7,5.52) node [] (v18) {};
+  \path (22.12,9.84) node [] (v21) {};
+  \path (20.22,8.4) node [] (v22) {};
+  \path (18.36,6.96) node [] (v23) {};
+  \path (18.36,5.52) node [] (v24) {};
+  \path (19.88,4.08) node [] (v25) {};
+  \path (19.5,2.64) node [] (v26) {};
+  \path (18.02,1.2) node [] (v27) {};
+  \tikzstyle{every path}=[];
+\end{tikzpicture}

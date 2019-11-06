@@ -4,6 +4,41 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+###  TikzTopologySerializer class modifications
+
+[[issue 80]][issue: #80]
+
+**Behavior modifications in TikzTopologySerializer:**
+
+* Directed links are now supported
+ 
+  Directed links are properly exported (using `"->"` option).
+  This supposes that `Topology.getOrientation()` returns `DIRECTED`. 
+* TikZ colors are now better supported
+* The previous *scale* parameter is now a proper scale factor.
+
+  Its previous default value was `50`. It is now `1/50.`, resulting in the same default value.  
+
+**Symbol modifications in TikzTopologySerializer:**
+
+* The `TikzTopologySerializer.DEFAULT_EOL` constant has been added
+
+  This constant sets the value of the default End-Of-Line delimiter: `"\n"`.
+
+* The `TikzTopologySerializer.DEFAULT_SCALE_FACTOR` constant has been added
+
+  This constant sets the default scale factor that must be applied to the distance between nodes: `1/50`.
+
+* A new constructor `TikzTopologySerializer(String, double)` has been added
+
+  This constructor allows to specify custom values for both the *EOL* and the *scale factor*.
+
+* `exportTopology(Topology topology, double scaleFactor)` is now `protected`
+
+  It was previously `public`. You can achieve the same behavior by using the new constructor.
+   
+[issue: #80]: https://github.com/jbotsim/JBotSim/issues/80
+
 ###  JNode class modifications
 
 [[issue 77]][issue: #77]

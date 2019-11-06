@@ -1,0 +1,16 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (4.08,6.56) node [] (va) {};
+  \path (4.08,4.82) node [] (vb) {};
+  \path (8.66,4.82) node [] (vbar) {};
+  \path (10.1,4.82) node [] (vbaz) {};
+  \path (8.66,6.56) node [] (vfoo) {};
+  \path (6.38,6.56) node [] (vn1) {};
+  \path (5.72,4.82) node [] (vn2) {};
+  \path (6.08,2.66) node [] (vn3) {};
+  \path (7.26,3.74) node [] (vn4) {};
+  \path (6.68,1.2) node [] (vn5) {};
+  \path (1.2,6.56) node [] (vxxx) {};
+  \path (2.64,6.56) node [] (vyyy) {};
+  \tikzstyle{every path}=[];
+\end{tikzpicture}
