@@ -447,10 +447,7 @@ public class Topology extends Properties implements ClockListener {
      * Removes all the ongoing messages in this topology.
      */
     public void clearMessages() {
-        for (Node n : nodes) {
-            n.sendQueue.clear();
-            n.mailBox.clear();
-        }
+        getMessageEngine().reset();
     }
 
     /**

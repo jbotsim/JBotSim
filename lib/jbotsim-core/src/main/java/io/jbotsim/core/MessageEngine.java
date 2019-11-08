@@ -218,4 +218,23 @@ public class MessageEngine implements ClockListener {
         this.debug = debug;
     }
 
+    /**
+     * <p>Resets the {@link MessageEngine}.</p>
+     * <ul>
+     *   <li>Any {@link Message} (ready to be sent, "in the air" or ready to be received) handled by the
+     * {@link MessageEngine} is discarded.</li>
+     *   <li>Other configurations (delay or debug) remain untouched.</li>
+     * </ul>
+     */
+    public void reset() {
+        delayedMessages.clear();
+        clearMailboxes();
+        clearSendQueues();
+    }
+
+    protected void clearSendQueues() {
+        for (Node node: topology.getNodes())
+            node.sendQueue.clear();
+    }
+
 }

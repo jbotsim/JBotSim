@@ -4,6 +4,24 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+###  Topology class modifications
+
+**Bug fixes in Topology:**
+
+* `Topology.restart()` and `Topology.clearMessages()` now properly remove delayed messages [[issue 83]][issue: #83]
+ 
+  This is delegated to the new `MessageEngine.reset()` method. 
+
+[issue: #83]: https://github.com/jbotsim/JBotSim/issues/83
+
+###  MessageEngine class modification
+
+**Symbol modifications in MessageEngine:**
+
+* The `MessageEngine.reset()` method has been added  [[issue 83]][issue: #83]
+
+  This method properly discards any message handled by the MessageEngine.
+
 ###  TikzTopologySerializer class modifications
 
 [[issue 80]][issue: #80]
