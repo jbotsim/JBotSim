@@ -4,6 +4,39 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+###  Topology initialization feature
+
+[[issue 56]][issue: #56]
+
+An intermediate state has been added in the `Topology`'s lifecycle. The *initialization* step happens only once and 
+comes before the *start* step. 
+Upon initialization, the nodes have been added to the `Topology` and they have access to it via `Node.getTopology()`. 
+
+**InitializationListener class creation:**
+
+* `InitializationListener.onInit()` has been added
+   
+  It is called by the `Topology` when it is initialized.
+ 
+**New symbols in Node:**
+  
+* `Node.onInit()` has been added
+   
+  It is called by the `Topology` when it is initialized.
+ 
+**New symbols in Topology:**
+
+* `Topology.initialize()` has been added
+ 
+  If not explicitly called, it is automatically called by `Topology.start()`.
+
+* `Topology.addInitializationListener()` and `Topology.removeInitializationListener()` have been added
+
+  They allow you to (un)register `InitializationListener`s.
+
+
+[issue: #56]: https://github.com/jbotsim/JBotSim/issues/56
+
 ###  DefaultClock class modifications
 
 **Bug fixes in DefaultClock:**
