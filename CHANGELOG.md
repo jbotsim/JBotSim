@@ -4,6 +4,17 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+### New icon in the jbotsim-icons module
+
+`jbotsim-icons`/`io.jbotsim.ui.icons`
+
+* A fully transparent new icon has been added [[issue 84]][issue: #84] 
+  * `jbotsim-icons`/`io/jbotsim/ui/icons/transparent.png` 
+
+  As usual, it's path can be accessed using the corresponding constant `Icons.TRANSPARENT`.
+
+[issue: #84]: https://github.com/jbotsim/JBotSim/issues/84
+
 ###  Topology class modifications
 
 **Bug fixes in Topology:**
