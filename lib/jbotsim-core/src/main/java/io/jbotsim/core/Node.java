@@ -754,10 +754,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * Sends a message from this node to the specified destination node.
      * The content of the
      * message is specified as an object reference, to be passed 'as is' to the
-     * destination(s). The effective transmission will occur at the
-     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
-     * message delay specified by the static method <code>Message.setMessageDelay
-     * </code> (1 by default).
+     * destination(s).
      *
      * @param destination The destination node.
      * @param message     The message to be sent.
@@ -811,12 +808,14 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Sends a message to all neighbors. The content of the
+     * <p>Sends a message to all neighbors. The content of the
      * message is specified as an object reference, to be passed 'as is' to the
-     * destination(s). The effective transmission will occur at the
-     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
-     * message delay specified by the static method <code>Message.setMessageDelay
-     * </code> (1 by default).
+     * destination(s).</p>
+     * <p>The actual list of neighbors to which the message will be sent is decided, by the {@link MessageEngine},
+     * at the very start of the next round.</p>
+     *
+     * <p>If you need to send your message to the exact list of neighbors at another moment, you should implement it
+     * with a loop and calls to {@link #send(Node, Message)}.</p>
      *
      * @param message The message to be sent.
      */
@@ -834,7 +833,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     @Deprecated
     public void sendAll(Object content) {
-        send(null, new Message(content));
+        sendAll(new Message(content));
     }
 
     /**

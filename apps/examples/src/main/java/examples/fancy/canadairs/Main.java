@@ -1,12 +1,7 @@
 package examples.fancy.canadairs;
 
-import io.jbotsim.core.Link;
-import io.jbotsim.core.Node;
-import io.jbotsim.core.Topology;
-import io.jbotsim.core.LinkResolver;
+import io.jbotsim.core.*;
 import io.jbotsim.ui.JViewer;
-
-import io.jbotsim.core.Color;
 
 /**
  * Created by acasteig on 22/03/15.
@@ -36,7 +31,9 @@ public class Main extends LinkResolver {
     public static void main(String[] args) {
         topology = new Topology(800,600);
         topology.setLinkResolver(new Main());
-        topology.getMessageEngine().setDelay(10);
+        DelayMessageEngine messageEngine = new DelayMessageEngine(topology);
+        messageEngine.setDelay(10);
+        topology.setMessageEngine(messageEngine);
         createMap(topology);
         topology.setTimeUnit(30);
         topology.setDefaultNodeModel(Fire.class);

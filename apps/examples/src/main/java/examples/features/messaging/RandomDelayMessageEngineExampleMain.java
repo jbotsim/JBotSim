@@ -19,29 +19,25 @@
  *
  */
 
-package io.jbotsim.core;
+package examples.features.messaging;
 
-/**
- * <p>The {@link MessageEngine} is responsible for the regular transmission of the available
- * {@link Message Messages} from any sender {@link Node} of the {@link Topology} to their destination.</p>
- *
- */
-public interface MessageEngine {
+import io.jbotsim.contrib.messaging.RandomDelayMessageEngine;
+import io.jbotsim.core.MessageEngine;
+import io.jbotsim.core.Topology;
+import io.jbotsim.gen.basic.TopologyGenerators;
+import io.jbotsim.ui.JViewer;
 
-    /**
-     * <p>Sets the {@link Topology} to which the {@link MessageEngine} refers.</p>
-     * @param topology a {@link Topology}.
-     */
-    void setTopology(Topology topology);
+public class RandomDelayMessageEngineExampleMain {
+    public static void main(String[] args) {
+        Topology tp = new Topology();
+        tp.setTimeUnit(10);
+        tp.setDefaultNodeModel(GridMessagingNode.class);
+        TopologyGenerators.generateGrid(tp, 10,10);
+        new JViewer(tp);
 
-    /**
-     * <p>Method responsible for the delivery of the {@link Message Messages}.
-     * It is regularly called by the {@link Scheduler}.</p>
-     */
-    void onClock();
+        MessageEngine messageEngine = new RandomDelayMessageEngine(tp, 10);
+        tp.setMessageEngine(messageEngine);
 
-    /**
-     * <p>Resets the {@link MessageEngine}.</p>
-     */
-    void reset();
+        tp.start();
+    }
 }

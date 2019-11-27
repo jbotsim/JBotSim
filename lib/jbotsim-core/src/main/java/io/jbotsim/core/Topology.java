@@ -95,7 +95,7 @@ public class Topology extends Properties implements ClockListener {
      * @param height the {@link Topology}'s height, as an integer.
      */
     public Topology(int width, int height) {
-        setMessageEngine(new MessageEngine(this));
+        setMessageEngine(new DefaultMessageEngine(this));
         setScheduler(new Scheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);

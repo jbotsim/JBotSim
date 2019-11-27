@@ -36,7 +36,9 @@ public class MessageEngineTest {
         Topology topology = new Topology();
         topology.setDefaultNodeModel(MyBroadcastNode.class);
         topology.setTimeUnit(10);
-        topology.getMessageEngine().setDelay(200);
+        DelayMessageEngine messageEngine = new DelayMessageEngine(topology);
+        messageEngine.setDelay(200);
+        topology.setMessageEngine(messageEngine);
         topology.addNode(50, 50);
         topology.addNode(100, 100);
         topology.addNode(150, 150);
