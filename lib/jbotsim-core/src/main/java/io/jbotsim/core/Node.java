@@ -623,6 +623,19 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
+     * <p>Indicates whether the provided node is the other endpoint of one of the node's in-coming links.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasInNeighbor(Node node) {
+        if (node == null)
+            return false;
+
+        return node.hasOutNeighbor(this);
+    }
+
+    /**
      * Returns a list containing every node serving as source for an adjacent
      * directed link. The returned list can be subsequently modified
      * without effect on the topology.
@@ -638,6 +651,16 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
+     * <p>Indicates whether the provided node is the other endpoint of one of the node's out-going links.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasOutNeighbor(Node node) {
+        return outLinks.containsKey(node);
+    }
+
+    /**
      * Returns a list containing every node serving as destination for an
      * adjacent directed link. The returned list can be subsequently
      * modified without effect on the topology.
@@ -647,7 +670,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     public List<Node> getOutNeighbors() {
         ArrayList<Node> neighbors = new ArrayList<>();
-        for (Link l : getOutLinks())
+        for (Link l : outLinks.values())
             neighbors.add(l.destination);
         return neighbors;
     }
@@ -673,6 +696,20 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     public boolean hasNeighbors() {
         return getLinks().size() > 0;
+    }
+
+    /**
+     * <p>Indicates whether the provided node is to be considered as neighbor of the current node, depending on the
+     * {@link Topology}'s orientation.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasNeighbor(Node node) {
+        if (getTopology().isDirected())
+            return hasOutNeighbor(node);
+        else
+            return hasInNeighbor(node) && hasOutNeighbor(node);
     }
 
     /**
