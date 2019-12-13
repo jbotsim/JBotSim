@@ -31,20 +31,40 @@ import java.util.List;
  * <p>The {@link ClockManager} is used by the {@link Topology} object to implement its clock mechanism.</p>
  */
 public class ClockManager {
+    final static int CLOCK_INITIAL_VALUE = 0;
+
     Topology tp;
     HashMap<ClockListener, Integer> listeners = new HashMap<>();
     HashMap<ClockListener, Integer> countdown = new HashMap<>();
     Class<? extends Clock> clockModel = null;
     Clock clock = null;
-    Integer time = 0;
+    Integer time = CLOCK_INITIAL_VALUE;
     Integer timeUnit = 10; // duration of a round in ms
     int nbPauses = 0;
+    private boolean firstRound = true;
 
     ClockManager(Topology topology) {
         this.tp = topology;
     }
 
     public void onClock() {
+        incrementTime();
+        callScheduler();
+    }
+
+    private void incrementTime() {
+        /*
+         * The time is not incremented after resets in order to be sure that:
+         * - the first onClock() calls match the CLOCK_INITIAL_VALUE and,
+         * - the value of the clock match for first onStart() and onClock() calls
+         */
+        if(firstRound)
+            firstRound = false;
+        else
+            time++;
+    }
+
+    private void callScheduler() {
         List<ClockListener> expiredListeners = new ArrayList<>();
         for (ClockListener cl : listeners.keySet()) {
             countdown.put(cl, countdown.get(cl) - 1);
@@ -54,7 +74,6 @@ public class ClockManager {
             }
         }
         tp.getScheduler().onClock(tp, expiredListeners);
-        time++;
     }
 
     /**
@@ -200,9 +219,10 @@ public class ClockManager {
     }
 
     /**
-     * Sets the clock time to 0.
+     * Sets the clock time back to 0.
      */
     public void reset() {
-        time = 0;
+        firstRound = true;
+        time = CLOCK_INITIAL_VALUE;
     }
 }
