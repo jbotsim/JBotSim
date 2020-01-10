@@ -18,6 +18,12 @@ This file lists modifications introduced by each version.
   the `MessageEngine` and all `Node.onClock()`).
   Everything is now properly synchronized.
 
+**Symbol modification in ClockManager**
+
+* `ClockManager.currentTime()` now returns an `int` instead of an `Integer`
+
+  This value could never be `null`. The return value being an object was a remnant of previous versions. 
+  
 [issue: #86]: https://github.com/jbotsim/JBotSim/issues/86
 
 ### New icon in the jbotsim-icons module

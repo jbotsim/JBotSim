@@ -38,8 +38,8 @@ public class ClockManager {
     HashMap<ClockListener, Integer> countdown = new HashMap<>();
     Class<? extends Clock> clockModel = null;
     Clock clock = null;
-    Integer time = CLOCK_INITIAL_VALUE;
-    Integer timeUnit = 10; // duration of a round in ms
+    int time = CLOCK_INITIAL_VALUE;
+    int timeUnit = 10; // duration of a round in ms
     int nbPauses = 0;
     private boolean firstRound = true;
 
@@ -157,7 +157,7 @@ public class ClockManager {
      * Returns the current round number.
      * @return the current time.
      */
-    public Integer currentTime() {
+    public int currentTime() {
         return time;
     }
 
