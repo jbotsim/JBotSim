@@ -1113,6 +1113,11 @@ public class Topology extends Properties implements ClockListener {
             tl.onSelection(node);
     }
 
+    protected void notifyMessageDelivered(Message message) {
+        for (MessageListener listener : new ArrayList<>(messageListeners))
+            listener.onMessage(message);
+    }
+
     @Override
     public void onClock() {
         if (step) {

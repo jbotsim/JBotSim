@@ -219,8 +219,7 @@ public class DefaultMessageEngine implements MessageEngine {
     protected void deliverMessage(Message message) {
         message.getDestination().getMailbox().add(message);
         message.getDestination().onMessage(message);
-        for (MessageListener ml : topology.messageListeners)
-            ml.onMessage(message);
+        topology.notifyMessageDelivered(message);
         if (debug)
             System.err.println(topology.getTime() + ": " + message);
     }
