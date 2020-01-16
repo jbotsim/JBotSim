@@ -570,12 +570,12 @@ public class Topology extends Properties implements ClockListener {
             n.setID(nextID++);
         nodes.add(n);
         n.topo = this;
+        notifyNodeAdded(n);
         if (isInitialized) {
             n.onInit();
             if (isStarted)
                 n.onStart();
         }
-        notifyNodeAdded(n);
         touch(n);
         resume();
     }
