@@ -432,7 +432,6 @@ public class Topology extends Properties implements ClockListener {
         notifyInitialization();
 
         isInitialized = true;
-        isStarted = false;
     }
 
     /**

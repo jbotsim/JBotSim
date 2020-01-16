@@ -173,6 +173,21 @@ class TopologyLifeCycleTest {
         checkState(checkParam);
     }
 
+    @Test
+    void test_initializeAndStartAndInitialize_stillStarted() {
+        Topology topology = initTopology();
+        topology.initialize();
+        topology.start();
+        topology.initialize();
+
+        CheckParam checkParam = new CheckParam(topology);
+        checkParam.shouldBeInitialized = true;
+        checkParam.wantedNumberOfOnInit = 2;
+        checkParam.shouldBeStarted = true;
+        checkParam.wantedNumberOfOnStart = 1;
+        checkParam.shouldBeRunning = true;
+        checkState(checkParam);
+    }
     private void checkState(CheckParam checkParam) {
         assertEquals(checkParam.shouldBeInitialized, checkParam.topology.isInitialized());
         verify(mockedNode, times(checkParam.wantedNumberOfOnInit)).onInit();
