@@ -429,8 +429,7 @@ public class Topology extends Properties implements ClockListener {
         for (Node n:nodes)
             n.onInit();
 
-        for (InitializationListener listener : initializationListeners)
-            listener.onInit();
+        notifyInitialization();
 
         isInitialized = true;
         isStarted = false;
@@ -486,8 +485,7 @@ public class Topology extends Properties implements ClockListener {
         clearMessages();
         for (Node n : nodes)
             n.onStart();
-        for (StartListener listener : startListeners)
-            listener.onStart();
+        notifyStart();
         resume();
     }
 
@@ -1166,8 +1164,8 @@ public class Topology extends Properties implements ClockListener {
             l.endpoint(1).onLinkAdded(l);
             listeners = cxUndirectedListeners;
         }
-        for (ConnectivityListener cl : listeners)
-            cl.onLinkAdded(l);
+        for (ConnectivityListener listener : new ArrayList<>(listeners))
+            listener.onLinkAdded(l);
     }
 
     protected void notifyLinkRemoved(Link l) {
@@ -1181,29 +1179,46 @@ public class Topology extends Properties implements ClockListener {
             l.endpoint(1).onLinkRemoved(l);
             listeners = cxUndirectedListeners;
         }
-        for (ConnectivityListener cl : listeners)
-            cl.onLinkRemoved(l);
+        for (ConnectivityListener listener : new ArrayList<>(listeners))
+            listener.onLinkRemoved(l);
     }
 
     protected void notifyNodeAdded(Node node) {
-        for (TopologyListener tl : new ArrayList<>(topologyListeners))
-            tl.onNodeAdded(node);
+        for (TopologyListener listener : new ArrayList<>(topologyListeners))
+            listener.onNodeAdded(node);
     }
 
     protected void notifyNodeRemoved(Node node) {
-        for (TopologyListener tl : new ArrayList<>(topologyListeners))
-            tl.onNodeRemoved(node);
+        for (TopologyListener listener : new ArrayList<>(topologyListeners))
+            listener.onNodeRemoved(node);
     }
 
     protected void notifyNodeSelected(Node node) {
-        for (SelectionListener tl : new ArrayList<>(selectionListeners))
-            tl.onSelection(node);
+        for (SelectionListener listener : new ArrayList<>(selectionListeners))
+            listener.onSelection(node);
     }
 
     protected void notifyMessageDelivered(Message message) {
         for (MessageListener listener : new ArrayList<>(messageListeners))
             listener.onMessage(message);
     }
+
+    protected void notifyNodeMoved(Node node) {
+        for (MovementListener listener : new ArrayList<>(movementListeners))
+            listener.onMovement(node);
+    }
+
+    protected void notifyInitialization() {
+        for (InitializationListener listener : new ArrayList<>(initializationListeners))
+            listener.onInit();
+    }
+
+    protected void notifyStart() {
+        for (StartListener listener : new ArrayList<>(startListeners))
+            listener.onStart();
+    }
+
+
 
     @Override
     public void onClock() {

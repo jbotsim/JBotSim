@@ -905,8 +905,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     protected void notifyNodeMoved() {
         onMovement();
         if (topo != null)
-            for (MovementListener ml : new ArrayList<>(topo.movementListeners))
-                ml.onMovement(this);
+            topo.notifyNodeMoved(this);
     }
 
     @Override
