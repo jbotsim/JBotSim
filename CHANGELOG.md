@@ -4,6 +4,28 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+###  ClockManager class modifications
+
+**Bug fixes in ClockManager:**
+
+[[issue 86]][issue: #86]
+
+* The modification of the `ClockManager`'s internal time value (the one actually used by the `Topology`) now coincides 
+  with the ticking of the `Clock`.
+  
+  Now, the clock is first incremented and then the `Scheduler` is called. 
+  It was previously swapped, resulting in some user interactions happening before the call to the `Scheduler` (and thus 
+  the `MessageEngine` and all `Node.onClock()`).
+  Everything is now properly synchronized.
+
+**Symbol modification in ClockManager**
+
+* `ClockManager.currentTime()` now returns an `int` instead of an `Integer`
+
+  This value could never be `null`. The return value being an object was a remnant of previous versions. 
+  
+[issue: #86]: https://github.com/jbotsim/JBotSim/issues/86
+
 ### New icon in the jbotsim-icons module
 
 `jbotsim-icons`/`io.jbotsim.ui.icons`
