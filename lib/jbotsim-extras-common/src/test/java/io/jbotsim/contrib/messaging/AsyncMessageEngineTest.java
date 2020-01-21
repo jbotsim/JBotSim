@@ -83,7 +83,10 @@ class AsyncMessageEngineTest {
             value += messageEngine.computeDelayFunction(lambda);
 
         double actualMean =  value / NB_OCCURRENCES;
-//        System.out.println("lambda "+ lambda +", actualMean " + actualMean);
-        assertEquals(lambda, actualMean, 0.5);
+        double diff = Math.abs(lambda - actualMean);
+        double lambdaPercentage = lambda * 0.05;
+//        System.out.println("lambda "+ lambda +", actualMean " + actualMean +
+//                ", diff " + diff + ", percentage " + lambdaPercentage);
+        assertTrue(diff < lambdaPercentage);
     }
 }
