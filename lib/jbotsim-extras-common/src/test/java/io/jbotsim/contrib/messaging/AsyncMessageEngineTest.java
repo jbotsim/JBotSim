@@ -21,6 +21,8 @@
 
 package io.jbotsim.contrib.messaging;
 
+import io.jbotsim.core.Topology;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -33,6 +35,13 @@ class AsyncMessageEngineTest {
     protected static final int MINIMUM_VALUE = 0;
     protected static final int LAMBDA = AsyncMessageEngine.DEFAULT_AVERAGE_DURATION;
 
+    private AsyncMessageEngine messageEngine;
+
+    @BeforeEach
+    void setUp() {
+        messageEngine = new AsyncMessageEngine(new Topology());
+    }
+
     @Test
     void computeDelayFunction_minOk() {
 
@@ -43,7 +52,7 @@ class AsyncMessageEngineTest {
 
         for(int i = 0; i < NB_OCCURRENCES; i++) {
 
-            int current = AsyncMessageEngine.computeDelayFunction(LAMBDA);
+            int current = messageEngine.computeDelayFunction(LAMBDA);
             assertTrue(current>= MINIMUM_VALUE);
 
             if(current == MINIMUM_VALUE) {
@@ -71,10 +80,13 @@ class AsyncMessageEngineTest {
     private void testMean(int lambda) {
         double value = 0;
         for(int i = 0; i < NB_OCCURRENCES; i++)
-            value += AsyncMessageEngine.computeDelayFunction(lambda);
+            value += messageEngine.computeDelayFunction(lambda);
 
         double actualMean =  value / NB_OCCURRENCES;
-//        System.out.println("lambda "+ lambda +", actualMean " + actualMean);
-        assertEquals(lambda, actualMean, 0.5);
+        double diff = Math.abs(lambda - actualMean);
+        double lambdaPercentage = lambda * 0.05;
+//        System.out.println("lambda "+ lambda +", actualMean " + actualMean +
+//                ", diff " + diff + ", percentage " + lambdaPercentage);
+        assertTrue(diff < lambdaPercentage);
     }
 }

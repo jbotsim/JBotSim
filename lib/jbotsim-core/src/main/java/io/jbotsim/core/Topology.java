@@ -95,7 +95,7 @@ public class Topology extends Properties implements ClockListener {
      * @param height the {@link Topology}'s height, as an integer.
      */
     public Topology(int width, int height) {
-        setMessageEngine(new MessageEngine(this));
+        setMessageEngine(new DefaultMessageEngine(this));
         setScheduler(new Scheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
@@ -1111,6 +1111,11 @@ public class Topology extends Properties implements ClockListener {
     protected void notifyNodeSelected(Node node) {
         for (SelectionListener tl : new ArrayList<>(selectionListeners))
             tl.onSelection(node);
+    }
+
+    protected void notifyMessageDelivered(Message message) {
+        for (MessageListener listener : new ArrayList<>(messageListeners))
+            listener.onMessage(message);
     }
 
     @Override

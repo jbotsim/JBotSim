@@ -4,6 +4,68 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+### MessageEngine modifications
+
+[[issue 85]][issue: #85] [[issue 83]][issue: #83]
+ 
+Some changes have been applied in an effort to simplify, clarify and speed-up the *message engine* system.
+
+* `MessageEngine` is now an interface
+   * A `reset()` method has been added.
+   * It does not handle delays anymore.
+  
+
+* The former `MessageEngine` has been renamed to `DefaultMessageEngine`.
+
+   `io.jbotsim.core.MessageEngine` -> `io.jbotsim.core.DefaultMessageEngine`
+   
+   * It does not handle delays (see `DelayMessageEngine`)
+   * It speeds-up former check on link existence
+   
+* A specific `DelayMessageEngine` has been re-created in `jbotsim-core`/`io.jbotsim.core`.
+   
+   * It handles instantaneous delays better than the former `MessageEngine` used to.
+   * It also handles general delays better than the former `MessageEngine` used to.
+   * A new `DelayMessageEngine.disableLinksContinuityChecks()` method has been added.
+    
+     This method prevents the system from checking the existence of the link each step while it is delayed. 
+     The check still remains at the end of the sending round and before the delivery round.
+     This speeds message processing up when you send a lot of delayed messages in a static environment.  
+   * `AsyncMessageEngine` and `RandomMessageEngine` implementations have been modified to benefit from the new
+   `DelayMessageEngine` capabilities.
+   
+   * `RandomMessageEngine` has been renamed into `RandomDelayMessageEngine`
+     
+     `jbotsim-extras-common`/`io.jbotsim.contrib.messaging.RandomMessageEngine` -> `io.jbotsim.contrib.messaging.RandomDelayMessageEngine`
+   
+
+* Test classes and examples have been added to showcase all MessageEngines behaviors
+
+If you used to inherit from `MessageEngine`, you have several options:
+* inherit from `DefaultMessageEngine` (no delay feature)
+* inherit from `DelayMessageEngine` (has delay feature)
+* actually implement  the `MessageEngine` interface
+
+
+###  Node class modifications
+
+**New symbols in Node:**
+  * `Node.hasNeighbor(Node)`, `Node.hasInNeighbor(Node)`, `Node.hasOutNeighbor(Node)` have been created [[issue 85]][issue: #85]
+  
+    These methods allow you to directly test the presence of the provided `Node` in the neighborhood of the object 
+    on which they are called. Please see documentation for details. 
+
+**Modifications in Node:**
+  * `Node.getOutNeighbors()` has been improved, avoiding unnecessary copies [[issue 85]][issue: #85]
+  
+###  Message class modifications
+
+**New symbol in Message:**
+
+  * `Message.isRetryModeEnabled()` accessor has been created [[issue 85]][issue: #85]
+  
+[issue: #85]: https://github.com/jbotsim/JBotSim/issues/85
+
 ###  ClockManager class modifications
 
 **Bug fixes in ClockManager:**
@@ -46,14 +108,6 @@ This file lists modifications introduced by each version.
   This is delegated to the new `MessageEngine.reset()` method. 
 
 [issue: #83]: https://github.com/jbotsim/JBotSim/issues/83
-
-###  MessageEngine class modification
-
-**Symbol modifications in MessageEngine:**
-
-* The `MessageEngine.reset()` method has been added  [[issue 83]][issue: #83]
-
-  This method properly discards any message handled by the MessageEngine.
 
 ###  TikzTopologySerializer class modifications
 
