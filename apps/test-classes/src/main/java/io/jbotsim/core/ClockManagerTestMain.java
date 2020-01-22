@@ -39,12 +39,18 @@ public class ClockManagerTestMain {
 
         new JViewer(topology);
 
+        topology.initialize();
 //        topology.start();
     }
 
     public static class ClockNode extends Node {
         public ClockNode() {
 //            msg("constructor");
+        }
+
+        @Override
+        public void onInit() {
+            msg("onInit");
         }
 
         @Override
