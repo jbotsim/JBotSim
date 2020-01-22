@@ -57,6 +57,7 @@ class ClockTicksToCallbacksRelationshipTest {
     void beforeStart_roundZero_noCallbackCalled() {
 
         checkTime(0);
+        checkOnInit(0, -1);
         checkOnStart(0, -1);
         checkOnClocks(0, -1);
 
@@ -116,6 +117,14 @@ class ClockTicksToCallbacksRelationshipTest {
         }
     }
 
+    private void checkOnInit(int expectedNbCalls, int expectedTimeValue) {
+        verify(mockedNode, times(expectedNbCalls)).onInit();
+
+        if(expectedNbCalls > 0)
+            assertEquals(expectedTimeValue, mockedNode.lastInitTime);
+
+    }
+
     private void checkOnStart(int expectedNbCalls, int expectedTimeValue) {
         verify(mockedNode, times(expectedNbCalls)).onStart();
 
@@ -126,15 +135,23 @@ class ClockTicksToCallbacksRelationshipTest {
 
     private void checkStartedCase(int expectedTime, int expectedNbCalls) {
         checkTime(expectedTime);
+        checkOnInit(1, 0);
         checkOnStart(1, 0);
         checkOnClocks(expectedNbCalls, expectedTime);
     }
 
     private class MockNode extends Node {
+        int lastInitTime = -1;
         int lastStartTime = -1;
         int lastPreClockTime = -1;
         int lastClockTime = -1;
         int lastPostClockTime = -1;
+
+        @Override
+        public void onInit() {
+            super.onInit();
+            lastInitTime = getTopology().getTime();
+        }
 
         @Override
         public void onStart() {
