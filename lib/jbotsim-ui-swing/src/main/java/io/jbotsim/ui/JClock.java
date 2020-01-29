@@ -48,6 +48,7 @@ public class JClock extends Clock {
      */
     @Override
     public void setTimeUnit(int delay) {
+        timer.setInitialDelay(delay);
         timer.setDelay(delay);
     }
 
