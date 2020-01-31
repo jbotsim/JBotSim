@@ -4,6 +4,25 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+### JClock modifications
+
+**Fix in JClock:**
+  * `JClock.setTimeUnit()` now also properly change the _initial delay_ of the associated `javax.swing.Timer` [[issue 89]][issue: #89]
+  
+    The former implementation only modified the _between-event_ delay, leaving the _initial delay_ untouched.
+    This _initial delay_ is used when the `Timer` is (re)started. 
+    When using `Topology.addNode()`, this `Timer` was stopped and restarted. The short 10 ms default _initial delay_
+    was used making the clock advance faster then expected.
+
+    A basic Unit Test class has been added to enforce that behavior.
+    
+    A side effect of this fix is that the `JViewer`'s _"Set system speed"_ feature might sometimes feel a bit less 
+    responsive when moving from the maximum delay (3000 ms) to any of the (much shorter) ones.
+    In other cases, the difference is too small for a human to notice. 
+
+    
+[issue: #89]: https://github.com/jbotsim/JBotSim/issues/89
+
 ###  DefaultClock class modifications
 
 **Bug fixes in DefaultClock:**
