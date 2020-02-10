@@ -21,5 +21,5 @@ The submodules are listed below:
 * [`fat-jbotsim-common`](./fat-jbotsim-common/README.md): a *fat jar* containing all non-specific classes from JBotSim.
 
    Please note that the corresponding *fat jar* is currently not published. If you happen to need it, please 
-   [contact us](contact@jbotsim.io).
+   [contact us](mailto:contact@jbotsim.io).
 
