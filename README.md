@@ -178,7 +178,7 @@ The JBotSim project will gladly welcome help. If you consider contributing, plea
  
 ## License
 
-(C) Copyright 2008-2019, by [Arnaud Casteigts and the JBotSim contributors](CONTRIBUTORS.md). All rights reserved.
+(C) Copyright 2008-2020, by [Arnaud Casteigts and the JBotSim contributors](CONTRIBUTORS.md). All rights reserved.
 
 
 JBotSim is published under license [LGPL 3.0 or later][lgpl3]. 
