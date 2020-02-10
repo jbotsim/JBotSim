@@ -6,7 +6,7 @@ The *jars* generated here allow projects that do not yet use *Maven* dependency 
  
 
 Currently the following *fat jars* is available:
-* [`jbotsim-standalone`](https://github.com/jbotsim/JBotSim/releases/download/v1.1.1/jbotsim-standalone-1.1.1.jar): a 
+* [`jbotsim-standalone`](https://github.com/jbotsim/JBotSim/releases/download/v1.2.0/jbotsim-standalone-1.2.0.jar): a 
 *fat jar* containing all JBotSim *jars*.
 
   This *jar* all classes, even the AWT/SWING specific ones, just as the legacy *jar* used to do.
