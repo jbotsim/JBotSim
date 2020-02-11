@@ -31,12 +31,12 @@ import io.jbotsim.io.TopologySerializer;
 public class TikzTopologySerializer implements TopologySerializer {
 
     /**
-     * The default End-Of-Line delimiter ({\value{DEFAULT_EOL}}.
+     * The default End-Of-Line delimiter.
      */
     public static final String DEFAULT_EOL = "\n";
 
     /**
-     * The default scale factor that must be applied to the distance between nodes ({\value{DEFAULT_SCALE_FACTOR}}.
+     * The default scale factor that must be applied to the distance between nodes.
      */
     public static final double DEFAULT_SCALE_FACTOR = 1/50.;
 
