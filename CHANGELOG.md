@@ -4,6 +4,32 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
+* Empty
+
+## [1.2.0] - 2020/02/12
+
+###  ClockManager class modifications
+
+**Bug fixes in ClockManager:**
+
+[[issue 86]][issue: #86]
+
+* The modification of the `ClockManager`'s internal time value (the one actually used by the `Topology`) now coincides 
+  with the ticking of the `Clock`
+  
+  Now, the clock is first incremented and then the `Scheduler` is called. 
+  It was previously swapped, resulting in some user interactions happening before the call to the `Scheduler` (and thus 
+  the `MessageEngine` and all `Node.onClock()`).
+  Everything is now properly synchronized.
+
+**Symbol modification in ClockManager**
+
+* `ClockManager.currentTime()` now returns an `int` instead of an `Integer`
+
+  This value could never be `null`. The return value being an object was a remnant of previous versions. 
+  
+[issue: #86]: https://github.com/jbotsim/JBotSim/issues/86
+
 ### MessageEngine modifications
 
 [[issue 85]][issue: #85] [[issue 83]][issue: #83]
@@ -11,28 +37,28 @@ This file lists modifications introduced by each version.
 Some changes have been applied in an effort to simplify, clarify and speed-up the *message engine* system.
 
 * `MessageEngine` is now an interface
-   * A `reset()` method has been added.
-   * It does not handle delays anymore.
+   * A `reset()` method has been added
+   * It does not handle delays anymore
   
 
-* The former `MessageEngine` has been renamed to `DefaultMessageEngine`.
+* The former `MessageEngine` has been renamed to `DefaultMessageEngine`
 
    `io.jbotsim.core.MessageEngine` -> `io.jbotsim.core.DefaultMessageEngine`
    
    * It does not handle delays (see `DelayMessageEngine`)
    * It speeds-up former check on link existence
    
-* A specific `DelayMessageEngine` has been re-created in `jbotsim-core`/`io.jbotsim.core`.
+* A specific `DelayMessageEngine` has been re-created in `jbotsim-core`/`io.jbotsim.core`
    
-   * It handles instantaneous delays better than the former `MessageEngine` used to.
-   * It also handles general delays better than the former `MessageEngine` used to.
-   * A new `DelayMessageEngine.disableLinksContinuityChecks()` method has been added.
+   * It handles instantaneous delays better than the former `MessageEngine` used to
+   * It also handles general delays better than the former `MessageEngine` used to
+   * A new `DelayMessageEngine.disableLinksContinuityChecks()` method has been added
     
      This method prevents the system from checking the existence of the link each step while it is delayed. 
      The check still remains at the end of the sending round and before the delivery round.
      This speeds message processing up when you send a lot of delayed messages in a static environment.  
    * `AsyncMessageEngine` and `RandomMessageEngine` implementations have been modified to benefit from the new
-   `DelayMessageEngine` capabilities.
+   `DelayMessageEngine` capabilities
    
    * `RandomMessageEngine` has been renamed into `RandomDelayMessageEngine`
      
@@ -46,6 +72,15 @@ If you used to inherit from `MessageEngine`, you have several options:
 * inherit from `DelayMessageEngine` (has delay feature)
 * actually implement  the `MessageEngine` interface
 
+###  Topology class modifications
+
+**Bug fixes in Topology:**
+
+* `Topology.restart()` and `Topology.clearMessages()` now properly remove delayed messages [[issue 83]][issue: #83]
+ 
+  This is delegated to the new `MessageEngine.reset()` method. 
+
+[issue: #83]: https://github.com/jbotsim/JBotSim/issues/83
 
 ###  Node class modifications
 
@@ -66,49 +101,6 @@ If you used to inherit from `MessageEngine`, you have several options:
   
 [issue: #85]: https://github.com/jbotsim/JBotSim/issues/85
 
-###  ClockManager class modifications
-
-**Bug fixes in ClockManager:**
-
-[[issue 86]][issue: #86]
-
-* The modification of the `ClockManager`'s internal time value (the one actually used by the `Topology`) now coincides 
-  with the ticking of the `Clock`.
-  
-  Now, the clock is first incremented and then the `Scheduler` is called. 
-  It was previously swapped, resulting in some user interactions happening before the call to the `Scheduler` (and thus 
-  the `MessageEngine` and all `Node.onClock()`).
-  Everything is now properly synchronized.
-
-**Symbol modification in ClockManager**
-
-* `ClockManager.currentTime()` now returns an `int` instead of an `Integer`
-
-  This value could never be `null`. The return value being an object was a remnant of previous versions. 
-  
-[issue: #86]: https://github.com/jbotsim/JBotSim/issues/86
-
-### New icon in the jbotsim-icons module
-
-`jbotsim-icons`/`io.jbotsim.ui.icons`
-
-* A fully transparent new icon has been added [[issue 84]][issue: #84] 
-  * `jbotsim-icons`/`io/jbotsim/ui/icons/transparent.png` 
-
-  As usual, it's path can be accessed using the corresponding constant `Icons.TRANSPARENT`.
-
-[issue: #84]: https://github.com/jbotsim/JBotSim/issues/84
-
-###  Topology class modifications
-
-**Bug fixes in Topology:**
-
-* `Topology.restart()` and `Topology.clearMessages()` now properly remove delayed messages [[issue 83]][issue: #83]
- 
-  This is delegated to the new `MessageEngine.reset()` method. 
-
-[issue: #83]: https://github.com/jbotsim/JBotSim/issues/83
-
 ###  TikzTopologySerializer class modifications
 
 [[issue 80]][issue: #80]
@@ -120,7 +112,7 @@ If you used to inherit from `MessageEngine`, you have several options:
   Directed links are properly exported (using `"->"` option).
   This supposes that `Topology.getOrientation()` returns `DIRECTED`. 
 * TikZ colors are now better supported
-* The previous *scale* parameter is now a proper scale factor.
+* The previous *scale* parameter is now a proper scale factor
 
   Its previous default value was `50`. It is now `1/50.`, resulting in the same default value.  
 
@@ -144,6 +136,17 @@ If you used to inherit from `MessageEngine`, you have several options:
    
 [issue: #80]: https://github.com/jbotsim/JBotSim/issues/80
 
+### New icon in the jbotsim-icons module
+
+`jbotsim-icons`/`io.jbotsim.ui.icons`
+
+* A fully transparent new icon has been added [[issue 84]][issue: #84] 
+  * `jbotsim-icons`/`io/jbotsim/ui/icons/transparent.png` 
+
+  As usual, it's path can be accessed using the corresponding constant `Icons.TRANSPARENT`.
+
+[issue: #84]: https://github.com/jbotsim/JBotSim/issues/84
+
 ###  JNode class modifications
 
 [[issue 77]][issue: #77]
@@ -152,7 +155,7 @@ If you used to inherit from `MessageEngine`, you have several options:
 
 * The wired `Link` created between two nodes using the Swing UI (start a right click on the first and drag to the second 
 before releasing the button) now takes `Topology.getOrientation()` into account instead of always creating undirected 
-links.
+links
  
 [issue: #77]: https://github.com/jbotsim/JBotSim/issues/77
 
@@ -957,7 +960,8 @@ have executed their onStart() method before that, you may simply call start()
 on your topology immediately followed by a call to pause().
 (Eventually we will provide an atomic call to this effect.)
 
-[Unreleased]: https://github.com/jbotsim/JBotSim/compare/v1.1.1...develop
+[Unreleased]: https://github.com/jbotsim/JBotSim/compare/v1.2.0...develop
+[1.2.0]: https://github.com/jbotsim/JBotSim/compare/v1.1.1...v1.2.0
 [1.1.1]: https://github.com/jbotsim/JBotSim/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/jbotsim/JBotSim/compare/v1.0.0-beta03...v1.0.0
