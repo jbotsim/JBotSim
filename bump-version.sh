@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 DIR="."
-previousVersion="1.1.0"
-newVersion="1.1.1"
+previousVersion="1.1.1"
+newVersion="1.2.0"
 
 function replaceInFile () {
   filePath=$1

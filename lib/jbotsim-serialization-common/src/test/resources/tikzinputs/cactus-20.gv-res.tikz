@@ -1,0 +1,48 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (5.41,7.76) node [color={rgb:red,240;green,230;blue,140}] (v0) {};
+  \path (6.13,9.27) node [color={rgb:red,240;green,230;blue,140}] (v1) {};
+  \path (7.81,5.36) node [color={rgb:red,240;green,230;blue,140}] (v10) {};
+  \path (7.73,6.43) node [color={rgb:red,240;green,230;blue,140}] (v11) {};
+  \path (6.74,3.78) node [color={rgb:red,240;green,230;blue,140}] (v12) {};
+  \path (7.48,2.41) node [color={rgb:red,240;green,230;blue,140}] (v13) {};
+  \path (8.35,1.2) node [red] (v14) {};
+  \path (2.74,6.51) node [color={rgb:red,250;green,128;blue,114}] (v15) {};
+  \path (1.33,7.33) node [red] (v16) {};
+  \path (1.68,4.79) node [red] (v17) {};
+  \path (3.01,5.66) node [cyan] (v18) {};
+  \path (1.2,5.43) node [red] (v19) {};
+  \path (4.86,9.68) node [color={rgb:red,240;green,230;blue,140}] (v2) {};
+  \path (4.11,8.13) node [cyan] (v3) {};
+  \path (3.07,9.43) node [red] (v4) {};
+  \path (4.47,6.37) node [white] (v5) {};
+  \path (3.87,4.82) node [color={rgb:red,240;green,230;blue,140}] (v6) {};
+  \path (4.74,4.91) node [color={rgb:red,240;green,230;blue,140}] (v7) {};
+  \path (5.71,6.33) node [color={rgb:red,240;green,230;blue,140}] (v8) {};
+  \path (6.26,5.44) node [color={rgb:red,75;green,0;blue,130}] (v9) {};
+  \tikzstyle{every path}=[];
+  \draw [darkgray] (v0)--(v1);
+  \draw [darkgray] (v0)--(v5);
+  \draw [darkgray] (v1)--(v2);
+  \draw [darkgray] (v5)--(v6);
+  \draw [darkgray] (v5)--(v7);
+  \draw [darkgray] (v5)--(v8);
+  \draw [darkgray] (v5)--(v9);
+  \draw [darkgray] (v5)--(v15);
+  \draw [darkgray] (v5)--(v18);
+  \draw [darkgray] (v2)--(v3);
+  \draw [darkgray] (v3)--(v5);
+  \draw [darkgray] (v3)--(v4);
+  \draw [darkgray] (v6)--(v7);
+  \draw [darkgray] (v8)--(v9);
+  \draw [darkgray] (v9)--(v10);
+  \draw [darkgray] (v9)--(v11);
+  \draw [darkgray] (v9)--(v12);
+  \draw [darkgray] (v15)--(v18);
+  \draw [darkgray] (v15)--(v16);
+  \draw [darkgray] (v15)--(v17);
+  \draw [darkgray] (v18)--(v19);
+  \draw [darkgray] (v10)--(v11);
+  \draw [darkgray] (v12)--(v13);
+  \draw [darkgray] (v13)--(v14);
+\end{tikzpicture}

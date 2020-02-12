@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
  *
  *
  * This file is part of JBotSim.
@@ -153,13 +153,13 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         if (tp.hasProperty("refreshMode"))
             tp.setRefreshMode((Topology.RefreshMode) tp.getProperty("refreshMode"));
         if (destination != null) {
-            node.getTopology().addLink(new Link(node, destination));
+            tp.addLink(new Link(node, destination, tp.getOrientation()));
             destination = null;
         } else {
             if (e.getButton() == MouseEvent.BUTTON3)
-                node.getTopology().removeNode(node);
+                tp.removeNode(node);
             else if (e.getButton() == MouseEvent.BUTTON2)
-                node.getTopology().selectNode(node);
+                tp.selectNode(node);
         }
         currentButton = 1;
     }

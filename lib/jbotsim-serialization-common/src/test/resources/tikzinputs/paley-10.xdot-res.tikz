@@ -1,0 +1,39 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (1.2,3.28) node [white] (v0) {};
+  \path (3.27,3.83) node [red] (v1) {};
+  \path (3.29,2.61) node [cyan] (v2) {};
+  \path (3.21,1.41) node [red] (v3) {};
+  \path (1.2,1.79) node [color={rgb:red,75;green,0;blue,130}] (v4) {};
+  \path (1.65,3.75) node [cyan] (v5) {};
+  \path (2.66,4.08) node [color={rgb:red,250;green,128;blue,114}] (v6) {};
+  \path (4.04,2.59) node [color={rgb:red,240;green,230;blue,140}] (v7) {};
+  \path (2.54,1.2) node [color={rgb:red,250;green,128;blue,114}] (v8) {};
+  \path (1.81,2.2) node [color={rgb:red,240;green,230;blue,140}] (v9) {};
+  \tikzstyle{every path}=[];
+  \draw [darkgray] (v0)--(v1);
+  \draw [darkgray] (v0)--(v4);
+  \draw [darkgray] (v0)--(v5);
+  \draw [darkgray] (v0)--(v6);
+  \draw [darkgray] (v0)--(v9);
+  \draw [darkgray] (v1)--(v5);
+  \draw [darkgray] (v1)--(v6);
+  \draw [darkgray] (v1)--(v2);
+  \draw [darkgray] (v1)--(v7);
+  \draw [darkgray] (v4)--(v5);
+  \draw [darkgray] (v4)--(v9);
+  \draw [darkgray] (v4)--(v8);
+  \draw [darkgray] (v5)--(v6);
+  \draw [darkgray] (v5)--(v9);
+  \draw [darkgray] (v6)--(v7);
+  \draw [darkgray] (v2)--(v6);
+  \draw [darkgray] (v2)--(v7);
+  \draw [darkgray] (v2)--(v3);
+  \draw [darkgray] (v2)--(v8);
+  \draw [darkgray] (v7)--(v8);
+  \draw [darkgray] (v3)--(v4);
+  \draw [darkgray] (v3)--(v9);
+  \draw [darkgray] (v3)--(v7);
+  \draw [darkgray] (v3)--(v8);
+  \draw [darkgray] (v8)--(v9);
+\end{tikzpicture}

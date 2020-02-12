@@ -1,0 +1,7 @@
+\begin{tikzpicture}[scale=1]
+  \tikzstyle{every node}=[draw,circle,fill=gray,inner sep=1.5]
+  \path (1.2,1.18) node [color={rgb:red,128;green,0;blue,128}] (v0) {};
+  \path (2.15,2.88) node [yellow] (v1) {};
+  \tikzstyle{every path}=[];
+  \draw [darkgray] (v0)--(v1);
+\end{tikzpicture}

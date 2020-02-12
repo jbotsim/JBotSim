@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
  *
  *
  * This file is part of JBotSim.
@@ -623,6 +623,19 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
+     * <p>Indicates whether the provided node is the other endpoint of one of the node's in-coming links.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasInNeighbor(Node node) {
+        if (node == null)
+            return false;
+
+        return node.hasOutNeighbor(this);
+    }
+
+    /**
      * Returns a list containing every node serving as source for an adjacent
      * directed link. The returned list can be subsequently modified
      * without effect on the topology.
@@ -638,6 +651,16 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
+     * <p>Indicates whether the provided node is the other endpoint of one of the node's out-going links.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasOutNeighbor(Node node) {
+        return outLinks.containsKey(node);
+    }
+
+    /**
      * Returns a list containing every node serving as destination for an
      * adjacent directed link. The returned list can be subsequently
      * modified without effect on the topology.
@@ -647,7 +670,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     public List<Node> getOutNeighbors() {
         ArrayList<Node> neighbors = new ArrayList<>();
-        for (Link l : getOutLinks())
+        for (Link l : outLinks.values())
             neighbors.add(l.destination);
         return neighbors;
     }
@@ -673,6 +696,20 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     public boolean hasNeighbors() {
         return getLinks().size() > 0;
+    }
+
+    /**
+     * <p>Indicates whether the provided node is to be considered as neighbor of the current node, depending on the
+     * {@link Topology}'s orientation.</p>
+     *
+     * @param node the {@link Node} to be tested.
+     * @return <tt>true</tt> if it does, <tt>false</tt> if it does not.
+     */
+    public boolean hasNeighbor(Node node) {
+        if (getTopology().isDirected())
+            return hasOutNeighbor(node);
+        else
+            return hasInNeighbor(node) && hasOutNeighbor(node);
     }
 
     /**
@@ -717,10 +754,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      * Sends a message from this node to the specified destination node.
      * The content of the
      * message is specified as an object reference, to be passed 'as is' to the
-     * destination(s). The effective transmission will occur at the
-     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
-     * message delay specified by the static method <code>Message.setMessageDelay
-     * </code> (1 by default).
+     * destination(s).
      *
      * @param destination The destination node.
      * @param message     The message to be sent.
@@ -774,12 +808,14 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
     }
 
     /**
-     * Sends a message to all neighbors. The content of the
+     * <p>Sends a message to all neighbors. The content of the
      * message is specified as an object reference, to be passed 'as is' to the
-     * destination(s). The effective transmission will occur at the
-     * <code>x<sup>th</sup></code> following clock step, where <code>x</code> is the
-     * message delay specified by the static method <code>Message.setMessageDelay
-     * </code> (1 by default).
+     * destination(s).</p>
+     * <p>The actual list of neighbors to which the message will be sent is decided, by the {@link MessageEngine},
+     * at the very start of the next round.</p>
+     *
+     * <p>If you need to send your message to the exact list of neighbors at another moment, you should implement it
+     * with a loop and calls to {@link #send(Node, Message)}.</p>
      *
      * @param message The message to be sent.
      */
@@ -797,7 +833,7 @@ public class Node extends Properties implements ClockListener, Comparable<Node> 
      */
     @Deprecated
     public void sendAll(Object content) {
-        send(null, new Message(content));
+        sendAll(new Message(content));
     }
 
     /**

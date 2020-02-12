@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
  *
  *
  * This file is part of JBotSim.
@@ -95,7 +95,7 @@ public class Topology extends Properties implements ClockListener {
      * @param height the {@link Topology}'s height, as an integer.
      */
     public Topology(int width, int height) {
-        setMessageEngine(new MessageEngine(this));
+        setMessageEngine(new DefaultMessageEngine(this));
         setScheduler(new Scheduler());
         setDimensions(width, height);
         clockManager = new ClockManager(this);
@@ -447,10 +447,7 @@ public class Topology extends Properties implements ClockListener {
      * Removes all the ongoing messages in this topology.
      */
     public void clearMessages() {
-        for (Node n : nodes) {
-            n.sendQueue.clear();
-            n.mailBox.clear();
-        }
+        getMessageEngine().reset();
     }
 
     /**
@@ -1114,6 +1111,11 @@ public class Topology extends Properties implements ClockListener {
     protected void notifyNodeSelected(Node node) {
         for (SelectionListener tl : new ArrayList<>(selectionListeners))
             tl.onSelection(node);
+    }
+
+    protected void notifyMessageDelivered(Message message) {
+        for (MessageListener listener : new ArrayList<>(messageListeners))
+            listener.onMessage(message);
     }
 
     @Override

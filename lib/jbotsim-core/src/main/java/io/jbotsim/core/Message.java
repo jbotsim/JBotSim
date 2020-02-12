@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
  *
  *
  * This file is part of JBotSim.
@@ -24,7 +24,7 @@ package io.jbotsim.core;
 import java.util.HashMap;
 
 /**
- * <p>The {@link Message} object simply encode a message exchanged by two {@link Node}s.</p>
+ * <p>The {@link Message} object simply encodes a message exchanged by two {@link Node}s.</p>
  */
 public final class Message extends Properties {
     protected Node sender;
@@ -153,6 +153,14 @@ public final class Message extends Properties {
      */
     public String getFlag() {
         return flag;
+    }
+
+    /**
+     * The retry mode status.
+     * @return the retry mode status, as a boolean.
+     */
+    public boolean isRetryModeEnabled() {
+        return this.retryMode;
     }
 
     @Override

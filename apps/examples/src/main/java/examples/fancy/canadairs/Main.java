@@ -1,12 +1,28 @@
+/*
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ *
+ *
+ * This file is part of JBotSim.
+ *
+ * JBotSim is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * JBotSim is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with JBotSim.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
 package examples.fancy.canadairs;
 
-import io.jbotsim.core.Link;
-import io.jbotsim.core.Node;
-import io.jbotsim.core.Topology;
-import io.jbotsim.core.LinkResolver;
+import io.jbotsim.core.*;
 import io.jbotsim.ui.JViewer;
-
-import io.jbotsim.core.Color;
 
 /**
  * Created by acasteig on 22/03/15.
@@ -36,7 +52,9 @@ public class Main extends LinkResolver {
     public static void main(String[] args) {
         topology = new Topology(800,600);
         topology.setLinkResolver(new Main());
-        topology.getMessageEngine().setDelay(10);
+        DelayMessageEngine messageEngine = new DelayMessageEngine(topology);
+        messageEngine.setDelay(10);
+        topology.setMessageEngine(messageEngine);
         createMap(topology);
         topology.setTimeUnit(30);
         topology.setDefaultNodeModel(Fire.class);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!--
-  ~ Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+  ~ Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
   ~
   ~
   ~ This file is part of JBotSim.
@@ -24,7 +24,7 @@
 <jbotsim version="1.0">
   <topology height="1092" speed="10" width="1004" wireless-enabled="false">
     <classes>
-      <message-engine class="io.jbotsim.core.MessageEngine" id="default"/>
+      <message-engine class="io.jbotsim.core.DefaultMessageEngine" id="default"/>
       <link-resolver class="io.jbotsim.core.LinkResolver" id="default"/>
       <scheduler class="io.jbotsim.core.Scheduler" id="default"/>
     </classes>

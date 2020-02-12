@@ -1,5 +1,5 @@
 /*
- * Copyright 2008 - 2019, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
+ * Copyright 2008 - 2020, Arnaud Casteigts and the JBotSim contributors <contact@jbotsim.io>
  *
  *
  * This file is part of JBotSim.
@@ -381,7 +381,7 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
      * The {@link AccelerationFunctionExp} class implements the following function in
      * [0:{@link #ZERO_AT}]:
      * <ul>
-     *  <li> {@value unShiftedValueAtZero} {@code * Math.exp(-x / }{@value decreaseSpeed}{@code ) - }{@value shift} </li>
+     *  <li> {@value #unShiftedValueAtZero} {@code * Math.exp(-x / }{@value #decreaseSpeed}{@code ) - }{@value #shift} </li>
      * </ul>
      * Two methods are provided:
      * <ul>
@@ -392,9 +392,9 @@ public class JViewer implements CommandListener, ChangeListener, PropertyListene
     public static class AccelerationFunctionExp {
 
         private static final double conversionFactor = 125;
-        private static final double unShiftedValueAtZero = 5;
-        private static final double decreaseSpeed = 15;
-        private static final double shift = 3;
+        protected static final double unShiftedValueAtZero = 5;
+        protected static final double decreaseSpeed = 15;
+        protected static final double shift = 3;
 
         /**
          * The exact value of the function at abscissa 0.
