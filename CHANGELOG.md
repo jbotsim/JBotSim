@@ -6,7 +6,7 @@ This file lists modifications introduced by each version.
 
 * Empty
 
-## [1.2.0] - todo
+## [1.2.0] - 2020/02/12
 
 ###  ClockManager class modifications
 
