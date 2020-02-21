@@ -43,7 +43,7 @@ public class DefaultClock extends Clock implements Runnable {
     final Lock lock = new ReentrantLock();
     final Condition shouldRunCondition = lock.newCondition();
 
-    private int delay = 0;
+    volatile int timeUnit = 0;
 
     public DefaultClock(ClockManager manager) {
         super(manager);
@@ -53,12 +53,12 @@ public class DefaultClock extends Clock implements Runnable {
 
     @Override
     public int getTimeUnit() {
-        return delay;
+        return timeUnit;
     }
 
     @Override
-    public void setTimeUnit(int delay) {
-        this.delay = delay;
+    public void setTimeUnit(int timeUnit) {
+        this.timeUnit = timeUnit;
     }
 
     @Override
@@ -105,8 +105,7 @@ public class DefaultClock extends Clock implements Runnable {
                 while (!running)
                     shouldRunCondition.await();
 
-                if(delay != 0)
-                    Thread.sleep(delay);
+                sleepIfNeeded(timeUnit);
 
                 if (running)
                     manager.onClock();
@@ -118,5 +117,10 @@ public class DefaultClock extends Clock implements Runnable {
                 lock.unlock();
             }
         }
+    }
+
+    private void sleepIfNeeded(int delayMillis) throws InterruptedException {
+        if(delayMillis != 0)
+            Thread.sleep(delayMillis);
     }
 }
