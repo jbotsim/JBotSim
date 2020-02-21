@@ -4,7 +4,18 @@ This file lists modifications introduced by each version.
 
 ## [Unreleased]
 
-* Empty
+###  DefaultClock class modifications
+
+**Bug fixes in DefaultClock:**
+
+* The `timeUnit` field of `DefaultClock` is now also `volatile` [[issue 98]][issue: #98]
+
+  Although not impacting with the `DefaultClock`'s usage, a potential multi-threading issue was present in its 
+  implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been 
+  applied in order to set a good coding example.  
+
+
+[issue: #98]: https://github.com/jbotsim/JBotSim/issues/98
 
 ## [1.2.0] - 2020/02/12
 
