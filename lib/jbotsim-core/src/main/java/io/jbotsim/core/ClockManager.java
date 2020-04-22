@@ -21,6 +21,7 @@
 package io.jbotsim.core;
 
 import io.jbotsim.core.event.ClockListener;
+import io.jbotsim.core.event.PeriodicClockListener;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -34,8 +35,7 @@ public class ClockManager {
     final static int CLOCK_INITIAL_VALUE = 0;
 
     Topology tp;
-    HashMap<ClockListener, Integer> listeners = new HashMap<>();
-    HashMap<ClockListener, Integer> countdown = new HashMap<>();
+    HashMap<ClockListener, ClockListener> listeners = new HashMap<>();
     Class<? extends Clock> clockModel = null;
     Clock clock = null;
     int time = CLOCK_INITIAL_VALUE;
@@ -65,14 +65,7 @@ public class ClockManager {
     }
 
     private void callScheduler() {
-        List<ClockListener> expiredListeners = new ArrayList<>();
-        for (ClockListener cl : listeners.keySet()) {
-            countdown.put(cl, countdown.get(cl) - 1);
-            if (countdown.get(cl) == 0) {
-                expiredListeners.add(cl);
-                countdown.put(cl, listeners.get(cl));
-            }
-        }
+        List<ClockListener> expiredListeners = new ArrayList<>(listeners.values());
         tp.getScheduler().onClock(tp, expiredListeners);
     }
 
@@ -109,8 +102,7 @@ public class ClockManager {
      *                 in time units.
      */
     public void addClockListener(ClockListener listener, int period) {
-        listeners.put(listener, period);
-        countdown.put(listener, period);
+        listeners.put(listener, new PeriodicClockListener(tp, listener, period));
     }
 
     /**
@@ -119,8 +111,7 @@ public class ClockManager {
      * @param listener The listener to register.
      */
     public void addClockListener(ClockListener listener) {
-        listeners.put(listener, 1);
-        countdown.put(listener, 1);
+        listeners.put(listener, listener);
     }
 
     /**
@@ -131,7 +122,6 @@ public class ClockManager {
      */
     public void removeClockListener(ClockListener listener) {
         listeners.remove(listener);
-        countdown.remove(listener);
     }
 
     /**
