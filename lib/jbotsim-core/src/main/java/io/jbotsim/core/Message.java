@@ -165,6 +165,6 @@ public final class Message extends Properties {
 
     @Override
     public String toString() {
-        return sender + " -> " + destination + ": " + content;
+        return sender + " -> " + destination + ": content=" + content + ", flag=" + flag;
     }
 }
