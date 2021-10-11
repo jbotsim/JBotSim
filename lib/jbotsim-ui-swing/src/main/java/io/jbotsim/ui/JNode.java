@@ -61,6 +61,10 @@ public class JNode extends JButton implements MouseListener, MouseMotionListener
         update();
     }
 
+    public Node getNode(){
+        return node;
+    }
+
     public void updateIcon() {
         String path = (String) node.getProperty("icon");
         try {
