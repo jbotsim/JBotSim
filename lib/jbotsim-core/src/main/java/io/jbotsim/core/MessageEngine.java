@@ -44,4 +44,11 @@ public interface MessageEngine {
      * <p>Resets the {@link MessageEngine}.</p>
      */
     void reset();
+
+    /**
+     * <p>Asks the {@link MessageEngine} to print the messages in standard error.
+     * This method may or may not be actually implemented (default is empty).</p>
+     */
+    default void setDebug(boolean debugMode){
+    }
 }
