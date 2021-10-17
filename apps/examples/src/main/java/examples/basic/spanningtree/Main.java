@@ -24,7 +24,9 @@ package examples.basic.spanningtree;
 import io.jbotsim.core.Link;
 import io.jbotsim.core.Topology;
 import io.jbotsim.core.event.StartListener;
+import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
+import io.jbotsim.ui.painting.JParentLinkPainter;
 
 /**
  * Created by acasteig on 25/08/15.
@@ -33,17 +35,18 @@ public class Main {
     public static void main(String[] args) {
         final Topology tp = new Topology();
         tp.setDefaultNodeModel(SpanningTreeNode.class);
-        tp.addStartListener(new StartListener() { // optional
-            // reset links upon restart
-            @Override
-            public void onStart() {
-                for (Link link : tp.getLinks()){
-                    link.setWidth(1);
-                }
+        // optional
+        // reset links upon restart
+        tp.addStartListener(() -> {
+            for (Link link : tp.getLinks()){
+                link.setWidth(1);
             }
         });
+
         deployNodes(tp); // optional
-        new JViewer(tp);
+        JTopology jtp = new JTopology(tp);
+        jtp.addLinkPainter(new JParentLinkPainter());
+        new JViewer(jtp);
         tp.start();
     }
 

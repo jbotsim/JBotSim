@@ -28,7 +28,7 @@ import io.jbotsim.core.Node;
  * Created by acasteig on 10/03/15.
  */
 public class SpanningTreeNode extends Node{
-    Node parent;
+    public Node parent;
 
     @Override
     public void onStart() {
