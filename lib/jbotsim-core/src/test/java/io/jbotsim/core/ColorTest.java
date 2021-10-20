@@ -33,7 +33,7 @@ class ColorTest {
 
     @BeforeEach
     void setUp() {
-        color255 = Color.getColorAt(255);
+        color255 = Color.getColorFromInteger(255);
     }
 
     // region constructors
@@ -209,7 +209,7 @@ class ColorTest {
     }
 
     private void testGetColorAt(Color expectedColor, int intColor) {
-        Color color = Color.getColorAt(intColor);
+        Color color = Color.getColorFromInteger(intColor);
         assertEquals(expectedColor, color);
     }
 

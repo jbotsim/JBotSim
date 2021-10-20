@@ -373,6 +373,7 @@ public class Color {
      * @see #indexOf(Color)
      * @see #getIndexedColors()
      */
+    @Deprecated
     public static Color getColorAt(Integer colorIndex) {
         while (Color.indexedColors.size() <= colorIndex)
             Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
