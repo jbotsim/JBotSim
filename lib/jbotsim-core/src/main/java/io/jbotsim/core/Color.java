@@ -347,10 +347,27 @@ public class Color {
     }
 
     /**
+     * <p>Returns the {@link Color} associated to the provided number.</p>
+     * <p>The {@link Color} returned for a specific number will remain the same across instances.</p>
+     * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are
+     * generated (from {@code 0} to {@code intColor}) if needed, and stored for later use.</p>
+     * @param colorNumber an integer that will be associated with the returned color.
+     * @return the {@link Color} associated to the provided number.
+     * @see #indexOf(Color)
+     * @see #getIndexedColors()
+     */
+    public static Color getColorFromInteger(Integer colorNumber) {
+        while (Color.indexedColors.size() <= colorNumber)
+            Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
+
+        return Color.indexedColors.get(colorNumber);
+    }
+
+    /**
      * <p>Returns the {@link Color} associated to the provided index.</p>
      * <p>The {@link Color} returned for a specific index will remain the same across instances.</p>
-     * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are thus
-     * generated (from {@code 0} to {@code intColor}) on demand, and stored for later use.</p>
+     * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are
+     * generated (from {@code 0} to {@code intColor}) if needed, and stored for later use.</p>
      * @param colorIndex the index of the {@link Color}.
      * @return the {@link Color} associated to the provided index.
      * @see #indexOf(Color)
