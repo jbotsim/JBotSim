@@ -51,6 +51,17 @@ This file lists modifications introduced by each version.
 
 [issue: #105]: https://github.com/jbotsim/JBotSim/issues/105
 
+###  KNGenerator class modifications
+
+**Bug fixes in Topology generation:**
+
+* The `TopologyGenerators.generateKN()` now properly generates all links between generated `Nodes` [[issue 108]][issue: #108]
+
+  When called in _non-wired_ mode, the underlying `KNGenerator` did not take into account possible floating point precision 
+  errors made when placing `Nodes` on the ring and when computing distance between `Nodes`.
+
+[issue: #108]: https://github.com/jbotsim/JBotSim/issues/108
+
 ## [1.2.0] - 2020/02/12
 
 ###  ClockManager class modifications
