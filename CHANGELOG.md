@@ -40,15 +40,14 @@ This file lists modifications introduced by each version.
 [issue: #104]: https://github.com/jbotsim/JBotSim/issues/104
 
 ### Message class modifications
-**Change in `Message.toString()`**
 
-* Uses `Node.getID()` instead of `Node.toString()` to print the sender and recipient
-  nodes of a message
-* Uses `Node.getFlag()` to print the flag of a messages in addition of the content 
-  (the flag was not printed before) 
+**Modifications in Message**
 
-Among possible impacts, this changes how a message is printed in debug mode by the default message engine 
-[[issue 105]][issue: #105].
+* `Message.toString()` now uses `Node.getFlag()` to print the flag of a message (in addition to the sender, destination,
+  and content of the message) [[issue 105]][issue: #105]
+
+  Amongst possible effects, this improves how a message is printed in debug mode
+  by the default message engine.
 
 [issue: #105]: https://github.com/jbotsim/JBotSim/issues/105
 
