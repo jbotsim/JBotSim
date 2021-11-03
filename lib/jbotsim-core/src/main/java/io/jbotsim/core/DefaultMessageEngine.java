@@ -224,6 +224,7 @@ public class DefaultMessageEngine implements MessageEngine {
             System.err.println(topology.getTime() + ": " + message);
     }
 
+    @Override
     public void setDebug(boolean debug) {
         this.debug = debug;
     }

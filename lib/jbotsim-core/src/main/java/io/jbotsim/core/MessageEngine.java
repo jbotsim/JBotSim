@@ -46,8 +46,11 @@ public interface MessageEngine {
     void reset();
 
     /**
-     * <p>Asks the {@link MessageEngine} to print the messages in standard error.
-     * This method may or may not be actually implemented (default is empty).</p>
+     * <p>Asks the {@link MessageEngine} to print the messages, for example,
+     * in standard error or via syslog. This method may or may not be actually
+     * implemented (default is empty).</p>
+     * @param debugMode a boolean that indicates whether debug mode should be
+     *                  enabled or disabled.
      */
     default void setDebug(boolean debugMode){
     }

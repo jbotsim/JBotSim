@@ -14,8 +14,19 @@ This file lists modifications introduced by each version.
   implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been 
   applied in order to set a good coding example.  
 
-
 [issue: #98]: https://github.com/jbotsim/JBotSim/issues/98
+
+###  MessageEngine interface
+
+**Extension of the interface**
+
+* The `MessageEngine` interface now includes the `setDebug()` method for printing
+  the messages [[issue 104]][issue: #104]
+
+  This method was already used in `DefaultMessageEngine`.
+  The `default` keyword was added to avoid breaking compatibility with existing implementations.
+
+[issue: #104]: https://github.com/jbotsim/JBotSim/issues/104
 
 ## [1.2.0] - 2020/02/12
 
