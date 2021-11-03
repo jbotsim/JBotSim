@@ -10,11 +10,22 @@ This file lists modifications introduced by each version.
 
 * The `timeUnit` field of `DefaultClock` is now also `volatile` [[issue 98]][issue: #98]
 
-  Although not impacting with the `DefaultClock`'s usage, a potential multi-threading issue was present in its 
-  implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been 
-  applied in order to set a good coding example.  
+  Although not impacting with the `DefaultClock`'s usage, a potential multi-threading issue was present in its
+  implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been
+  applied in order to set a good coding example.
 
 [issue: #98]: https://github.com/jbotsim/JBotSim/issues/98
+
+###  JNode class modifications
+
+**New method:**
+
+* New `getNode()` method in class `JNode` [[issue 99]][issue: #99]
+
+  This method allows one to retrieve the `Node` associated with
+  this `JNode`.
+
+[issue: #99]: https://github.com/jbotsim/JBotSim/issues/99
 
 ###  MessageEngine interface
 
