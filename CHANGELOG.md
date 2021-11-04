@@ -51,14 +51,28 @@ This file lists modifications introduced by each version.
 
 [issue: #105]: https://github.com/jbotsim/JBotSim/issues/105
 
+###  TopologyGenerators class modifications
+
+**Bug fixes in Topology generation:**
+
+* `TopologyGenerators.generateKN()` and `TopologyGenerators.generateRing()` now properly take their surrounding
+  `Topology` into account [[issue 111]][issue: #111]
+
+  `TopologyGenerators.generateRing()` used incoherent positioning and dimensioning values.
+  A new method, which centers the shape in the `Topology` and sizes it to secure a margin.
+  `TopologyGenerators.generateKN()` now also uses that method.
+
+[issue: #111]: https://github.com/jbotsim/JBotSim/issues/111
+
 ###  KNGenerator class modifications
 
 **Bug fixes in Topology generation:**
 
-* The `TopologyGenerators.generateKN()` now properly generates all links between generated `Nodes` [[issue 108]][issue: #108]
+* `TopologyGenerators.generateKN()` now properly generates all links between generated `Nodes` [[issue 108]][issue: #108]
 
   When called in _non-wired_ mode, the underlying `KNGenerator` did not take into account possible floating point precision 
   errors made when placing `Nodes` on the ring and when computing distance between `Nodes`.
+
 
 [issue: #108]: https://github.com/jbotsim/JBotSim/issues/108
 
