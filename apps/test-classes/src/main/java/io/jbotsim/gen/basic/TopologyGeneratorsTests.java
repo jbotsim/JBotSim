@@ -32,7 +32,8 @@ public class TopologyGeneratorsTests {
 
         Topology topology = new Topology();
 
-        TopologyGenerators.generateKN(topology, nbNodes);
+        //TopologyGenerators.generateKN(topology, nbNodes);
+        TopologyGenerators.generateRing(topology, nbNodes);
 
 //        TopologyLayouts.autoscale(topology);
 
