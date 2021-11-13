@@ -82,6 +82,17 @@ This file lists modifications introduced by each version.
 [issue: #108]: https://github.com/jbotsim/JBotSim/issues/108
 [issue: #110]: https://github.com/jbotsim/JBotSim/issues/110
 
+### Color class modifications
+
+**Modifications in Color**
+
+* The `Color` class now has a `getColorFromInteger()` method that is equivalent to `getColorAt()` [[issue 107]][issue: #107]
+
+  This need came from users expecting to find such a method under that name.
+
+[issue: #107]: https://github.com/jbotsim/JBotSim/issues/107
+
+
 ## [1.2.0] - 2020/02/12
 
 ###  ClockManager class modifications
