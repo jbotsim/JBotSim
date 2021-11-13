@@ -348,19 +348,18 @@ public class Color {
 
     /**
      * <p>Returns the {@link Color} whose identifier (index) is the provided number.</p>
+     * <p>This method has the same behavior as {@code getColorAt()}, albeit with a more general name.</p>
      * <p>The {@link Color} returned for a specific number will remain the same across instances.</p>
      * <p>This method is typically used to associate a {@link Color} to an identifier. Missing {@link Color}s are
      * generated (from {@code 0} to {@code intColor}) if needed, and stored for later use.</p>
      * @param colorNumber an integer that will be associated with the returned color.
      * @return the {@link Color} associated with the provided integer.
+     * @see #getColorAt(Integer)
      * @see #indexOf(Color)
      * @see #getIndexedColors()
      */
     public static Color getColorFromInteger(Integer colorNumber) {
-        while (Color.indexedColors.size() <= colorNumber)
-            Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
-
-        return Color.indexedColors.get(colorNumber);
+        return Color.getColorAt(colorNumber);
     }
 
     /**
@@ -373,7 +372,6 @@ public class Color {
      * @see #indexOf(Color)
      * @see #getIndexedColors()
      */
-    @Deprecated
     public static Color getColorAt(Integer colorIndex) {
         while (Color.indexedColors.size() <= colorIndex)
             Color.indexedColors.add(Color.getRandomColor(intColorsRandom));
