@@ -30,7 +30,7 @@ import java.util.Map;
  * The {@link AbstractGenerator} holds common fields and methods for the different implementations of the
  * {@link TopologyGenerator} interface.
  */
-public  abstract class AbstractGenerator implements TopologyGenerator {
+public abstract class AbstractGenerator implements TopologyGenerator {
 
 
     protected static final int FIRST_DIMENSION_INDEX = 0;
@@ -65,6 +65,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
      *     <li>{@code true} if the provided coordinates are meant to be absolute</li>
      *     <li>{@code false} if the provided coordinates are meant to be in [0:1]</li>
      * </ul>
+     *
      * @return the absolute coordinates.
      */
     public boolean isAbsoluteCoords() {
@@ -77,6 +78,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
      *     <li>{@code true} if the provided coordinates are meant to be absolute</li>
      *     <li>{@code false} if the provided coordinates are meant to be in [0:1]</li>
      * </ul>
+     *
      * @param absoluteCoords the new absolute coordinates state.
      * @return a reference to the object.
      */
@@ -87,6 +89,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Returns {@code true} if the graph should be directed; {@code false} otherwise.
+     *
      * @return {@code true} if the graph should be directed; {@code false} otherwise.
      */
     public boolean isDirected() {
@@ -95,6 +98,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Sets the graph direction state.
+     *
      * @param directed {@code true} if the graph should be directed; {@code false} otherwise.
      * @return a reference to the object.
      */
@@ -105,6 +109,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Returns {@code true} if the links should be wired; {@code false} otherwise.
+     *
      * @return {@code true} if the links should be wired; {@code false} otherwise.
      */
     public boolean isWired() {
@@ -125,6 +130,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Returns {@code true} if the wireless links should be enabled; {@code false} otherwise.
+     *
      * @return {@code true} if the wireless links should be enabled; {@code false} otherwise.
      */
     public boolean isWirelessEnabled() {
@@ -215,7 +221,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
      * Sets the size of the generated pattern for an arbitrary dimension.
      *
      * @param dimensionIndex the dimension index; can be any type of object.
-     * @param value the value of the provided dimension.
+     * @param value          the value of the provided dimension.
      * @return a reference to the object.
      */
     protected AbstractGenerator setDimension(Object dimensionIndex, double value) {
@@ -304,6 +310,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Gets the one-dimension size of the generated pattern.
+     *
      * @return the size, as a double.
      */
     protected double getSize() {
@@ -350,6 +357,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Sets the {@link Class} object with which {@link Node}s should be instantiated.
+     *
      * @param nodeClass the instantiated {@link Node} type.
      * @return a reference to the object.
      */
@@ -363,8 +371,9 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Sets the number of {@link Node}s which should be created in an arbitrary dimension.
+     *
      * @param dimensionIndex the dimension index; can be any type of object.
-     * @param nbNodes the number of {@link Node} to be created.
+     * @param nbNodes        the number of {@link Node} to be created.
      * @return a reference to the object.
      */
     protected AbstractGenerator setNbNodes(Object dimensionIndex, int nbNodes) {
@@ -374,6 +383,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Gets the number of {@link Node}s which should be created in an arbitrary dimension.
+     *
      * @param dimensionIndex the dimension index; can be any type of object.
      * @return the number of {@link Node} to be created.
      */
@@ -384,6 +394,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Gets the number of {@link Node}s which should be created (1-dimension).
+     *
      * @return the number of {@link Node} to be created.
      */
     protected int getNbNodes() {
@@ -392,6 +403,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
     /**
      * Sets the number of {@link Node}s which should be created (1-dimension).
+     *
      * @param nbNodes the number of {@link Node} to be created.
      * @return a reference to the object.
      */
@@ -407,7 +419,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
         Node n = getNodeClass(tp).getConstructor().newInstance();
         n.setLocation(x0, y0);
         n.setWirelessStatus(wirelessEnabled);
-        if(cr != -1)
+        if (cr != -1)
             n.setCommunicationRange(cr);
         tp.addNode(n);
         return n;
