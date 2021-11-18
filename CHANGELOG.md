@@ -64,7 +64,7 @@ This file lists modifications introduced by each version.
 
 [issue: #111]: https://github.com/jbotsim/JBotSim/issues/111
 
-###  KNGenerator class modifications
+###  XXXXGenerator classes modifications
 
 **Bug fixes in Topology generation:**
 
@@ -73,8 +73,14 @@ This file lists modifications introduced by each version.
   When called in _non-wired_ mode, the underlying `KNGenerator` did not take into account possible floating point precision 
   errors made when placing `Nodes` on the ring and when computing distance between `Nodes`.
 
+* `AbstractGenerator` children now default on the provided `Topology`'s default node model for `Node` generation [[issue 110]][issue: #110]
+
+  What seemed to be a bug on the `RingGenerator` (when providing the `Topology` to `RingGenerator.generate()`, users
+  expect the default node model to be used if `AbstractGenerator.setClass()` has not been used) has turned into an
+  improvement to the whole `AbstractGenerator` class.
 
 [issue: #108]: https://github.com/jbotsim/JBotSim/issues/108
+[issue: #110]: https://github.com/jbotsim/JBotSim/issues/110
 
 ## [1.2.0] - 2020/02/12
 
