@@ -55,7 +55,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
     protected double y = 0.2;
 
     protected Map<Object, Integer> nbNodesMap = new HashMap<>();
-    protected Class<? extends Node> nodeClass = Node.class;
+    protected Class<? extends Node> nodeClass = null;
     protected boolean absoluteCoords = false;
 
 
@@ -332,6 +332,23 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
     }
 
     /**
+     * Gets the {@link Class} object with which {@link Node}s should be instantiated.
+     *
+     * If the class has not been set already been set with the generator's {@link #setNodeClass(Class)} method, the
+     * topology's default Node model will be used.
+     *
+     * @param tp the {@link Topology} providing the backup Node model.
+     * @return a reference to the object.
+     */
+    protected Class<? extends Node> getNodeClass(Topology tp) {
+        Class<? extends Node> nodeClass = getNodeClass();
+        if (nodeClass != null)
+            return nodeClass;
+
+        return tp.getDefaultNodeModel();
+    }
+
+    /**
      * Sets the {@link Class} object with which {@link Node}s should be instantiated.
      * @param nodeClass the instantiated {@link Node} type.
      * @return a reference to the object.
@@ -387,7 +404,7 @@ public  abstract class AbstractGenerator implements TopologyGenerator {
 
 
     protected Node addNodeAtLocation(Topology tp, double x0, double y0, double cr) throws InstantiationException, IllegalAccessException, java.lang.reflect.InvocationTargetException, NoSuchMethodException {
-        Node n = getNodeClass().getConstructor().newInstance();
+        Node n = getNodeClass(tp).getConstructor().newInstance();
         n.setLocation(x0, y0);
         n.setWirelessStatus(wirelessEnabled);
         if(cr != -1)
