@@ -84,9 +84,10 @@ This file lists modifications introduced by each version.
 
 ### Color class modifications
 
-**Modifications in Color**
+**New symbol in Color**
 
-* The `Color` class now has a `getColorFromInteger()` method that is equivalent to `getColorAt()` [[issue 107]][issue: #107]
+* `Color.getColorFromInteger()` has been created, with the same behavior 
+  as `Color.getColorAt()` [[issue 107]][issue: #107]
 
   This need came from users expecting to find such a method under that name.
 
