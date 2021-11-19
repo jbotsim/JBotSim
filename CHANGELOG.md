@@ -27,6 +27,17 @@ This file lists modifications introduced by each version.
 
 [issue: #99]: https://github.com/jbotsim/JBotSim/issues/99
 
+###  JParentLinkPainter class creation
+
+**New class:**
+
+* New `JParentLinkPainter` class [[issue 106]][issue: #106]
+
+  This new link painter is optional, it allows one to draw links as arrows 
+  when the `parent` field of a `Node` corresponds to one of its neighbors.
+
+[issue: #106]: https://github.com/jbotsim/JBotSim/issues/106
+
 ###  MessageEngine interface
 
 **Extension of the interface**
