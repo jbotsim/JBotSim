@@ -35,22 +35,22 @@ public class TopologyGenerators {
      * Generates an horizontal line.
      *
      * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param nbNodes  the desired amount of {@link Node}s.
      */
-    public static void generateLine(Topology topology, int nbNodes){
+    public static void generateLine(Topology topology, int nbNodes) {
         generateLine(topology, nbNodes, DEFAULT_NODE_MODEL);
     }
 
     /**
      * Generates an horizontal line.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodes       the desired amount of {@link Node}s.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
-    public static void generateLine(Topology topology, int nbNodes, String nodeModelName){
+    public static void generateLine(Topology topology, int nbNodes, String nodeModelName) {
         LineGenerator generator = new LineGenerator(nbNodes, topology.getWidth(), true);
         generator.setAbsoluteCoords(true);
         generator.setX(50);
@@ -64,7 +64,7 @@ public class TopologyGenerators {
      * Generates a ring.
      *
      * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param nbNodes  the desired amount of {@link Node}s.
      */
     public static void generateRing(Topology topology, int nbNodes) {
         generateRing(topology, nbNodes, false, DEFAULT_NODE_MODEL);
@@ -73,11 +73,11 @@ public class TopologyGenerators {
     /**
      * Generates a ring.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodes       the desired amount of {@link Node}s.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
     public static void generateRing(Topology topology, int nbNodes, String nodeModelName) {
         generateRing(topology, nbNodes, false, nodeModelName);
@@ -87,7 +87,7 @@ public class TopologyGenerators {
      * Generates a ring.
      *
      * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param nbNodes  the desired amount of {@link Node}s.
      * @param directed {@code true} if the links should be directed; {@code false} otherwise.
      */
     public static void generateRing(Topology topology, int nbNodes, boolean directed) {
@@ -97,21 +97,18 @@ public class TopologyGenerators {
     /**
      * Generates a ring.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
-     * @param directed {@code true} if the links should be directed; {@code false} otherwise.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodes       the desired amount of {@link Node}s.
+     * @param directed      {@code true} if the links should be directed; {@code false} otherwise.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
     public static void generateRing(Topology topology, int nbNodes, boolean directed, String nodeModelName) {
 
         RingGenerator generator = new RingGenerator(nbNodes);
         generator.setAbsoluteCoords(true);
-        generator.setX(50);
-        generator.setY(100);
-        generator.setWidth(200);
-        generator.setHeight(200.0);
+        centerAndDimensionRingToTopology(topology, generator);
         generator.setWired(true);
         generator.setDirected(directed);
         generator.setNodeClass(topology.getNodeModel(nodeModelName));
@@ -119,11 +116,19 @@ public class TopologyGenerators {
 
     }
 
+    private static void centerAndDimensionRingToTopology(Topology topology, RingGenerator generator) {
+        generator.setX(topology.getWidth() / 2.);
+        generator.setY(topology.getHeight() / 2.);
+        double size = Math.min(topology.getWidth(), topology.getHeight()) / 1.5;
+        generator.setWidth(size);
+        generator.setHeight(size);
+    }
+
     /**
      * Generates a grid.
      *
      * @param topology the related {@link Topology} object.
-     * @param order the desired amount of {@link Node}s per row and per column.
+     * @param order    the desired amount of {@link Node}s per row and per column.
      */
     public static void generateGrid(Topology topology, int order) {
         generateGrid(topology, order, DEFAULT_NODE_MODEL);
@@ -132,24 +137,24 @@ public class TopologyGenerators {
     /**
      * Generates a grid.
      *
-     * @param topology the related {@link Topology} object.
-     * @param order the desired amount of {@link Node}s per row and per column.
+     * @param topology      the related {@link Topology} object.
+     * @param order         the desired amount of {@link Node}s per row and per column.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
-    public static void generateGrid(Topology topology, int order, String nodeModelName){
+    public static void generateGrid(Topology topology, int order, String nodeModelName) {
         generateGrid(topology, order, order, nodeModelName);
     }
 
     /**
      * Generates a grid.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodesRow the desired amount of {@link Node}s per row.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodesRow    the desired amount of {@link Node}s per row.
      * @param nbNodesColumn the desired amount of {@link Node}s per column.
      */
-    public static void generateGrid(Topology topology, int nbNodesRow, int nbNodesColumn){
+    public static void generateGrid(Topology topology, int nbNodesRow, int nbNodesColumn) {
         generateGrid(topology, nbNodesRow, nbNodesColumn, DEFAULT_NODE_MODEL);
     }
 
@@ -157,14 +162,14 @@ public class TopologyGenerators {
     /**
      * Generates a grid.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodesRow the desired amount of {@link Node}s per row.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodesRow    the desired amount of {@link Node}s per row.
      * @param nbNodesColumn the desired amount of {@link Node}s per column.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
-    public static void generateGrid(Topology topology, int nbNodesRow, int nbNodesColumn, String nodeModelName){
+    public static void generateGrid(Topology topology, int nbNodesRow, int nbNodesColumn, String nodeModelName) {
 
         GridGenerator generator = new GridGenerator(nbNodesRow, nbNodesColumn);
         applyDefaultGridGeneratorValues(topology, nodeModelName, generator);
@@ -186,7 +191,7 @@ public class TopologyGenerators {
      * Generates a torus.
      *
      * @param topology the related {@link Topology} object.
-     * @param order the desired amount of {@link Node}s per row and per column.
+     * @param order    the desired amount of {@link Node}s per row and per column.
      */
     public static void generateTorus(Topology topology, int order) {
         generateTorus(topology, order, DEFAULT_NODE_MODEL);
@@ -195,47 +200,44 @@ public class TopologyGenerators {
     /**
      * Generates a torus.
      *
-     * @param topology the related {@link Topology} object.
-     * @param order the desired amount of {@link Node}s per row and per column.
+     * @param topology      the related {@link Topology} object.
+     * @param order         the desired amount of {@link Node}s per row and per column.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
-    public static void generateTorus(Topology topology, int order, String nodeModelName){
+    public static void generateTorus(Topology topology, int order, String nodeModelName) {
 
         TorusGenerator generator = new TorusGenerator(order, order);
         applyDefaultGridGeneratorValues(topology, nodeModelName, generator);
         generator.generate(topology);
 
     }
-    
+
     /**
      * Generates a complete graph (Kn), as a ring.
      *
      * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param nbNodes  the desired amount of {@link Node}s.
      */
-    public static void generateKN(Topology topology, int nbNodes){
+    public static void generateKN(Topology topology, int nbNodes) {
         generateKN(topology, nbNodes, DEFAULT_NODE_MODEL);
     }
 
     /**
      * Generates a complete graph (Kn), as a ring.
      *
-     * @param topology the related {@link Topology} object.
-     * @param nbNodes the desired amount of {@link Node}s.
+     * @param topology      the related {@link Topology} object.
+     * @param nbNodes       the desired amount of {@link Node}s.
      * @param nodeModelName the model name under which the {@link Class} object (used to instantiate the
-     * {@link Node}) is known in the provided {@link Topology}
-     *                  (see {@link Topology#setNodeModel(String, Class)}).
+     *                      {@link Node}) is known in the provided {@link Topology}
+     *                      (see {@link Topology#setNodeModel(String, Class)}).
      */
-    public static void generateKN(Topology topology, int nbNodes, String nodeModelName){
+    public static void generateKN(Topology topology, int nbNodes, String nodeModelName) {
 
         KNGenerator generator = new KNGenerator(nbNodes);
         generator.setAbsoluteCoords(true);
-        generator.setX(150);
-        generator.setY(150);
-        generator.setWidth(200);
-        generator.setHeight(200.0);
+        centerAndDimensionRingToTopology(topology, generator);
         generator.setWired(false);
         generator.setNodeClass(topology.getNodeModel(nodeModelName));
         generator.generate(topology);

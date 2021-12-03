@@ -33,7 +33,7 @@ class ColorTest {
 
     @BeforeEach
     void setUp() {
-        color255 = Color.getColorAt(255);
+        color255 = Color.getColorFromInteger(255);
     }
 
     // region constructors
@@ -210,6 +210,40 @@ class ColorTest {
 
     private void testGetColorAt(Color expectedColor, int intColor) {
         Color color = Color.getColorAt(intColor);
+        assertEquals(expectedColor, color);
+    }
+
+    // endregion
+
+    // region getColorFromInteger(int)
+
+    @Test
+    void getColorFromInteger_constantIndexes_sameResult() {
+
+        // Constant values
+        testGetColorFromInteger(Color.blue, 0);
+        testGetColorFromInteger(Color.red, 1);
+        testGetColorFromInteger(Color.green, 2);
+        testGetColorFromInteger(Color.yellow, 3);
+        testGetColorFromInteger(Color.pink, 4);
+        testGetColorFromInteger(Color.black, 5);
+        testGetColorFromInteger(Color.white, 6);
+        testGetColorFromInteger(Color.gray, 7);
+        testGetColorFromInteger(Color.orange, 8);
+        testGetColorFromInteger(Color.cyan, 9);
+        testGetColorFromInteger(Color.magenta, 10);
+        testGetColorFromInteger(Color.lightGray, 11);
+        testGetColorFromInteger(Color.darkGray, 12);
+
+        // Generated values
+        testGetColorFromInteger(color255, 255);
+        testGetColorFromInteger(new Color(182, 139, 4), 5000);
+        testGetColorFromInteger(new Color(242, 132, 68), 6000);
+
+    }
+
+    private void testGetColorFromInteger(Color expectedColor, int intColor) {
+        Color color = Color.getColorFromInteger(intColor);
         assertEquals(expectedColor, color);
     }
 

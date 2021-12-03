@@ -10,12 +10,89 @@ This file lists modifications introduced by each version.
 
 * The `timeUnit` field of `DefaultClock` is now also `volatile` [[issue 98]][issue: #98]
 
-  Although not impacting with the `DefaultClock`'s usage, a potential multi-threading issue was present in its 
-  implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been 
-  applied in order to set a good coding example.  
-
+  Although not impacting with the `DefaultClock`'s usage, a potential multi-threading issue was present in its
+  implementation. Since turning `timeUnit` into `volatile` did not prove to impact performances, the fix has been
+  applied in order to set a good coding example.
 
 [issue: #98]: https://github.com/jbotsim/JBotSim/issues/98
+
+###  JNode class modifications
+
+**New method:**
+
+* New `getNode()` method in class `JNode` [[issue 99]][issue: #99]
+
+  This method allows one to retrieve the `Node` associated with
+  this `JNode`.
+
+[issue: #99]: https://github.com/jbotsim/JBotSim/issues/99
+
+###  MessageEngine interface
+
+**Extension of the interface**
+
+* The `MessageEngine` interface now includes the `setDebug()` method for printing
+  the messages [[issue 104]][issue: #104]
+
+  This method was already used in `DefaultMessageEngine`.
+  The `default` keyword was added to avoid breaking compatibility with existing implementations.
+
+[issue: #104]: https://github.com/jbotsim/JBotSim/issues/104
+
+### Message class modifications
+
+**Modifications in Message**
+
+* `Message.toString()` now uses `Node.getFlag()` to print the flag of a message (in addition to the sender, destination,
+  and content of the message) [[issue 105]][issue: #105]
+
+  Amongst possible effects, this improves how a message is printed in debug mode
+  by the default message engine.
+
+[issue: #105]: https://github.com/jbotsim/JBotSim/issues/105
+
+###  TopologyGenerators class modifications
+
+**Bug fixes in Topology generation:**
+
+* `TopologyGenerators.generateKN()` and `TopologyGenerators.generateRing()` now properly take their surrounding
+  `Topology` into account [[issue 111]][issue: #111]
+
+  `TopologyGenerators.generateRing()` used incoherent positioning and dimensioning values.
+  A new method, which centers the shape in the `Topology` and sizes it to secure a margin.
+  `TopologyGenerators.generateKN()` now also uses that method.
+
+[issue: #111]: https://github.com/jbotsim/JBotSim/issues/111
+
+###  XXXXGenerator classes modifications
+
+**Bug fixes in Topology generation:**
+
+* `TopologyGenerators.generateKN()` now properly generates all links between generated `Nodes` [[issue 108]][issue: #108]
+
+  When called in _non-wired_ mode, the underlying `KNGenerator` did not take into account possible floating point precision 
+  errors made when placing `Nodes` on the ring and when computing distance between `Nodes`.
+
+* `AbstractGenerator` children now default on the provided `Topology`'s default node model for `Node` generation [[issue 110]][issue: #110]
+
+  What seemed to be a bug on the `RingGenerator` (when providing the `Topology` to `RingGenerator.generate()`, users
+  expect the default node model to be used if `AbstractGenerator.setClass()` has not been used) has turned into an
+  improvement to the whole `AbstractGenerator` class.
+
+[issue: #108]: https://github.com/jbotsim/JBotSim/issues/108
+[issue: #110]: https://github.com/jbotsim/JBotSim/issues/110
+
+### Color class modifications
+
+**New symbol in Color**
+
+* `Color.getColorFromInteger()` has been created, with the same behavior 
+  as `Color.getColorAt()` [[issue 107]][issue: #107]
+
+  This need came from users expecting to find such a method under that name.
+
+[issue: #107]: https://github.com/jbotsim/JBotSim/issues/107
+
 
 ## [1.2.0] - 2020/02/12
 

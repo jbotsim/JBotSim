@@ -30,6 +30,8 @@ import io.jbotsim.core.Topology;
  */
 public class KNGenerator extends RingGenerator {
 
+    protected static final double EPSILON = 0.01;
+
     /**
      * Creates a {@link KNGenerator} creating a complete-graph of nbNodes {@link Node}s.
      *
@@ -47,8 +49,9 @@ public class KNGenerator extends RingGenerator {
                 for (int j = i + 1; j < nbNodes; j++)
                     tp.addLink(new Link(nodes[i], nodes[j], Link.Orientation.UNDIRECTED));
         } else {
+            double cr = Math.max(getAbsoluteHeight(tp), getAbsoluteWidth(tp)) + EPSILON;
             for (Node n : nodes) {
-                n.setCommunicationRange(Math.max(getAbsoluteHeight(tp), getAbsoluteWidth(tp)));
+                n.setCommunicationRange(cr);
             }
         }
     }
