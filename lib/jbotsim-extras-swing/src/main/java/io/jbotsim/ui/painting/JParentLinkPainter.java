@@ -30,9 +30,7 @@ import io.jbotsim.ui.JTopology;
 import io.jbotsim.ui.JViewer;
 
 import java.awt.*;
-import java.awt.geom.GeneralPath;
 import java.lang.reflect.Field;
-import java.util.List;
 
 /**
  * <p>The {@link JParentLinkPainter} draws links in an oriented way
@@ -56,24 +54,24 @@ import java.util.List;
  */
 public class JParentLinkPainter extends JDirectedLinkPainter {
 
+    protected Node getParent(Node node) {
+        try {
+            Field field = node.getClass().getField("parent");
+            return (Node) field.get(node);
+        } catch (NoSuchFieldException | IllegalAccessException ignored) {}
+        return null;
+    }
+
     @Override
     protected void drawDestinationPartIfNeeded(Graphics2D g2d, Link link) {
         Node srcNode = link.source;
         Node destNode = link.destination;
-        try {
-            Node srcParent = (Node) srcNode.getClass().getDeclaredField("parent").get(srcNode);
-            if (srcParent == destNode)
-                paintHead(g2d, srcNode, destNode);
-            Node destParent = (Node) destNode.getClass().getDeclaredField("parent").get(destNode);
-            if (destParent == srcNode)
-                paintHead(g2d, destNode, srcNode);
-        } catch (NoSuchFieldException ignored){
-        } catch (ClassCastException e1){
-            System.err.println("The parent variable should be a Node (or a subclass of Node)");
-        } catch (IllegalAccessException e2){
-            System.err.println("The parent variable should be public");
-        }
+        if (getParent(srcNode) == destNode)
+            paintHead(g2d, srcNode, destNode);
+        if (getParent(destNode) == srcNode)
+            paintHead(g2d, destNode, srcNode);
     }
+
     protected void paintHead(Graphics2D g2d, Node srcNode, Node destNode){
         Point srcPoint = srcNode.getLocation();
         Point destPoint = destNode.getLocation();
